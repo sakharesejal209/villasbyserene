@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
+  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -14,10 +14,111 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
+model Property {
+  property_id   String   @id @default(uuid()) @db.Uuid
+  name          String
+  description   String?  @db.Text
+  map_location  String?  @db.Text
+  address       String?  @db.Text
+  area          String
+  city          String
+  state         String
+  country       String
+  checkin_time  DateTime? @db.Time
+  checkout_time DateTime? @db.Time
+  maxcapacity   Int?
+  created_at    DateTime @default(now()) @db.Timestamp(6)
+
+  Unit Unit[]
+  PropertyImage PropertyImage[]
+}
+
+model Unit {
+  unit_id         String         @id @default(uuid()) @db.Uuid
+  property_id     String?        @db.Uuid
+  unit_type       String?
+  title           String?
+  description     String?
+  no_of_bedrooms  Int?
+  max_capacity    Int?
+  is_available    Boolean        @default(true)
+  created_at      DateTime       @default(now())
+
+  property        Property?      @relation(fields: [property_id], references: [property_id])
+  unitRules       UnitRule[]
+  unitAmenities   UnitAmenity[]
+  unitImages      UnitImage[]
+
+   @@map("Unit") 
+}
+
+model HouseRule {
+  rule_id     String      @id @default(uuid()) @db.Uuid
+  description String?
+
+  unitRules   UnitRule[]
+
+  @@map("HouseRule") 
+}
+
+model UnitRule {
+  unit_id       String    @db.Uuid
+  rule_id       String    @db.Uuid
+  display_order Int       @default(0)
+
+  unit          Unit      @relation(fields: [unit_id], references: [unit_id])
+  houseRule     HouseRule @relation(fields: [rule_id], references: [rule_id])
+
+  @@id([unit_id, rule_id])
+}
+
+model Amenity {
+  amenity_id String       @id @default(uuid()) @db.Uuid
+  name       String
+
+  unitAmenities UnitAmenity[]
+}
+
+model UnitAmenity {
+  unit_id       String     @db.Uuid
+  amenity_id    String     @db.Uuid
+  display_order Int        @default(0)
+
+  unit          Unit       @relation(fields: [unit_id], references: [unit_id])
+  amenity       Amenity    @relation(fields: [amenity_id], references: [amenity_id])
+
+  @@id([unit_id, amenity_id])
+}
+
+model ImageCategory {
+  category_id Int          @id @default(autoincrement())
+  name        String       @unique
+
+  images      Image[]
+}
+
+model Image {
+  image_id           String         @id @default(uuid()) @db.Uuid
+  image_url          String
+  image_category_id  Int?
+
+  imageCategory      ImageCategory? @relation(fields: [image_category_id], references: [category_id])
+}
+
+model PropertyImage {
+  image_id        String     @id @default(uuid()) @db.Uuid
+  property_id     String?    @db.Uuid
+  display_order   Int        @default(0)
+  is_banner_image String?
+
+  property        Property?  @relation(fields: [property_id], references: [property_id])
+}
+
+model UnitImage {
+  image_id        String     @id @default(uuid()) @db.Uuid
+  unit_id         String?    @db.Uuid
+  display_order   Int        @default(0)
+  is_banner_image String?
+
+  unit            Unit?      @relation(fields: [unit_id], references: [unit_id])
 }

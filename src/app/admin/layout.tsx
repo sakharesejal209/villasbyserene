@@ -1,9 +1,23 @@
-import React from 'react'
+'use client'
 
-const layout = () => {
+import { Button } from "@mui/material";
+import React from "react";
+
+const Layout = () => {
+
+  const logout = async () => {
+    await fetch('/api/logout');
+    window.location.href = '/login';
+  };
+
   return (
-    <div>layout</div>
-  )
-}
+    <div>
+      layout
+      <Button onClick={() => logout()} className="text-sm underline">
+        Logout
+      </Button>
+    </div>
+  );
+};
 
-export default layout
+export default Layout;

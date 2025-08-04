@@ -1,21 +1,29 @@
-import { createTheme, Theme } from "@mui/material";
+import {
+  createTheme,
+  outlinedInputClasses,
+  responsiveFontSizes,
+  Theme,
+} from "@mui/material";
 
 const commonColors = {
   gold: "#f4b400",
   coral: "#D64E5E",
-  sand: "#F6F8F9",
+  sand: "#ffffff",
   white: "#ffffff",
   black: "#000000",
   textPrimary: "#10162F",
-  textSecondary: 'rgba(16,22,47,0.6)',
+  textSecondary: "rgba(16,22,47,0.6)",
   divider: "#cccccc",
-  success: '#3CB37B',
-  error: '#EF5136',
-  warning: '#EEB329',
-  info: '#1DB8D7'
+  success: "#3CB37B",
+  error: "#EF5136",
+  warning: "#EEB329",
+  info: "#1DB8D7",
+  border: "#E0E3E7",
+  borderHover: "#B2BAC2",
+  borderFocused: "#7e8c9a",
 };
 
-const lightTheme: Theme = createTheme({
+let lightTheme: Theme = createTheme({
   palette: {
     mode: "light",
     primary: {
@@ -24,6 +32,18 @@ const lightTheme: Theme = createTheme({
     },
     secondary: {
       main: commonColors.gold,
+    },
+    warning: {
+      main: commonColors.warning,
+    },
+    error: {
+      main: commonColors.error,
+    },
+    success: {
+      main: commonColors.success,
+    },
+    info: {
+      main: commonColors.info,
     },
     background: {
       default: commonColors.sand,
@@ -39,15 +59,69 @@ const lightTheme: Theme = createTheme({
     borderRadius: 12,
   },
   typography: {
-    fontFamily: `'Poppins', 'Roboto', sans-serif`,
+    fontFamily: `'Nunito', sans-serif`,
     button: { textTransform: "none" },
+    h1: {
+      fontWeight: "700",
+    },
+    h2: {
+      fontWeight: "700",
+    },
+    h3: {
+      fontWeight: "700",
+    },
+    h4: {
+      fontWeight: "600",
+    },
+    h5: {
+      fontWeight: "500",
+    },
   },
   components: {
-    MuiButton: {
+    MuiTextField: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
-          padding: "10px 20px",
+          "& label.Mui-focused": {
+            color: commonColors.borderFocused,
+          },
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        notchedOutline: {
+          borderColor: commonColors.border,
+        },
+        root: {
+          [`&:hover .${outlinedInputClasses.notchedOutline}`]: {
+            borderColor: commonColors.borderHover,
+          },
+          [`&.Mui-focused .${outlinedInputClasses.notchedOutline}`]: {
+            borderColor: commonColors.borderFocused,
+          },
+        },
+      },
+    },
+    MuiButton: {
+      defaultProps: {
+        disableRipple: true,
+      },
+      styleOverrides: {
+        root: {
+          borderRadius: 4,
+          boxShadow: "none",
+          transition: "all 0.1s ease-in-out",
+          "&:hover": {
+            backgroundColor: "#D13647",
+            boxShadow: "none",
+          },
+          "&:active": {
+            boxShadow: "none",
+            backgroundColor: "#AA2736",
+          },
+          "&:focus": {
+            boxShadow: "none",
+          },
         },
       },
     },
@@ -65,7 +139,7 @@ const lightTheme: Theme = createTheme({
           backgroundColor: commonColors.white,
           height: 4,
           borderRadius: 2,
-          borderRight: `2px solid ${commonColors.coral}`
+          borderRight: `2px solid ${commonColors.coral}`,
         },
       },
     },
@@ -81,5 +155,7 @@ const lightTheme: Theme = createTheme({
     },
   },
 });
+
+lightTheme = responsiveFontSizes(lightTheme);
 
 export default lightTheme;

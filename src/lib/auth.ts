@@ -1,5 +1,7 @@
 import { cookies } from 'next/headers';
 
-export function isAdminLoggedIn() {
-  return cookies().get('adminAuth')?.value === process.env.ADMIN_TOKEN;
+export async function isAdminLoggedIn() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('adminAuth')?.value;
+  return token === process.env.ADMIN_TOKEN;
 }

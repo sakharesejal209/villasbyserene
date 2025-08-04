@@ -1,4 +1,4 @@
-import { createTheme, Theme } from "@mui/material";
+import { createTheme, outlinedInputClasses, responsiveFontSizes, Theme } from "@mui/material";
 
 const commonColors = {
   gold: "#f4b400",
@@ -13,9 +13,12 @@ const commonColors = {
   error: "#f2a394",
   warning: "#f2d48e",
   info: "#8ad5ea",
+  border: "#E0E3E7",
+  borderHover: "#B2BAC2",
+  borderFocused: "#7e8c9a",
 };
 
-const darkTheme: Theme = createTheme({
+let darkTheme: Theme = createTheme({
   palette: {
     mode: "dark",
     primary: {
@@ -24,6 +27,18 @@ const darkTheme: Theme = createTheme({
     },
     secondary: {
       main: commonColors.gold,
+    },
+    warning: {
+      main: commonColors.warning,
+    },
+    error: {
+      main: commonColors.error,
+    },
+    success: {
+      main: commonColors.success,
+    },
+    info: {
+      main: commonColors.info,
     },
     background: {
       default: commonColors.sand,
@@ -39,15 +54,76 @@ const darkTheme: Theme = createTheme({
     borderRadius: 12,
   },
   typography: {
-    fontFamily: `'Poppins', 'Roboto', sans-serif`,
+    fontFamily: `'Nunito', sans-serif`,
     button: { textTransform: "none" },
+    h1: {
+      fontWeight: '700',
+    },
+    h2: {
+      fontWeight: '700',
+    },
+    h3: {
+      fontWeight: '700',
+    },
+    h4: {
+      fontWeight: '600',
+    },
+    h5: {
+      fontWeight: '500',
+    },
   },
   components: {
-    MuiButton: {
+    MuiAppBar: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
-          padding: "10px 20px",
+          backgroundColor: "#161A1D",
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          "& label.Mui-focused": {
+            color: commonColors.borderFocused,
+          },
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        notchedOutline: {
+          borderColor: commonColors.border,
+        },
+        root: {
+          [`&:hover .${outlinedInputClasses.notchedOutline}`]: {
+            borderColor: commonColors.borderHover,
+          },
+          [`&.Mui-focused .${outlinedInputClasses.notchedOutline}`]: {
+            borderColor: commonColors.borderFocused,
+          },
+        },
+      },
+    },
+    MuiButton: {
+      defaultProps: {
+        disableRipple: true,
+      },
+      styleOverrides: {
+        root: {
+          borderRadius: 4,
+          boxShadow: "none",
+          transition: "all 0.1s ease-in-out",
+          "&:hover": {
+            backgroundColor: "#D13647",
+            boxShadow: "none",
+          },
+          "&:active": {
+            boxShadow: "none",
+            backgroundColor: "#AA2736",
+          },
+          "&:focus": {
+            boxShadow: "none",
+          },
         },
       },
     },
@@ -81,5 +157,7 @@ const darkTheme: Theme = createTheme({
     },
   },
 });
+
+darkTheme = responsiveFontSizes(darkTheme);
 
 export default darkTheme;
