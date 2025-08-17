@@ -15,110 +15,166 @@ datasource db {
 }
 
 model Property {
-  property_id   String   @id @default(uuid()) @db.Uuid
-  name          String
-  description   String?  @db.Text
-  map_location  String?  @db.Text
-  address       String?  @db.Text
-  area          String
-  city          String
-  state         String
-  country       String
-  checkin_time  DateTime? @db.Time
-  checkout_time DateTime? @db.Time
-  maxcapacity   Int?
-  created_at    DateTime @default(now()) @db.Timestamp(6)
+  property_id       String            @id @default(uuid()) @db.Uuid
+  name              String
+  description       String?           @db.Text
+  map_location      String?           @db.Text
+  address           String?           @db.Text
+  area              String
+  city              String
+  state             String
+  country           String
+  accommodationType AccommodationType @default(ENTIRE_HOME)
+  checkin_time      String
+  checkout_time     String
+  maxcapacity       Int?
+  bedroomcount      Int?
+  created_at        DateTime          @default(now()) @db.Timestamp(6)
 
-  Unit Unit[]
-  PropertyImage PropertyImage[]
+  Unit             Unit[]
+  PropertyImage    PropertyImage[]
+  PropertyAmenity  PropertyAmenity[]
+  NearByAttractions NearByAttractions[]
+  FoodMenu         FoodMenu[]
+  propertyRules PropertyRule[]
 }
 
 model Unit {
-  unit_id         String         @id @default(uuid()) @db.Uuid
-  property_id     String?        @db.Uuid
-  unit_type       String?
-  title           String?
-  description     String?
-  no_of_bedrooms  Int?
-  max_capacity    Int?
-  is_available    Boolean        @default(true)
-  created_at      DateTime       @default(now())
+  unit_id        String    @id @default(uuid()) @db.Uuid
+  property_id    String    @db.Uuid
+  unit_type      UnityType @default(VILLA)
+  title          String?
+  description    String?
+  no_of_bedrooms Int?
+  max_capacity   Int?
+  is_available   Boolean   @default(true)
+  created_at     DateTime  @default(now())
 
-  property        Property?      @relation(fields: [property_id], references: [property_id])
-  unitRules       UnitRule[]
-  unitAmenities   UnitAmenity[]
-  unitImages      UnitImage[]
+  property   Property?   @relation(fields: [property_id], references: [property_id])
+  unitImages UnitImage[]
 
-   @@map("Unit") 
+  @@map("Unit")
 }
 
 model HouseRule {
-  rule_id     String      @id @default(uuid()) @db.Uuid
+  rule_id     String  @id
   description String?
 
-  unitRules   UnitRule[]
+  propertyRules PropertyRule[]
 
-  @@map("HouseRule") 
+  @@map("HouseRule")
 }
 
-model UnitRule {
-  unit_id       String    @db.Uuid
-  rule_id       String    @db.Uuid
-  display_order Int       @default(0)
+model PropertyRule {
+  property_id       String @db.Uuid
+  rule_id       String
+  display_order Int    @default(0)
 
-  unit          Unit      @relation(fields: [unit_id], references: [unit_id])
-  houseRule     HouseRule @relation(fields: [rule_id], references: [rule_id])
+  property      Property      @relation(fields: [property_id], references: [property_id])
+  houseRule HouseRule @relation(fields: [rule_id], references: [rule_id])
 
-  @@id([unit_id, rule_id])
+  @@id([property_id, rule_id])
 }
 
 model Amenity {
-  amenity_id String       @id @default(uuid()) @db.Uuid
+  amenity_id String @id
   name       String
 
-  unitAmenities UnitAmenity[]
+  propertyAmenities PropertyAmenity[]
 }
 
-model UnitAmenity {
-  unit_id       String     @db.Uuid
-  amenity_id    String     @db.Uuid
-  display_order Int        @default(0)
+model PropertyAmenity {
+  property_id   String @db.Uuid
+  amenity_id    String
+  display_order Int    @default(0)
 
-  unit          Unit       @relation(fields: [unit_id], references: [unit_id])
-  amenity       Amenity    @relation(fields: [amenity_id], references: [amenity_id])
+  property Property @relation(fields: [property_id], references: [property_id])
+  amenity  Amenity  @relation(fields: [amenity_id], references: [amenity_id])
 
-  @@id([unit_id, amenity_id])
+  @@id([property_id, amenity_id])
+  @@map("PropertyAmenity")
 }
 
 model ImageCategory {
-  category_id Int          @id @default(autoincrement())
-  name        String       @unique
+  category_id Int    @id @default(autoincrement())
+  name        String @unique
 
-  images      Image[]
+  images Image[]
 }
 
 model Image {
-  image_id           String         @id @default(uuid()) @db.Uuid
-  image_url          String
-  image_category_id  Int?
+  image_id          String  @id @default(uuid()) @db.Uuid
+  image_url         String
+  image_alt         String?
+  image_category_id Int?
 
-  imageCategory      ImageCategory? @relation(fields: [image_category_id], references: [category_id])
+  imageCategory ImageCategory?  @relation(fields: [image_category_id], references: [category_id])
+  PropertyImage PropertyImage[]
+  UnitImage     UnitImage[]
+
+  @@unique([image_category_id, image_url])
 }
 
 model PropertyImage {
-  image_id        String     @id @default(uuid()) @db.Uuid
-  property_id     String?    @db.Uuid
-  display_order   Int        @default(0)
+  image_id        String  @db.Uuid
+  property_id     String  @db.Uuid
+  display_order   Int     @default(0)
   is_banner_image String?
+  is_carousel_image String?
 
-  property        Property?  @relation(fields: [property_id], references: [property_id])
+  property Property? @relation(fields: [property_id], references: [property_id])
+  image    Image?    @relation(fields: [image_id], references: [image_id])
+
+  @@id([image_id, property_id])
 }
 
 model UnitImage {
-  image_id        String     @id @default(uuid()) @db.Uuid
-  unit_id         String?    @db.Uuid
-  display_order   Int        @default(0)
+  image_id        String  @db.Uuid
+  unit_id         String  @db.Uuid
+  display_order   Int     @default(0)
   is_banner_image String?
 
-  unit            Unit?      @relation(fields: [unit_id], references: [unit_id])
+  unit  Unit?  @relation(fields: [unit_id], references: [unit_id])
+  image Image? @relation(fields: [image_id], references: [image_id])
+
+  @@id([image_id, unit_id])
+}
+
+model NearByAttractions {
+  attraction_id String @id @default(uuid()) @db.Uuid
+  property_id   String @db.Uuid
+  title         String
+  description   String
+  imageUrl      String
+  locationUrl   String
+
+  property Property? @relation(fields: [property_id], references: [property_id])
+}
+
+model FoodMenu {
+  menuId        String  @id @default(uuid()) @db.Uuid
+  property_id   String  @db.Uuid
+  description   String
+  isVeg         Boolean
+  isNonVeg      Boolean
+  menuUrl       String
+  breakfastTime String
+  lunchTime     String
+  dinnerTime    String
+
+  property Property? @relation(fields: [property_id], references: [property_id])
+}
+
+enum UnityType {
+  VILLA
+  CHALET
+  COTTAGE
+  ROOM
+  APARTMENT
+}
+
+enum AccommodationType {
+  ENTIRE_HOME
+  SEPARATE_ROOMS
+  ENTIRE_HOME_AND_SEPARATE_ROOMS
 }

@@ -1,4 +1,9 @@
-import { createTheme, outlinedInputClasses, responsiveFontSizes, Theme } from "@mui/material";
+import {
+  createTheme,
+  outlinedInputClasses,
+  responsiveFontSizes,
+  Theme,
+} from "@mui/material";
 
 const commonColors = {
   gold: "#f4b400",
@@ -57,19 +62,19 @@ let darkTheme: Theme = createTheme({
     fontFamily: `'Nunito', sans-serif`,
     button: { textTransform: "none" },
     h1: {
-      fontWeight: '700',
+      fontWeight: "700",
     },
     h2: {
-      fontWeight: '700',
+      fontWeight: "600",
     },
     h3: {
-      fontWeight: '700',
+      fontWeight: "600",
     },
     h4: {
-      fontWeight: '600',
+      fontWeight: "400",
     },
     h5: {
-      fontWeight: '500',
+      fontWeight: "500",
     },
   },
   components: {
@@ -130,8 +135,9 @@ let darkTheme: Theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 16,
-          boxShadow: "0 2px 12px rgba(255,255,255,0.05)",
+          borderRadius: 4,
+          border: `2px solid ${commonColors.border}`,
+          boxShadow: "none",
         },
       },
     },

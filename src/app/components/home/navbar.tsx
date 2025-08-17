@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   AppBar,
@@ -5,7 +7,6 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  PopoverVirtualElement,
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -19,21 +20,23 @@ import logoDark from "../../../../public/assets/logoDark.png";
 
 const Navbar = () => {
   const { mode, toggleTheme } = useThemeContext();
-  const [anchorElNav, setAnchorElNav] =
-    React.useState<PopoverVirtualElement | null>(null);
+  const [anchorElNav, setAnchorElNav] = React.useState<
+    (EventTarget & HTMLButtonElement) | null
+  >(null);
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLButtonElement>) =>
-    setAnchorElNav(event.currentTarget);
+  const handleOpenNavMenu = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => setAnchorElNav(event.currentTarget);
   const handleCloseNavMenu = () => setAnchorElNav(null);
 
   return (
-    <AppBar color="default" position="fixed" elevation={0} component="header">
-      <Container maxWidth="xl" className="p-2">
-        <div className="flex justify-between items-center w-full">
+    <AppBar className="h-[55px]" color="default" position="fixed" elevation={1} component="header">
+      <Container maxWidth="xl" className="px-2">
+        <div className="p-1 flex justify-between items-center w-full">
           {/* Brand (desktop) */}
           <a href="">
             <Image
-              className="sm:w-[90px] 2xl:w-[120px]"
+              className="sm:w-[90px] 2xl:w-[100px]"
               width={100}
               alt="villasbyserene logo"
               src={mode === "light" ? logoDark : logoLight}

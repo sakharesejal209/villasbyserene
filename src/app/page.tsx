@@ -1,5 +1,6 @@
 "use client";
-import Home from "./components/home/home";
+
+import Home from "./home/page";
 
 const Page = () => {
   return (

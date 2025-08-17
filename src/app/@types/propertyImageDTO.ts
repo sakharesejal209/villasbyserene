@@ -1,0 +1,10 @@
+import { ImageDTO } from "./imageDTO";
+
+export interface PropertyImageDTO {
+  image_id: string;
+  property_id: string;
+  display_order: number;
+  is_banner_image: string | null;
+  is_carousel_image: string | null;
+  image: ImageDTO;
+}

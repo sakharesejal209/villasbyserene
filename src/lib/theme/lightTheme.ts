@@ -65,13 +65,13 @@ let lightTheme: Theme = createTheme({
       fontWeight: "700",
     },
     h2: {
-      fontWeight: "700",
+      fontWeight: "600",
     },
     h3: {
-      fontWeight: "700",
+      fontWeight: "600",
     },
     h4: {
-      fontWeight: "600",
+      fontWeight: "500",
     },
     h5: {
       fontWeight: "500",
@@ -128,8 +128,9 @@ let lightTheme: Theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 16,
-          boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
+          borderRadius: 4,
+          border: `2px solid ${commonColors.border}`,
+          boxShadow: "none",
         },
       },
     },

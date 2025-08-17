@@ -1,0 +1,543 @@
+[
+  {
+    "property_id": "1cf56e86-e0ce-424c-81dd-301e29b3d624",
+    "name": "Sarthak Villa By Serene",
+    "description": "Valley facing 3BHK + 1Glass house villa",
+    "map_location": "https://share.google/XtY4ygIQHoF8WxBOy",
+    "address": "Gadeshwar, Panvel",
+    "area": "Gadeshwar",
+    "city": "Panvel",
+    "state": "Maharashtra",
+    "country": "India",
+    "accommodationType": "ENTIRE_HOME",
+    "checkin_time": "11:00:00",
+    "checkout_time": "12:00:00",
+    "maxcapacity": 35,
+    "bedroomcount": 4,
+    "created_at": "2025-08-04T20:14:15.040Z",
+    "Unit": [
+      {
+        "unit_id": "6c9825fd-ae00-4d41-a887-a43c6a913c97",
+        "property_id": "1cf56e86-e0ce-424c-81dd-301e29b3d624",
+        "unit_type": "VILLA",
+        "title": "3BHK villa",
+        "description": "Peaceful retreat nestled in nature.",
+        "no_of_bedrooms": 4,
+        "max_capacity": 35,
+        "is_available": true,
+        "created_at": "2025-08-04T20:15:11.696Z",
+        "unitRules": [
+          {
+            "unit_id": "6c9825fd-ae00-4d41-a887-a43c6a913c97",
+            "rule_id": "petCharge",
+            "display_order": 1,
+            "houseRule": {
+              "rule_id": "petCharge",
+              "description": "Pet-Friendly Stay with a 500 Charge"
+            }
+          },
+          {
+            "unit_id": "6c9825fd-ae00-4d41-a887-a43c6a913c97",
+            "rule_id": "poolTime",
+            "display_order": 2,
+            "houseRule": {
+              "rule_id": "poolTime",
+              "description": "Swimming Pool Timings 07:00 AM to 07:00 PM"
+            }
+          },
+          {
+            "unit_id": "6c9825fd-ae00-4d41-a887-a43c6a913c97",
+            "rule_id": "musicTime",
+            "display_order": 3,
+            "houseRule": {
+              "rule_id": "musicTime",
+              "description": "Swimming Pool Timings 07:00 AM to 07:00 PM"
+            }
+          }
+        ],
+        "unitAmenities": [],
+        "unitImages": []
+      }
+    ],
+    "PropertyImage": []
+  },
+  {
+    "property_id": "fac2cbb4-d938-4342-a369-312d2cd24604",
+    "name": "Ocean Breeze Villa By Serene",
+    "description": "Sea facing, Luxurious 3BHK",
+    "map_location": "https://share.google/SRCrJTq4mRVL1fuj5",
+    "address": "Kegarv Beach, Uran",
+    "area": "Uran",
+    "city": "Panvel",
+    "state": "Maharashtra",
+    "country": "India",
+    "accommodationType": "ENTIRE_HOME",
+    "checkin_time": "12:00 PM",
+    "checkout_time": "01:00 PM",
+    "maxcapacity": 40,
+    "bedroomcount": 4,
+    "created_at": "2025-08-11T18:24:31.896Z",
+    "Unit": [
+      {
+        "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+        "property_id": "fac2cbb4-d938-4342-a369-312d2cd24604",
+        "unit_type": "VILLA",
+        "title": "4BHK villa",
+        "description": "Peaceful retreat nestled by the beach.",
+        "no_of_bedrooms": 4,
+        "max_capacity": 40,
+        "is_available": true,
+        "created_at": "2025-08-11T18:26:15.097Z",
+        "unitRules": [
+          {
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "rule_id": "petCharge",
+            "display_order": 1,
+            "houseRule": {
+              "rule_id": "petCharge",
+              "description": "Pet-Friendly Stay with a 500 Charge"
+            }
+          },
+          {
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "rule_id": "poolTime",
+            "display_order": 2,
+            "houseRule": {
+              "rule_id": "poolTime",
+              "description": "Swimming Pool Timings 07:00 AM to 07:00 PM"
+            }
+          },
+          {
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "rule_id": "alcoholConsumption",
+            "display_order": 3,
+            "houseRule": {
+              "rule_id": "alcoholConsumption",
+              "description": "The consumption of alcohol is permitted only within personal spaces"
+            }
+          },
+          {
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "rule_id": "damageCost",
+            "display_order": 4,
+            "houseRule": {
+              "rule_id": "damageCost",
+              "description": "Guests must cover the cost of any damages to the property"
+            }
+          },
+          {
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "rule_id": "governmentId",
+            "display_order": 5,
+            "houseRule": {
+              "rule_id": "governmentId",
+              "description": "Government ID Proof Compulsory"
+            }
+          },
+          {
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "rule_id": "lastServiceTime",
+            "display_order": 6,
+            "houseRule": {
+              "rule_id": "lastServiceTime",
+              "description": "Last service time at the Property is 11:00 PM"
+            }
+          }
+        ],
+        "unitAmenities": [
+          {
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "amenity_id": "airconditioned",
+            "display_order": 1,
+            "amenity": {
+              "amenity_id": "airconditioned",
+              "name": "Air-conditioned"
+            }
+          },
+          {
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "amenity_id": "freeparking",
+            "display_order": 2,
+            "amenity": {
+              "amenity_id": "freeparking",
+              "name": "Free Parking"
+            }
+          },
+          {
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "amenity_id": "indoorgames",
+            "display_order": 3,
+            "amenity": {
+              "amenity_id": "indoorgames",
+              "name": "Indoor Games"
+            }
+          },
+          {
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "amenity_id": "lawn",
+            "display_order": 4,
+            "amenity": {
+              "amenity_id": "lawn",
+              "name": "Lawn"
+            }
+          },
+          {
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "amenity_id": "swimmingpool",
+            "display_order": 5,
+            "amenity": {
+              "amenity_id": "swimmingpool",
+              "name": "Swimming Pool"
+            }
+          },
+          {
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "amenity_id": "television",
+            "display_order": 6,
+            "amenity": {
+              "amenity_id": "television",
+              "name": "Television"
+            }
+          },
+          {
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "amenity_id": "watersupply",
+            "display_order": 7,
+            "amenity": {
+              "amenity_id": "watersupply",
+              "name": "24/7 water supply"
+            }
+          },
+          {
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "amenity_id": "wifi",
+            "display_order": 8,
+            "amenity": {
+              "amenity_id": "wifi",
+              "name": "WiFi"
+            }
+          }
+        ],
+        "unitImages": [
+          {
+            "image_id": "97708844-2599-4d05-a6e0-5f411460a6be",
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "display_order": 0,
+            "is_banner_image": null,
+            "image": {
+              "image_id": "97708844-2599-4d05-a6e0-5f411460a6be",
+              "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F13.webp?alt=media&token=5ec510ae-8dd5-433f-89d4-c91601d187e2",
+              "image_category_id": 1,
+              "imageCategory": {
+                "category_id": 1,
+                "name": "Dinning area"
+              }
+            }
+          },
+          {
+            "image_id": "bf843229-57ea-4ca2-b033-761485809a91",
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "display_order": 0,
+            "is_banner_image": null,
+            "image": {
+              "image_id": "bf843229-57ea-4ca2-b033-761485809a91",
+              "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F21.webp?alt=media&token=0bd5d8f2-9236-41a7-8ae1-a678fbdae723",
+              "image_category_id": 3,
+              "imageCategory": {
+                "category_id": 3,
+                "name": "Kitchen"
+              }
+            }
+          },
+          {
+            "image_id": "fe840ed3-bd16-4410-a4a0-e6d6658281d7",
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "display_order": 0,
+            "is_banner_image": null,
+            "image": {
+              "image_id": "fe840ed3-bd16-4410-a4a0-e6d6658281d7",
+              "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F22.webp?alt=media&token=aec6b185-a748-4b80-aebc-e8b778c629ec",
+              "image_category_id": 3,
+              "imageCategory": {
+                "category_id": 3,
+                "name": "Kitchen"
+              }
+            }
+          },
+          {
+            "image_id": "ed37174f-ba23-4bc8-8659-6056f7e5a315",
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "display_order": 0,
+            "is_banner_image": null,
+            "image": {
+              "image_id": "ed37174f-ba23-4bc8-8659-6056f7e5a315",
+              "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F13.webp?alt=media&token=5ec510ae-8dd5-433f-89d4-c91601d187e2",
+              "image_category_id": 3,
+              "imageCategory": {
+                "category_id": 3,
+                "name": "Kitchen"
+              }
+            }
+          },
+          {
+            "image_id": "92d519de-f47e-405f-a70a-7a383e7f710f",
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "display_order": 0,
+            "is_banner_image": null,
+            "image": {
+              "image_id": "92d519de-f47e-405f-a70a-7a383e7f710f",
+              "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F2.webp?alt=media&token=9aa7c26b-3b0f-47b1-829f-7c08feb69929",
+              "image_category_id": 3,
+              "imageCategory": {
+                "category_id": 3,
+                "name": "Kitchen"
+              }
+            }
+          },
+          {
+            "image_id": "17b25ff6-44e4-4972-8c09-7faa6f4ef3c5",
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "display_order": 0,
+            "is_banner_image": null,
+            "image": {
+              "image_id": "17b25ff6-44e4-4972-8c09-7faa6f4ef3c5",
+              "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F39.webp?alt=media&token=92516fbd-c1c9-4800-a730-e11c5353461b",
+              "image_category_id": 4,
+              "imageCategory": {
+                "category_id": 4,
+                "name": "Living Area"
+              }
+            }
+          },
+          {
+            "image_id": "6935165f-19e5-44d0-a2e0-10864ed3caca",
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "display_order": 0,
+            "is_banner_image": null,
+            "image": {
+              "image_id": "6935165f-19e5-44d0-a2e0-10864ed3caca",
+              "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F7.webp?alt=media&token=666eb1fd-777b-4879-af8a-d6a315839ce1",
+              "image_category_id": 4,
+              "imageCategory": {
+                "category_id": 4,
+                "name": "Living Area"
+              }
+            }
+          },
+          {
+            "image_id": "0ebbd84e-b1e1-40a3-b5f9-ff71a84a7d11",
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "display_order": 0,
+            "is_banner_image": null,
+            "image": {
+              "image_id": "0ebbd84e-b1e1-40a3-b5f9-ff71a84a7d11",
+              "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F38.webp?alt=media&token=5714c34a-7f80-4359-b097-c9233347f451",
+              "image_category_id": 5,
+              "imageCategory": {
+                "category_id": 5,
+                "name": "Bedrooms"
+              }
+            }
+          },
+          {
+            "image_id": "3edf000d-dab6-49ac-9ea1-e46e260699a9",
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "display_order": 0,
+            "is_banner_image": null,
+            "image": {
+              "image_id": "3edf000d-dab6-49ac-9ea1-e46e260699a9",
+              "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F41.webp?alt=media&token=48c6b050-b1cb-4de0-b17c-6f4f7e88d323",
+              "image_category_id": 5,
+              "imageCategory": {
+                "category_id": 5,
+                "name": "Bedrooms"
+              }
+            }
+          },
+          {
+            "image_id": "6b52d825-d7b9-4c2d-9810-2a4a04862500",
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "display_order": 0,
+            "is_banner_image": null,
+            "image": {
+              "image_id": "6b52d825-d7b9-4c2d-9810-2a4a04862500",
+              "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F40.webp?alt=media&token=ff848f3a-8400-4343-98c6-a4ca357da62a",
+              "image_category_id": 5,
+              "imageCategory": {
+                "category_id": 5,
+                "name": "Bedrooms"
+              }
+            }
+          },
+          {
+            "image_id": "d87a3f7d-8cd7-44f8-94ab-c5aa8770d241",
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "display_order": 0,
+            "is_banner_image": null,
+            "image": {
+              "image_id": "d87a3f7d-8cd7-44f8-94ab-c5aa8770d241",
+              "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F32.webp?alt=media&token=fcc075a3-2145-465a-b192-b113d6c86386",
+              "image_category_id": 5,
+              "imageCategory": {
+                "category_id": 5,
+                "name": "Bedrooms"
+              }
+            }
+          },
+          {
+            "image_id": "4af3ea45-8336-49fd-8ee9-d98bb167756e",
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "display_order": 0,
+            "is_banner_image": null,
+            "image": {
+              "image_id": "4af3ea45-8336-49fd-8ee9-d98bb167756e",
+              "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F8.webp?alt=media&token=86a7d97b-7519-4c4b-9f27-2a02ca35be16",
+              "image_category_id": 5,
+              "imageCategory": {
+                "category_id": 5,
+                "name": "Bedrooms"
+              }
+            }
+          },
+          {
+            "image_id": "abf38ba4-eda1-4564-a71e-74a05485f939",
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+            "display_order": 0,
+            "is_banner_image": null,
+            "image": {
+              "image_id": "abf38ba4-eda1-4564-a71e-74a05485f939",
+              "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F5.webp?alt=media&token=285c4652-060c-4468-8ad2-4435aa0df878",
+              "image_category_id": 5,
+              "imageCategory": {
+                "category_id": 5,
+                "name": "Bedrooms"
+              }
+            }
+          },
+          {
+            "image_id": "f71e738a-0d98-4039-ae3e-2cc442c84900",
+            "unit_id": "4f81c5b8-6baf-4a36-a5b5-a2119e2327",
+            "display_order": 0,
+            "is_banner_image": null,
+            "image": {
+              "image_id": "f71e738a-0d98-4039-ae3e-2cc442c84900",
+              "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F1.webp?alt=media&token=f2f516cc-dfc4-4371-ace6-7efaf60ff488",
+              "image_category_id": 5,
+              "imageCategory": {
+                "category_id": 5,
+                "name": "Bedrooms"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "PropertyImage": [
+      {
+        "image_id": "cad2db7f-6af8-42cb-8c3e-4dae8929627f",
+        "property_id": "fac2cbb4-d938-4342-a369-312d2cd24604",
+        "display_order": 6,
+        "is_banner_image": null,
+        "image": {
+          "image_id": "cad2db7f-6af8-42cb-8c3e-4dae8929627f",
+          "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F19.webp?alt=media&token=6c169bc2-9387-4391-9251-e5be637b26a5",
+          "image_category_id": 7,
+          "imageCategory": {
+            "category_id": 7,
+            "name": "Exterior"
+          }
+        }
+      },
+      {
+        "image_id": "30909ccd-5171-45e1-94fd-bd0de480c23a",
+        "property_id": "fac2cbb4-d938-4342-a369-312d2cd24604",
+        "display_order": 1,
+        "is_banner_image": null,
+        "image": {
+          "image_id": "30909ccd-5171-45e1-94fd-bd0de480c23a",
+          "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F31.webp?alt=media&token=0aecc7ee-95cc-4ccf-ada6-2730637622d0",
+          "image_category_id": 7,
+          "imageCategory": {
+            "category_id": 7,
+            "name": "Exterior"
+          }
+        }
+      },
+      {
+        "image_id": "54665f31-1095-4e83-ab3e-144888c26aa7",
+        "property_id": "fac2cbb4-d938-4342-a369-312d2cd24604",
+        "display_order": 2,
+        "is_banner_image": null,
+        "image": {
+          "image_id": "54665f31-1095-4e83-ab3e-144888c26aa7",
+          "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F29.webp?alt=media&token=d8961be9-e6c4-4588-8fe4-4bcf018f8369",
+          "image_category_id": 7,
+          "imageCategory": {
+            "category_id": 7,
+            "name": "Exterior"
+          }
+        }
+      },
+      {
+        "image_id": "afdb34fd-cc40-4997-bf3f-8eca3dd5b01c",
+        "property_id": "fac2cbb4-d938-4342-a369-312d2cd24604",
+        "display_order": 3,
+        "is_banner_image": null,
+        "image": {
+          "image_id": "afdb34fd-cc40-4997-bf3f-8eca3dd5b01c",
+          "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F16.webp?alt=media&token=f44a538a-d83d-4e7f-86a1-78021f228254",
+          "image_category_id": 7,
+          "imageCategory": {
+            "category_id": 7,
+            "name": "Exterior"
+          }
+        }
+      },
+      {
+        "image_id": "9ea87db3-853f-477c-a573-789ef7177e3e",
+        "property_id": "fac2cbb4-d938-4342-a369-312d2cd24604",
+        "display_order": 4,
+        "is_banner_image": true,
+        "image": {
+          "image_id": "9ea87db3-853f-477c-a573-789ef7177e3e",
+          "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F15.webp?alt=media&token=2e7e2a45-47e2-448c-b300-e23767d1f27d",
+          "image_category_id": 7,
+          "imageCategory": {
+            "category_id": 7,
+            "name": "Exterior"
+          }
+        }
+      },
+      {
+        "image_id": "14cb1e6e-fd58-4620-a606-6a6fedda3dc0",
+        "property_id": "fac2cbb4-d938-4342-a369-312d2cd24604",
+        "display_order": 5,
+        "is_banner_image": null,
+        "image": {
+          "image_id": "14cb1e6e-fd58-4620-a606-6a6fedda3dc0",
+          "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F4.webp?alt=media&token=53c45d89-a81b-491e-88f5-8de294ccd8e1",
+          "image_category_id": 7,
+          "imageCategory": {
+            "category_id": 7,
+            "name": "Exterior"
+          }
+        }
+      },
+      {
+        "image_id": "17b25ff6-44e4-4972-8c09-7faa6f4ef3c5",
+        "property_id": "fac2cbb4-d938-4342-a369-312d2cd24604",
+        "display_order": 7,
+        "is_banner_image": null,
+        "image": {
+          "image_id": "17b25ff6-44e4-4972-8c09-7faa6f4ef3c5",
+          "image_url": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F39.webp?alt=media&token=92516fbd-c1c9-4800-a730-e11c5353461b",
+          "image_category_id": 4,
+          "imageCategory": {
+            "category_id": 4,
+            "name": "Living Area"
+          }
+        }
+      }
+    ]
+  }
+]
