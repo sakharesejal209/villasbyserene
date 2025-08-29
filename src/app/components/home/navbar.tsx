@@ -30,13 +30,13 @@ const Navbar = () => {
   const handleCloseNavMenu = () => setAnchorElNav(null);
 
   return (
-    <AppBar className="h-[55px]" color="default" position="fixed" elevation={1} component="header">
-      <Container maxWidth="xl" className="px-2">
+    <AppBar className="" color="default" position="fixed" elevation={1} component="header">
+      <div className="container px-2">
         <div className="p-1 flex justify-between items-center w-full">
           {/* Brand (desktop) */}
           <a href="">
             <Image
-              className="sm:w-[90px] 2xl:w-[100px]"
+              className="sm:w-[90px] xl:w-[100px] 2xl:w-[120px]"
               width={100}
               alt="villasbyserene logo"
               src={mode === "light" ? logoDark : logoLight}
@@ -92,7 +92,7 @@ const Navbar = () => {
             </Menu>
           </div>
         </div>
-      </Container>
+      </div>
     </AppBar>
   );
 };

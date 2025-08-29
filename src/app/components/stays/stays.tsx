@@ -12,8 +12,8 @@ import { startCase, camelCase } from "lodash";
 
 import { Carousel, EmptyState } from "@/app/@application";
 
-import type { PropertyDTO } from "@/app/@types/propertyDTO";
 import { useRouter } from "next/navigation";
+import PropertyDTO from "@/app/@types/property-dto";
 
 type StaysPropType = {
   location: string;
@@ -21,10 +21,21 @@ type StaysPropType = {
   propertiesData: PropertyDTO[];
 };
 
+export const getAccomodation = (type: string) => {
+  switch (type) {
+    case "ENTIRE_HOME":
+      return "Entire Home";
+    case "SEPARATE_ROOMS":
+      return "Separate Rooms";
+    case "ENTIRE_HOME_AND_SEPARATE_ROOMS":
+      return "Entire Home & Separate Rooms";
+    default:
+      return "Unknown Type";
+  }
+};
+
 const Stays = (props: StaysPropType) => {
   const { location, guests, propertiesData } = props;
-
-  console.log("propertiesData:", propertiesData);
 
   const [filteredProperties, setFilteredProperties] = useState<PropertyDTO[]>();
   const router = useRouter();
@@ -48,19 +59,6 @@ const Stays = (props: StaysPropType) => {
   const toPascalCase = (str: string) =>
     startCase(camelCase(str)).replace(/ /g, "");
 
-  const getAccomodation = (type: string) => {
-    switch (type) {
-      case "ENTIRE_HOME":
-        return "Entire Home";
-      case "SEPARATE_ROOMS":
-        return "Separate Rooms";
-      case "ENTIRE_HOME_AND_SEPARATE_ROOMS":
-        return "Entire Home & Separate Rooms";
-      default:
-        return "Unknown Type";
-    }
-  };
-
   function slugify(str: string) {
     return str.toLowerCase().replace(/\s+/g, "-");
   }
@@ -83,10 +81,11 @@ const Stays = (props: StaysPropType) => {
               {filteredProperties.map((item) => (
                 <div
                   key={item.property_id}
-                  className="w-full grid grid-cols-1 mb-8 gap-2 md:mb-4 md:grid-cols-12 md:gap-10  md:p-4"
+                  className="w-full grid grid-cols-1 mb-8 gap-2 md:mb-4 md:grid-cols-12 md:gap-10 md:p-4"
                 >
                   <div className="md:col-span-5">
                     <Carousel
+                    slidesPerView={1}
                       images={item.PropertyImage.filter(
                         (img) => img.is_carousel_image === "true"
                       ).map((e) => ({
@@ -96,7 +95,7 @@ const Stays = (props: StaysPropType) => {
                     />
                   </div>
                   <div
-                  role="button"
+                    role="button"
                     onClick={() => handleSelect(item)}
                     className="md:col-span-7 flex flex-col justify-center md:gap-2 hover:cursor-pointer"
                   >

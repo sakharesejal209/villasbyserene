@@ -1,11 +1,7 @@
 import { FC, useState } from "react";
 import { Masonry } from "@mui/lab";
-import ImageListItem from "@mui/material/ImageListItem";
-import Image from "next/image";
 import { Dialog, DialogContent, IconButton } from "@mui/material";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Keyboard } from "swiper/modules";
 import { Carousel } from "@/app/@application";
 
 type ImageGalleryPropType = {

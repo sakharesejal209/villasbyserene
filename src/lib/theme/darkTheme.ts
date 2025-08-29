@@ -21,6 +21,8 @@ const commonColors = {
   border: "#E0E3E7",
   borderHover: "#B2BAC2",
   borderFocused: "#7e8c9a",
+  textBtnHover: "#25282E",
+  textBtnFocus: "#1C1F24",
 };
 
 let darkTheme: Theme = createTheme({
@@ -47,7 +49,7 @@ let darkTheme: Theme = createTheme({
     },
     background: {
       default: commonColors.sand,
-      paper: "#1e1e1e",
+      paper: "#252525",
     },
     text: {
       primary: commonColors.textPrimary,
@@ -59,7 +61,7 @@ let darkTheme: Theme = createTheme({
     borderRadius: 12,
   },
   typography: {
-    fontFamily: `'Nunito', sans-serif`,
+    fontFamily: "var(--font-playfair), serif",
     button: { textTransform: "none" },
     h1: {
       fontWeight: "700",
@@ -78,6 +80,13 @@ let darkTheme: Theme = createTheme({
     },
   },
   components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+        }
+      }
+    },
     MuiAppBar: {
       styleOverrides: {
         root: {
@@ -100,6 +109,15 @@ let darkTheme: Theme = createTheme({
           borderColor: commonColors.border,
         },
         root: {
+          "& fieldset": {
+            borderColor: "#E0E3E7",
+          },
+          "&:hover fieldset": {
+            borderColor: "#B2BAC2",
+          },
+          "&.Mui-focused fieldset": {
+            borderColor: "#6F7E8C",
+          },
           [`&:hover .${outlinedInputClasses.notchedOutline}`]: {
             borderColor: commonColors.borderHover,
           },
@@ -118,6 +136,11 @@ let darkTheme: Theme = createTheme({
           borderRadius: 4,
           boxShadow: "none",
           transition: "all 0.1s ease-in-out",
+          "&:focus": {
+            boxShadow: "none",
+          },
+        },
+        contained: {
           "&:hover": {
             backgroundColor: "#D13647",
             boxShadow: "none",
@@ -126,8 +149,15 @@ let darkTheme: Theme = createTheme({
             boxShadow: "none",
             backgroundColor: "#AA2736",
           },
-          "&:focus": {
+        },
+        text: {
+          "&:hover": {
+            backgroundColor: commonColors.textBtnHover,
             boxShadow: "none",
+          },
+          "&:active": {
+            boxShadow: "none",
+            backgroundColor: commonColors.textBtnFocus,
           },
         },
       },

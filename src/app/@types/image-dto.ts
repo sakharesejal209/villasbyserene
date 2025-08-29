@@ -4,3 +4,8 @@ export interface ImageDTO {
   image_alt: string;
   image_category_id: number;
 }
+
+export interface ImageCategoryDTO {
+  category_id: string;
+  name: string;
+}

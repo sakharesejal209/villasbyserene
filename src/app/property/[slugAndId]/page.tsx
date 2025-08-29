@@ -40,14 +40,22 @@ export default async function Page({ params }: ParamsType) {
       },
       PropertyAmenity: {
         include: {
-          amenity: true,
+          amenity: {
+            omit: {
+              amenity_id: true,
+            },
+          },
         },
       },
       FoodMenu: true,
       NearByAttractions: true,
       propertyRules: {
         include: {
-          houseRule: true,
+          houseRule: {
+            omit: {
+              rule_id: true,
+            },
+          },
         },
       },
     },
@@ -57,5 +65,5 @@ export default async function Page({ params }: ParamsType) {
 
   if (!property) return <div>Property not found</div>;
 
-  return( <Property propertyDetails={property} />)
+  return <Property propertyDetails={property} />;
 }

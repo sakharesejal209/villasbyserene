@@ -332,6 +332,120 @@ async function main() {
   //   ]
   // })
 
+  // 11. food menu
+
+  //   await prisma.foodMenu.create({
+  // data: {
+  //   property_id: 'fac2cbb4-d938-4342-a369-312d2cd24604',
+  //   description: 'Enjoy the taste of freshly made home-cooked gourmet meals prepared using locally sourced ingredients by our in-house chef. Tea/Coffee will be served during breakfast and high tea time. If you would like tea/coffee at any other time of the day, it can be arranged at an additional charge.',
+  //   isVeg: true,
+  //   isNonVeg: true,
+  //   menuUrl: 'https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F11.webp?alt=media&token=3d5a3209-c1c8-4233-94b3-779c44318103',
+  //   breakfastTime: '08:00AM - 09.30AM',
+  //   lunchTime: '01.30PM - 03.00PM',
+  //   dinnerTime: '09:00PM-10:30PM',
+  //   highteaTime: '05:00PM-06:00PM'
+  // }
+  //   })
+
+  // 12. Near By Attractions
+
+  // await prisma.nearByAttractions.createMany({
+  //   data: [
+  //     {
+  //       property_id: "1cf56e86-e0ce-424c-81dd-301e29b3d624",
+  //       title: "Peb Fort Trek",
+  //       description:
+  //         "he Peb Fort trek, also known as Vikatgad. The trek offers a mix of easy and challenging sections, with a steep climb towards the fort and stunning views of the surrounding Sahyadri mountains. ",
+  //       distance: "10 mins away",
+  //       imageUrl:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/near-by-attractions%2Fpeb-fort-trek.webp?alt=media&token=8ee564ae-a094-4693-8e95-221445dc9a79",
+  //     },
+  //     {
+  //       property_id: "1cf56e86-e0ce-424c-81dd-301e29b3d624",
+  //       title: "Gadeshwar Dam",
+  //       description:
+  //         "Gadeshwar Dam is well wrapped by Lush green Paddy fields and hilly terrains. Small rivulets cross our path while travelling towards the dam. The dam is perfectly nestled amidst of Chanderi, Mhaismal, Peb and Matheran Hills near Panvel.",
+  //       distance: "5 mins away",
+  //       imageUrl:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/near-by-attractions%2Fgadeshwar-dam.webp?alt=media&token=fe928439-a009-4605-b0d4-edee86de4475",
+  //     },
+  //     {
+  //       property_id: "fac2cbb4-d938-4342-a369-312d2cd24604",
+  //       title: "Kegav Beach",
+  //       description:
+  //         "a serene and picturesque destination known for its peaceful atmosphere and beautiful views, especially during sunrise and sunset.",
+  //       distance: "1 min away",
+  //       imageUrl:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/near-by-attractions%2Fkegav-beach.webp?alt=media&token=20691095-43d9-42db-bf4e-529c32da41eb",
+  //     },
+  //     {
+  //       property_id: "fac2cbb4-d938-4342-a369-312d2cd24604",
+  //       title: "Mankeshwar Beach",
+  //       description:
+  //         "Mankeshwar Beach, nestled in Uran, Navi Mumbai, is a tranquil coastal haven that offers a serene escape from the hustle and bustle of city life. Known for its pristine environment and serene ambiance. This lesser-known gem features clean, golden sands and clear waters that create a picturesque setting for relaxation and leisure activities",
+  //       imageUrl:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/near-by-attractions%2Fmankeshwar-beach.webp?alt=media&token=bb5eabdc-5bbd-4192-bd7f-7fa3bdb6e738",
+  //       distance: "7 mins away",
+  //     },
+  //     {
+  //       property_id: "fac2cbb4-d938-4342-a369-312d2cd24604",
+  //       title: "Pirwadi Beach",
+  //       description:
+  //         "When it comes to activities, Pirwadi Beach has something for everyone! Whether you’re an adventure seeker or someone looking to unwind, you’ll find plenty of options to keep you entertained such as Swimming, Horse cart riding, Biking, Beach volleyball.",
+  //       distance: "14 mins away",
+  //       imageUrl:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/near-by-attractions%2Fpirwadi-beach.webp?alt=media&token=5c3b0a2c-e9b6-4086-882a-ddaa9f598921",
+  //     },
+  //   ],
+  // });
+
+  // 13. Create Themes
+
+  // const Themes = await prisma.theme.createMany({
+  //   data: [
+  //     {
+  //       name: "Entire Home",
+  //     },
+  //     {
+  //       name: "Couple Friednly",
+  //     },
+  //     {
+  //       name: "Pet Friednly",
+  //     },
+  //     {
+  //       name: "Luxury Escapes",
+  //     },
+  //   ],
+  // });
+
+  // 14. Link themes to property
+
+  // await prisma.propertyTheme.createMany({
+  //   data: [
+  //     {
+  //       property_id: "1cf56e86-e0ce-424c-81dd-301e29b3d624",
+  //       theme_id: "26d7a659-2945-476a-9c1a-f4519f02f704",
+  //       propertyName: "Cliff View Villa By Serene",
+  //     },
+  //     {
+  //       property_id: "1cf56e86-e0ce-424c-81dd-301e29b3d624",
+  //       theme_id: "c2f06f42-328e-4cc0-ba4e-60e50c39bf7f",
+  //       propertyName: "Cliff View Villa By Serene",
+  //     },
+  //     {
+  //       property_id: "fac2cbb4-d938-4342-a369-312d2cd24604",
+  //       theme_id: "89143637-8b16-46f9-8f76-3d988eaf2f6c",
+  //       propertyName: "Ocean Breeze Villa By Serene",
+  //     },
+  //     {
+  //       property_id: "fac2cbb4-d938-4342-a369-312d2cd24604",
+  //       theme_id: "c2f06f42-328e-4cc0-ba4e-60e50c39bf7f",
+  //       propertyName: "Ocean Breeze Villa By Serene",
+  //     },
+  //   ],
+  // });
+
   console.log("Seed completed ✅");
 }
 

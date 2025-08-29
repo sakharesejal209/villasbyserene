@@ -13,7 +13,14 @@ import React, { FormEvent, useRef, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/navigation";
 
-export const locations = ["All", "Lonavala", "Gadeshwar", "Karjat", "Alibaug", "Uran"];
+export const locations = [
+  "All",
+  "Lonavala",
+  "Gadeshwar",
+  "Karjat",
+  "Alibaug",
+  "Uran",
+];
 
 const SearchBox = () => {
   const [location, setLocation] = useState<string>("All");
@@ -38,8 +45,6 @@ const SearchBox = () => {
       path += `?guests=${guests}`;
     }
     router.push(path);
-
-    setOpen(false);
   };
 
   return (
@@ -163,7 +168,7 @@ const SearchBox = () => {
                   fullWidth
                   onClick={handleSubmit}
                 >
-                  {loadingButton ? <CircularProgress /> : "Search"}
+                  {loadingButton ? <CircularProgress size={30} color="inherit" /> : "Search"}
                 </Button>
               </form>
             </Box>

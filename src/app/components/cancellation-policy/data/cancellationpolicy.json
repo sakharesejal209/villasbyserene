@@ -1,0 +1,26 @@
+[
+  {
+    "id": "30plusDays",
+    "description": "Cancellations made before 21+ days check-in are eligible for 100% refund."
+  },
+  {
+    "id": "14plusDays",
+    "description": "Any cancellations made before 14+days are eligible for 50% refund."
+  },
+  {
+    "id": "14daysLesser",
+    "description": "Any cancellations made 14 days or lesser towards the booking date are not eligible for refund."
+  },
+  {
+    "id": "noShow",
+    "description": "In case of extreme last-minute cancellations due to extenuating circumstances, Guests will be refunded 85% of booking amount if SaffronStays gets another booking for the same date(s). If not, Guests will not be given a refund, and the cancellation will be treated as a no-show."
+  },
+  {
+    "id": "partialPayment",
+    "description": "If the Guest has made a partial payment, they are entitled to no refund whatsoever."
+  },
+  {
+    "id": "peakDays",
+    "description": "Cancellation for peak dates, including Holi (14th–15th March 2025), Independence Day (15th August 2025), Diwali (18th–28th October 2025), and Christmas & New Year (24th December 2025–2nd January 2026), will not be accepted."
+  }
+]

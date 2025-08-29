@@ -1,12 +1,14 @@
 "use client";
 
 import React from "react";
-import { Typography } from "@mui/material";
+import { Button, Paper, Typography, useTheme } from "@mui/material";
 
 import Navbar from "./navbar";
 import SearchBox from "./searchBox";
 
 const Home = () => {
+  const theme = useTheme();
+
   return (
     <div>
       <Navbar />
@@ -40,10 +42,46 @@ const Home = () => {
       </section>
 
       <section>
-        <Typography variant="h5" className="text-center">
-          Search by Property Type
-        </Typography>
-        <div></div>
+        <div className="container">
+          <div className="text-center">
+            <Typography variant="h3" className="!mb-4">
+              Find Stays That Match Your Style
+            </Typography>
+            <Typography variant="h6">
+              Explore handpicked homes for every kind of getaway.
+            </Typography>
+          </div>
+          <div></div>
+        </div>
+      </section>
+
+      <section>
+        <Paper
+          className={`py-10 ${
+            theme.palette.mode == "light" ? "!bg-[#F2F2F2]" : "inherit"
+          }  !rounded-none !shadow-none`}
+        >
+          <div className="container">
+            <div className="flex flex-col items-center gap-6">
+              <Typography variant="h3">Escape. Relax. Belong.</Typography>
+              <Typography
+                sx={{ textWrap: "balance" }}
+                variant="h5"
+                color="textSecondary"
+                className="leading-relaxed mb-8 text-center italic"
+              >
+                At <span className="font-semibold">Villas By Serene</span>, we
+                believe hospitality goes beyond providing a place to stay. Every
+                detail is designed to create comfort, warmth, and memories that
+                last long after your journey ends. Your experience is our first
+                priority. Always!
+              </Typography>
+              <Button variant="contained" size="large">
+                Plan Your Stay !
+              </Button>
+            </div>
+          </div>
+        </Paper>
       </section>
     </div>
   );

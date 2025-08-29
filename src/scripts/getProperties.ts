@@ -29,12 +29,29 @@ export async function fetchAllData() {
       },
       PropertyAmenity: {
         include: {
-          amenity: true,
+          amenity: {
+            omit: {
+              amenity_id: true,
+            },
+          },
         },
       },
       FoodMenu: true,
       NearByAttractions: true,
-      propertyRules: true,
+      propertyRules: {
+        include: {
+          houseRule: {
+            omit: {
+              rule_id: true,
+            },
+          },
+        },
+      },
+      themes: {
+        include: {
+          theme: true,
+        },
+      },
     },
   });
 }

@@ -8,7 +8,10 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Keyboard, Navigation, Pagination } from "swiper/modules";
-import { Box, useTheme } from "@mui/material";
+import { Box, Card, Typography, useTheme } from "@mui/material";
+import NearByAttractions from "../@types/near-by-attractions-dto";
+import ReadMore from "./readMore";
+import { SwiperOptions } from "swiper/types";
 
 type ImageType = {
   src: string;
@@ -16,12 +19,21 @@ type ImageType = {
 };
 
 type CarouselPropType = {
-  images: ImageType[];
+  images?: ImageType[];
+  nearByAttractions?: NearByAttractions[];
   initialSlide?: number;
+  slidesPerView: number;
+  breakpoints?: SwiperOptions["breakpoints"];
 };
 
 const Carousel: React.FC<CarouselPropType> = (props) => {
-  const { images, initialSlide = 0 } = props;
+  const {
+    images,
+    initialSlide = 0,
+    slidesPerView,
+    nearByAttractions,
+    breakpoints,
+  } = props;
   const theme = useTheme();
 
   const [fits, setFits] = useState<Record<number, "cover" | "contain">>({});
@@ -30,7 +42,7 @@ const Carousel: React.FC<CarouselPropType> = (props) => {
     const ratio = img.naturalWidth / img.naturalHeight;
     setFits((prev) => ({
       ...prev,
-      [idx]: ratio < 1 ? "contain" : "cover", // portrait => contain
+      [idx]: ratio < 1 ? "contain" : "cover",
     }));
   };
 
@@ -38,17 +50,17 @@ const Carousel: React.FC<CarouselPropType> = (props) => {
     <Box
       sx={{
         width: "100%",
-        aspectRatio: "16 / 9",
+        aspectRatio: "auto",
         "& .swiper-pagination-bullet": {
           backgroundColor: "rgba(255,255,255,0.5)",
           opacity: 1,
-          width: 8,
-          height: 8,
+          width: 10,
+          height: 10,
           [theme.breakpoints.down("md")]: {
-            width: 5,
-            height: 5,
+            width: 7,
+            height: 7,
             "&::after": {
-              fontSize: "5px",
+              fontSize: "7px",
             },
           },
         },
@@ -57,18 +69,17 @@ const Carousel: React.FC<CarouselPropType> = (props) => {
         },
         "& .swiper-button-next, & .swiper-button-prev": {
           color: "#ffffff",
-          opacity: 0.8,
           transition: "opacity 0.3s ease",
-          width: 24,
-          height: 24,
+          width: 32,
+          height: 32,
           "&::after": {
-            fontSize: "24px",
+            fontSize: "32px",
           },
           [theme.breakpoints.down("md")]: {
-            width: 12,
-            height: 12,
+            width: 24,
+            height: 24,
             "&::after": {
-              fontSize: "12px",
+              fontSize: "24px",
             },
           },
         },
@@ -76,38 +87,74 @@ const Carousel: React.FC<CarouselPropType> = (props) => {
     >
       <Swiper
         modules={[Navigation, Pagination, Keyboard]}
-        slidesPerView={1}
+        slidesPerView={slidesPerView}
+        breakpoints={breakpoints}
+        spaceBetween={15}
+        freeMode
         pagination={{
           clickable: true,
-          // dynamicBullets: true,
-          // dynamicMainBullets: 4,
         }}
         navigation
         keyboard
         loop
         initialSlide={initialSlide}
-        style={{
-          // width: "100%",
-          aspectRatio: "16/9",
-          borderRadius: "8px",
-        }}
       >
-        {images.map(({ src, alt }, idx) => (
-          <SwiperSlide key={idx}>
-            <Image
-              src={src}
-              alt={alt}
-              fill
-              style={{
-                objectFit: fits[idx] || "cover",
-                objectPosition: "center",
-              }}
-              onLoadingComplete={(img) => handleImageLoad(idx, img)}
-              sizes="100vw"
-              priority={idx === 0}
-            />
-          </SwiperSlide>
-        ))}
+        {images ? (
+          <>
+            {images.map(({ src, alt }, idx) => (
+              <SwiperSlide key={idx}>
+                <div className="relative w-full aspect-[4/3] sm:aspect-[16/9] overflow-hidden">
+                  <Image
+                    src={src}
+                    alt={alt}
+                    fill
+                    style={{
+                      objectFit: fits[idx] || "cover",
+                      objectPosition: "center",
+                    }}
+                    onLoadingComplete={(img) => handleImageLoad(idx, img)}
+                    sizes="100vw"
+                    priority={idx === 0}
+                  />
+                </div>
+              </SwiperSlide>
+            ))}
+          </>
+        ) : (
+          <>
+            {nearByAttractions?.map((item) => (
+              <SwiperSlide key={item.attraction_id}>
+                <Card>
+                  <div className="h-[300px] md:h-[400px]">
+                    <div className="relative flex h-[50%]">
+                      <Image
+                        src={item.imageUrl}
+                        alt={item.title}
+                        fill
+                        style={{
+                          objectFit: "cover",
+                          objectPosition: "center",
+                        }}
+                      />
+                    </div>
+                    <div className="m-4 overflow-y-auto h-[43%] wrap-break-word">
+                      <Typography variant="h6">{item.title}</Typography>
+                      <Typography variant="body2">
+                        <span className="font-bold">Distance:</span>{" "}
+                        {item.distance}
+                      </Typography>
+                      <ReadMore
+                        textVariant="body2"
+                        text={item.description}
+                        maxLength={80}
+                      />
+                    </div>
+                  </div>
+                </Card>
+              </SwiperSlide>
+            ))}
+          </>
+        )}
       </Swiper>
     </Box>
   );

@@ -13,7 +13,10 @@ export default async function Page({
   params: ParamsType;
   searchParams: Promise<{ guests?: string }>;
 }>) {
-  const propertiesData = await fetchAllData(); // Direct DB call
+  const propertiesData = await fetchAllData();
+
+  console.log('propertiesData:', propertiesData);
+  
   const { guests: guestsParam } = await searchParams;
   const { slug } = await params;
   const guests = parseInt(guestsParam || "0");

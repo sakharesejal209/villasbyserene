@@ -14,13 +14,15 @@ const commonColors = {
   textPrimary: "#10162F",
   textSecondary: "rgba(16,22,47,0.6)",
   divider: "#cccccc",
-  success: "#3CB37B",
+  success: "#329868",
   error: "#EF5136",
   warning: "#EEB329",
   info: "#1DB8D7",
   border: "#E0E3E7",
   borderHover: "#B2BAC2",
   borderFocused: "#7e8c9a",
+  textBtnHover: "#FAFAFA",
+  textBtnFocus: "#F2F2F2",
 };
 
 let lightTheme: Theme = createTheme({
@@ -59,7 +61,7 @@ let lightTheme: Theme = createTheme({
     borderRadius: 12,
   },
   typography: {
-    fontFamily: `'Nunito', sans-serif`,
+    fontFamily: "var(--font-playfair), serif",
     button: { textTransform: "none" },
     h1: {
       fontWeight: "700",
@@ -84,6 +86,7 @@ let lightTheme: Theme = createTheme({
           "& label.Mui-focused": {
             color: commonColors.borderFocused,
           },
+          // borderRadius: '2px',
         },
       },
     },
@@ -93,11 +96,14 @@ let lightTheme: Theme = createTheme({
           borderColor: commonColors.border,
         },
         root: {
+          [`& .${outlinedInputClasses.notchedOutline}`]: {
+            borderColor: commonColors.border, // default border
+          },
           [`&:hover .${outlinedInputClasses.notchedOutline}`]: {
             borderColor: commonColors.borderHover,
           },
-          [`&.Mui-focused .${outlinedInputClasses.notchedOutline}`]: {
-            borderColor: commonColors.borderFocused,
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: `${commonColors.borderFocused} !important`,
           },
         },
       },
@@ -111,6 +117,11 @@ let lightTheme: Theme = createTheme({
           borderRadius: 4,
           boxShadow: "none",
           transition: "all 0.1s ease-in-out",
+          "&:focus": {
+            boxShadow: "none",
+          },
+        },
+        contained: {
           "&:hover": {
             backgroundColor: "#D13647",
             boxShadow: "none",
@@ -119,8 +130,15 @@ let lightTheme: Theme = createTheme({
             boxShadow: "none",
             backgroundColor: "#AA2736",
           },
-          "&:focus": {
+        },
+        text: {
+          "&:hover": {
+            backgroundColor: commonColors.textBtnHover,
             boxShadow: "none",
+          },
+          "&:active": {
+            boxShadow: "none",
+            backgroundColor: commonColors.textBtnFocus,
           },
         },
       },
@@ -154,6 +172,15 @@ let lightTheme: Theme = createTheme({
         },
       },
     },
+    MuiAccordion: {
+      styleOverrides: {
+        root: {
+          borderRadius: 4,
+          border: `2px solid ${commonColors.border}`,
+          boxShadow: "none",
+        },
+      },
+    }
   },
 });
 

@@ -3,7 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --font-nunito: "Nunito", sans-serif;
+  --font-playfair: "IBM Plex Serif", serif;
 }
 
 ::-webkit-scrollbar {
@@ -11,12 +11,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  background-color: transparent;
+  background: rgba(0, 0, 0, 0.1);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(100, 100, 100, 0.6);
   border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 100, 100, 0.8);
 }
 
 body {
@@ -26,7 +30,7 @@ body {
 section {
   float: left;
   width: 100%;
-  padding: 55px 0;
+  padding: 50px 0;
 }
 
 .container {
@@ -35,6 +39,11 @@ section {
   margin-right: auto;
   padding-left: 1rem;
   padding-right: 1rem;
+}
+
+.MuiPickersOutlinedInput-root.Mui-focused .MuiPickersOutlinedInput-notchedOutline {
+  border-color: #7e8c9a !important;
+  border-width: 2px !important;
 }
 
 .loader {
@@ -62,19 +71,21 @@ section {
   transform: rotate(60deg);
 }
 
-@media (min-width: 576px) {
+@media (max-width: 576px) {
   .container {
-    max-width: 540px;
+    max-width: 100%;
   }
 }
+
 @media (min-width: 576px) {
   .container {
-    max-width: 540px;
+    max-width: 560px;
   }
 }
+
 @media (min-width: 768px) {
   .container {
-    max-width: 720px;
+    max-width: 740px;
   }
 }
 @media (min-width: 992px) {
@@ -93,8 +104,22 @@ section {
   }
 }
 
+@media only screen and (max-width: 992px) {
+  section {
+    padding: 30px 0;
+  }
+}
+
 @keyframes l26 {
   100% {
     transform: rotate(1turn);
   }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+.pulse-button {
+  animation: pulse 1.5s infinite;
 }
