@@ -4,11 +4,11 @@ import { FC, FormEvent, useState } from "react";
 
 import {
   Autocomplete,
+  Button,
+  Card,
   CircularProgress,
-  IconButton,
   TextField,
 } from "@mui/material";
-import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { locations } from "../home/searchBox";
 import { useRouter } from "next/navigation";
 
@@ -43,11 +43,15 @@ const StaysSearchBox: FC<StaysSearchBoxPropType> = (props) => {
   };
 
   return (
-    <div className="container mt-[80px]">
-      <div className="flex justify-center">
-        <form onSubmit={handleSubmit} className="flex w-fit items-center gap-3">
-          <div className="grid grid-cols-2 gap-2">
+    <div className="container mt-[40px]">
+      <Card className="py-3 md:py-6 px-4 md:px-10 flex">
+        <form
+          onSubmit={handleSubmit}
+          className="w-full flex items-center gap-1 md:gap-3"
+        >
+          <div className="w-full grid grid-cols-5 gap-4">
             <Autocomplete
+              className="col-span-2"
               options={locations}
               value={newLocation}
               onChange={(e, val) => setNewLocation(val || "")}
@@ -58,12 +62,13 @@ const StaysSearchBox: FC<StaysSearchBoxPropType> = (props) => {
                   fullWidth
                   size="small"
                   sx={{
-                    borderRadius: 1,
+                    borderRadius: 0,
                   }}
                 />
               )}
             />
             <TextField
+              className="col-span-2"
               type="number"
               label="Guests"
               size="small"
@@ -73,19 +78,22 @@ const StaysSearchBox: FC<StaysSearchBoxPropType> = (props) => {
                 setNewGuests(Math.max(1, parseInt(e.target.value)))
               }
               sx={{
-                borderRadius: 1,
+                borderRadius: 0,
               }}
             />
+            <Button className="col-span-1" variant="contained" type="submit">
+              {loadingButton ? (
+                <CircularProgress size={24} />
+              ) : (
+                <span>
+                  <span className="hidden sm:inline">Search Properties</span>
+                  <span className="sm:hidden">Search</span>
+                </span>
+              )}
+            </Button>
           </div>
-          <IconButton type="submit">
-            {loadingButton ? (
-              <CircularProgress size={24} />
-            ) : (
-              <SearchRoundedIcon />
-            )}
-          </IconButton>
         </form>
-      </div>
+      </Card>
     </div>
   );
 };

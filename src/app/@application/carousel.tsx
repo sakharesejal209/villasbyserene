@@ -1,50 +1,38 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
+import React from "react";
+import { Swiper } from "swiper/react";
 
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import { Keyboard, Navigation, Pagination } from "swiper/modules";
-import { Box, Card, Typography, useTheme } from "@mui/material";
-import NearByAttractions from "../@types/near-by-attractions-dto";
-import ReadMore from "./readMore";
+import { Autoplay, Keyboard, Navigation, Pagination } from "swiper/modules";
+import { Box, useTheme } from "@mui/material";
 import { SwiperOptions } from "swiper/types";
 
-type ImageType = {
-  src: string;
-  alt: string;
-};
-
 type CarouselPropType = {
-  images?: ImageType[];
-  nearByAttractions?: NearByAttractions[];
+  children: React.ReactNode;
   initialSlide?: number;
   slidesPerView: number;
+  showDots?: boolean;
   breakpoints?: SwiperOptions["breakpoints"];
+  autoplay?: { delay: number; disableOnInteraction: boolean };
+  inverseControlsColor?: boolean;
+  spaceBetween?: number;
 };
 
 const Carousel: React.FC<CarouselPropType> = (props) => {
   const {
-    images,
     initialSlide = 0,
+    showDots = true,
     slidesPerView,
-    nearByAttractions,
     breakpoints,
+    children,
+    autoplay = false,
+    inverseControlsColor = false,
+    spaceBetween = 15
   } = props;
   const theme = useTheme();
-
-  const [fits, setFits] = useState<Record<number, "cover" | "contain">>({});
-
-  const handleImageLoad = (idx: number, img: HTMLImageElement) => {
-    const ratio = img.naturalWidth / img.naturalHeight;
-    setFits((prev) => ({
-      ...prev,
-      [idx]: ratio < 1 ? "contain" : "cover",
-    }));
-  };
 
   return (
     <Box
@@ -68,93 +56,60 @@ const Carousel: React.FC<CarouselPropType> = (props) => {
           backgroundColor: "#ffffff",
         },
         "& .swiper-button-next, & .swiper-button-prev": {
-          color: "#ffffff",
           transition: "opacity 0.3s ease",
-          width: 32,
-          height: 32,
-          "&::after": {
-            fontSize: "32px",
-          },
+          ...(inverseControlsColor
+            ? {
+                color: "inherit",
+                borderRadius: "50%",
+                width: 32,
+                height: 32,
+                "&::after": {
+                  fontSize: "20px",
+                  fontWeight: "600",
+                  zIndex: "800",
+                },
+              }
+            : {
+                color: "#ffffff",
+                width: 24,
+                height: 24,
+                "&::after": {
+                  fontSize: "24px",
+                  fontWeight: "600",
+                  zIndex: "800",
+                },
+              }),
+
           [theme.breakpoints.down("md")]: {
-            width: 24,
-            height: 24,
+            width: 18,
+            height: 18,
             "&::after": {
-              fontSize: "24px",
+              fontSize: "18px",
             },
           },
         },
       }}
     >
       <Swiper
-        modules={[Navigation, Pagination, Keyboard]}
+        modules={[Navigation, Pagination, Keyboard, Autoplay]}
         slidesPerView={slidesPerView}
         breakpoints={breakpoints}
-        spaceBetween={15}
+        spaceBetween={spaceBetween}
         freeMode
-        pagination={{
-          clickable: true,
-        }}
+        pagination={
+          showDots
+            ? {
+                clickable: true,
+              }
+            : false
+        }
         navigation
         keyboard
         loop
         initialSlide={initialSlide}
+        autoplay={autoplay}
       >
-        {images ? (
-          <>
-            {images.map(({ src, alt }, idx) => (
-              <SwiperSlide key={idx}>
-                <div className="relative w-full aspect-[4/3] sm:aspect-[16/9] overflow-hidden">
-                  <Image
-                    src={src}
-                    alt={alt}
-                    fill
-                    style={{
-                      objectFit: fits[idx] || "cover",
-                      objectPosition: "center",
-                    }}
-                    onLoadingComplete={(img) => handleImageLoad(idx, img)}
-                    sizes="100vw"
-                    priority={idx === 0}
-                  />
-                </div>
-              </SwiperSlide>
-            ))}
-          </>
-        ) : (
-          <>
-            {nearByAttractions?.map((item) => (
-              <SwiperSlide key={item.attraction_id}>
-                <Card>
-                  <div className="h-[300px] md:h-[400px]">
-                    <div className="relative flex h-[50%]">
-                      <Image
-                        src={item.imageUrl}
-                        alt={item.title}
-                        fill
-                        style={{
-                          objectFit: "cover",
-                          objectPosition: "center",
-                        }}
-                      />
-                    </div>
-                    <div className="m-4 overflow-y-auto h-[43%] wrap-break-word">
-                      <Typography variant="h6">{item.title}</Typography>
-                      <Typography variant="body2">
-                        <span className="font-bold">Distance:</span>{" "}
-                        {item.distance}
-                      </Typography>
-                      <ReadMore
-                        textVariant="body2"
-                        text={item.description}
-                        maxLength={80}
-                      />
-                    </div>
-                  </div>
-                </Card>
-              </SwiperSlide>
-            ))}
-          </>
-        )}
+        {children}
       </Swiper>
     </Box>
   );

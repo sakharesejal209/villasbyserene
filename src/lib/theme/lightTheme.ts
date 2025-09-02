@@ -7,7 +7,9 @@ import {
 
 const commonColors = {
   gold: "#f4b400",
+  goldLight: "#FFE496",
   coral: "#D64E5E",
+  coralLight: "#E9A0A8",
   sand: "#ffffff",
   white: "#ffffff",
   black: "#000000",
@@ -30,10 +32,12 @@ let lightTheme: Theme = createTheme({
     mode: "light",
     primary: {
       main: commonColors.coral,
+      light: commonColors.coralLight,
       contrastText: commonColors.white,
     },
     secondary: {
       main: commonColors.gold,
+      light: commonColors.goldLight
     },
     warning: {
       main: commonColors.warning,
@@ -46,6 +50,9 @@ let lightTheme: Theme = createTheme({
     },
     info: {
       main: commonColors.info,
+    },
+    grey: {
+      "100": "#F5F5F5",
     },
     background: {
       default: commonColors.sand,
@@ -86,7 +93,6 @@ let lightTheme: Theme = createTheme({
           "& label.Mui-focused": {
             color: commonColors.borderFocused,
           },
-          // borderRadius: '2px',
         },
       },
     },
@@ -97,7 +103,7 @@ let lightTheme: Theme = createTheme({
         },
         root: {
           [`& .${outlinedInputClasses.notchedOutline}`]: {
-            borderColor: commonColors.border, // default border
+            borderColor: commonColors.border,
           },
           [`&:hover .${outlinedInputClasses.notchedOutline}`]: {
             borderColor: commonColors.borderHover,
@@ -180,7 +186,7 @@ let lightTheme: Theme = createTheme({
           boxShadow: "none",
         },
       },
-    }
+    },
   },
 });
 

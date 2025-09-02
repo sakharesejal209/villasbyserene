@@ -30,7 +30,12 @@ import {
   ExpandMoreOutlined as ExpandMoreIcon,
   EventAvailableOutlined as Available,
 } from "@mui/icons-material";
-import { Poiret_One, Bad_Script, Charm, Edu_SA_Beginner } from "next/font/google";
+import {
+  Poiret_One,
+  Bad_Script,
+  Charm,
+  Edu_SA_Beginner,
+} from "next/font/google";
 
 import Loading from "@/app/loading";
 import { Carousel, ReadMore } from "@/app/@application";
@@ -40,6 +45,8 @@ import ImageGallery from "./ImageGallery";
 import CancellationPolicy from "../cancellation-policy/CancellationPolicy";
 import PropertyDTO from "@/app/@types/property-dto";
 import EnquiryForm from "./enquiry";
+import { SwiperSlide } from "swiper/react";
+import Image from "next/image";
 
 type PropertyPropType = {
   propertyDetails: PropertyDTO;
@@ -67,7 +74,7 @@ const Customsection = styled("section")<CustomSectionProps>(
   })
 );
 
-const badScript = Edu_SA_Beginner({
+export const badScript = Edu_SA_Beginner({
   subsets: ["latin"],
   weight: "400",
 });
@@ -443,14 +450,46 @@ const Property: FC<PropertyPropType> = (props) => {
                   Near By Attractions
                 </Typography>
                 <Carousel
-                  onlyImages={false}
                   slidesPerView={2}
                   breakpoints={{
                     640: { slidesPerView: 2 },
                     900: { slidesPerView: 3 },
                   }}
-                  nearByAttractions={propertyDetails.NearByAttractions}
-                />
+                >
+                  <>
+                    {propertyDetails.NearByAttractions?.map((item) => (
+                      <SwiperSlide key={item.attraction_id}>
+                        <Card>
+                          <div className="h-[300px] md:h-[400px]">
+                            <div className="relative flex h-[50%]">
+                              <Image
+                                src={item.imageUrl}
+                                alt={item.title}
+                                fill
+                                style={{
+                                  objectFit: "cover",
+                                  objectPosition: "center",
+                                }}
+                              />
+                            </div>
+                            <div className="m-4 overflow-y-auto h-[43%] wrap-break-word">
+                              <Typography variant="h6">{item.title}</Typography>
+                              <Typography variant="body2">
+                                <span className="font-bold">Distance:</span>{" "}
+                                {item.distance}
+                              </Typography>
+                              <ReadMore
+                                textVariant="body2"
+                                text={item.description}
+                                maxLength={80}
+                              />
+                            </div>
+                          </div>
+                        </Card>
+                      </SwiperSlide>
+                    ))}
+                  </>
+                </Carousel>
               </div>
 
               {propertyDetails.map_location !== null && (
@@ -521,7 +560,9 @@ const Property: FC<PropertyPropType> = (props) => {
             </Typography>
           </div>
 
-          <Button variant="contained" onClick={() => setOpenForm(true)}>Book Now</Button>
+          <Button variant="contained" onClick={() => setOpenForm(true)}>
+            Book Now
+          </Button>
         </div>
       </Paper>
 
@@ -577,7 +618,13 @@ const Property: FC<PropertyPropType> = (props) => {
         onClose={() => setOpenForm(false)}
       >
         <Box sx={{ p: 3 }}>
-          <Typography sx={{textWrap: "pretty", textAlign: 'center'}} className="" variant="h5">Lock in Your Dates Before They&apos;re Gone!</Typography>
+          <Typography
+            sx={{ textWrap: "pretty", textAlign: "center" }}
+            className=""
+            variant="h5"
+          >
+            Lock in Your Dates Before They&apos;re Gone!
+          </Typography>
           <EnquiryForm
             propertyName={propertyDetails.name}
             whatsappNumber="9594377736"

@@ -1,6 +1,7 @@
 import FoodMenuDTO from "./food-menu-dto";
 import NearByAttractions from "./near-by-attractions-dto";
 import { PropertyImageDTO } from "./property-image-dto";
+import ThemesDTO from "./themes-dto";
 import { UnitDTO } from "./unit-dto";
 
 
@@ -42,4 +43,5 @@ export default interface PropertyDTO {
   }[];
   NearByAttractions: NearByAttractions[];
   FoodMenu: FoodMenuDTO[];
+  themes: ThemesDTO[];
 }

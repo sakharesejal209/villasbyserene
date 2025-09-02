@@ -15,8 +15,9 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 
 import { useThemeContext } from "@/context/ThemeContext";
 import Image from "next/image";
-import logoLight from "../../../../public/assets/logoLight.png";
-import logoDark from "../../../../public/assets/logoDark.png";
+import logoLight from "../../../../public/assets/logo-colored-light-orientation.png";
+import logoDark from "../../../../public/assets/logo-colored-dark-orientation.png";
+import Link from "next/link";
 
 const Navbar = () => {
   const { mode, toggleTheme } = useThemeContext();
@@ -30,24 +31,23 @@ const Navbar = () => {
   const handleCloseNavMenu = () => setAnchorElNav(null);
 
   return (
-    <AppBar className="" color="default" position="fixed" elevation={1} component="header">
+    <AppBar position="fixed" color="default" component="header">
       <div className="container px-2">
         <div className="p-1 flex justify-between items-center w-full">
           {/* Brand (desktop) */}
-          <a href="">
+          <Link href="/">
             <Image
-              className="sm:w-[90px] xl:w-[100px] 2xl:w-[120px]"
-              width={100}
+              className="max-sm:w-[130px] sm:w-[140px] md:w-[200px]"
               alt="villasbyserene logo"
-              src={mode === "light" ? logoDark : logoLight}
+              src={mode === "light" ? logoLight : logoDark}
             />
-          </a>
+          </Link>
 
           {/* Desktop */}
           <div className="hidden md:flex justify-end items-center gap-4">
             <Typography
-              color="text.primary"
-              className="hover:underline cursor-pointer"
+            color="primary"
+              className="hover:underline cursor-pointer !font-medium"
             >
               List your home
             </Typography>

@@ -1,8 +1,4 @@
-import * as React from "react";
-import Stays from "@/app/components/stays/stays";
-import StaysSearchBox from "@/app/components/stays/staysSearchBox";
-import { fetchAllData } from "@/scripts/getProperties";
-
+import StaysClientPage from "./StaysClientPage";
 
 type ParamsType = { slug: string };
 
@@ -11,20 +7,11 @@ export default async function Page({
   searchParams,
 }: Readonly<{
   params: ParamsType;
-  searchParams: Promise<{ guests?: string }>;
+  searchParams?: { guests?: string };
 }>) {
-  const propertiesData = await fetchAllData();
-
-  console.log('propertiesData:', propertiesData);
   
-  const { guests: guestsParam } = await searchParams;
   const { slug } = await params;
-  const guests = parseInt(guestsParam || "0");
+  const guests = parseInt(await searchParams?.guests || "0");
 
-  return (
-    <div>
-      <StaysSearchBox slug={slug} guests={guests} />
-      <Stays propertiesData={propertiesData} location={slug} guests={guests} />
-    </div>
-  );
+  return <StaysClientPage slug={slug} guests={guests} />;
 }

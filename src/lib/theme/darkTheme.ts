@@ -7,7 +7,9 @@ import {
 
 const commonColors = {
   gold: "#f4b400",
+  goldLight: "#FFE496",
   coral: "#D64E5E",
+  coralLight: "#E9A0A8",
   sand: "#161A1D",
   white: "#ffffff",
   black: "#000000",
@@ -30,10 +32,12 @@ let darkTheme: Theme = createTheme({
     mode: "dark",
     primary: {
       main: commonColors.coral,
+      light: commonColors.coralLight,
       contrastText: commonColors.black,
     },
     secondary: {
       main: commonColors.gold,
+      light: commonColors.goldLight
     },
     warning: {
       main: commonColors.warning,
@@ -47,9 +51,12 @@ let darkTheme: Theme = createTheme({
     info: {
       main: commonColors.info,
     },
+    grey: {
+      "100": "#3B3B3B",
+    },
     background: {
       default: commonColors.sand,
-      paper: "#252525",
+      paper: "#1E2226",
     },
     text: {
       primary: commonColors.textPrimary,

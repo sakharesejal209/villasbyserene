@@ -9,7 +9,7 @@ type EmptyStatePropType = {
 const EmptyState: FC<EmptyStatePropType> = (props: EmptyStatePropType) => {
   const { message, description } = props;
   return (
-    <div className=" w-full h-[calc(100vh-110px)] flex flex-col items-center justify-center gap-y-2">
+    <div className=" w-full h-[calc(100vh-130px)] flex flex-col items-center justify-center gap-y-2">
       <Typography variant="h5">{message}</Typography>
       <Typography>{description}</Typography>
     </div>

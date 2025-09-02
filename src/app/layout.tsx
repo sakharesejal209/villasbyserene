@@ -10,6 +10,8 @@ import { IBM_Plex_Serif, Nunito, Playfair_Display } from "next/font/google";
 import Navbar from "./components/home/navbar";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { PropertyContextProvider } from "@/context/PropertyContext";
+import Footer from "./components/home/footer";
 
 // import type { Metadata } from "next";
 
@@ -31,11 +33,14 @@ const layout = ({
 }>) => {
   return (
     <html lang="en" className={nunito.className}>
-      <body>
+      <body className="flex flex-col min-h-screen">
         <ThemeContextProvider>
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Navbar />
-            <main>{children}</main>
+            <PropertyContextProvider>
+              <Navbar />
+              <main>{children}</main>
+              <Footer />
+            </PropertyContextProvider>
           </LocalizationProvider>
         </ThemeContextProvider>
       </body>

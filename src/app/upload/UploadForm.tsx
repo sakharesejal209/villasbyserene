@@ -1,10 +1,8 @@
-// components/UploadForm.tsx
 'use client';
 
 import { uploadMedia } from '@/utils/uploafFiles';
 import { Button } from '@mui/material';
 import { useState } from 'react';
-// import { uploadMedia } from '@/utils/uploadFile';
 
 export default function UploadForm() {
   const [file, setFile] = useState<File | null>(null);
