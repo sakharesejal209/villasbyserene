@@ -12,8 +12,15 @@ const PropertyContext = createContext<PropertyContextType | undefined>(
   undefined
 );
 
-export const PropertyContextProvider = ({ children }: { children: ReactNode }) => {
-  const [properties, setProperties] = useState<PropertyDTO[]>([]);
+export const PropertyContextProvider = ({
+  children,
+  initialProperties = [],
+}: {
+  children: ReactNode;
+  initialProperties?: PropertyDTO[];
+}) => {
+  const [properties, setProperties] =
+    useState<PropertyDTO[]>(initialProperties);
 
   return (
     <PropertyContext.Provider value={{ properties, setProperties }}>

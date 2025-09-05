@@ -1,51 +1,43 @@
-"use client";
-
-import React from "react";
-
-import { ThemeContextProvider } from "@/context/ThemeContext";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./globals.css";
-import { IBM_Plex_Serif, Nunito, Playfair_Display } from "next/font/google";
+import {
+  IBM_Plex_Serif,
+  Roboto,
+} from "next/font/google";
 import Navbar from "./components/home/navbar";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { PropertyContextProvider } from "@/context/PropertyContext";
 import Footer from "./components/home/footer";
+import { fetchAllData } from "@/scripts/getProperties";
+import ClientProviders from "./components/client-providers/ClientProviders";
 
-// import type { Metadata } from "next";
-
-// export const metadata: Metadata = {
-//   title: "My App",
-//   description: "Next.js with MUI theme toggle",
-// };
-
-const nunito = IBM_Plex_Serif({
+const roboto = Roboto({
   weight: ["100", "200", "300", "400", "500", "600", "700"],
   display: "swap",
-  variable: "--font-playfair",
+  variable: "--font-roboto",
 });
 
-const layout = ({
+const ibmPlex = IBM_Plex_Serif({
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  variable: "--font-ibmPlex",
+});
+
+export default async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) => {
+}>) {
+  const propertiesData = await fetchAllData();
+
   return (
-    <html lang="en" className={nunito.className}>
+    <html lang="en" className={roboto.className + " " + ibmPlex.className}>
       <body className="flex flex-col min-h-screen">
-        <ThemeContextProvider>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <PropertyContextProvider>
-              <Navbar />
-              <main>{children}</main>
-              <Footer />
-            </PropertyContextProvider>
-          </LocalizationProvider>
-        </ThemeContextProvider>
+        <ClientProviders propertiesData={propertiesData}>
+          <Navbar />
+          <main>{children}</main>
+          <Footer />
+        </ClientProviders>
       </body>
     </html>
   );
-};
-
-export default layout;
+}

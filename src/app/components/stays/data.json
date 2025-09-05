@@ -1,0 +1,54 @@
+[
+  {
+    "amenity_id": "wifi",
+    "name": "WiFi"
+  },
+  {
+    "amenity_id": "swimmingpool",
+    "name": "Swimming Pool"
+  },
+  {
+    "amenity_id": "bonfire",
+    "name": "Bonfire"
+  },
+  {
+    "amenity_id": "evcharging",
+    "name": "EV Charging"
+  },
+  {
+    "amenity_id": "indoorgames",
+    "name": "Indoor Games"
+  },
+  {
+    "amenity_id": "airconditioned",
+    "name": "Air-conditioned"
+  },
+  {
+    "amenity_id": "geyser",
+    "name": "Geyser"
+  },
+  {
+    "amenity_id": "television",
+    "name": "Television"
+  },
+  {
+    "amenity_id": "raindance",
+    "name": "Rain Dance "
+  },
+  {
+    "amenity_id": "gazebo",
+    "name": "Gazebo"
+  },
+  {
+    "amenity_id": "freeparking",
+    "name": "Free Parking"
+  },
+  {
+    "amenity_id": "barCounter",
+    "name": "Bar Counter"
+  },
+  {
+    "amenity_id": "barTender",
+    "name": "Bartender on call"
+  }
+]

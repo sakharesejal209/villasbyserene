@@ -3,13 +3,14 @@
 import React from "react";
 import {
   AppBar,
-  Container,
+  Box,
   IconButton,
   Menu,
   MenuItem,
   Typography,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { PhoneOutlined as Phone } from "@mui/icons-material";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 
@@ -18,6 +19,7 @@ import Image from "next/image";
 import logoLight from "../../../../public/assets/logo-colored-light-orientation.png";
 import logoDark from "../../../../public/assets/logo-colored-dark-orientation.png";
 import Link from "next/link";
+import { env } from "process";
 
 const Navbar = () => {
   const { mode, toggleTheme } = useThemeContext();
@@ -44,20 +46,30 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop */}
-          <div className="hidden md:flex justify-end items-center gap-4">
-            <Typography
-            color="primary"
-              className="hover:underline cursor-pointer !font-medium"
-            >
-              List your home
-            </Typography>
-            <IconButton onClick={toggleTheme}>
-              {mode === "light" ? (
-                <DarkModeOutlinedIcon />
-              ) : (
-                <LightModeOutlinedIcon />
-              )}
-            </IconButton>
+          <div className="flex items-center justify-between gap-6">
+            {/* <Box sx={{ display: "flex", alignItems: "center" }}>
+              <IconButton component="a" href="tel:+919876543210">
+                <Phone />
+              </IconButton>
+              <Link href="tel:+919876543210" className="hover:underline">
+                <Typography>{process.env.NEXT_PUBLIC_PHONE_NUMBER}</Typography>
+              </Link>
+            </Box> */}
+            <div className="hidden md:flex justify-end items-center gap-4">
+              <Typography
+                // color="primary"
+                className="hover:underline cursor-pointer"
+              >
+                List your home
+              </Typography>
+              <IconButton onClick={toggleTheme}>
+                {mode === "light" ? (
+                  <DarkModeOutlinedIcon />
+                ) : (
+                  <LightModeOutlinedIcon />
+                )}
+              </IconButton>
+            </div>
           </div>
 
           {/* mobile */}

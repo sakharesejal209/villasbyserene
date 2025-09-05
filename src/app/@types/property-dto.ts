@@ -11,7 +11,7 @@ export default interface PropertyDTO {
   name: string;
   description: string;
   map_location: string | null;
-  address: string | null;
+  address: string;
   area: string;
   city: string;
   state: string;
@@ -20,7 +20,7 @@ export default interface PropertyDTO {
   checkin_time: string;
   checkout_time: string;
   maxcapacity: number;
-  bedroomcount: number | null;
+  bedroomcount: number;
   created_at: Date;
   mealsAvailable: boolean;
   Unit: UnitDTO[];

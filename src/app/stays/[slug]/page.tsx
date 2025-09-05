@@ -9,9 +9,8 @@ export default async function Page({
   params: ParamsType;
   searchParams?: { guests?: string };
 }>) {
-  
   const { slug } = await params;
-  const guests = parseInt(await searchParams?.guests || "0");
+  const guests = await parseInt(searchParams?.guests || "0");
 
   return <StaysClientPage slug={slug} guests={guests} />;
 }

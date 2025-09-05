@@ -3,8 +3,10 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --font-playfair: "IBM Plex Serif", serif;
-  --cta-light: #1B1B2F; /* Example primary color */
+  --font-playfair: "Playfair Display", serif;
+  --font-roboto: "Roboto", sans-serif;
+  --font-ibmPlex:  "IBM Plex Serif", serif;
+  --cta-light: #1b1b2f; /* Example primary color */
   --cta-dark: #131314;
 }
 

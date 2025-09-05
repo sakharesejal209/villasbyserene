@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import {
+  alpha,
   Box,
   Button,
   Drawer,
@@ -35,7 +36,7 @@ import { getAccomodation } from "../stays/stays";
 import type PropertyDTO from "@/app/@types/property-dto";
 import type ThemesDTO from "@/app/@types/themes-dto";
 
-const Home = ({ initialData }: { initialData: PropertyDTO[] }) => {
+const Home = () => {
   const theme = useTheme();
   const router = useRouter();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -44,7 +45,7 @@ const Home = ({ initialData }: { initialData: PropertyDTO[] }) => {
   const [selectedPropTheme, setSelectedPropTheme] = useState<string>();
   const [fits, setFits] = useState<Record<number, "cover" | "contain">>({});
   const sectionRef = useRef<HTMLDivElement>(null);
-  const { setProperties } = usePropertyStore();
+  const { properties } = usePropertyStore();
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -65,16 +66,10 @@ const Home = ({ initialData }: { initialData: PropertyDTO[] }) => {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    if (initialData) {
-      setProperties(initialData);
-    }
-  }, [initialData, setProperties]);
-
   const propertythemes = Object.keys(propertyThemeMap);
 
   const handleThemeSelection = (proptheme: string) => {
-    const filteredProperties = initialData.filter((p) =>
+    const filteredProperties = properties.filter((p) =>
       p.themes.some((t: ThemesDTO) => t.theme_id === proptheme)
     );
     setSelectedPropTheme(proptheme);
@@ -170,13 +165,14 @@ const Home = ({ initialData }: { initialData: PropertyDTO[] }) => {
                     onClick={() => handleThemeSelection(proptheme)}
                     className="w-full flex flex-col items-center justify-center gap-3 relative hover:cursor-pointer"
                   >
-                    <div
-                    className="w-15 md:w-22 h-15 md:h-22"
-                      style={{
+                    <Box
+                      className="w-15 md:w-22 h-15 md:h-22"
+                      sx={{
                         backgroundColor: theme.palette.grey[100],
+                        // backgroundColor: alpha(theme.palette.primary.main, 0.1),
                         padding: "1.5rem",
                         borderRadius: "9999px",
-                        display: 'relative'
+                        display: "relative",
                       }}
                     >
                       <Image
@@ -184,16 +180,9 @@ const Home = ({ initialData }: { initialData: PropertyDTO[] }) => {
                         alt={propertyThemeMap[proptheme].label}
                         width={90}
                         height={90}
-                        style={{
-                          filter: `${
-                            theme.palette.mode == "dark"
-                              ? "invert(1)"
-                              : "invert(0)"
-                          }`,
-                        }}
                       />
-                    </div>
-                    <Typography variant="h5">
+                    </Box>
+                    <Typography variant="h6">
                       {propertyThemeMap[proptheme].label}
                     </Typography>
                   </button>
@@ -212,10 +201,7 @@ const Home = ({ initialData }: { initialData: PropertyDTO[] }) => {
         >
           <div className="container">
             <div className="flex flex-col items-center justify-center mb-8">
-              <Typography
-                variant="h4"
-                className="!mb-4 block text-center"
-              >
+              <Typography variant="h4" className="!mb-4 block text-center">
                 Why Choose Villas By Serene?
               </Typography>
               <Typography className="w-full md:w-[75%] !text-lg text-center">
@@ -227,18 +213,23 @@ const Home = ({ initialData }: { initialData: PropertyDTO[] }) => {
 
             <div className="grid md:grid-cols-3 gap-2 md:gap-8">
               <div className="text-center p-2 md:p-6">
-                <div
-                  style={{
-                    backgroundColor:
-                      theme.palette.mode == "light"
-                        ? theme.palette.background.paper
-                        : theme.palette.grey[100],
+                <Box
+                  // style={{
+                  //   backgroundColor:
+                  //     theme.palette.mode == "light"
+                  //       ? theme.palette.background.paper
+                  //       : theme.palette.grey[100],
+                  // }}
+                  sx={{
+                    backgroundColor: alpha(theme.palette.primary.main, 0.1),
                   }}
                   className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
                 >
-                  <Star sx={{ fontSize: "32px" }} />
-                </div>
-                <Typography variant="h5" className="text-xl font-semibold mb-3">
+                  <Star
+                    sx={{ fontSize: "32px", color: theme.palette.primary.main }}
+                  />
+                </Box>
+                <Typography variant="h6" className="text-xl font-semibold mb-3">
                   Premium Properties
                 </Typography>
                 <Typography className="text-muted-foreground">
@@ -248,18 +239,23 @@ const Home = ({ initialData }: { initialData: PropertyDTO[] }) => {
               </div>
 
               <div className="text-center p-2 md:p-6">
-                <div
-                  style={{
-                    backgroundColor:
-                      theme.palette.mode == "light"
-                        ? theme.palette.background.paper
-                        : theme.palette.grey[100],
+                <Box
+                  // style={{
+                  //   backgroundColor:
+                  //     theme.palette.mode == "light"
+                  //       ? theme.palette.background.paper
+                  //       : theme.palette.grey[100],
+                  // }}
+                  sx={{
+                    backgroundColor: alpha(theme.palette.primary.main, 0.1),
                   }}
                   className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
                 >
-                  <Shield sx={{ fontSize: "32px" }} />
-                </div>
-                <Typography variant="h5" className="text-xl font-semibold mb-3">
+                  <Shield
+                    sx={{ fontSize: "32px", color: theme.palette.primary.main }}
+                  />
+                </Box>
+                <Typography variant="h6" className="text-xl font-semibold mb-3">
                   Trusted & Secure
                 </Typography>
                 <Typography className="text-muted-foreground">
@@ -269,18 +265,21 @@ const Home = ({ initialData }: { initialData: PropertyDTO[] }) => {
               </div>
 
               <div className="text-center p-2 md:p-6">
-                <div
-                  style={{
-                    backgroundColor:
-                      theme.palette.mode == "light"
-                        ? theme.palette.background.paper
-                        : theme.palette.grey[100],
+                <Box
+                  // style={{
+                  //   backgroundColor:
+                  //     theme.palette.mode == "light"
+                  //       ? theme.palette.background.paper
+                  //       : theme.palette.grey[100],
+                  // }}
+                  sx={{
+                    backgroundColor: alpha(theme.palette.primary.main, 0.1),
                   }}
                   className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
                 >
-                  <Clock sx={{ fontSize: "32px" }} />
-                </div>
-                <Typography variant="h5" className="text-xl font-semibold mb-3">
+                  <Clock sx={{ fontSize: "32px", color: theme.palette.primary.main }} />
+                </Box>
+                <Typography variant="h6" className="text-xl font-semibold mb-3">
                   24/7 Support
                 </Typography>
                 <Typography className="text-muted-foreground">
@@ -335,7 +334,7 @@ const Home = ({ initialData }: { initialData: PropertyDTO[] }) => {
           <Typography className="text-center block" variant="h4">
             What Our Guests Say
           </Typography>
-          <Typography className="text-center block" variant="h6">
+          <Typography className="text-center block !text-lg">
             Hospitality that goes beyond expectations. Discover what makes each
             stay a truly refined experience through the words of our delighted
             guests.

@@ -68,22 +68,31 @@ let lightTheme: Theme = createTheme({
     borderRadius: 12,
   },
   typography: {
-    fontFamily: "var(--font-playfair), serif",
+    fontFamily: "var(--font-roboto), serif",
     button: { textTransform: "none" },
     h1: {
       fontWeight: "700",
+      fontFamily: "var(--font-ibmPlex), serif",
     },
     h2: {
       fontWeight: "600",
+      fontFamily: "var(--font-ibmPlex), serif",
     },
     h3: {
       fontWeight: "600",
+      fontFamily: "var(--font-ibmPlex), serif",
     },
     h4: {
       fontWeight: "500",
+      fontFamily: "var(--font-ibmPlex), serif",
     },
     h5: {
       fontWeight: "500",
+      fontFamily: "var(--font-ibmPlex), serif",
+    },
+    h6: {
+      fontWeight: "500",
+      fontFamily: "var(--font-ibmPlex), serif",
     },
   },
   components: {

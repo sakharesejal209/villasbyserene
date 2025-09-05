@@ -1,96 +1,180 @@
 "use client";
 
-import { FC, FormEvent, useState } from "react";
+import {
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+} from "react";
 
 import {
   Autocomplete,
-  Button,
+  Box,
   Card,
-  CircularProgress,
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  Slider,
   TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
 } from "@mui/material";
 import { locations } from "../home/searchBox";
 import { useRouter } from "next/navigation";
+import allAmenities from "./data.json";
+
+type Filters = {
+  location: string;
+  guests: number;
+  bedrooms: number | null;
+  amenities: string[];
+  accommodationType: string;
+};
 
 type StaysSearchBoxPropType = {
-  slug: string;
-  guests: number;
+  filters: Filters;
+  setFilters: Dispatch<SetStateAction<Filters>>;
 };
 
 const StaysSearchBox: FC<StaysSearchBoxPropType> = (props) => {
-  const { slug, guests } = props;
-  const [newLocation, setNewLocation] = useState<string>(slug);
-  const [newGuests, setNewGuests] = useState<number>(guests);
-  const [loadingButton, setLoadingButton] = useState(false);
+  const { filters, setFilters } = props;
   const router = useRouter();
 
-  const handleSubmit = (e: FormEvent) => {
-    setLoadingButton(true);
-    e.preventDefault();
+  useEffect(() => {
+    const params = new URLSearchParams();
 
-    const locSlug = newLocation
-      ? newLocation.toLowerCase().replace(/\s+/g, "-")
-      : "all";
+    if (filters.guests) params.set("guests", String(filters.guests));
+    if (filters.bedrooms) params.set("bedrooms", String(filters.bedrooms));
+    if (filters.amenities.length)
+      params.set("amenities", filters.amenities.join(","));
+    if (filters.accommodationType)
+      params.set("accommodation", filters.accommodationType);
 
-    let path = `/stays/${locSlug}`;
-
-    if (newGuests && newGuests > 0) {
-      path += `?guests=${newGuests}`;
-    }
-    router.push(path);
-
-    setLoadingButton(false);
-  };
+    router.replace(`/stays/${filters.location}?${params.toString()}`);
+  }, [filters, router]);
 
   return (
-    <div className="container mt-[40px]">
-      <Card className="py-3 md:py-6 px-4 md:px-10 flex">
-        <form
-          onSubmit={handleSubmit}
-          className="w-full flex items-center gap-1 md:gap-3"
-        >
-          <div className="w-full grid grid-cols-5 gap-4">
-            <Autocomplete
-              className="col-span-2"
-              options={locations}
-              value={newLocation}
-              onChange={(e, val) => setNewLocation(val || "")}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Location"
-                  fullWidth
-                  size="small"
-                  sx={{
-                    borderRadius: 0,
-                  }}
-                />
-              )}
-            />
-            <TextField
-              className="col-span-2"
-              type="number"
-              label="Guests"
-              size="small"
-              fullWidth
-              value={newGuests}
-              onChange={(e) =>
-                setNewGuests(Math.max(1, parseInt(e.target.value)))
-              }
-              sx={{
-                borderRadius: 0,
-              }}
-            />
-            <Button className="col-span-1" variant="contained" type="submit">
-              {loadingButton ? (
-                <CircularProgress size={24} />
-              ) : (
-                <span>
-                  <span className="hidden sm:inline">Search Properties</span>
-                  <span className="sm:hidden">Search</span>
-                </span>
-              )}
-            </Button>
+    <div className="col-span-3">
+      <Card className="p-3 h-full">
+        <Typography variant="h6">Filters</Typography>
+        <form className="w-full">
+          <div className="w-full min-h-screen flex flex-col gap-4 p-2 mt-4">
+            {/* location */}
+            <div className="w-full">
+              <Typography variant="subtitle2">Location</Typography>
+              <Autocomplete
+                options={locations}
+                value={filters.location}
+                onChange={(e, val) =>
+                  setFilters({ ...filters, location: val || "all" })
+                }
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    fullWidth
+                    sx={{
+                      borderRadius: 0,
+                    }}
+                  />
+                )}
+              />
+            </div>
+
+            {/* guest count */}
+            <div className="w-full">
+              <Typography variant="subtitle2">Guest Count</Typography>
+              <TextField
+                type="number"
+                slotProps={{
+                  input: {
+                    inputProps: {
+                      min: 1,
+                      max: 70,
+                      step: 1,
+                    },
+                  },
+                }}
+                fullWidth
+                value={filters.guests}
+                onChange={(e) =>
+                  setFilters({ ...filters, guests: Number(e.target.value) })
+                }
+                sx={{
+                  borderRadius: 0,
+                }}
+              />
+            </div>
+
+            {/* bedroom count */}
+            <div className="w-full">
+              <Typography variant="subtitle2">No. of Bedrooms</Typography>
+              <Slider
+                value={filters.bedrooms || 0}
+                onChange={(_, value) =>
+                  setFilters({ ...filters, bedrooms: value })
+                }
+                step={1}
+                min={1}
+                max={10}
+                marks
+                valueLabelDisplay="auto"
+              />
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography variant="body2">min 1</Typography>
+                <Typography variant="body2">max 12</Typography>
+              </Box>
+            </div>
+
+            {/* Amenities */}
+            <div className="w-full">
+              <Typography variant="subtitle2">Amenities</Typography>
+              <FormGroup className="h-[250px] overflow-y-auto !block">
+                {[...allAmenities]
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((item) => (
+                    <div className="!block" key={item.amenity_id}>
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            checked={filters.amenities.includes(
+                              item.amenity_id
+                            )}
+                            onChange={(e) => {
+                              setFilters({
+                                ...filters,
+                                amenities: e.target.checked
+                                  ? [...filters.amenities, item.amenity_id]
+                                  : filters.amenities.filter(
+                                      (x) => x !== item.amenity_id
+                                    ),
+                              });
+                            }}
+                          />
+                        }
+                        label={item.name}
+                      />
+                    </div>
+                  ))}
+              </FormGroup>
+            </div>
+
+            {/* accomodation type */}
+            <div className="w-full">
+              <Typography variant="subtitle2">Accomodation Type</Typography>
+
+              <ToggleButtonGroup
+                value={filters.accommodationType}
+                exclusive
+                onChange={(_, value) =>
+                  setFilters({ ...filters, accommodationType: value })
+                }
+              >
+                <ToggleButton value="ENTIRE_HOME">Entire Home</ToggleButton>
+                <ToggleButton value="PRIVATE_ROOM">Private Room</ToggleButton>
+                <ToggleButton value="LUXURY_VILLA">Luxury Villa</ToggleButton>
+              </ToggleButtonGroup>
+            </div>
           </div>
         </form>
       </Card>

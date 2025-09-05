@@ -56,6 +56,14 @@ type CustomSectionProps = {
   background: string;
 };
 
+type UnitImagesMap = {
+  [unitId: string]: {
+    src: string;
+    alt: string;
+    category: string;
+  }[];
+};
+
 const Customsection = styled("section")<CustomSectionProps>(
   ({ background }) => ({
     backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${background})`,
@@ -83,8 +91,11 @@ const Property: FC<PropertyPropType> = (props) => {
   const { propertyDetails } = props;
 
   const [openGallery, setOpenGallery] = useState<boolean>(false);
+  const [openUnitGallery, setOpenUnitGallery] = useState<boolean>(false);
+  const [selectedUnit, setSelectedUnit] = useState<string>();
   const [galleryImages, setGalleryImages] =
     useState<{ src: string; alt: string }[]>();
+  const [unitGalleryImages, setunitGalleryImages] = useState<UnitImagesMap>();
   const [openForm, setOpenForm] = useState<boolean>(false);
 
   const foodMenu = propertyDetails.FoodMenu[0];
@@ -98,11 +109,25 @@ const Property: FC<PropertyPropType> = (props) => {
       alt: e.image.image_alt,
     }));
     setGalleryImages(_galleryImages);
+
+    const _unitGalleryImages = propertyDetails.Unit.reduce<UnitImagesMap>(
+      (acc, unit) => {
+        acc[unit.unit_id] = unit.unitImages.map((img) => ({
+          src: img.image.image_url,
+          alt: img.image.image_alt,
+          category: img.image.imageCategory.name,
+        }));
+        return acc;
+      },
+      {}
+    );
+    setunitGalleryImages(_unitGalleryImages);
   }, [propertyDetails, propertyImages]);
 
-  const handleOpenGallery = () => {
-    setOpenGallery(true);
-  };
+  const handleOpenGallery = (unitId: string) => {
+    setSelectedUnit(unitId);
+    setOpenUnitGallery(true)
+  }
 
   function getLatLngFromEmbed(src: string) {
     const latMatch = src.match(/!3d([-.\d]+)/);
@@ -211,7 +236,10 @@ const Property: FC<PropertyPropType> = (props) => {
                     </Typography>
 
                     <div className="w-full grid grid-cols-12 mb-8 gap-2 md:mb-4 md:grid-cols-12 md:gap-10 md:p-4 mt-2">
-                      <div className="col-span-12 md:col-span-4 relative">
+                      <button
+                        onClick={() => handleOpenGallery(category.unit_id)}
+                        className="col-span-12 md:col-span-5 relative"
+                      >
                         <img
                           className="max-w-full h-auto"
                           src={
@@ -231,7 +259,7 @@ const Property: FC<PropertyPropType> = (props) => {
                             className="hover:underline"
                           >
                             See all
-                          </Typography>{" "}
+                          </Typography>
                           <ArrowRight />
                         </div>
                         {/* <Carousel
@@ -240,8 +268,8 @@ const Property: FC<PropertyPropType> = (props) => {
                         alt: item.image.image_alt,
                       }))}
                     /> */}
-                      </div>
-                      <div className="col-span-12 flex md:col-span-8 flex-col justify-center md:gap-2">
+                      </button>
+                      <div className="col-span-12 flex md:col-span-7 flex-col justify-center md:gap-2">
                         <Typography>{category.description}</Typography>
                         <div className="flex items-center gap-3 mt-3">
                           <Typography>
@@ -604,11 +632,49 @@ const Property: FC<PropertyPropType> = (props) => {
             paddingRight: "0px",
           }}
         >
-          {!galleryImages ? (
-            <Loading />
-          ) : (
-            <ImageGallery images={galleryImages} />
-          )}
+          {galleryImages && <ImageGallery images={galleryImages} />}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog
+        open={openUnitGallery}
+        onClose={() => setOpenUnitGallery(false)}
+        fullScreen
+        slotProps={{
+          paper: {
+            sx: {
+              width: { xs: "90vw", sm: "90vw", md: "90vw" },
+              maxHeight: "90vh",
+              borderRadius: 1,
+              backgroundImage: "none",
+            },
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            paddingY: "8px",
+            paddingX: "12px",
+          }}
+          className="flex justify-between items-center"
+        >
+          Photos
+          <IconButton
+            edge="start"
+            onClick={() => setOpenUnitGallery(false)}
+            aria-label="close"
+          >
+            <CloseRoundedIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent
+          sx={{
+            width: "100%",
+            padding: "12px",
+            paddingRight: "0px",
+          }}
+        >
+          {unitGalleryImages && selectedUnit && <ImageGallery images={unitGalleryImages[selectedUnit]} />}
         </DialogContent>
       </Dialog>
 

@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 import { Button, Divider, IconButton, Typography } from "@mui/material";
@@ -71,7 +73,7 @@ const Footer = () => {
             <div className="my-3 flex flex-col items-start gap-1">
               <button
                 onClick={() => {
-                  router.push("/stays/all");
+                  router.push("/");
                 }}
                 className="block text-gray-300 hover:text-white hover:cursor-pointer transition-colors duration-200"
               >

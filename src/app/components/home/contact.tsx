@@ -19,6 +19,9 @@ import {
 } from "@mui/icons-material";
 import { DatePicker } from "@mui/x-date-pickers";
 import React, { useState } from "react";
+import ContactBg from "../../../../public/assets/contact.png";
+import Image from "next/image";
+import { PickerValue } from "@mui/x-date-pickers/internals";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -38,7 +41,7 @@ const Contact = () => {
     setOpenWarningToast(false);
   };
 
-  const handleInputChange = (field: string, value: string) => {
+  const handleInputChange = (field: string, value: string | PickerValue) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -90,21 +93,29 @@ const Contact = () => {
     },
   });
 
+  const CustomSection = styled("section")({
+    backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/assets/contact.png')`,
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    backgroundSize: "cover",
+    width: "100%",
+  });
+
   return (
-    <section>
-      <div className="min-h-screen py-8">
+    <CustomSection>
+      <div className="py-0">
         <div className="container">
-          <div className="flex flex-col justify-center items-center mb-8 md:mb-12">
+          <div className="flex flex-col justify-center items-center mt-5 mb-8 md:mb-12 text-white">
             <Typography variant="h3" className="mb-4">
               Contact Us
             </Typography>
-            <Typography className="w-full md:w-1/2 text-center">
+            <Typography variant="subtitle1" className="w-full md:w-1/2 text-center">
               Ready to book your perfect vacation? Fill out the form below and
               we&apos;ll get back to you instantly via WhatsApp
             </Typography>
           </div>
 
-          <div className="w-full grid lg:grid-cols-2 gap-8 md:gap-12">
+          <div className="w-full grid lg:grid-cols-2 gap-4 md:gap-8">
             {/* Contact Form */}
             <Card className="p-4">
               <div className="flex items-center gap-2">
@@ -260,39 +271,34 @@ const Contact = () => {
               </Card>
 
               <Card>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-4">
+                <div className="p-4 md:p-6">
+                  <Typography variant="h5" className="!mb-4">
                     Why Choose WhatsApp?
-                  </h3>
-                  <ul className="space-y-2 text-sm text-muted-foreground">
-                    <li className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                  </Typography>
+                  <div className="flex flex-col items-start gap-1">
+                    <Typography className="block">
                       Instant response within minutes
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                    </Typography>
+                    <Typography className="block">
                       Share photos and documents easily
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                    </Typography>
+                    <Typography className="block">
                       Real-time communication
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      Available 24/7
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                    </Typography>
+                    <Typography className="block">Available 24/7</Typography>
+                    <Typography className="block">
                       Secure and private messaging
-                    </li>
-                  </ul>
+                    </Typography>
+                  </div>
                 </div>
               </Card>
 
               <Card>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-4">Office Hours</h3>
-                  <div className="space-y-2 text-sm">
+                <div className="p-4 md:p-6">
+                  <Typography variant="h5" className="!mb-4">
+                    Office Hours
+                  </Typography>
+                  <div>
                     <div className="flex justify-between">
                       <span>Monday - Friday</span>
                       <span className="text-muted-foreground">
@@ -355,7 +361,7 @@ const Contact = () => {
           }
         />
       </div>
-    </section>
+    </CustomSection>
   );
 };
 
