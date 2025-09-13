@@ -12,6 +12,7 @@ import ClientProviders from "./components/client-providers/ClientProviders";
 
 const roboto = Roboto({
   weight: ["100", "200", "300", "400", "500", "600", "700"],
+  subsets: ['latin'],
   display: "swap",
   variable: "--font-roboto",
 });
@@ -19,6 +20,7 @@ const roboto = Roboto({
 const ibmPlex = IBM_Plex_Serif({
   weight: ["400", "500", "600", "700"],
   display: "swap",
+  subsets: ['latin'],
   variable: "--font-ibmPlex",
 });
 
