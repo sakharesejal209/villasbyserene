@@ -5,7 +5,7 @@ type ParamsType = { slug: string };
 export default async function Page({
   params,
 }: Readonly<{
-  params: ParamsType;
+  params: Promise<ParamsType>;
   searchParams?: { guests?: string };
 }>) {
   const { slug } = await params;

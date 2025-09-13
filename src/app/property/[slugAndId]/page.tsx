@@ -2,9 +2,13 @@ import * as React from "react";
 import { PrismaClient } from "../../../../generated/prisma";
 import Property from "@/app/components/property/Property";
 
+type ParamsType = {
+  params: Promise<{ slugAndId: string }>;
+};
+
 const prisma = new PrismaClient();
 
-export default async function Page(params: Readonly<Promise<{ slugAndId: string }>>) {
+export default async function Page({ params }: Readonly<ParamsType>) {
   const { slugAndId } = await params;
   // const slugAndId = params.slugAndId;
 
