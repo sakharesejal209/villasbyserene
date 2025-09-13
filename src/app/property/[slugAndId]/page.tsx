@@ -2,13 +2,11 @@ import * as React from "react";
 import { PrismaClient } from "../../../../generated/prisma";
 import Property from "@/app/components/property/Property";
 
-type ParamsType = {
-  params: { slugAndId: string };
-};
-
 const prisma = new PrismaClient();
 
-export default async function Page({ params }: ParamsType) {
+export default async function Page({
+  params,
+}: Readonly<{ params: { slugAndId: string } }>) {
   const slugAndId = params.slugAndId;
 
   const id = slugAndId.slice(-36);
@@ -41,8 +39,9 @@ export default async function Page({ params }: ParamsType) {
       PropertyAmenity: {
         include: {
           amenity: {
-            omit: {
-              amenity_id: true,
+            select: {
+              name: true,
+              propertyAmenities: true,
             },
           },
         },
@@ -52,8 +51,9 @@ export default async function Page({ params }: ParamsType) {
       propertyRules: {
         include: {
           houseRule: {
-            omit: {
-              rule_id: true,
+            select: {
+              propertyRules: true,
+              description: true,
             },
           },
         },
