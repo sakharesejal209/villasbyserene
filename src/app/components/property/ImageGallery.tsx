@@ -47,11 +47,15 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
     <div>
       <Masonry columns={{ xs: 2, md: 3 }} spacing={1.5}>
         {images.map((item, index) => (
-          <button key={index} onClick={() => handleOpen(index)}>
+          <button
+            key={index}
+            onClick={() => handleOpen(index)}
+            className="relative"
+          >
             <img
               src={item.src}
               alt={item.alt}
-              className={`cursor-pointer rounded-lg object-cover w-full h-auto`}
+              className={`cursor-pointer object-cover w-full h-auto`}
             />
           </button>
         ))}
@@ -67,7 +71,7 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
             sx: {
               backgroundColor: "black",
               boxShadow: "none",
-              borderRadius: 1,
+              borderRadius: 0,
               padding: 0,
             },
           },

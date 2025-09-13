@@ -58,7 +58,7 @@ const StaysSearchBox: FC<StaysSearchBoxPropType> = (props) => {
   }, [filters]);
 
   return (
-    <div className="block md:col-span-3 sticky top-0 md:h-fit">
+    <div className="block md:col-span-3 sticky top-0 md:h-fit px-4">
       <Card className="p-3">
         <div className="md:hidden flex justify-between items-center">
           <Typography variant="h6">Filters</Typography>

@@ -65,7 +65,7 @@ export default function StaysClientPage({
 
   return (
     <section>
-      <section className="hidden h-full w-full md:grid grid-cols-12 gap-10 mt-[40px] relative">
+      <section className="hidden h-full w-full md:grid grid-cols-12  relative">
         <StaysSearchBox
           filters={filters}
           setFilters={setFilters}

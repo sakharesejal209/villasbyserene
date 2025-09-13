@@ -74,7 +74,7 @@ const Stays = (props: StaysPropType) => {
   };
 
   return (
-    <div className="col-span-12 md:col-span-9 w-full md:p-0">
+    <div className="col-span-12 md:col-span-9 w-full md:px-4">
       <div className="flex items-center px-4 gap-1">
         <Typography variant="subtitle2" color="textSecondary">
           <Link href={"/"}>Home</Link>
@@ -98,7 +98,7 @@ const Stays = (props: StaysPropType) => {
           {propertiesData.map((item) => (
             <Card
               key={item.property_id}
-              className="w-full grid grid-cols-1 mb-4 md:mb-6 gap-2 md:grid-cols-12 !rounded-xl"
+              className="w-full grid grid-cols-1 mb-4 md:mb-6 gap-2 md:grid-cols-12"
             >
               <div className="md:col-span-5">
                 <Carousel slidesPerView={1}>
@@ -132,7 +132,7 @@ const Stays = (props: StaysPropType) => {
                   </>
                 </Carousel>
               </div>
-              <div className="md:col-span-7 flex flex-col justify-center md:gap-2 md:p-8">
+              <div className="md:col-span-7 flex flex-col justify-center md:gap-2 px-3 md:p-8">
                 <Typography
                   className="hover:cursor-pointer"
                   onClick={() => handleSelect(item)}
