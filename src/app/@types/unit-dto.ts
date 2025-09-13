@@ -1,4 +1,4 @@
-import { ImageCategoryDTO, ImageDTO } from "./image-dto";
+import { ImageCategoryDTO } from "./image-dto";
 
 export interface UnitDTO {
   unit_id: string;

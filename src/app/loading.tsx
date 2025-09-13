@@ -1,4 +1,4 @@
-import { Backdrop, Typography } from "@mui/material";
+import { Backdrop } from "@mui/material";
 
 export default function Loading() {
   return (

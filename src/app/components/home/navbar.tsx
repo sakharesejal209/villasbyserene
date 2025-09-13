@@ -3,7 +3,6 @@
 import React from "react";
 import {
   AppBar,
-  Box,
   IconButton,
   Menu,
   MenuItem,
@@ -12,7 +11,6 @@ import {
   useScrollTrigger,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import { PhoneOutlined as Phone } from "@mui/icons-material";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 
@@ -21,7 +19,6 @@ import Image from "next/image";
 import logoLight from "../../../../public/assets/logo-colored-light-orientation.png";
 import logoDark from "../../../../public/assets/logo-colored-dark-orientation.png";
 import Link from "next/link";
-import { env } from "process";
 
 const Navbar = () => {
   const { mode, toggleTheme } = useThemeContext();

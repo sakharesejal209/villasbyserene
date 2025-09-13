@@ -16,7 +16,7 @@ import {
   PhoneOutlined as Phone,
 } from "@mui/icons-material";
 import Image from "next/image";
-import { motion, useScroll, useTransform, useInView } from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 
 import { FadeInSection } from "../home/home";
 import { Box, Button, Card, Typography, useTheme } from "@mui/material";

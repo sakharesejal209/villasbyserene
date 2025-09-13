@@ -5,7 +5,6 @@ import {
   alpha,
   Box,
   Button,
-  Card,
   Drawer,
   Fab,
   IconButton,
@@ -24,8 +23,6 @@ import {
   GppGoodOutlined as Shield,
   QueryBuilderOutlined as Clock,
   WhatsApp,
-  FormatQuoteOutlined,
-  PeopleOutlineOutlined,
   TaskAltOutlined,
   TrendingUpOutlined,
   SettingsOutlined,
@@ -42,7 +39,7 @@ import {
 } from "motion/react";
 
 import { usePropertyStore } from "@/context/PropertyContext";
-import { Carousel, EmptyState, ReadMore } from "@/app/@application";
+import { Carousel, EmptyState } from "@/app/@application";
 import propertyThemeMap from "@/lib/propert-theme-config/propertyThemeConfig";
 import SearchBox from "./searchBox";
 import { getAccomodation } from "../stays/stays";

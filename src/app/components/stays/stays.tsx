@@ -4,13 +4,10 @@ import { useEffect, useState } from "react";
 
 import {
   Box,
-  Button,
   Card,
   Divider,
   keyframes,
-  Paper,
   Typography,
-  useTheme,
 } from "@mui/material";
 import {
   PeopleAltOutlined as PeopleIcon,
@@ -27,7 +24,6 @@ import PropertyDTO from "@/app/@types/property-dto";
 import { SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import propertyThemeMap from "@/lib/propert-theme-config/propertyThemeConfig";
-import { badScript } from "../property/Property";
 import Link from "next/link";
 
 type StaysPropType = {
