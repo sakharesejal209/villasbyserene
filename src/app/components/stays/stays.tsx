@@ -73,12 +73,6 @@ const Stays = (props: StaysPropType) => {
     }));
   };
 
-  const shine = keyframes`
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-`;
-
   return (
     <div className="col-span-12 md:col-span-9 w-full md:p-0">
       <div className="flex items-center px-4 gap-1">
