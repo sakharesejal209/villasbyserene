@@ -1,21 +1,31 @@
 "use client";
 
+import { useMemo, useState } from "react";
+
+import {
+  Button,
+  Drawer,
+  Paper,
+  Slide,
+  Typography,
+  useScrollTrigger,
+} from "@mui/material";
+import { useParams, useSearchParams } from "next/navigation";
+
 import { usePropertyStore } from "@/context/PropertyContext";
 import Stays from "@/app/components/stays/stays";
 import StaysSearchBox from "@/app/components/stays/staysSearchBox";
-import { useMemo, useState } from "react";
-import { useParams, useSearchParams } from "next/navigation";
+import { TuneOutlined } from "@mui/icons-material";
 
 export default function StaysClientPage({
   slug,
-  guests,
 }: Readonly<{
   slug: string;
-  guests: number;
 }>) {
   const { properties } = usePropertyStore();
   const searchParams = useSearchParams();
   const params = useParams<{ slug: string }>();
+  const [openFilters, setopenFilters] = useState<boolean>(false);
   const [filters, setFilters] = useState({
     location: params.slug || "all",
     guests: Number(searchParams.get("guests")) || 1,
@@ -41,26 +51,73 @@ export default function StaysClientPage({
               p.PropertyAmenity.some((pa) => pa.amenity_id === a)
             )
           : true
+      )
+      .filter((p) =>
+        filters.accommodationType && filters.accommodationType !== "ALL"
+          ? p.accommodationType == filters.accommodationType
+          : true
       );
   }, [filters, properties]);
+
+  const trigger = useScrollTrigger();
 
   console.log("properties:", properties);
 
   return (
     <section>
-      <div className="h-full w-full grid grid-cols-12 gap-10 mt-[40px] px-4">
-        <StaysSearchBox filters={filters} setFilters={setFilters} />
-
-        <Stays
-          propertiesData={filteredProperties}
-          location={slug}
-          guests={guests}
+      <section className="hidden h-full w-full md:grid grid-cols-12 gap-10 mt-[40px] relative">
+        <StaysSearchBox
+          filters={filters}
+          setFilters={setFilters}
+          setopenFilters={setopenFilters}
         />
-      </div>
+        <Stays propertiesData={filteredProperties} location={slug} />
+      </section>
+      <section className="md:hidden h-full w-full grid relative">
+        <div className="p-4">
+          <Stays propertiesData={filteredProperties} location={slug} />
+        </div>
+
+        <Slide appear={false} direction="up" in={!trigger}>
+          <Paper className="md:hidden fixed bottom-5 left-5 h-fit w-[90%] px-4 py-3 z-50 rounded-3xl">
+            <Button
+              size="small"
+              onClick={() => setopenFilters(true)}
+              startIcon={<TuneOutlined />}
+              className=" w-full gap-3"
+            >
+              <div>
+                <Typography className="!mb-0.5 !text-xl" variant="button">
+                  Filters
+                </Typography>
+              </div>
+
+              {/* <Button variant="contained" onClick={() => setOpenForm(true)}>
+                Book Now
+              </Button> */}
+            </Button>
+          </Paper>
+        </Slide>
+      </section>
+
+      <Drawer
+        anchor="bottom"
+        open={openFilters}
+        onClose={() => setopenFilters(false)}
+        slotProps={{
+          paper: {
+            sx: {
+              height: "70vh",
+            },
+          },
+        }}
+      >
+        <StaysSearchBox
+          filters={filters}
+          setFilters={setFilters}
+          setopenFilters={setopenFilters}
+        />
+      </Drawer>
     </section>
-    // <section>
-    //   <StaysSearchBox slug={slug} guests={guests} />
-    //   <Stays propertiesData={properties} location={slug} guests={guests} />
-    // </section>
   );
 }

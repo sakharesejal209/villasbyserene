@@ -95,9 +95,9 @@ const Footer = () => {
               >
                 Contact Us
               </button>
-              <button className="text-gray-300 hover:text-white hover:cursor-pointer transition-colors duration-200">
+              {/* <button className="text-gray-300 hover:text-white hover:cursor-pointer transition-colors duration-200">
                 About Us
-              </button>
+              </button> */}
             </div>
           </div>
 

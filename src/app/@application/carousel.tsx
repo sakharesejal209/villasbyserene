@@ -12,6 +12,7 @@ import { SwiperOptions } from "swiper/types";
 
 type CarouselPropType = {
   children: React.ReactNode;
+  navigation?: boolean;
   initialSlide?: number;
   slidesPerView: number;
   showDots?: boolean;
@@ -24,6 +25,7 @@ type CarouselPropType = {
 const Carousel: React.FC<CarouselPropType> = (props) => {
   const {
     initialSlide = 0,
+    navigation = true,
     showDots = true,
     slidesPerView,
     breakpoints,
@@ -39,7 +41,7 @@ const Carousel: React.FC<CarouselPropType> = (props) => {
       sx={{
         width: "100%",
         aspectRatio: "auto",
-        "& .swiper-pagination-bullet": {
+        "& .swiper-pagination-bullet": { 
           backgroundColor: "rgba(255,255,255,0.5)",
           opacity: 1,
           width: 10,
@@ -103,7 +105,7 @@ const Carousel: React.FC<CarouselPropType> = (props) => {
               }
             : false
         }
-        navigation
+        navigation={navigation}
         keyboard
         loop
         initialSlide={initialSlide}

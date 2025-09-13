@@ -41,9 +41,10 @@ export default function ReadMore(props: Readonly<ReadMorePropType>) {
       </Typography>
       {text.length > maxLength && (
         <Button
+        className="!font-bold"
           variant="text"
-          color="info"
-          size="small"
+          // color="info"
+          // size="small"
           onClick={toggleReadMore}
         >
           {isExpanded ? "Read Less" : "Read More"}

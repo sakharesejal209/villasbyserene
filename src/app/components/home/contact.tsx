@@ -5,10 +5,10 @@ import {
   Card,
   IconButton,
   Snackbar,
-  SnackbarCloseReason,
   styled,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 import {
   ChatOutlined as Message,
@@ -19,8 +19,6 @@ import {
 } from "@mui/icons-material";
 import { DatePicker } from "@mui/x-date-pickers";
 import React, { useState } from "react";
-import ContactBg from "../../../../public/assets/contact.png";
-import Image from "next/image";
 import { PickerValue } from "@mui/x-date-pickers/internals";
 
 const Contact = () => {
@@ -36,6 +34,7 @@ const Contact = () => {
   });
   const [openWarningToast, setOpenWarningToast] = React.useState(false);
   const [openSuccessToast, setOpenSuccessToast] = React.useState(false);
+  const theme = useTheme();
 
   const handleClose = () => {
     setOpenWarningToast(false);
@@ -94,30 +93,37 @@ const Contact = () => {
   });
 
   const CustomSection = styled("section")({
-    backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/assets/contact.png')`,
+    backgroundImage: `linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/assets/contact.png')`,
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
+    backgroundAttachment: "fixed",
     backgroundSize: "cover",
     width: "100%",
   });
 
   return (
     <CustomSection>
-      <div className="py-0">
+      <div className="py-8">
         <div className="container">
-          <div className="flex flex-col justify-center items-center mt-5 mb-8 md:mb-12 text-white">
+          <div className="flex flex-col justify-center items-center mb-8 md:mb-12 text-white">
             <Typography variant="h3" className="mb-4">
               Contact Us
             </Typography>
-            <Typography variant="subtitle1" className="w-full md:w-1/2 text-center">
+            <Typography
+              variant="subtitle1"
+              className="w-full md:w-1/2 text-center"
+            >
               Ready to book your perfect vacation? Fill out the form below and
               we&apos;ll get back to you instantly via WhatsApp
             </Typography>
           </div>
-
           <div className="w-full grid lg:grid-cols-2 gap-4 md:gap-8">
             {/* Contact Form */}
-            <Card className="p-4">
+            <Card
+              className={`p-4 ${
+                theme.palette.mode == "light" ? "opacity-80" : "opacity-75"
+              } !border-none`}
+            >
               <div className="flex items-center gap-2">
                 <Message className="w-5 h-5 mt-1.5" />
                 <Typography variant="h5">Send us a message</Typography>
@@ -125,7 +131,7 @@ const Contact = () => {
 
               <div className="mt-6">
                 {/* Personal Information */}
-                <div className="grid md:grid-cols-2 gap-4">
+                <div className="flex flex-col gap-4">
                   <TextField
                     name="name"
                     label="Full Name *"
@@ -222,8 +228,8 @@ const Contact = () => {
 
             {/* Contact Information */}
             <div className="space-y-6">
-              <Card>
-                <div className="p-4 md:p-6">
+              <Card className="!bg-transparent">
+                <div className="p-4 md:p-6 text-white">
                   <Typography variant="h5" className="mb-4">
                     Get in Touch
                   </Typography>
@@ -270,8 +276,8 @@ const Contact = () => {
                 </div>
               </Card>
 
-              <Card>
-                <div className="p-4 md:p-6">
+              <Card className="!bg-transparent">
+                <div className="p-4 md:p-6 text-white">
                   <Typography variant="h5" className="!mb-4">
                     Why Choose WhatsApp?
                   </Typography>
@@ -293,8 +299,8 @@ const Contact = () => {
                 </div>
               </Card>
 
-              <Card>
-                <div className="p-4 md:p-6">
+              <Card className="!bg-transparent">
+                <div className="p-4 md:p-6 text-white">
                   <Typography variant="h5" className="!mb-4">
                     Office Hours
                   </Typography>

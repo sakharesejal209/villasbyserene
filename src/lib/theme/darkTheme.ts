@@ -10,7 +10,7 @@ const commonColors = {
   goldLight: "#FFE496",
   coral: "#D64E5E",
   coralLight: "#E9A0A8",
-  sand: "#161A1D",
+  sand: "#0B1119",
   white: "#ffffff",
   black: "#000000",
   textPrimary: "#ffffff",
@@ -53,10 +53,11 @@ let darkTheme: Theme = createTheme({
     },
     grey: {
       "100": "#3B3B3B",
+      "200": "#525252"
     },
     background: {
       default: commonColors.sand,
-      paper: "#1E2226",
+      paper: "#161A1D",
     },
     text: {
       primary: commonColors.textPrimary,
@@ -182,7 +183,7 @@ let darkTheme: Theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 4,
-          border: `2px solid ${commonColors.border}`,
+          border: `1px solid ${commonColors.border}`,
           boxShadow: "none",
         },
       },

@@ -6,19 +6,22 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { ThemeContextProvider } from "@/context/ThemeContext";
 import { PropertyContextProvider } from "@/context/PropertyContext";
+import PropertyDTO from "@/app/@types/property-dto";
 
 export default function ClientProviders({
   children,
   propertiesData,
-}: {
+}: Readonly<{
   children: ReactNode;
-  propertiesData: any; // you can type this properly
-}) {
+  propertiesData: PropertyDTO[];
+}>) {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <ThemeContextProvider>
         <PropertyContextProvider initialProperties={propertiesData}>
-          {children}
+          {/* <ParallaxProvider> */}
+            {children}
+            {/* </ParallaxProvider> */}
         </PropertyContextProvider>
       </ThemeContextProvider>
     </LocalizationProvider>

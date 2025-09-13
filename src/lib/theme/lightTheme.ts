@@ -37,7 +37,7 @@ let lightTheme: Theme = createTheme({
     },
     secondary: {
       main: commonColors.gold,
-      light: commonColors.goldLight
+      light: commonColors.goldLight,
     },
     warning: {
       main: commonColors.warning,
@@ -53,6 +53,7 @@ let lightTheme: Theme = createTheme({
     },
     grey: {
       "100": "#F5F5F5",
+      "200": "#C6C6C6"
     },
     background: {
       default: commonColors.sand,
@@ -162,7 +163,7 @@ let lightTheme: Theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 4,
-          border: `2px solid ${commonColors.border}`,
+          border: `1px solid ${commonColors.border}`,
           boxShadow: "none",
         },
       },
@@ -190,9 +191,10 @@ let lightTheme: Theme = createTheme({
     MuiAccordion: {
       styleOverrides: {
         root: {
-          borderRadius: 4,
-          border: `2px solid ${commonColors.border}`,
+          borderRadius: 0,
+          // border: `1px solid ${commonColors.border}`,
           boxShadow: "none",
+          border: "none",
         },
       },
     },

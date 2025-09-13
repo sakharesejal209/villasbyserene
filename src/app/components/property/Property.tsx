@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import {
@@ -30,14 +30,8 @@ import {
   ExpandMoreOutlined as ExpandMoreIcon,
   EventAvailableOutlined as Available,
 } from "@mui/icons-material";
-import {
-  Poiret_One,
-  Bad_Script,
-  Charm,
-  Edu_SA_Beginner,
-} from "next/font/google";
+import { Edu_SA_Beginner } from "next/font/google";
 
-import Loading from "@/app/loading";
 import { Carousel, ReadMore } from "@/app/@application";
 import amenityIconMap from "@/lib/amenity-icon-config/amenityIconConfig";
 import { getAccomodation } from "../stays/stays";
@@ -126,8 +120,8 @@ const Property: FC<PropertyPropType> = (props) => {
 
   const handleOpenGallery = (unitId: string) => {
     setSelectedUnit(unitId);
-    setOpenUnitGallery(true)
-  }
+    setOpenUnitGallery(true);
+  };
 
   function getLatLngFromEmbed(src: string) {
     const latMatch = src.match(/!3d([-.\d]+)/);
@@ -137,6 +131,10 @@ const Property: FC<PropertyPropType> = (props) => {
     }
     return null;
   }
+
+  const coord = useMemo(() => {
+    return getLatLngFromEmbed(propertyDetails.map_location as string);
+  }, [propertyDetails]);
 
   console.log("propertydetails:", propertyDetails);
 
@@ -175,7 +173,7 @@ const Property: FC<PropertyPropType> = (props) => {
       </Customsection>
 
       <section>
-        <div className="container w-full grid grid-cols-12 md:gap-9">
+        <div className="container w-full grid grid-cols-12 md:gap-12">
           <div className="col-span-12 md:col-span-8">
             <div className="container">
               <ReadMore
@@ -262,12 +260,6 @@ const Property: FC<PropertyPropType> = (props) => {
                           </Typography>
                           <ArrowRight />
                         </div>
-                        {/* <Carousel
-                      images={category.unitImages.map((item) => ({
-                        src: item.image.image_url,
-                        alt: item.image.image_alt,
-                      }))}
-                    /> */}
                       </button>
                       <div className="col-span-12 flex md:col-span-7 flex-col justify-center md:gap-2">
                         <Typography>{category.description}</Typography>
@@ -478,6 +470,7 @@ const Property: FC<PropertyPropType> = (props) => {
                   Near By Attractions
                 </Typography>
                 <Carousel
+                  spaceBetween={20}
                   slidesPerView={2}
                   breakpoints={{
                     640: { slidesPerView: 2 },
@@ -487,7 +480,7 @@ const Property: FC<PropertyPropType> = (props) => {
                   <>
                     {propertyDetails.NearByAttractions?.map((item) => (
                       <SwiperSlide key={item.attraction_id}>
-                        <Card>
+                        <div>
                           <div className="h-[300px] md:h-[400px]">
                             <div className="relative flex h-[50%]">
                               <Image
@@ -500,7 +493,7 @@ const Property: FC<PropertyPropType> = (props) => {
                                 }}
                               />
                             </div>
-                            <div className="m-4 overflow-y-auto h-[43%] wrap-break-word">
+                            <div className="m-4 ml-0 overflow-y-auto h-[43%] wrap-break-word">
                               <Typography variant="h6">{item.title}</Typography>
                               <Typography variant="body2">
                                 <span className="font-bold">Distance:</span>{" "}
@@ -513,7 +506,7 @@ const Property: FC<PropertyPropType> = (props) => {
                               />
                             </div>
                           </div>
-                        </Card>
+                        </div>
                       </SwiperSlide>
                     ))}
                   </>
@@ -524,6 +517,22 @@ const Property: FC<PropertyPropType> = (props) => {
                 <div>
                   <Typography variant="h5">Location</Typography>
                   <div className="w-full h-[200px] md:h-[350px] mt-1 mb-3 rounded-lg overflow-hidden shadow">
+                    {/* {coord && (
+                      <MapContainer
+                        // bounds={}
+                        center={[coord?.lat, coord?.lng]}
+                      >
+                        <TileLayer
+                          // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                        <Marker position={[coord?.lat || 0, coord?.lng || 0]}>
+                          <Popup>
+                            A pretty CSS3 popup. <br /> Easily customizable.
+                          </Popup>
+                        </Marker>
+                      </MapContainer>
+                    )} */}
                     <iframe
                       src={propertyDetails.map_location}
                       width="100%"
@@ -537,9 +546,6 @@ const Property: FC<PropertyPropType> = (props) => {
                   </div>
                   <Button
                     onClick={() => {
-                      const coord = getLatLngFromEmbed(
-                        propertyDetails.map_location as string
-                      );
                       window.open(
                         `https://www.google.com/maps/dir/?api=1&destination=${coord?.lat},${coord?.lng}`,
                         "_blank"
@@ -553,17 +559,16 @@ const Property: FC<PropertyPropType> = (props) => {
               )}
             </div>
           </div>
-          <div className="hidden md:block col-span-4 sticky top-[22%] h-fit">
+          <div className="hidden md:block col-span-4 sticky top-[90px] h-fit">
             <Typography className="!mb-2" variant="h6">
               Plan Your Exclusive Escape!
             </Typography>
             <Card
-              sx={(theme) => ({
-                boxShadow:
-                  theme.palette.mode === "dark"
-                    ? "none"
-                    : "0px 0px 10px 0px darkgray",
-              })}
+              // sx={(theme) => ({
+              //   boxShadow:
+              //     theme.palette.mode === "dark" ? "none" : "0px 0px 10px 0px ",
+              // })}
+              className="!shadow-lg"
             >
               <EnquiryForm
                 propertyName={propertyDetails.name}
@@ -674,7 +679,9 @@ const Property: FC<PropertyPropType> = (props) => {
             paddingRight: "0px",
           }}
         >
-          {unitGalleryImages && selectedUnit && <ImageGallery images={unitGalleryImages[selectedUnit]} />}
+          {unitGalleryImages && selectedUnit && (
+            <ImageGallery images={unitGalleryImages[selectedUnit]} />
+          )}
         </DialogContent>
       </Dialog>
 

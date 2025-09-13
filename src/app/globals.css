@@ -5,7 +5,7 @@
   --foreground: #171717;
   --font-playfair: "Playfair Display", serif;
   --font-roboto: "Roboto", sans-serif;
-  --font-ibmPlex:  "IBM Plex Serif", serif;
+  --font-ibmPlex: "IBM Plex Serif", serif;
   --cta-light: #1b1b2f; /* Example primary color */
   --cta-dark: #131314;
 }
@@ -29,6 +29,7 @@
 
 body {
   @apply font-sans;
+  overflow-x: hidden;
 }
 
 section {
@@ -75,26 +76,88 @@ section {
 .loader:after {
   transform: rotate(60deg);
 }
-/* .animated-section {
-  opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
+.slide-left {
+  animation: slideLeftAnimation 0.8ms normal;
+  animation-timeline: view();
 }
 
-.section.visible {
-  animation: slideUp 0.6s ease-out forwards;
-}
-
-@keyframes slideUp {
+@keyframes slideLeftAnimation {
   0% {
+    transform: translateX(100px);
     opacity: 0;
-    transform: translateY(50px);
+  }
+
+  50% {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+}
+
+.slide-right {
+  animation: slideRightAnimation 0.5ms normal;
+  animation-timeline: view();
+}
+
+@keyframes slideRightAnimation {
+  0% {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+
+  50% {
+    transform: translateX(0px);
+    opacity: 1;
+  }
+}
+
+.slide-bottom {
+  animation: slidebottomAnimation 0.5s both;
+  animation-timeline: view();
+}
+
+@keyframes slidebottomAnimation {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(0px);
   }
   100% {
-    opacity: 1;
-    transform: translateY(0);
+    transform: translateY(100px);
   }
-} */
+}
+
+.slide-top {
+  animation: slidetopAnimation 0.8s both;
+  animation-timeline: view();
+}
+
+@keyframes slidetopAnimation {
+  0% {
+    transform: translateY(150px);
+  }
+  50% {
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.zoom-in {
+  animation: slideToZoomIn 0.2ms both;
+  animation-timeline: view();
+}
+
+@keyframes slideToZoomIn {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1);
+  }
+}
 
 @media (max-width: 576px) {
   .container {

@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 
 import {
   Box,
+  Button,
   Card,
   Divider,
   keyframes,
+  Paper,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -30,7 +32,6 @@ import Link from "next/link";
 
 type StaysPropType = {
   location: string;
-  guests: number;
   propertiesData: PropertyDTO[];
 };
 
@@ -48,7 +49,7 @@ export const getAccomodation = (type: string) => {
 };
 
 const Stays = (props: StaysPropType) => {
-  const { location, guests, propertiesData } = props;
+  const { location, propertiesData } = props;
 
   useEffect(() => {
     console.log("propertiesData:", propertiesData);
@@ -83,27 +84,27 @@ const Stays = (props: StaysPropType) => {
 `;
 
   return (
-    <div className="col-span-9 w-full h-full">
+    <div className="col-span-12 md:col-span-9 w-full md:p-0">
+      <div className="flex items-center px-4 gap-1">
+        <Typography variant="subtitle2" color="textSecondary">
+          <Link href={"/"}>Home</Link>
+        </Typography>
+        <Typography variant="subtitle2" color="textSecondary">
+          <ArrowForwardIosRounded sx={{ fontSize: "16px" }} />
+        </Typography>
+        <Typography variant="subtitle2" color="textSecondary">
+          {location === "all"
+            ? "All Properties"
+            : `Properties in ${toPascalCase(location)}`}
+        </Typography>
+      </div>
       {propertiesData?.length ? (
         <>
-          <div>
-            <div className="flex items-center px-4 gap-1">
-              <Typography variant="subtitle2" color="textSecondary">
-                <Link href={"/"}>Home</Link>
-              </Typography>
-              <Typography variant="subtitle2" color="textSecondary">
-                <ArrowForwardIosRounded sx={{ fontSize: "16px" }} />
-              </Typography>
-              <Typography variant="subtitle2" color="textSecondary">
-                Properties in {toPascalCase(location)}
-              </Typography>
-            </div>
-            <Typography variant="h4" className="!my-6 md:px-4">
-              {location === "all"
-                ? "All Properties"
-                : `Properties in ${toPascalCase(location)}`}
-            </Typography>
-          </div>
+          <Typography variant="h4" className="!my-6 px-4">
+            {location === "all"
+              ? "All Properties"
+              : `Properties in ${toPascalCase(location)}`}
+          </Typography>
           {propertiesData.map((item) => (
             <Card
               key={item.property_id}
@@ -179,7 +180,6 @@ const Stays = (props: StaysPropType) => {
                           background:
                             "linear-gradient(90deg, rgba(214, 78, 94, 1), rgba(255, 122, 140, 1), rgba(163, 50, 64, 1))",
                           backgroundSize: "200% 200%",
-                          animation: `${shine} 3s ease infinite`,
                           color: "#fff",
                           borderRadius: "999px",
                           fontWeight: "600",

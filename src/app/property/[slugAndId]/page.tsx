@@ -58,6 +58,11 @@ export default async function Page({ params }: ParamsType) {
           },
         },
       },
+      themes: {
+        include: {
+          theme: true,
+        },
+      },
     },
   });
 

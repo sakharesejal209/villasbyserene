@@ -1,19 +1,16 @@
 "use client";
 
-import {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useEffect,
-} from "react";
+import { Dispatch, FC, SetStateAction, useEffect } from "react";
 
 import {
   Autocomplete,
   Box,
+  Button,
   Card,
   Checkbox,
   FormControlLabel,
   FormGroup,
+  IconButton,
   Slider,
   TextField,
   ToggleButton,
@@ -23,6 +20,7 @@ import {
 import { locations } from "../home/searchBox";
 import { useRouter } from "next/navigation";
 import allAmenities from "./data.json";
+import { CloseOutlined } from "@mui/icons-material";
 
 type Filters = {
   location: string;
@@ -35,10 +33,11 @@ type Filters = {
 type StaysSearchBoxPropType = {
   filters: Filters;
   setFilters: Dispatch<SetStateAction<Filters>>;
+  setopenFilters: Dispatch<SetStateAction<boolean>>;
 };
 
 const StaysSearchBox: FC<StaysSearchBoxPropType> = (props) => {
-  const { filters, setFilters } = props;
+  const { filters, setFilters, setopenFilters } = props;
   const router = useRouter();
 
   useEffect(() => {
@@ -54,12 +53,24 @@ const StaysSearchBox: FC<StaysSearchBoxPropType> = (props) => {
     router.replace(`/stays/${filters.location}?${params.toString()}`);
   }, [filters, router]);
 
+  useEffect(() => {
+    console.log("filters:", filters);
+  }, [filters]);
+
   return (
-    <div className="col-span-3">
-      <Card className="p-3 h-full">
-        <Typography variant="h6">Filters</Typography>
+    <div className="block md:col-span-3 sticky top-0 md:h-fit">
+      <Card className="p-3">
+        <div className="md:hidden flex justify-between items-center">
+          <Typography variant="h6">Filters</Typography>
+          <IconButton onClick={() => setopenFilters(false)}>
+            <CloseOutlined />
+          </IconButton>
+        </div>
+        <Typography className="hidden md:block" variant="h6">
+          Filters
+        </Typography>
         <form className="w-full">
-          <div className="w-full min-h-screen flex flex-col gap-4 p-2 mt-4">
+          <div className="w-full h-full md:min-h-screen flex flex-col gap-4 p-2 mt-4">
             {/* location */}
             <div className="w-full">
               <Typography variant="subtitle2">Location</Typography>
@@ -73,8 +84,10 @@ const StaysSearchBox: FC<StaysSearchBoxPropType> = (props) => {
                   <TextField
                     {...params}
                     fullWidth
+                    size="small"
                     sx={{
                       borderRadius: 0,
+                      marginTop: 0.5,
                     }}
                   />
                 )}
@@ -86,6 +99,7 @@ const StaysSearchBox: FC<StaysSearchBoxPropType> = (props) => {
               <Typography variant="subtitle2">Guest Count</Typography>
               <TextField
                 type="number"
+                size="small"
                 slotProps={{
                   input: {
                     inputProps: {
@@ -102,6 +116,7 @@ const StaysSearchBox: FC<StaysSearchBoxPropType> = (props) => {
                 }
                 sx={{
                   borderRadius: 0,
+                  marginTop: 0.5,
                 }}
               />
             </div>
@@ -169,14 +184,24 @@ const StaysSearchBox: FC<StaysSearchBoxPropType> = (props) => {
                 onChange={(_, value) =>
                   setFilters({ ...filters, accommodationType: value })
                 }
+                sx={{
+                  marginTop: 1,
+                }}
               >
+                <ToggleButton value="ALL">All</ToggleButton>
                 <ToggleButton value="ENTIRE_HOME">Entire Home</ToggleButton>
-                <ToggleButton value="PRIVATE_ROOM">Private Room</ToggleButton>
-                <ToggleButton value="LUXURY_VILLA">Luxury Villa</ToggleButton>
+                <ToggleButton value="SEPARATE_ROOMS">Private Room</ToggleButton>
               </ToggleButtonGroup>
             </div>
           </div>
         </form>
+        <Button
+          variant="contained"
+          className="w-full lg:!hidden md:!hidden"
+          onClick={() => setopenFilters(false)}
+        >
+          Done
+        </Button>
       </Card>
     </div>
   );

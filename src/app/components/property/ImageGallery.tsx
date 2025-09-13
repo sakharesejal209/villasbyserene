@@ -23,7 +23,7 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
   const { images } = props;
 
   const [open, setOpen] = useState(false);
-  const [fits, setFits] = useState<Record<number, "cover" | "contain">>({});
+  const [fits, setFits] = useState<Record<number, "fill" | "contain">>({});
   const [startIndex, setStartIndex] = useState(0);
 
   const handleOpen = (index: number) => {
@@ -39,7 +39,7 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
     const ratio = img.naturalWidth / img.naturalHeight;
     setFits((prev) => ({
       ...prev,
-      [idx]: ratio < 1 ? "contain" : "cover",
+      [idx]: ratio < 1 ? "contain" : "fill",
     }));
   };
 
@@ -101,23 +101,23 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
           <Carousel slidesPerView={1} initialSlide={startIndex}>
             {images.map((e, idx) => (
               <SwiperSlide key={idx}>
-                <div className="relative w-full aspect-[4/3] md:aspect-[16/8.5] overflow-hidden">
+                <div className="relative w-full aspect-[4/3] md:aspect-[16/9] overflow-hidden">
                   <Image
                     src={e.src}
                     alt={e.alt}
                     fill
                     style={{
-                      objectFit: fits?.[idx] || "cover",
+                      objectFit: fits?.[idx] || "contain",
                       objectPosition: "top center",
                     }}
                     onLoadingComplete={(img) => handleImageLoad(idx, img)}
-                    sizes="100vw"
+                    // sizes="100vw"
                     priority={idx === 0}
                   />
                 </div>
 
                 {"category" in e && e.hasOwnProperty("category") && (
-                  <div className="absolute bottom-8 left-8 bg-black/70 text-white text-md px-2 py-1 rounded-md">
+                  <div className="absolute bottom-16 left-8 bg-black/70 text-white text-md px-2 py-1 rounded-md">
                     {
                       (e as { src: string; alt: string; category: string })
                         .category

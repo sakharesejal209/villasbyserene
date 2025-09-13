@@ -113,149 +113,268 @@ async function main() {
   //   data: [
   //     {
   //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0019.webp?alt=media&token=e1f6ccad-899f-48bb-8305-83b9be6db747",
-  //       image_category_id: 5,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-bedroom'
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Faddiitional7.webp?alt=media&token=53579ef5-6606-47eb-83d2-8d29ccfe08e5",
+  //       image_category_id: 9,
+  //       image_alt: "ocean-pearl-games",
   //     },
   //     {
   //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0015.webp?alt=media&token=df7065ed-2c26-4c1c-b95f-00dc414b59e7",
-  //       image_category_id: 5,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-bedroom'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0013.webp?alt=media&token=d1ab10c3-6fa8-44cb-a79b-16a1e76753d6",
-
-  //       image_category_id: 5,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-bedroom'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0010.webp?alt=media&token=17ab874d-22f5-43b0-9286-66c640ad5458",
-  //       image_category_id: 5,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-bedroom'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0001.webp?alt=media&token=e62690b6-e439-4265-b76b-c95957e22840",
-  //       image_category_id: 7,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-exterior'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0005.webp?alt=media&token=157fe785-388f-4ee9-b342-9cc992e956c2",
-  //       image_category_id: 7,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-exterior'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0012.webp?alt=media&token=2e079aaa-ff91-4e6e-bf96-5b0719252dca",
-  //       image_category_id: 7,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-exterior'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0014.webp?alt=media&token=a0026966-6434-4621-9dd5-58f430e65ca9",
-  //       image_category_id: 7,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-exterior'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0016.webp?alt=media&token=c4fc59ee-6ffe-4297-a21f-10447ebcac71",
-  //       image_category_id: 7,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-exterior'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0016.webp?alt=media&token=c4fc59ee-6ffe-4297-a21f-10447ebcac71",
-  //       image_category_id: 7,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-exterior'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0022.webp?alt=media&token=7dfd056e-613e-4e41-bcd2-c4d686d4f95e",
-  //       image_category_id: 7,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-exterior'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0025.webp?alt=media&token=81888438-f01c-4410-9421-0b4b7b3a4b5d",
-  //       image_category_id: 7,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-exterior'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0025.webp?alt=media&token=81888438-f01c-4410-9421-0b4b7b3a4b5d",
-  //       image_category_id: 6,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-swimmingpool'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0012.webp?alt=media&token=2e079aaa-ff91-4e6e-bf96-5b0719252dca",
-  //       image_category_id: 6,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-swimmingpool'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0012.webp?alt=media&token=2e079aaa-ff91-4e6e-bf96-5b0719252dca",
-  //       image_category_id: 4,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-livingroom'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0008.webp?alt=media&token=e8d00a66-e8f9-4529-9928-33fb4c37e605",
-  //       image_category_id: 4,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-livingroom'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0011.webp?alt=media&token=28361fc2-ed01-47f1-83b1-fe28716a6935",
-  //       image_category_id: 3,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-kitchen'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0009.webp?alt=media&token=079d009c-6677-4ff4-9816-4c3aae27712b",
-  //       image_category_id: 1,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-dinningarea'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0017.webp?alt=media&token=dbf04454-2fef-4686-a1d4-322819946f09",
-  //       image_category_id: 5,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-bedroom'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2Fswimming%20pool.jpg?alt=media&token=fa9a4d84-a5b1-438d-ab22-301b95920dae",
-  //       image_category_id: 6,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-swimmingpool'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2Frestroom1.jpg?alt=media&token=a413bc1d-3e71-4a30-b480-0cd9d9c3ed0d",
-  //       image_category_id: 10,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-restroom'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2Frestroom2.jpg?alt=media&token=54c74663-5c17-43fc-8e9f-0be9a3bffc85",
-  //       image_category_id: 10,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-restroom'
-  //     },
-
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0021.webp?alt=media&token=e28caf94-5d10-43ca-b0a7-0114cac797b6",
-  //       image_category_id: 8,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-glassroom'
-  //     },
-  //     {
-  //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0006.webp?alt=media&token=46cef2b7-0c4d-4479-8698-a016c24fff52",
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fadditional1.webp?alt=media&token=83ee05a9-44f1-47bd-bef0-fe745c11c32a",
   //       image_category_id: 2,
-  //       image_alt: 'gadeshwar-cliffview-4bhk-additionalimages'
+  //       image_alt: "ocean-pearl-additional",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fadditional3.webp?alt=media&token=12a4c364-7b2b-4416-b825-f3a531abcb2b",
+  //       image_category_id: 2,
+  //       image_alt: "ocean-pearl-additional",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fadditional4.webp?alt=media&token=5fc8016f-ea26-40eb-b1c8-bda68ddadbbc",
+  //       image_category_id: 2,
+  //       image_alt: "ocean-pearl-additional",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fadditional5.webp?alt=media&token=b7b421c3-c3e3-47ac-868b-0da4641aa404",
+  //       image_category_id: 2,
+  //       image_alt: "ocean-pearl-additional",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fadditional6.webp?alt=media&token=cf639bff-04b9-4ad8-906d-bd00f41656ca",
+  //       image_category_id: 2,
+  //       image_alt: "ocean-pearl-additional",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fbarcounter2.webp?alt=media&token=d2da6f3d-a4a8-4299-8356-44c3172bc261",
+
+  //       image_category_id: 11,
+  //       image_alt: "ocean-pearl-4bhk-barcounter",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fbedroom1.webp?alt=media&token=36596e70-ae91-4d5c-b3d5-3118bb2b85a0",
+  //       image_category_id: 5,
+  //       image_alt: "ocean-pearl-4bhk-bedroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fbedroom1.webp?alt=media&token=36596e70-ae91-4d5c-b3d5-3118bb2b85a0",
+  //       image_category_id: 5,
+  //       image_alt: "ocean-pearl-4bhk-bedroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fbedroom2.webp?alt=media&token=1ca8cb85-e426-4605-8793-c60a190df29c",
+  //       image_category_id: 5,
+  //       image_alt: "ocean-pearl-4bhk-bedroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fbedroom3.webp?alt=media&token=f19e1452-bb70-4b73-b491-2be451f75d0a",
+  //       image_category_id: 5,
+  //       image_alt: "ocean-pearl-4bhk-bedroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fbedroom4.webp?alt=media&token=f4cc6c7a-9c1c-45d5-9115-852198c1e150",
+  //       image_category_id: 5,
+  //       image_alt: "ocean-pearl-4bhk-bedroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fbedroom5.webp?alt=media&token=5e49ffd4-35fa-47ff-b17c-933952fb3741",
+  //       image_category_id: 5,
+  //       image_alt: "ocean-pearl-4bhk-bedroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fbedroom6.webp?alt=media&token=ce38ba42-c4f8-42fd-9ee2-f6e260ff9e39",
+  //       image_category_id: 5,
+  //       image_alt: "ocean-pearl-4bhk-bedroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fbedroom7.webp?alt=media&token=43d9e8b9-de88-4f55-ac3a-6e86d55e0c6a",
+  //       image_category_id: 5,
+  //       image_alt: "ocean-pearl-4bhk-bedroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fbedroom8.webp?alt=media&token=c58b6cb0-018f-437b-9ade-dd6e43dea256",
+  //       image_category_id: 5,
+  //       image_alt: "ocean-pearl-4bhk-bedroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fbedroom9.webp?alt=media&token=8e064587-c6f6-4943-a9a0-50254f8867bb",
+  //       image_category_id: 5,
+  //       image_alt: "ocean-pearl-4bhk-bedroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fexterior1.webp?alt=media&token=64cf6a47-c420-491e-9178-e82ded54f785",
+  //       image_category_id: 7,
+  //       image_alt: "ocean-pearl-4bhk-exterior",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fexterior10.webp?alt=media&token=6bc6b24b-0c0f-4981-8544-0a11bbf1617b",
+  //       image_category_id: 7,
+  //       image_alt: "ocean-pearl-4bhk-exterior",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fexterior2.webp?alt=media&token=15ce7dda-57ac-450f-8dc0-efe9287b52b0",
+  //       image_category_id: 7,
+  //       image_alt: "ocean-pearl-4bhk-exterior",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fexterior3.webp?alt=media&token=3373c9d7-5de9-49ba-b3d6-bcfd430a34b9",
+  //       image_category_id: 7,
+  //       image_alt: "ocean-pearl-4bhk-exterior",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fexterior4.webp?alt=media&token=a378f271-726c-4813-aaca-24d98f1d14f6",
+  //       image_category_id: 7,
+  //       image_alt: "ocean-pearl-4bhk-exterior",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fexterior5.webp?alt=media&token=1dad372f-1216-4627-add4-e20bc1a9605c",
+  //       image_category_id: 7,
+  //       image_alt: "ocean-pearl-4bhk-exterior",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fexterior6.webp?alt=media&token=caf8c31c-33bb-4bd3-8dee-008ba44537c0",
+  //       image_category_id: 7,
+  //       image_alt: "ocean-pearl-4bhk-exterior",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fexterior7.webp?alt=media&token=8d04d5c8-8a6e-4a7d-9f77-5a3034ee2ae5",
+  //       image_category_id: 7,
+  //       image_alt: "ocean-pearl-4bhk-exterior",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fexterior9.webp?alt=media&token=c080ed21-dc4e-456c-8c16-c5d44f5ad545",
+  //       image_category_id: 7,
+  //       image_alt: "ocean-pearl-4bhk-exterior",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fkitchen1.webp?alt=media&token=4edf7a48-5707-4a3c-8603-5c9abfd67282",
+  //       image_category_id: 3,
+  //       image_alt: "ocean-pearl-4bhk-kitchen",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fkitchen2.webp?alt=media&token=91fa5d4f-63ca-4261-9510-06fb730e263d",
+  //       image_category_id: 3,
+  //       image_alt: "ocean-pearl-4bhk-kitchen",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fkitchen3.webp?alt=media&token=e2c08f35-778d-4de4-9a14-8af6f2a6813f",
+  //       image_category_id: 3,
+  //       image_alt: "ocean-pearl-4bhk-kitchen",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Flivingroom1.webp?alt=media&token=361760c6-8d27-4f34-8e7f-fccd7144222e",
+  //       image_category_id: 4,
+  //       image_alt: "ocean-pearl-4bhk-livingroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Flivingroom2.webp?alt=media&token=6e792162-431e-4e29-ae76-20d661b89cc8",
+  //       image_category_id: 4,
+  //       image_alt: "ocean-pearl-4bhk-livingroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Flivingroom4.webp?alt=media&token=ac446a60-791c-4f13-9929-d7205e9b2b62",
+  //       image_category_id: 4,
+  //       image_alt: "ocean-pearl-4bhk-livingroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fswimmingpool1.webp?alt=media&token=5681cffc-18b4-487f-a74e-0be187fe5329",
+  //       image_category_id: 6,
+  //       image_alt: "ocean-pearl-4bhk-livingroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fswimmingpool2.webp?alt=media&token=556bd5da-3a97-46c7-8494-b00d1cbe1079",
+  //       image_category_id: 6,
+  //       image_alt: "ocean-pearl-4bhk-swimmingpool",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fswimmingpool3.webp?alt=media&token=a0b053f2-45c8-49a9-8137-8b2b89a09a05",
+  //       image_category_id: 6,
+  //       image_alt: "ocean-pearl-4bhk-swimmingpool",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fswimmingpool4.webp?alt=media&token=c148b534-1546-44c8-8e6d-925597ef6753",
+  //       image_category_id: 6,
+  //       image_alt: "ocean-pearl-4bhk-swimmingpool",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fswimmingpool5.webp?alt=media&token=22545f12-6b43-40cc-b6b0-e52b012e0f99",
+  //       image_category_id: 6,
+  //       image_alt: "ocean-pearl-4bhk-swimmingpool",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fswimmingpool6.webp?alt=media&token=fd99a74a-c4af-4382-9555-9b44c9977917",
+  //       image_category_id: 6,
+  //       image_alt: "ocean-pearl-4bhk-swimmingpool",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fswimmingpool7.webp?alt=media&token=bb15b760-8407-48b2-886b-29a75a647c21",
+  //       image_category_id: 6,
+  //       image_alt: "ocean-pearl-4bhk-swimmingpool",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fswimmingpool8.webp?alt=media&token=ea7c4955-a36b-44a2-b01e-3c15308fc14c",
+  //       image_category_id: 6,
+  //       image_alt: "ocean-pearl-4bhk-swimmingpool",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fswimmingpool9.webp?alt=media&token=4d4e883c-4172-44e3-986d-471816051039",
+  //       image_category_id: 6,
+  //       image_alt: "ocean-pearl-4bhk-swimmingpool",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fwashroom1.webp?alt=media&token=3453645b-10f6-46f7-9102-984dafe10832",
+  //       image_category_id: 10,
+  //       image_alt: "ocean-pearl-4bhk-bathroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fwashroom2.webp?alt=media&token=3c7ebe53-54aa-4adf-a7a9-56f953a2247f",
+  //       image_category_id: 10,
+  //       image_alt: "ocean-pearl-4bhk-bathroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fwashroom3.webp?alt=media&token=19f69325-853a-45dd-8c33-5e143d3571f0",
+  //       image_category_id: 10,
+  //       image_alt: "ocean-pearl-4bhk-bathroom",
   //     },
   //   ],
   //   skipDuplicates: true,
@@ -266,9 +385,9 @@ async function main() {
   // await prisma.propertyImage.createMany({
   //   data: [
   //     {
-  //       image_id: "0282de74-02e9-4488-9dc1-81d53eb6d947",
+  //       image_id: "6e43a2c1-6056-4e5e-8279-04ba3148295e",
   //       property_id: 'fac2cbb4-d938-4342-a369-312d2cd24604',
-  //       display_order: 7,
+  //       display_order: 24,
   //     },
   //   ],
   // });
@@ -278,57 +397,106 @@ async function main() {
   // await prisma.unitImage.createMany({
   //   data: [
   //     {
-  //       image_id: "1ef1a690-e54e-45be-bb33-69208a2877e4",
-  //       unit_id: "6c9825fd-ae00-4d41-a887-a43c6a913c97",
+  //       image_id: "4e2cdd33-17c2-4b79-aef4-e3bce6c0278f",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
   //     },
   //     {
-  //       image_id: "23ef87f9-6cf9-4b1c-84b3-f6c2dc39e109",
-  //       unit_id: "6c9825fd-ae00-4d41-a887-a43c6a913c97",
+  //       image_id: "512e1f2d-a13d-43e6-bd6e-f54f0820c808",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
   //     },
   //     {
-  //       image_id: "07d80d15-086d-4f31-820c-abeba42a6036",
-  //       unit_id: "6c9825fd-ae00-4d41-a887-a43c6a913c97",
+  //       image_id: "b6624d8c-bc9d-40fb-9952-9388616cf4ea",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
   //     },
   //     {
-  //       image_id: "ae47feba-ed1a-4d9c-941d-cc1e16112c32",
-  //       unit_id: "6c9825fd-ae00-4d41-a887-a43c6a913c97",
+  //       image_id: "6e43a2c1-6056-4e5e-8279-04ba3148295e",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
   //     },
   //     {
-  //       image_id: "4c81a620-8db9-4fab-9c36-5e32158e8d98",
-  //       unit_id: "6c9825fd-ae00-4d41-a887-a43c6a913c97",
+  //       image_id: "3455a93b-2885-46a7-8372-87306d87db99",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
   //     },
   //     {
-  //       image_id: "5d00d33b-7b8a-4c56-b6b6-0b8de6ca4597",
-  //       unit_id: "6c9825fd-ae00-4d41-a887-a43c6a913c97",
+  //       image_id: "86420e2a-cb8b-4201-86f4-afaae2a57ab5",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
   //     },
   //     {
-  //       image_id: "1d35cf31-4044-4801-a4c5-46aba804154f",
-  //       unit_id: "6c9825fd-ae00-4d41-a887-a43c6a913c97",
+  //       image_id: "3522044e-22b5-4b01-a544-e83889a2f3fd",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
   //     },
   //     {
-  //       image_id:"cd9bbe02-5b4c-43de-b23d-437ecbca2527",
-  //       unit_id: "6c9825fd-ae00-4d41-a887-a43c6a913c97",
+  //       image_id: "1e0ea283-e788-4891-ae8a-d4508066bb3d",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
   //     },
   //     {
-  //       image_id: "49644734-f2e7-463c-ad85-ed17b002ac9f",
-  //       unit_id: "6c9825fd-ae00-4d41-a887-a43c6a913c97",
+  //       image_id: "78a5aab8-73e8-446a-a77c-a729a0f1f586",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
   //     },
   //     {
-  //       image_id: "18ff3f18-a1ce-42fa-8b95-48e64a760a52",
-  //       unit_id: "6c9825fd-ae00-4d41-a887-a43c6a913c97",
+  //       image_id: "11d9587f-4fd6-46fc-aa51-9895a89edb54",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
   //     },
   //     {
-  //       image_id: "d46c63c9-1593-4a49-b1f3-3475ebfadd82",
-  //       unit_id: "6c9825fd-ae00-4d41-a887-a43c6a913c97",
+  //       image_id: "2c887455-51d5-4d46-9a9e-a30dbe9f4db8",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
   //     },
   //     {
-  //       image_id: "8233a705-5077-4434-ba47-4ffb391114ef",
-  //       unit_id: "6c9825fd-ae00-4d41-a887-a43c6a913c97",
+  //       image_id: "ed8b47a1-869b-4511-a18c-f83956bd5713",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
   //     },
   //     {
-  //       image_id: "60e544c7-ae29-4809-9af6-2eab2de9d638",
-  //       unit_id: "6c9825fd-ae00-4d41-a887-a43c6a913c97",
+  //       image_id: "0d9d5614-783a-43ac-bf45-ccd911393ea8",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
   //     },
+  //     {
+  //       image_id: "0c7f465c-1066-4241-98c5-cc1ae5b82226",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+  //     },
+  //     {
+  //       image_id: "735c3263-104c-4529-802a-1d5c02a47b76",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+  //     },
+  //     {
+  //       image_id: "07e3b681-f550-4c3b-a023-0c38454a8eb3",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+  //     },
+  //     {
+  //       image_id: "b8a3d786-fe37-4da3-9386-8fc8c677594b",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+  //     },
+  //     {
+  //       image_id: "e306e992-0a79-41b8-84d6-115931e4d3b5",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+  //     },
+  //     {
+  //       image_id: "da3e04a9-0036-4ae3-a0a8-bdd2b8454fa1",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+  //     },
+  //     {
+  //       image_id: "73aa5b7e-5740-42b0-ba0b-d00231484277",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+  //     },
+  //     {
+  //       image_id: "2c48a6e6-cbf3-4a4c-8b68-6522d7b71965",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+  //     },
+  //     {
+  //       image_id: "d6b75054-935f-4051-a333-6d155bc4af7f",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+  //     },
+  //     {
+  //       image_id: "0cab901f-8bb7-47ac-bc9a-3ba28699ac0f",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+  //     },
+  //     {
+  //       image_id: "a840a039-13ba-46f6-aefd-23fe157f586e",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+  //     },
+  //     {
+  //       image_id: "70da2f06-b572-4bdd-8c0c-6ad459701019",
+  //       unit_id: "4f81c5b8-6baf-4a36-a5b5-a2119e3a2327",
+  //     },
+      
   //   ]
   // })
 
