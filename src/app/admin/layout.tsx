@@ -9,7 +9,6 @@ const Layout = () => {
     await fetch('/api/logout');
     window.location.href = '/login';
   };
-
   return (
     <div>
       layout
