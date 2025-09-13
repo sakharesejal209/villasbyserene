@@ -4,10 +4,9 @@ import Property from "@/app/components/property/Property";
 
 const prisma = new PrismaClient();
 
-export default async function Page({
-  params,
-}: Readonly<{ params: { slugAndId: string } }>) {
-  const slugAndId = params.slugAndId;
+export default async function Page(params: Readonly<Promise<{ slugAndId: string }>>) {
+  const { slugAndId } = await params;
+  // const slugAndId = params.slugAndId;
 
   const id = slugAndId.slice(-36);
 
