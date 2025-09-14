@@ -13,7 +13,6 @@ export default async function Page({ params }: Readonly<ParamsType>) {
   // const slugAndId = params.slugAndId;
 
   const id = slugAndId.slice(-36);
-
   const property = await prisma.property.findUnique({
     where: { property_id: id },
     include: {
