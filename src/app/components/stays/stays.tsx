@@ -2,13 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import {
-  Box,
-  Card,
-  Divider,
-  keyframes,
-  Typography,
-} from "@mui/material";
+import { Box, Card, Divider, keyframes, Typography } from "@mui/material";
 import {
   PeopleAltOutlined as PeopleIcon,
   BedOutlined as BedIcon,
@@ -113,8 +107,12 @@ const Stays = (props: StaysPropType) => {
                       >
                         <div className="relative w-full h-full md:aspect-[4/3] aspect-[16/9]">
                           <Image
-                            src={e.image.image_url}
-                            alt={e.image.image_alt}
+                            src={e.image != null ? e.image.image_url : ""}
+                            alt={
+                              e.image != null
+                                ? e.image.image_alt || ""
+                                : "alt text"
+                            }
                             fill
                             style={{
                               objectFit: fits?.[idx] || "cover",

@@ -302,69 +302,60 @@ async function main() {
   await prisma.unitImage.createMany({
     data: [
       {
-        image_id: "",
+        image_id: 
+        "30080611-b4e3-439c-87df-6721f1f0e425",
         unit_id: "207ea450-8380-4782-955d-080a39816565",
       },
       {
-        image_id: "",
+        image_id: 
+        "10c55b65-0825-4dba-8611-b544e026acef",
         unit_id: "207ea450-8380-4782-955d-080a39816565",
       },
       {
-        image_id: "",
+        image_id: 
+        "d55edd34-d0db-4694-8377-5839b838a538",
         unit_id: "207ea450-8380-4782-955d-080a39816565",
       },
       {
-        image_id: "",
+        image_id: 
+        "26841e4b-24d9-49ba-b7db-2de57439afc9",
         unit_id: "207ea450-8380-4782-955d-080a39816565",
       },
       {
-        image_id: "",
+        image_id: 
+        "8593dacf-7730-435a-b492-f6b87e79fdf7",
         unit_id: "207ea450-8380-4782-955d-080a39816565",
       },
       {
-        image_id: "",
+        image_id: 
+        "7e28d2b5-0cd1-4ec7-8f5a-f820fb4511f2",
         unit_id: "207ea450-8380-4782-955d-080a39816565",
       },
       {
-        image_id: "",
+        image_id: 
+        "94cad14c-2a48-4e69-b011-fbc4504b5fff",
         unit_id: "207ea450-8380-4782-955d-080a39816565",
       },
       {
-        image_id: "",
+        image_id: 
+        "5d367773-acee-4c48-b0fb-11ceab5a59a3",
         unit_id: "207ea450-8380-4782-955d-080a39816565",
       },
       {
-        image_id: "",
+        image_id: 
+        "406ea1f6-5485-4897-a833-5d8e4a344c89",
         unit_id: "207ea450-8380-4782-955d-080a39816565",
       },
       {
-        image_id: "",
+        image_id: 
+        "420905b4-a5fc-49b0-a653-769e47b2b662",
         unit_id: "207ea450-8380-4782-955d-080a39816565",
       },
       {
-        image_id: "",
+        image_id: 
+        "251732e8-f584-4cc2-a45d-572b62ac66e7",
         unit_id: "207ea450-8380-4782-955d-080a39816565",
-      },
-      {
-        image_id: "",
-        unit_id: "207ea450-8380-4782-955d-080a39816565",
-      },
-      {
-        image_id: "",
-        unit_id: "207ea450-8380-4782-955d-080a39816565",
-      },
-      {
-        image_id: "",
-        unit_id: "207ea450-8380-4782-955d-080a39816565",
-      },
-      {
-        image_id: "",
-        unit_id: "207ea450-8380-4782-955d-080a39816565",
-      },
-      {
-        image_id: "",
-        unit_id: "207ea450-8380-4782-955d-080a39816565",
-      },
+      }
     ]
   })
 

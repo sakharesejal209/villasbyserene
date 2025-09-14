@@ -36,7 +36,7 @@ export default interface PropertyDTO {
   propertyRules: {
     display_order: number;
     houseRule: {
-      description: string;
+      description: string | null;
     };
     property_id: string;
     rule_id: string;

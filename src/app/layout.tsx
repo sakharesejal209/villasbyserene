@@ -31,6 +31,9 @@ export default async function Layout({
 }>) {
   const propertiesData = await fetchAllData();
 
+  console.log('propertiesData:', propertiesData);
+  
+
   return (
     <html lang="en" className={roboto.className + " " + ibmPlex.className}>
       <body className="flex flex-col min-h-screen">

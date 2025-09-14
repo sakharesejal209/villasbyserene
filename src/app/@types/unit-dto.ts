@@ -16,17 +16,17 @@ export interface UnitDTO {
 }
 
 export type UnitImagesType = {
-  imageId: string;
+  image_id: string;
   unit_id: string;
-  displayOrder: number;
-  is_banner_image: string;
-  image: UnitImageType;
+  display_order: number;
+  is_banner_image: string | null;
+  image: UnitImageType | null;
 };
 
 interface UnitImageType {
   image_id: string;
   image_url: string;
-  image_alt: string;
-  image_category_id: number;
-  imageCategory: ImageCategoryDTO;
+  image_alt: string | null;
+  image_category_id: number | null;
+  imageCategory: ImageCategoryDTO | null;
 }
