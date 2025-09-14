@@ -9,7 +9,7 @@ export default async function Page({
 }: {
   params: { slugAndId: string };
 }) {
-  const { slugAndId } = await params;
+  const { slugAndId } = params;
 
   const id = slugAndId.slice(-36);
   const property = await prisma.property.findUnique({
