@@ -16,9 +16,9 @@ export interface UnitDTO {
 }
 
 export type UnitImagesType = {
-  imageId: string;
+  image_id: string;
   unit_id: string;
-  displayOrder: number;
+  display_order: number;
   is_banner_image: string;
   image: UnitImageType;
 };
