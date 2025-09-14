@@ -7,9 +7,9 @@ const prisma = new PrismaClient();
 export default async function Page({
   params,
 }: {
-  params: { slugAndId: string };
+  params: Promise<{ slugAndId: string }>;
 }) {
-  const { slugAndId } = params;
+  const { slugAndId } = await params;
 
   const id = slugAndId.slice(-36);
   const property = await prisma.property.findUnique({
