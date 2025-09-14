@@ -99,17 +99,23 @@ const Property: FC<PropertyPropType> = (props) => {
 
   useEffect(() => {
     const _galleryImages = propertyImages.map((e) => ({
-      src: e.image.image_url,
-      alt: e.image.image_alt,
+      src: e.image != null ? e.image.image_url : "",
+
+      alt: e.image != null ? e.image.image_alt || "" : "alt text",
     }));
     setGalleryImages(_galleryImages);
 
     const _unitGalleryImages = propertyDetails.Unit.reduce<UnitImagesMap>(
       (acc, unit) => {
         acc[unit.unit_id] = unit.unitImages.map((img) => ({
-          src: img.image.image_url,
-          alt: img.image.image_alt,
-          category: img.image.imageCategory.name,
+          src: img.image != null ? img.image.image_url : "",
+
+          alt: img.image != null ? img.image.image_alt || "" : "alt text",
+
+          category:
+            img.image != null && img.image.imageCategory != null
+              ? img.image.imageCategory.name
+              : "",
         }));
         return acc;
       },
@@ -136,14 +142,17 @@ const Property: FC<PropertyPropType> = (props) => {
     return getLatLngFromEmbed(propertyDetails.map_location as string);
   }, [propertyDetails]);
 
-  console.log("propertydetails:", propertyDetails);
+  const bannerimage = propertyImages.filter(
+    (e) => e.is_banner_image === "true"
+  )[0];
+
+  const unitBannerImages = console.log("propertydetails:", propertyDetails);
 
   return (
     <div>
       <Customsection
         background={
-          propertyImages.filter((e) => e.is_banner_image === "true")[0].image
-            .image_url
+          bannerimage != null ? bannerimage.image?.image_url || "" : ""
         }
       >
         <div className="container p-4 md:p-0">
@@ -158,8 +167,7 @@ const Property: FC<PropertyPropType> = (props) => {
               className={`hover:cursor-pointer z-50 text-white absolute top-[78%] md:top-[70%] right-[3%] px-4 py-5 md:px-8 md:py-10 font-bold bg-cover bg-center border-white border-[2px] border-solid rounded-md bg-black/50 bg-blend-overlay`}
               style={{
                 backgroundImage: `url(${
-                  propertyImages.find((e) => e.is_banner_image === "true")
-                    ?.image.image_url
+                  bannerimage != null ? bannerimage.image?.image_url : ""
                 })`,
               }}
               onClick={() => {
@@ -241,14 +249,14 @@ const Property: FC<PropertyPropType> = (props) => {
                         <img
                           className="max-w-full h-auto"
                           src={
-                            category.unitImages.filter(
+                            category.unitImages.find(
                               (e) => e.is_banner_image === "true"
-                            )[0].image.image_url
+                            )?.image?.image_url ?? ""
                           }
                           alt={
-                            category.unitImages.filter(
+                            category.unitImages.find(
                               (e) => e.is_banner_image === "true"
-                            )[0].image.image_alt
+                            )?.image?.image_alt ?? "image alt text"
                           }
                         />
                         <div className="absolute bottom-0 right-0 cursor-pointer flex items-center text-white">

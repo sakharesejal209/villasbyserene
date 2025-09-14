@@ -32,11 +32,7 @@ import {
 import { SwiperSlide } from "swiper/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import {
-  motion,
-  useScroll,
-  useTransform
-} from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 
 import { usePropertyStore } from "@/context/PropertyContext";
 import { Carousel, EmptyState } from "@/app/@application";
@@ -621,8 +617,14 @@ const Home = () => {
                               >
                                 <div className="relative w-full aspect-[5/3] md:aspect-[16/9] overflow-hidden">
                                   <Image
-                                    src={e.image.image_url}
-                                    alt={e.image.image_alt}
+                                    src={
+                                      e.image != null ? e.image.image_url : ""
+                                    }
+                                    alt={
+                                      e.image != null
+                                        ? e.image.image_alt || ""
+                                        : "alt text"
+                                    }
                                     fill
                                     style={{
                                       objectFit: fits?.[idx] || "cover",

@@ -299,81 +299,81 @@ async function main() {
 
   // 10. create unit image
 
-  await prisma.unitImage.createMany({
-    data: [
-      {
-        image_id: 
-        "30080611-b4e3-439c-87df-6721f1f0e425",
-        unit_id: "207ea450-8380-4782-955d-080a39816565",
-      },
-      {
-        image_id: 
-        "10c55b65-0825-4dba-8611-b544e026acef",
-        unit_id: "207ea450-8380-4782-955d-080a39816565",
-      },
-      {
-        image_id: 
-        "d55edd34-d0db-4694-8377-5839b838a538",
-        unit_id: "207ea450-8380-4782-955d-080a39816565",
-      },
-      {
-        image_id: 
-        "26841e4b-24d9-49ba-b7db-2de57439afc9",
-        unit_id: "207ea450-8380-4782-955d-080a39816565",
-      },
-      {
-        image_id: 
-        "8593dacf-7730-435a-b492-f6b87e79fdf7",
-        unit_id: "207ea450-8380-4782-955d-080a39816565",
-      },
-      {
-        image_id: 
-        "7e28d2b5-0cd1-4ec7-8f5a-f820fb4511f2",
-        unit_id: "207ea450-8380-4782-955d-080a39816565",
-      },
-      {
-        image_id: 
-        "94cad14c-2a48-4e69-b011-fbc4504b5fff",
-        unit_id: "207ea450-8380-4782-955d-080a39816565",
-      },
-      {
-        image_id: 
-        "5d367773-acee-4c48-b0fb-11ceab5a59a3",
-        unit_id: "207ea450-8380-4782-955d-080a39816565",
-      },
-      {
-        image_id: 
-        "406ea1f6-5485-4897-a833-5d8e4a344c89",
-        unit_id: "207ea450-8380-4782-955d-080a39816565",
-      },
-      {
-        image_id: 
-        "420905b4-a5fc-49b0-a653-769e47b2b662",
-        unit_id: "207ea450-8380-4782-955d-080a39816565",
-      },
-      {
-        image_id: 
-        "251732e8-f584-4cc2-a45d-572b62ac66e7",
-        unit_id: "207ea450-8380-4782-955d-080a39816565",
-      }
-    ]
-  })
+  // await prisma.unitImage.createMany({
+  //   data: [
+  //     {
+  //       image_id: 
+  //       "30080611-b4e3-439c-87df-6721f1f0e425",
+  //       unit_id: "207ea450-8380-4782-955d-080a39816565",
+  //     },
+  //     {
+  //       image_id: 
+  //       "10c55b65-0825-4dba-8611-b544e026acef",
+  //       unit_id: "207ea450-8380-4782-955d-080a39816565",
+  //     },
+  //     {
+  //       image_id: 
+  //       "d55edd34-d0db-4694-8377-5839b838a538",
+  //       unit_id: "207ea450-8380-4782-955d-080a39816565",
+  //     },
+  //     {
+  //       image_id: 
+  //       "26841e4b-24d9-49ba-b7db-2de57439afc9",
+  //       unit_id: "207ea450-8380-4782-955d-080a39816565",
+  //     },
+  //     {
+  //       image_id: 
+  //       "8593dacf-7730-435a-b492-f6b87e79fdf7",
+  //       unit_id: "207ea450-8380-4782-955d-080a39816565",
+  //     },
+  //     {
+  //       image_id: 
+  //       "7e28d2b5-0cd1-4ec7-8f5a-f820fb4511f2",
+  //       unit_id: "207ea450-8380-4782-955d-080a39816565",
+  //     },
+  //     {
+  //       image_id: 
+  //       "94cad14c-2a48-4e69-b011-fbc4504b5fff",
+  //       unit_id: "207ea450-8380-4782-955d-080a39816565",
+  //     },
+  //     {
+  //       image_id: 
+  //       "5d367773-acee-4c48-b0fb-11ceab5a59a3",
+  //       unit_id: "207ea450-8380-4782-955d-080a39816565",
+  //     },
+  //     {
+  //       image_id: 
+  //       "406ea1f6-5485-4897-a833-5d8e4a344c89",
+  //       unit_id: "207ea450-8380-4782-955d-080a39816565",
+  //     },
+  //     {
+  //       image_id: 
+  //       "420905b4-a5fc-49b0-a653-769e47b2b662",
+  //       unit_id: "207ea450-8380-4782-955d-080a39816565",
+  //     },
+  //     {
+  //       image_id: 
+  //       "251732e8-f584-4cc2-a45d-572b62ac66e7",
+  //       unit_id: "207ea450-8380-4782-955d-080a39816565",
+  //     }
+  //   ]
+  // })
 
   // 11. food menu
 
-  //   await prisma.foodMenu.create({
-  // data: {
-  //   property_id: 'fac2cbb4-d938-4342-a369-312d2cd24604',
-  //   description: 'Enjoy the taste of freshly made home-cooked gourmet meals prepared using locally sourced ingredients by our in-house chef. Tea/Coffee will be served during breakfast and high tea time. If you would like tea/coffee at any other time of the day, it can be arranged at an additional charge.',
-  //   isVeg: true,
-  //   isNonVeg: true,
-  //   menuUrl: 'https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F11.webp?alt=media&token=3d5a3209-c1c8-4233-94b3-779c44318103',
-  //   breakfastTime: '08:00AM - 09.30AM',
-  //   lunchTime: '01.30PM - 03.00PM',
-  //   dinnerTime: '09:00PM-10:30PM',
-  //   highteaTime: '05:00PM-06:00PM'
-  // }
-  //   })
+    await prisma.foodMenu.create({
+  data: {
+    property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
+    description: 'Enjoy the taste of freshly made home-cooked gourmet meals prepared using locally sourced ingredients by our in-house chef. Tea/Coffee will be served during breakfast and high tea time. If you would like tea/coffee at any other time of the day, it can be arranged at an additional charge.',
+    isVeg: true,
+    isNonVeg: true,
+    menuUrl: 'https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F11.webp?alt=media&token=3d5a3209-c1c8-4233-94b3-779c44318103',
+    breakfastTime: '08:00AM - 09.30AM',
+    lunchTime: '01.30PM - 03.00PM',
+    dinnerTime: '09:00PM-10:30PM',
+    highteaTime: '05:00PM-06:00PM'
+  }
+    })
 
   // 12. Near By Attractions
 
