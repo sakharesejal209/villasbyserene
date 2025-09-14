@@ -27,7 +27,6 @@ const Login = () => {
       setError(data.message || "Login failed");
     }
   };
-  
   return (
     <div className="p-8 ">
       <div className="flex flex-col items-center">
