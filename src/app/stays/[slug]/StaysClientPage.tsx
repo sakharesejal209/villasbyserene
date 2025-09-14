@@ -17,11 +17,7 @@ import Stays from "@/app/components/stays/stays";
 import StaysSearchBox from "@/app/components/stays/staysSearchBox";
 import { TuneOutlined } from "@mui/icons-material";
 
-export default function StaysClientPage({
-  slug,
-}: Readonly<{
-  slug: string;
-}>) {
+export default function StaysClientPage() {
   const { properties } = usePropertyStore();
   const searchParams = useSearchParams();
   const params = useParams<{ slug: string }>();
@@ -71,11 +67,11 @@ export default function StaysClientPage({
           setFilters={setFilters}
           setopenFilters={setopenFilters}
         />
-        <Stays propertiesData={filteredProperties} location={slug} />
+        <Stays propertiesData={filteredProperties} location={params.slug} />
       </section>
       <section className="md:hidden h-full w-full grid relative">
         <div className="p-4">
-          <Stays propertiesData={filteredProperties} location={slug} />
+          <Stays propertiesData={filteredProperties} location={params.slug} />
         </div>
 
         <Slide appear={false} direction="up" in={!trigger}>
