@@ -49,7 +49,7 @@ export const FadeInSection = ({ children }: { children: React.ReactNode }) => {
     <motion.div
       initial={{ opacity: 0, y: 60 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
+      viewport={{ once: false, margin: "-100px" }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >
       {children}
@@ -169,14 +169,14 @@ const Home = () => {
           style={{ opacity: heroOpacity }}
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
         >
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
+            transition={{ duration: 0.5 }}
           >
-            <div className="p-4 md:p-0">
+            <div className="p-4 md:p-0 slide-bottom">
               <div className="text-white">
                 <Typography variant="h2">PLAN YOUR</Typography>
                 <Typography variant="h2">PERFECT GETAWAY!</Typography>
@@ -199,54 +199,54 @@ const Home = () => {
                 Explore handpicked homes for every kind of getaway.
               </Typography>
             </div>
-          </FadeInSection>
-          <Carousel
-            autoplay={{
-              delay: 3200,
-              disableOnInteraction: false,
-            }}
-            breakpoints={{
-              320: { slidesPerView: 2, spaceBetween: 0 },
-              480: { slidesPerView: 3, spaceBetween: 0 },
-              900: { slidesPerView: 4 },
-            }}
-            slidesPerView={4}
-            spaceBetween={0}
-            showDots={false}
-            inverseControlsColor
-          >
-            <>
-              {propertythemes.map((proptheme) => (
-                <SwiperSlide key={propertyThemeMap[proptheme].label}>
-                  <button
-                    onClick={() => handleThemeSelection(proptheme)}
-                    className="w-full flex flex-col items-center justify-center gap-3 relative hover:cursor-pointer"
-                  >
-                    <Box
-                      className="w-15 md:w-22 h-15 md:h-22"
-                      sx={{
-                        backgroundColor: theme.palette.grey[100],
-                        // backgroundColor: alpha(theme.palette.primary.main, 0.1),
-                        padding: "1.5rem",
-                        borderRadius: "9999px",
-                        display: "relative",
-                      }}
+            <Carousel
+              autoplay={{
+                delay: 3200,
+                disableOnInteraction: false,
+              }}
+              breakpoints={{
+                320: { slidesPerView: 2, spaceBetween: 0 },
+                480: { slidesPerView: 3, spaceBetween: 0 },
+                900: { slidesPerView: 4 },
+              }}
+              slidesPerView={4}
+              spaceBetween={0}
+              showDots={false}
+              inverseControlsColor
+            >
+              <>
+                {propertythemes.map((proptheme) => (
+                  <SwiperSlide key={propertyThemeMap[proptheme].label}>
+                    <button
+                      onClick={() => handleThemeSelection(proptheme)}
+                      className="w-full flex flex-col items-center justify-center gap-3 relative hover:cursor-pointer"
                     >
-                      <Image
-                        src={propertyThemeMap[proptheme].image}
-                        alt={propertyThemeMap[proptheme].label}
-                        width={90}
-                        height={90}
-                      />
-                    </Box>
-                    <Typography variant="h6">
-                      {propertyThemeMap[proptheme].label}
-                    </Typography>
-                  </button>
-                </SwiperSlide>
-              ))}
-            </>
-          </Carousel>
+                      <Box
+                        className="w-15 md:w-22 h-15 md:h-22"
+                        sx={{
+                          backgroundColor: theme.palette.grey[100],
+                          // backgroundColor: alpha(theme.palette.primary.main, 0.1),
+                          padding: "1.5rem",
+                          borderRadius: "9999px",
+                          display: "relative",
+                        }}
+                      >
+                        <Image
+                          src={propertyThemeMap[proptheme].image}
+                          alt={propertyThemeMap[proptheme].label}
+                          width={90}
+                          height={90}
+                        />
+                      </Box>
+                      <Typography variant="h6">
+                        {propertyThemeMap[proptheme].label}
+                      </Typography>
+                    </button>
+                  </SwiperSlide>
+                ))}
+              </>
+            </Carousel>
+          </FadeInSection>
         </div>
       </ThemeSection>
 
@@ -271,96 +271,105 @@ const Home = () => {
                   holiday deserves more than just a stay
                 </Typography>
               </div>
+
+              <div className="grid md:grid-cols-3 gap-2 md:gap-8">
+                <div className="text-center p-2 md:p-6">
+                  <Box
+                    // style={{
+                    //   backgroundColor:
+                    //     theme.palette.mode == "light"
+                    //       ? theme.palette.background.paper
+                    //       : theme.palette.grey[100],
+                    // }}
+                    sx={{
+                      backgroundColor: alpha(theme.palette.primary.main, 0.1),
+                    }}
+                    className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+                  >
+                    <Star
+                      sx={{
+                        fontSize: "32px",
+                        color: theme.palette.primary.main,
+                      }}
+                    />
+                  </Box>
+                  <Typography
+                    variant="h6"
+                    className="text-xl font-semibold mb-3"
+                  >
+                    Premium Properties
+                  </Typography>
+                  <Typography className="text-muted-foreground">
+                    Hand-selected vacation rentals that meet our high standards
+                    for comfort and luxury
+                  </Typography>
+                </div>
+
+                <div className="text-center p-2 md:p-6">
+                  <Box
+                    // style={{
+                    //   backgroundColor:
+                    //     theme.palette.mode == "light"
+                    //       ? theme.palette.background.paper
+                    //       : theme.palette.grey[100],
+                    // }}
+                    sx={{
+                      backgroundColor: alpha(theme.palette.primary.main, 0.1),
+                    }}
+                    className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+                  >
+                    <Shield
+                      sx={{
+                        fontSize: "32px",
+                        color: theme.palette.primary.main,
+                      }}
+                    />
+                  </Box>
+                  <Typography
+                    variant="h6"
+                    className="text-xl font-semibold mb-3"
+                  >
+                    Trusted & Secure
+                  </Typography>
+                  <Typography className="text-muted-foreground">
+                    All our properties are verified and we provide secure
+                    booking with full support
+                  </Typography>
+                </div>
+
+                <div className="text-center p-2 md:p-6">
+                  <Box
+                    // style={{
+                    //   backgroundColor:
+                    //     theme.palette.mode == "light"
+                    //       ? theme.palette.background.paper
+                    //       : theme.palette.grey[100],
+                    // }}
+                    sx={{
+                      backgroundColor: alpha(theme.palette.primary.main, 0.1),
+                    }}
+                    className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+                  >
+                    <Clock
+                      sx={{
+                        fontSize: "32px",
+                        color: theme.palette.primary.main,
+                      }}
+                    />
+                  </Box>
+                  <Typography
+                    variant="h6"
+                    className="text-xl font-semibold mb-3"
+                  >
+                    24/7 Support
+                  </Typography>
+                  <Typography className="text-muted-foreground">
+                    Our dedicated team is always available to ensure your
+                    vacation is perfect
+                  </Typography>
+                </div>
+              </div>
             </FadeInSection>
-
-            <div className="grid md:grid-cols-3 gap-2 md:gap-8">
-              <div className="text-center p-2 md:p-6">
-                <Box
-                  // style={{
-                  //   backgroundColor:
-                  //     theme.palette.mode == "light"
-                  //       ? theme.palette.background.paper
-                  //       : theme.palette.grey[100],
-                  // }}
-                  sx={{
-                    backgroundColor: alpha(theme.palette.primary.main, 0.1),
-                  }}
-                  className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
-                >
-                  <Star
-                    sx={{
-                      fontSize: "32px",
-                      color: theme.palette.primary.main,
-                    }}
-                  />
-                </Box>
-                <Typography variant="h6" className="text-xl font-semibold mb-3">
-                  Premium Properties
-                </Typography>
-                <Typography className="text-muted-foreground">
-                  Hand-selected vacation rentals that meet our high standards
-                  for comfort and luxury
-                </Typography>
-              </div>
-
-              <div className="text-center p-2 md:p-6">
-                <Box
-                  // style={{
-                  //   backgroundColor:
-                  //     theme.palette.mode == "light"
-                  //       ? theme.palette.background.paper
-                  //       : theme.palette.grey[100],
-                  // }}
-                  sx={{
-                    backgroundColor: alpha(theme.palette.primary.main, 0.1),
-                  }}
-                  className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
-                >
-                  <Shield
-                    sx={{
-                      fontSize: "32px",
-                      color: theme.palette.primary.main,
-                    }}
-                  />
-                </Box>
-                <Typography variant="h6" className="text-xl font-semibold mb-3">
-                  Trusted & Secure
-                </Typography>
-                <Typography className="text-muted-foreground">
-                  All our properties are verified and we provide secure booking
-                  with full support
-                </Typography>
-              </div>
-
-              <div className="text-center p-2 md:p-6">
-                <Box
-                  // style={{
-                  //   backgroundColor:
-                  //     theme.palette.mode == "light"
-                  //       ? theme.palette.background.paper
-                  //       : theme.palette.grey[100],
-                  // }}
-                  sx={{
-                    backgroundColor: alpha(theme.palette.primary.main, 0.1),
-                  }}
-                  className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
-                >
-                  <Clock
-                    sx={{
-                      fontSize: "32px",
-                      color: theme.palette.primary.main,
-                    }}
-                  />
-                </Box>
-                <Typography variant="h6" className="text-xl font-semibold mb-3">
-                  24/7 Support
-                </Typography>
-                <Typography className="text-muted-foreground">
-                  Our dedicated team is always available to ensure your vacation
-                  is perfect
-                </Typography>
-              </div>
-            </div>
           </div>
         </Paper>
       </section>
@@ -379,58 +388,58 @@ const Home = () => {
                 delighted guests.
               </Typography>
             </div>
-          </FadeInSection>
-          <div className="w-full flex justify-between">
-            <Carousel
-              spaceBetween={20}
-              slidesPerView={3}
-              breakpoints={{
-                320: { slidesPerView: 1 },
-                768: { slidesPerView: 2 },
-                1024: { slidesPerView: 3 },
-              }}
-              showDots={false}
-              autoplay={{
-                delay: 3200,
-                disableOnInteraction: true,
-              }}
-            >
-              {testimonials.map((t) => (
-                <SwiperSlide key={t.id}>
-                  <div className="flex flex-col items-center">
-                    <div className="relative w-full aspect-[1/1] md:aspect-[1/1] overflow-hidden shadow-lg">
-                      {t.mediaType == "video" ? (
-                        <video
-                          src={t.src}
-                          controls
-                          playsInline
-                          className="absolute top-0 left-0 w-full h-full object-cover"
-                          poster={t.poster}
-                        />
-                      ) : (
-                        <Image
-                          src={t.src}
-                          alt={t.name}
-                          fill
-                          style={{
-                            objectFit: "cover",
-                            objectPosition: "center",
-                          }}
-                          sizes="100vw"
-                          priority={true}
-                        />
-                      )}
-                    </div>
+            <div className="w-full flex justify-between">
+              <Carousel
+                spaceBetween={20}
+                slidesPerView={3}
+                breakpoints={{
+                  320: { slidesPerView: 1 },
+                  768: { slidesPerView: 2 },
+                  1024: { slidesPerView: 3 },
+                }}
+                showDots={false}
+                autoplay={{
+                  delay: 3200,
+                  disableOnInteraction: true,
+                }}
+              >
+                {testimonials.map((t) => (
+                  <SwiperSlide key={t.id}>
+                    <div className="flex flex-col items-center">
+                      <div className="relative w-full aspect-[1/1] md:aspect-[1/1] overflow-hidden shadow-lg">
+                        {t.mediaType == "video" ? (
+                          <video
+                            src={t.src}
+                            controls
+                            playsInline
+                            className="absolute top-0 left-0 w-full h-full object-cover"
+                            poster={t.poster}
+                          />
+                        ) : (
+                          <Image
+                            src={t.src}
+                            alt={t.name}
+                            fill
+                            style={{
+                              objectFit: "cover",
+                              objectPosition: "center",
+                            }}
+                            sizes="100vw"
+                            priority={true}
+                          />
+                        )}
+                      </div>
 
-                    <Typography className="!mt-3" variant="h6">
-                      {t.name}
-                    </Typography>
-                    <Typography variant="subtitle1">{t.property}</Typography>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Carousel>
-          </div>
+                      <Typography className="!mt-3" variant="h6">
+                        {t.name}
+                      </Typography>
+                      <Typography variant="subtitle1">{t.property}</Typography>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </Carousel>
+            </div>
+          </FadeInSection>
         </div>
       </section>
 
@@ -440,7 +449,7 @@ const Home = () => {
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div className="relative slide-right md:aspect-[4/3] aspect-[16/9]">
               <Image
-                src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F30.webp?alt=media&token=421edf38-6b69-44df-af5f-d6de5e43c739"
+                src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fswimmingpool9.webp?alt=media&token=4d4e883c-4172-44e3-986d-471816051039"
                 alt="Villa management services"
                 fill
                 style={{

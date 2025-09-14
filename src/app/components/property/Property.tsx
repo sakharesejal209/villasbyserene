@@ -24,7 +24,7 @@ import {
   BedOutlined as BedIcon,
   HouseOutlined as HouseIcon,
   RestaurantOutlined as MealsIcon,
-  ShowerOutlined as ShowerIcon,
+  BathtubOutlined as ShowerIcon,
   PoolOutlined as PoolIcon,
   ArrowRightOutlined as ArrowRight,
   ExpandMoreOutlined as ExpandMoreIcon,
@@ -41,6 +41,9 @@ import PropertyDTO from "@/app/@types/property-dto";
 import EnquiryForm from "./enquiry";
 import { SwiperSlide } from "swiper/react";
 import Image from "next/image";
+import { FadeInSection } from "../home/home";
+import { motion, useScroll, useTransform } from "motion/react";
+
 
 type PropertyPropType = {
   propertyDetails: PropertyDTO;
@@ -65,13 +68,13 @@ const Customsection = styled("section")<CustomSectionProps>(
     backgroundPosition: "center",
     backgroundSize: "cover",
     width: "100%",
-    height: "60vh",
+    height: "80vh",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
     "@media (min-width:768px)": {
-      height: "75vh",
+      height: "80vh",
     },
   })
 );
@@ -80,6 +83,19 @@ export const badScript = Edu_SA_Beginner({
   subsets: ["latin"],
   weight: "400",
 });
+
+export const SlideTopSection = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <motion.div
+      initial={{ y: 60 }}
+      whileInView={{ y: 0 }}
+      viewport={{ once: false, margin: "-100px" }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 const Property: FC<PropertyPropType> = (props) => {
   const { propertyDetails } = props;
@@ -146,7 +162,7 @@ const Property: FC<PropertyPropType> = (props) => {
     (e) => e.is_banner_image === "true"
   )[0];
 
-  const unitBannerImages = console.log("propertydetails:", propertyDetails);
+  console.log("propertydetails:", propertyDetails);
 
   return (
     <div>
@@ -156,7 +172,7 @@ const Property: FC<PropertyPropType> = (props) => {
         }
       >
         <div className="container p-4 md:p-0">
-          <div className="text-white">
+          <div className="text-white slide-bottom">
             <Typography variant="h3">{propertyDetails.name}</Typography>
             <Typography className="mt-4" variant="h4">
               {propertyDetails.area}, {propertyDetails.state}
@@ -181,48 +197,27 @@ const Property: FC<PropertyPropType> = (props) => {
       </Customsection>
 
       <section>
-        <div className="container w-full grid grid-cols-12 md:gap-12">
-          <div className="col-span-12 md:col-span-8">
-            <div className="container">
-              <ReadMore
-                fontFamily={badScript.style.fontFamily}
-                maxLength={250}
-                text={propertyDetails.description}
-                className="!text-xl"
-              />
+        {/* <SlideTopSection> */}
+          <div className="container w-full grid grid-cols-12 md:gap-12 p-0">
+            <div className="col-span-12 md:col-span-8">
+              <div className="container">
+                <ReadMore
+                  fontFamily={badScript.style.fontFamily}
+                  maxLength={250}
+                  text={propertyDetails.description}
+                  className="!text-xl"
+                />
 
-              {/* desktop view */}
-              <div className="hidden md:flex items-center gap-4 my-6">
-                <Card className="p-2 !rounded-lg">
-                  <HouseIcon />{" "}
-                  {getAccomodation(propertyDetails.accommodationType)}
-                </Card>
-                <Card className="p-2 !rounded-lg">
-                  <PeopleIcon /> {propertyDetails.maxcapacity} Guests
-                </Card>
-                <Card className="p-2 !rounded-lg">
-                  <BedIcon /> {propertyDetails.bedroomcount} Bedrooms
-                </Card>
-                {propertyDetails.mealsAvailable && (
+                {/* desktop view */}
+                <div className="hidden md:grid grid-cols-4 items-center gap-4 my-6">
                   <Card className="p-2 !rounded-lg">
-                    <MealsIcon /> Meals Available
-                  </Card>
-                )}
-              </div>
-
-              {/* mobile vew */}
-              <div className="flex md:hidden items-start gap-7 my-6">
-                <div>
-                  <Card className="p-2 !rounded-lg mb-8">
-                    <HouseIcon />
+                    <HouseIcon />{" "}
                     {getAccomodation(propertyDetails.accommodationType)}
                   </Card>
                   <Card className="p-2 !rounded-lg">
                     <PeopleIcon /> {propertyDetails.maxcapacity} Guests
                   </Card>
-                </div>
-                <div>
-                  <Card className="p-2 !rounded-lg mb-8">
+                  <Card className="p-2 !rounded-lg">
                     <BedIcon /> {propertyDetails.bedroomcount} Bedrooms
                   </Card>
                   {propertyDetails.mealsAvailable && (
@@ -231,301 +226,325 @@ const Property: FC<PropertyPropType> = (props) => {
                     </Card>
                   )}
                 </div>
-              </div>
 
-              <div className="my-6">
-                <Typography variant="h5">Accomodation</Typography>
-                {propertyDetails.Unit.map((category) => (
-                  <div key={category.unit_id} className="mt-3">
-                    <Typography className="!text-lg" variant="inherit">
-                      {category.title}
-                    </Typography>
+                {/* mobile vew */}
+                <div className="grid grid-cols-2 md:hidden items-start gap-7 my-6">
+                  <div>
+                    <Card className="p-2 !rounded-lg mb-8">
+                      <HouseIcon />
+                      {getAccomodation(propertyDetails.accommodationType)}
+                    </Card>
+                    <Card className="p-2 !rounded-lg">
+                      <PeopleIcon /> {propertyDetails.maxcapacity} Guests
+                    </Card>
+                  </div>
+                  <div>
+                    <Card className="p-2 !rounded-lg mb-8">
+                      <BedIcon /> {propertyDetails.bedroomcount} Bedrooms
+                    </Card>
+                    {propertyDetails.mealsAvailable && (
+                      <Card className="p-2 !rounded-lg">
+                        <MealsIcon /> Meals Available
+                      </Card>
+                    )}
+                  </div>
+                </div>
 
-                    <div className="w-full grid grid-cols-12 mb-8 gap-2 md:mb-4 md:grid-cols-12 md:gap-10 md:p-4 mt-2">
-                      <button
-                        onClick={() => handleOpenGallery(category.unit_id)}
-                        className="col-span-12 md:col-span-5 relative"
-                      >
-                        <img
-                          className="max-w-full h-auto"
-                          src={
-                            category.unitImages.find(
-                              (e) => e.is_banner_image === "true"
-                            )?.image?.image_url ?? ""
-                          }
-                          alt={
-                            category.unitImages.find(
-                              (e) => e.is_banner_image === "true"
-                            )?.image?.image_alt ?? "image alt text"
-                          }
-                        />
-                        <div className="absolute bottom-0 right-0 cursor-pointer flex items-center text-white">
-                          <Typography
-                            variant="subtitle1"
-                            className="hover:underline"
-                          >
-                            See all
-                          </Typography>
-                          <ArrowRight />
-                        </div>
-                      </button>
-                      <div className="col-span-12 flex md:col-span-7 flex-col justify-center md:gap-2">
-                        <Typography>{category.description}</Typography>
-                        <div className="flex items-center gap-3 mt-3">
-                          <Typography>
-                            <BedIcon /> {category.no_of_bedrooms} beds
-                          </Typography>
-                          <Typography>
-                            <ShowerIcon /> {category.no_of_restrooms} Bathroom
-                          </Typography>
-                          {category.is_pool_available && (
-                            <Typography>
-                              <PoolIcon /> {category.is_pool_available} Swimming
-                              Pool
+                <div className="my-6">
+                  <Typography variant="h5">Accomodation</Typography>
+                  {propertyDetails.Unit.map((category) => (
+                    <div key={category.unit_id} className="mt-3">
+                      <Typography className="!text-lg" variant="inherit">
+                        {category.title}
+                      </Typography>
+
+                      <div className="w-full grid grid-cols-12 mb-8 gap-2 md:mb-4 md:grid-cols-12 md:gap-8 md:p-4 mt-2">
+                        <button
+                          onClick={() => handleOpenGallery(category.unit_id)}
+                          className="col-span-12 md:col-span-5 relative"
+                        >
+                          <img
+                            className="max-w-full h-auto"
+                            src={
+                              category.unitImages.find(
+                                (e) => e.is_banner_image === "true"
+                              )?.image?.image_url ?? ""
+                            }
+                            alt={
+                              category.unitImages.find(
+                                (e) => e.is_banner_image === "true"
+                              )?.image?.image_alt ?? "image alt text"
+                            }
+                          />
+                          <div className="absolute bottom-0 right-0 cursor-pointer flex items-center text-white">
+                            <Typography
+                              variant="subtitle1"
+                              className="hover:underline"
+                            >
+                              See all
                             </Typography>
-                          )}
+                            <ArrowRight />
+                          </div>
+                        </button>
+                        <div className="col-span-12 flex md:col-span-7 flex-col justify-center md:gap-2">
+                          <Typography>{category.description}</Typography>
+                          <div className="grid mdgrid-cols-3 grid-cols-2 items-center gap-3 mt-3">
+                            <Typography>
+                              <BedIcon /> {category.no_of_bedrooms} beds
+                            </Typography>
+                            <Typography>
+                              <ShowerIcon /> {category.no_of_restrooms} Bathroom
+                            </Typography>
+                            {category.is_pool_available && (
+                              <Typography>
+                                <PoolIcon /> {category.is_pool_available}{" "}
+                                Swimming Pool
+                              </Typography>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
 
-              <div className="my-6">
-                <Accordion defaultExpanded className="mb-3">
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="amenities-content"
-                    id="amenities-header"
-                  >
-                    <Typography className="!font-bold" component="span">
-                      Amenities
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <Box
-                      display="grid"
-                      gridTemplateColumns="repeat(auto-fill, minmax(160px, 1fr))"
-                      gap={2}
-                    >
-                      {amenities
-                        .toSorted((a, b) => a.display_order - b.display_order)
-                        .map((item) => {
-                          const Icon = amenityIconMap[item.amenity_id];
-                          return (
-                            <Box
-                              key={item.amenity_id}
-                              display="flex"
-                              alignItems="center"
-                              gap={1}
-                            >
-                              {Icon && <Icon fontSize="small" />}
-                              <Typography variant="body2">
-                                {item.amenity.name}
-                              </Typography>
-                            </Box>
-                          );
-                        })}
-                    </Box>
-                  </AccordionDetails>
-                </Accordion>
-                {propertyDetails.mealsAvailable && (
-                  <Accordion className="mb-3">
+                <div className="my-6">
+                  <Accordion defaultExpanded className="mb-3">
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
-                      aria-controls="foodmenu-content"
-                      id="foodmenu-header"
+                      aria-controls="amenities-content"
+                      id="amenities-header"
                     >
                       <Typography className="!font-bold" component="span">
-                        Food Menu
+                        Amenities
                       </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                      <ReadMore text={foodMenu.description} maxLength={200} />
-                      <div className="flex gap-6 my-6">
-                        {foodMenu.isVeg && (
-                          <div className="flex items-center gap-3">
-                            <svg
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <rect
-                                x="0.5"
-                                y="0.5"
-                                width="23"
-                                height="23"
-                                rx="1.5"
-                                fill="white"
-                                stroke="#11BF0E"
-                              ></rect>
-                              <rect
-                                x="5"
-                                y="5"
-                                width="14"
-                                height="14"
-                                rx="7"
-                                fill="#11BF0E"
-                              ></rect>
-                            </svg>
-                            Veg
-                          </div>
-                        )}
-                        {foodMenu.isNonVeg && (
-                          <div className="flex items-center gap-3">
-                            <svg
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <rect
-                                x="0.5"
-                                y="0.5"
-                                width="23"
-                                height="23"
-                                rx="1.5"
-                                fill="white"
-                                stroke="#FA4B4B"
-                              ></rect>
-                              <rect
-                                x="5"
-                                y="5"
-                                width="14"
-                                height="14"
-                                rx="7"
-                                fill="#FA4B4B"
-                              ></rect>
-                            </svg>
-                            Non-Veg
-                          </div>
-                        )}
-                      </div>
-                      <div className="mb-4">
-                        <Typography className="!my-2">
-                          Breakfast Time: {foodMenu.breakfastTime}
-                        </Typography>
-                        <Typography className="!my-2">
-                          Lunch Time: {foodMenu.lunchTime}
-                        </Typography>
-                        <Typography className="!my-2">
-                          Hightea Time: {foodMenu.highteaTime}
-                        </Typography>
-                        <Typography className="!my-2">
-                          Dinner Time: {foodMenu.dinnerTime}
-                        </Typography>
-                      </div>
-                      <Button
-                        variant="outlined"
-                        onClick={() => window.open(foodMenu.menuUrl)}
+                      <Box
+                        display="grid"
+                        gridTemplateColumns="repeat(auto-fill, minmax(160px, 1fr))"
+                        gap={2}
                       >
-                        View Menu
-                      </Button>
+                        {amenities
+                          .toSorted((a, b) => a.display_order - b.display_order)
+                          .map((item) => {
+                            const Icon = amenityIconMap[item.amenity_id];
+                            return (
+                              <Box
+                                key={item.amenity_id}
+                                display="flex"
+                                alignItems="center"
+                                gap={1}
+                              >
+                                {Icon && <Icon fontSize="small" />}
+                                <Typography variant="body2">
+                                  {item.amenity.name}
+                                </Typography>
+                              </Box>
+                            );
+                          })}
+                      </Box>
                     </AccordionDetails>
                   </Accordion>
-                )}
-                <Accordion className="mb-3">
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="houserules-content"
-                    id="houserules-header"
-                  >
-                    <Typography className="!font-bold" component="span">
-                      House Rules
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <div className="mb-2">
-                      <Typography className="!font-bold">
-                        Check-in Time: {propertyDetails.checkin_time}
-                      </Typography>
-                      <Typography className="!font-bold">
-                        Check-out Time: {propertyDetails.checkout_time}
-                      </Typography>
-                    </div>
-                    <div>
-                      <ul className="list-disc pl-5">
-                        {houseRules.map((item) => (
-                          <li key={item.rule_id}>
-                            {item.houseRule.description}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </AccordionDetails>
-                </Accordion>
-                <Accordion className="mb-3">
-                  <AccordionSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="cancellation-content"
-                    id="cancellation-header"
-                  >
-                    <Typography className="!font-bold" component="span">
-                      Cancellation Policy
-                    </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <CancellationPolicy />
-                  </AccordionDetails>
-                </Accordion>
-              </div>
-
-              <div className="my-6">
-                <Typography className="!mb-4" variant="h6">
-                  Near By Attractions
-                </Typography>
-                <Carousel
-                  spaceBetween={20}
-                  slidesPerView={2}
-                  breakpoints={{
-                    640: { slidesPerView: 2 },
-                    900: { slidesPerView: 3 },
-                  }}
-                >
-                  <>
-                    {propertyDetails.NearByAttractions?.map((item) => (
-                      <SwiperSlide key={item.attraction_id}>
-                        <div>
-                          <div className="h-[300px] md:h-[400px]">
-                            <div className="relative flex h-[50%]">
-                              <Image
-                                src={item.imageUrl}
-                                alt={item.title}
-                                fill
-                                style={{
-                                  objectFit: "cover",
-                                  objectPosition: "center",
-                                }}
-                              />
+                  {propertyDetails.mealsAvailable && (
+                    <Accordion className="mb-3">
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="foodmenu-content"
+                        id="foodmenu-header"
+                      >
+                        <Typography className="!font-bold" component="span">
+                          Food Menu
+                        </Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <ReadMore text={foodMenu.description} maxLength={200} />
+                        <div className="flex gap-6 my-6">
+                          {foodMenu.isVeg && (
+                            <div className="flex items-center gap-3">
+                              <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <rect
+                                  x="0.5"
+                                  y="0.5"
+                                  width="23"
+                                  height="23"
+                                  rx="1.5"
+                                  fill="white"
+                                  stroke="#11BF0E"
+                                ></rect>
+                                <rect
+                                  x="5"
+                                  y="5"
+                                  width="14"
+                                  height="14"
+                                  rx="7"
+                                  fill="#11BF0E"
+                                ></rect>
+                              </svg>
+                              Veg
                             </div>
-                            <div className="m-4 ml-0 overflow-y-auto h-[43%] wrap-break-word">
-                              <Typography variant="h6">{item.title}</Typography>
-                              <Typography variant="body2">
-                                <span className="font-bold">Distance:</span>{" "}
-                                {item.distance}
-                              </Typography>
-                              <ReadMore
-                                textVariant="body2"
-                                text={item.description}
-                                maxLength={80}
-                              />
+                          )}
+                          {foodMenu.isNonVeg && (
+                            <div className="flex items-center gap-3">
+                              <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <rect
+                                  x="0.5"
+                                  y="0.5"
+                                  width="23"
+                                  height="23"
+                                  rx="1.5"
+                                  fill="white"
+                                  stroke="#FA4B4B"
+                                ></rect>
+                                <rect
+                                  x="5"
+                                  y="5"
+                                  width="14"
+                                  height="14"
+                                  rx="7"
+                                  fill="#FA4B4B"
+                                ></rect>
+                              </svg>
+                              Non-Veg
+                            </div>
+                          )}
+                        </div>
+                        <div className="mb-4">
+                          <Typography className="!my-2">
+                            Breakfast Time: {foodMenu.breakfastTime}
+                          </Typography>
+                          <Typography className="!my-2">
+                            Lunch Time: {foodMenu.lunchTime}
+                          </Typography>
+                          <Typography className="!my-2">
+                            Hightea Time: {foodMenu.highteaTime}
+                          </Typography>
+                          <Typography className="!my-2">
+                            Dinner Time: {foodMenu.dinnerTime}
+                          </Typography>
+                        </div>
+                        <Button
+                          variant="outlined"
+                          onClick={() => window.open(foodMenu.menuUrl)}
+                        >
+                          View Menu
+                        </Button>
+                      </AccordionDetails>
+                    </Accordion>
+                  )}
+                  <Accordion className="mb-3">
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="houserules-content"
+                      id="houserules-header"
+                    >
+                      <Typography className="!font-bold" component="span">
+                        House Rules
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <div className="mb-2">
+                        <Typography className="!font-bold">
+                          Check-in Time: {propertyDetails.checkin_time}
+                        </Typography>
+                        <Typography className="!font-bold">
+                          Check-out Time: {propertyDetails.checkout_time}
+                        </Typography>
+                      </div>
+                      <div>
+                        <ul className="list-disc pl-5">
+                          {houseRules.map((item) => (
+                            <li key={item.rule_id}>
+                              {item.houseRule.description}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </AccordionDetails>
+                  </Accordion>
+                  <Accordion className="mb-3">
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="cancellation-content"
+                      id="cancellation-header"
+                    >
+                      <Typography className="!font-bold" component="span">
+                        Cancellation Policy
+                      </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <CancellationPolicy />
+                    </AccordionDetails>
+                  </Accordion>
+                </div>
+
+                <div className="my-6">
+                  <Typography className="!mb-4" variant="h6">
+                    Near By Attractions
+                  </Typography>
+                  <Carousel
+                    spaceBetween={20}
+                    slidesPerView={2}
+                    breakpoints={{
+                      640: { slidesPerView: 2 },
+                      900: { slidesPerView: 3 },
+                    }}
+                  >
+                    <>
+                      {propertyDetails.NearByAttractions?.map((item) => (
+                        <SwiperSlide key={item.attraction_id}>
+                          <div>
+                            <div className="h-[300px] md:h-[400px]">
+                              <div className="relative flex h-[50%]">
+                                <Image
+                                  src={item.imageUrl}
+                                  alt={item.title}
+                                  fill
+                                  style={{
+                                    objectFit: "cover",
+                                    objectPosition: "center",
+                                  }}
+                                />
+                              </div>
+                              <div className="m-4 ml-0 overflow-y-auto h-[43%] wrap-break-word">
+                                <Typography variant="h6">
+                                  {item.title}
+                                </Typography>
+                                <Typography variant="body2">
+                                  <span className="font-bold">Distance:</span>{" "}
+                                  {item.distance}
+                                </Typography>
+                                <ReadMore
+                                  textVariant="body2"
+                                  text={item.description}
+                                  maxLength={80}
+                                />
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </SwiperSlide>
-                    ))}
-                  </>
-                </Carousel>
-              </div>
+                        </SwiperSlide>
+                      ))}
+                    </>
+                  </Carousel>
+                </div>
 
-              {propertyDetails.map_location !== null && (
-                <div>
-                  <Typography variant="h5">Location</Typography>
-                  <div className="w-full h-[200px] md:h-[350px] mt-1 mb-3 rounded-lg overflow-hidden shadow">
-                    {/* {coord && (
+                {propertyDetails.map_location !== null && (
+                  <div>
+                    <Typography variant="h5">Location</Typography>
+                    <div className="w-full h-[200px] md:h-[350px] mt-1 mb-3 rounded-lg overflow-hidden shadow">
+                      {/* {coord && (
                       <MapContainer
                         // bounds={}
                         center={[coord?.lat, coord?.lng]}
@@ -541,62 +560,66 @@ const Property: FC<PropertyPropType> = (props) => {
                         </Marker>
                       </MapContainer>
                     )} */}
-                    <iframe
-                      src={propertyDetails.map_location}
-                      width="100%"
-                      height="100%"
-                      allowFullScreen
-                      loading="lazy"
-                      referrerPolicy="no-referrer-when-downgrade"
-                      title="Cliff view villa location"
-                      aria-label="Cliff view villa location"
-                    />
+                      <iframe
+                        src={propertyDetails.map_location}
+                        width="100%"
+                        height="100%"
+                        allowFullScreen
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title="Cliff view villa location"
+                        aria-label="Cliff view villa location"
+                      />
+                    </div>
+                    <Button
+                      onClick={() => {
+                        window.open(
+                          `https://www.google.com/maps/dir/?api=1&destination=${coord?.lat},${coord?.lng}`,
+                          "_blank"
+                        );
+                      }}
+                      variant="outlined"
+                    >
+                      Get Directions <ArrowRight />
+                    </Button>
                   </div>
-                  <Button
-                    onClick={() => {
-                      window.open(
-                        `https://www.google.com/maps/dir/?api=1&destination=${coord?.lat},${coord?.lng}`,
-                        "_blank"
-                      );
-                    }}
-                    variant="outlined"
-                  >
-                    Get Directions <ArrowRight />
-                  </Button>
-                </div>
-              )}
+                )}
+              </div>
+            </div>
+            <div className="hidden md:block col-span-4 sticky top-[90px] h-fit">
+              <Typography className="!mb-2" variant="h6">
+                Plan Your Exclusive Escape!
+              </Typography>
+              <Card
+                // sx={(theme) => ({
+                //   boxShadow:
+                //     theme.palette.mode === "dark" ? "none" : "0px 0px 10px 0px ",
+                // })}
+                className="!shadow-lg"
+              >
+                <EnquiryForm
+                  propertyName={propertyDetails.name}
+                  whatsappNumber="9594377736"
+                />
+              </Card>
             </div>
           </div>
-          <div className="hidden md:block col-span-4 sticky top-[90px] h-fit">
-            <Typography className="!mb-2" variant="h6">
-              Plan Your Exclusive Escape!
-            </Typography>
-            <Card
-              // sx={(theme) => ({
-              //   boxShadow:
-              //     theme.palette.mode === "dark" ? "none" : "0px 0px 10px 0px ",
-              // })}
-              className="!shadow-lg"
-            >
-              <EnquiryForm
-                propertyName={propertyDetails.name}
-                whatsappNumber="9594377736"
-              />
-            </Card>
-          </div>
-        </div>
+        {/* </SlideTopSection> */}
       </section>
 
-      <Paper className="md:hidden fixed bottom-0 h-fit w-full  px-4 py-3 !rounded-none z-50">
-        <Typography className="!mb-3" color="success">
+      <Paper className="md:hidden fixed bottom-0 h-fit w-full px-2 md:px-4 py-1.5 md:py-3 !rounded-none z-50">
+        <Typography className="mb-1 md:!mb-3" color="success">
           <Available /> Add dates to check the availability
         </Typography>
         <div className="flex justify-between items-center w-full gap-3">
           <div>
-            <Typography className="!mb-0.5" variant="h4">
+            <Typography
+              className="!mb-0.5 !text-[18px] md:!text-[25px]"
+              variant="h4"
+            >
               Escape to Comfort!
             </Typography>
-            <Typography variant="subtitle1">
+            <Typography className="hidden md:block" variant="subtitle1">
               Reserve Your Stay in Just One Tap
             </Typography>
           </div>

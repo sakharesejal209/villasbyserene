@@ -12,7 +12,7 @@ import {
   WhatsApp,
 } from "@mui/icons-material";
 
-import logoLight from "../../../../public/assets/logo-outlined-dark.png";
+import logoLight from "../../../../public/assets/logoLight.png";
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";

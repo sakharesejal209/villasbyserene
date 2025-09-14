@@ -16,8 +16,8 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 
 import { useThemeContext } from "@/context/ThemeContext";
 import Image from "next/image";
-import logoLight from "../../../../public/assets/logo-colored-light-orientation.png";
-import logoDark from "../../../../public/assets/logo-colored-dark-orientation.png";
+import logoLight from "../../../../public/assets/logoDark.png";
+import logoDark from "../../../../public/assets/logoLight.png";
 import Link from "next/link";
 
 const Navbar = () => {
@@ -41,7 +41,7 @@ const Navbar = () => {
             {/* Brand (desktop) */}
             <Link href="/">
               <Image
-                className="max-sm:w-[130px] sm:w-[140px] md:w-[200px]"
+                className="max-sm:w-[130px] sm:w-[140px] md:w-[110px]"
                 alt="villasbyserene logo"
                 src={mode === "light" ? logoLight : logoDark}
               />

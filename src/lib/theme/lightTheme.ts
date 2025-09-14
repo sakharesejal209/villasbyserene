@@ -192,9 +192,8 @@ let lightTheme: Theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 0,
-          // border: `1px solid ${commonColors.border}`,
+          border: `1px solid ${commonColors.border}`,
           boxShadow: "none",
-          border: "none",
         },
       },
     },

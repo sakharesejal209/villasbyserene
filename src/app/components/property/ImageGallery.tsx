@@ -45,7 +45,10 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
 
   return (
     <div>
-      <Masonry columns={{ xs: 2, md: 3 }} spacing={1.5}>
+      <Masonry
+        columns={{ xs: 2, md: 3 }}
+        spacing={{ xs: 0.5, md: 1.5}}
+      >
         {images.map((item, index) => (
           <button
             key={index}
@@ -102,7 +105,11 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
             overflow: "hidden",
           }}
         >
-          <Carousel slidesPerView={1} initialSlide={startIndex}>
+          <Carousel
+            slidesPerView={1}
+            initialSlide={startIndex}
+            showDots={false}
+          >
             {images.map((e, idx) => (
               <SwiperSlide key={idx}>
                 <div className="relative w-full aspect-[4/3] md:aspect-[16/9] overflow-hidden">
@@ -121,7 +128,7 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
                 </div>
 
                 {"category" in e && e.hasOwnProperty("category") && (
-                  <div className="absolute bottom-16 left-8 bg-black/70 text-white text-md px-2 py-1 rounded-md">
+                  <div className="absolute bottom-5 left-5 bg-black/70 text-white text-md px-2 py-1 rounded-md">
                     {
                       (e as { src: string; alt: string; category: string })
                         .category
