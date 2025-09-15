@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import darkImg from "../../../public/assets/logoDark.png";
 import lightImg from "../../../public/assets/logoLight.png";
 
+
 const Login = () => {
   const router = useRouter();
   const [password, setPassword] = useState("");
