@@ -1,21 +1,15 @@
 "use client";
 
-import { uploadAllImages } from "@/scripts/postImages";
+import { createManyImages } from "@/scripts/postImages";
 import { Button, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import UploadFuncCom from "./uploadFuncCom";
 import { fetchFirebaseImages } from "./fetchFromFirebase";
 import Image from "next/image";
 
 export type ImagesType = {
   image_url: string;
   image_alt: string;
-  image_category: number;
-};
-
-type FirebaseImage = {
-  url: string;
-  name: string;
+  image_category_id: number;
 };
 
 const AllImages = () => {
@@ -50,29 +44,31 @@ const AllImages = () => {
     {
       image_url: "",
       image_alt: "",
-      image_category: 0,
+      image_category_id: 0,
     },
   ]);
-  const [send, setSend] = useState<boolean>(false);
 
   useEffect(() => {
     const temp: ImagesType[] = firebaseImages.map((item) => ({
       image_url: item != null ? item.url : "",
       image_alt: "",
-      image_category: 0,
+      image_category_id: 0,
     }));
     setImages(temp);
   }, [firebaseImages]);
 
-  const handleSubmit = () => {
-    setSend(true);
-    uploadAllImages(images);
-    console.log("images:", images);
+  const handleSubmit = async () => {
+    const res = await createManyImages(images);
+    if (res.success) {
+      alert("Images saved!");
+    } else {
+      alert(res.message || "Error saving images");
+    }
   };
 
   const handleChange = (
     img: string,
-    field: "image_alt" | "image_category",
+    field: "image_alt" | "image_category_id",
     value: string | number
   ) => {
     setImages((prev) =>
@@ -113,7 +109,7 @@ const AllImages = () => {
                   onChange={(e) =>
                     handleChange(
                       img?.url || "",
-                      "image_category",
+                      "image_category_id",
                       Number(e.target.value)
                     )
                   }
@@ -126,7 +122,7 @@ const AllImages = () => {
         <Button onClick={handleSubmit}>Submit</Button>
       </div>
 
-      {send && <UploadFuncCom images={images} />}
+      {/* {send && <UploadFuncCom images={images} />} */}
     </div>
   );
 };

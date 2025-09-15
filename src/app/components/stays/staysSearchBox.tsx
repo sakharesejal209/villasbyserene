@@ -16,6 +16,7 @@ import {
   ToggleButton,
   ToggleButtonGroup,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { locations } from "../home/searchBox";
 import { useRouter } from "next/navigation";
@@ -39,6 +40,7 @@ type StaysSearchBoxPropType = {
 const StaysSearchBox: FC<StaysSearchBoxPropType> = (props) => {
   const { filters, setFilters, setopenFilters } = props;
   const router = useRouter();
+  const isDesktop = useMediaQuery("(min-width:768px)");
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -49,13 +51,10 @@ const StaysSearchBox: FC<StaysSearchBoxPropType> = (props) => {
       params.set("amenities", filters.amenities.join(","));
     if (filters.accommodationType)
       params.set("accommodation", filters.accommodationType);
-
-    router.replace(`/stays/${filters.location}?${params.toString()}`);
+    if (isDesktop) {
+      router.replace(`/stays/${filters.location}?${params.toString()}`);
+    }
   }, [filters, router]);
-
-  useEffect(() => {
-    console.log("filters:", filters);
-  }, [filters]);
 
   return (
     <div className="block md:col-span-3 sticky top-0 md:h-fit px-4">
@@ -200,7 +199,7 @@ const StaysSearchBox: FC<StaysSearchBoxPropType> = (props) => {
           className="w-full lg:!hidden md:!hidden"
           onClick={() => setopenFilters(false)}
         >
-          Done
+          Search
         </Button>
       </Card>
     </div>
