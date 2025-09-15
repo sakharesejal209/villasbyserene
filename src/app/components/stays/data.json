@@ -24,10 +24,6 @@
     "name": "Air-conditioned"
   },
   {
-    "amenity_id": "geyser",
-    "name": "Geyser"
-  },
-  {
     "amenity_id": "television",
     "name": "Television"
   },

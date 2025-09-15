@@ -104,55 +104,55 @@ async function main() {
   // await prisma.propertyAmenity.createMany({
   //   data: [
   //     {
-  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       property_id: "1cf56e86-e0ce-424c-81dd-301e29b3d624",
   //       amenity_id: "airconditioned",
   //       display_order: 1,
   //     },
   //     // { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", amenity_id: 'bonfire', display_order: 2 },
   //     {
-  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       property_id: "1cf56e86-e0ce-424c-81dd-301e29b3d624",
   //       amenity_id: "swimmingpool",
   //       display_order: 3,
   //     },
   //     // { property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624", amenity_id: 'gazebo', display_order: 4 },
   //     // { property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624", amenity_id: 'evcharging', display_order: 5 },
   //     {
-  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       property_id: "1cf56e86-e0ce-424c-81dd-301e29b3d624",
   //       amenity_id: "lawn",
   //       display_order: 6,
   //     },
   //     {
-  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       property_id: "1cf56e86-e0ce-424c-81dd-301e29b3d624",
   //       amenity_id: "sitoutarea",
   //       display_order: 7,
   //     },
   //     {
-  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       property_id: "1cf56e86-e0ce-424c-81dd-301e29b3d624",
   //       amenity_id: "freeparking",
   //       display_order: 8,
   //     },
   //     {
-  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       property_id: "1cf56e86-e0ce-424c-81dd-301e29b3d624",
   //       amenity_id: "indoorgames",
   //       display_order: 9,
   //     },
+  //     // {
+  //     //   property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //     //   amenity_id: "restaurant",
+  //     //   display_order: 10,
+  //     // },
   //     {
-  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
-  //       amenity_id: "restaurant",
-  //       display_order: 10,
-  //     },
-  //     {
-  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       property_id: "1cf56e86-e0ce-424c-81dd-301e29b3d624",
   //       amenity_id: "television",
   //       display_order: 11,
   //     },
   //     {
-  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       property_id: "1cf56e86-e0ce-424c-81dd-301e29b3d624",
   //       amenity_id: "watersupply",
   //       display_order: 12,
   //     },
   //     {
-  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       property_id: "1cf56e86-e0ce-424c-81dd-301e29b3d624",
   //       amenity_id: "wifi",
   //       display_order: 13,
   //     },

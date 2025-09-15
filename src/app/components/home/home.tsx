@@ -465,7 +465,7 @@ const Home = () => {
                     It&apos;s staff training, marketing, guest communication,
                     upkeep, and a hundred little details.
                   </Typography>
-                  <Typography>That&apos;s where we come in.</Typography>
+                  <Typography className="!my-4">That&apos;s where we come in!</Typography>
                 </div>
                 <div className="my-4">
                   <div className="flex items-start gap-3 mb-3">
@@ -473,7 +473,7 @@ const Home = () => {
                       <TaskAltOutlined className="w-5 h-5" />
                     </div>
                     <Typography>
-                      <span>Complete Management:</span>
+                      <span>Complete Management: </span>
                       From bookings, payments, and toiletries to property visits
                       and staff management
                     </Typography>
@@ -483,7 +483,7 @@ const Home = () => {
                       <TrendingUpOutlined className="w-5 h-5" />
                     </div>
                     <Typography>
-                      <span>Revenue Optimization:</span>
+                      <span>Revenue Optimization: </span>
                       We suggest trendy upgrades and handle marketing to
                       maximize your property&apos;s profitability
                     </Typography>
@@ -493,7 +493,7 @@ const Home = () => {
                       <SettingsOutlined className="w-5 h-5" />
                     </div>
                     <Typography>
-                      <span>Always Guest-Ready:</span>
+                      <span>Always Guest-Ready: </span>
                       Your villa stays in perfect condition with our
                       comprehensive maintenance and preparation services
                     </Typography>
@@ -507,7 +507,7 @@ const Home = () => {
                     size="large"
                     variant="contained"
                     className="!mt-2 flex items-center gap-2"
-                    // onClick={() => navigate("contact")}
+                    onClick={() => router.push('/list')}
                   >
                     <HomeOutlined />
                     List Your Home Today

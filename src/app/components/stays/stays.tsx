@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { Box, Card, Divider, keyframes, Typography } from "@mui/material";
+import { Box, Card, Divider, keyframes, Typography, useTheme } from "@mui/material";
 import {
   PeopleAltOutlined as PeopleIcon,
   BedOutlined as BedIcon,
@@ -47,6 +47,7 @@ const Stays = (props: StaysPropType) => {
 
   const [fits, setFits] = useState<Record<number, "cover" | "contain">>({});
   const router = useRouter();
+  const theme= useTheme();
 
   const toPascalCase = (str: string) =>
     startCase(camelCase(str)).replace(/ /g, "");
@@ -69,7 +70,7 @@ const Stays = (props: StaysPropType) => {
 
   return (
     <div className="col-span-12 md:col-span-9 w-full md:px-4">
-      <div className="flex items-center px-4 gap-1">
+      <div className="flex items-center md:px-4 gap-1">
         <Typography variant="subtitle2" color="textSecondary">
           <Link href={"/"}>Home</Link>
         </Typography>
@@ -84,7 +85,7 @@ const Stays = (props: StaysPropType) => {
       </div>
       {propertiesData?.length ? (
         <>
-          <Typography variant="h4" className="!my-6 px-4">
+          <Typography variant="h4" className="!my-4 md:!my-6 md:px-4">
             {location === "all"
               ? "All Properties"
               : `Properties in ${toPascalCase(location)}`}
@@ -92,7 +93,7 @@ const Stays = (props: StaysPropType) => {
           {propertiesData.map((item) => (
             <Card
               key={item.property_id}
-              className="w-full grid grid-cols-1 mb-4 md:mb-6 gap-2 md:grid-cols-12"
+              className="w-full grid grid-cols-1 my-2 md:my-4 gap-2 md:grid-cols-12"
             >
               <div className="md:col-span-5">
                 <Carousel slidesPerView={1}>
@@ -105,7 +106,7 @@ const Stays = (props: StaysPropType) => {
                         className="hover:cursor-pointer"
                         onClick={() => handleSelect(item)}
                       >
-                        <div className="relative w-full h-full md:aspect-[4/3] aspect-[16/9]">
+                        <div className="relative w-full h-full md:aspect-[5.5/3] aspect-[16/9]">
                           <Image
                             src={e.image != null ? e.image.image_url : ""}
                             alt={
@@ -130,7 +131,7 @@ const Stays = (props: StaysPropType) => {
                   </>
                 </Carousel>
               </div>
-              <div className="md:col-span-7 flex flex-col justify-center md:gap-2 px-3 md:p-8">
+              <div className="md:col-span-7 flex flex-col justify-center md:gap-2 p-3 md:p-7">
                 <Typography
                   className="hover:cursor-pointer"
                   onClick={() => handleSelect(item)}
@@ -158,22 +159,24 @@ const Stays = (props: StaysPropType) => {
                   </div>
                 </div>
                 <Divider />
-                <div className="mt-4 grid grid-cols-3 gap-4">
+                <div className="mt-3 grid grid-cols-2 lg:grid-cols-3 w-max gap-4">
                   {item.themes
                     .filter((item) => item.theme.theme_id != "entireHome")
                     .map((item) => (
                       <Box
                         key={item.theme_id}
                         sx={{
-                          background:
-                            "linear-gradient(90deg, rgba(214, 78, 94, 1), rgba(255, 122, 140, 1), rgba(163, 50, 64, 1))",
+                          background: theme.palette.grey[200],
+                            // "linear-gradient(90deg, #403f3f, #433f3f, #575253)",
+                          //  background:
+                          //    "linear-gradient(90deg, rgb(216, 95, 109), rgb(255, 122, 140), rgb(250, 167, 176))",
                           backgroundSize: "200% 200%",
-                          color: "#fff",
+                          // color: "#fff",
                           borderRadius: "999px",
                           fontWeight: "600",
                           textAlign: "center",
                         }}
-                        className="flex items-center gap-3 px-2 py-1 !rounded-lg reltive"
+                        className="flex md:grid-cols-3 gap-3 px-2 py-0.5 !rounded-2xl reltive"
                       >
                         {/* <Image
                               src={propertyThemeMap[item.theme.theme_id].image}
@@ -181,7 +184,7 @@ const Stays = (props: StaysPropType) => {
                               width={24}
                               height={24}
                             /> */}
-                        <Typography color="white">
+                        <Typography variant="button" className="!font-[400]">
                           {propertyThemeMap[item.theme.theme_id].label}
                         </Typography>
                       </Box>

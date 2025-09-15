@@ -317,7 +317,7 @@ const ListYourProperty = () => {
                         <div className="relative mb-8">
                           <Box
                             sx={{
-                              background: theme.palette.grey[200],
+                              background: theme.palette.grey[300],
                             }}
                             className="w-20 h-20 flex items-center rounded-md justify-center mx-auto mb-4"
                           >

@@ -38,9 +38,9 @@ export default async function Layout({
     <html lang="en" className={roboto.className + " " + ibmPlex.className}>
       <body className="flex flex-col min-h-screen">
         <ClientProviders propertiesData={propertiesData}>
-          {/* <Navbar /> */}
+          <Navbar />
           <main>{children}</main>
-          {/* <Footer /> */}
+          <Footer />
         </ClientProviders>
       </body>
     </html>

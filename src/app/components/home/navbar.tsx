@@ -19,19 +19,21 @@ import Image from "next/image";
 import logoLight from "../../../../public/assets/logoDark.png";
 import logoDark from "../../../../public/assets/logoLight.png";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const { mode, toggleTheme } = useThemeContext();
   const [anchorElNav, setAnchorElNav] = React.useState<
     (EventTarget & HTMLButtonElement) | null
   >(null);
+  const router = useRouter();
 
   const handleOpenNavMenu = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => setAnchorElNav(event.currentTarget);
   const handleCloseNavMenu = () => setAnchorElNav(null);
 
-   const trigger = useScrollTrigger();
+  const trigger = useScrollTrigger();
 
   return (
     <Slide appear={false} direction="down" in={!trigger}>
@@ -41,7 +43,7 @@ const Navbar = () => {
             {/* Brand (desktop) */}
             <Link href="/">
               <Image
-                className="max-sm:w-[130px] sm:w-[140px] md:w-[110px]"
+                className="max-sm:w-[90px] sm:w-[100px] md:w-[110px]"
                 alt="villasbyserene logo"
                 src={mode === "light" ? logoLight : logoDark}
               />
@@ -58,12 +60,14 @@ const Navbar = () => {
               </Link>
             </Box> */}
               <div className="hidden md:flex justify-end items-center gap-4">
-                <Typography
-                  // color="primary"
-                  className="hover:underline cursor-pointer"
-                >
-                  List your home
-                </Typography>
+                <button onClick={() => router.push("/list")}>
+                  <Typography
+                    // color="primary"
+                    className="hover:underline cursor-pointer"
+                  >
+                    List your home
+                  </Typography>
+                </button>
                 <IconButton onClick={toggleTheme}>
                   {mode === "light" ? (
                     <DarkModeOutlinedIcon />

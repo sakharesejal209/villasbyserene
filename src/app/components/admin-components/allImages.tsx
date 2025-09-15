@@ -102,7 +102,6 @@ const AllImages = () => {
                 <TextField
                   type="text"
                   placeholder="Alt text"
-                  // value={images[index].image_alt}
                   onChange={(e) =>
                     handleChange(img?.url || "", "image_alt", e.target.value)
                   }
@@ -111,7 +110,6 @@ const AllImages = () => {
                 <TextField
                   type="number"
                   placeholder="Category ID"
-                  // value={images[index].image_category}
                   onChange={(e) =>
                     handleChange(
                       img?.url || "",

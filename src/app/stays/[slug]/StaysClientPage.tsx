@@ -60,7 +60,7 @@ export default function StaysClientPage() {
   console.log("properties:", properties);
 
   return (
-    <section>
+    <div className="mt-[40px]">
       <section className="hidden h-full w-full md:grid grid-cols-12  relative">
         <StaysSearchBox
           filters={filters}
@@ -70,7 +70,7 @@ export default function StaysClientPage() {
         <Stays propertiesData={filteredProperties} location={params.slug} />
       </section>
       <section className="md:hidden h-full w-full grid relative">
-        <div className="p-4">
+        <div className="px-4">
           <Stays propertiesData={filteredProperties} location={params.slug} />
         </div>
 
@@ -83,7 +83,7 @@ export default function StaysClientPage() {
               className=" w-full gap-3"
             >
               <div>
-                <Typography className="!mb-0.5 !text-xl" variant="button">
+                <Typography className="!mb-0.5 " variant="subtitle1">
                   Filters
                 </Typography>
               </div>
@@ -114,6 +114,6 @@ export default function StaysClientPage() {
           setopenFilters={setopenFilters}
         />
       </Drawer>
-    </section>
+    </div>
   );
 }
