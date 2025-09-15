@@ -13,7 +13,11 @@ import {
   ChairOutlined as Sitoutarea,
   DeckOutlined as Gazebo,
   RestaurantMenuOutlined as Restaurant,
-  ShowerOutlined as Raindance
+  ShowerOutlined as Raindance,
+  BathtubOutlined as Bathtub,
+  SportsCricketOutlined as Turf,
+  WorkspacesOutlined as Workspace,
+  FitnessCenterOutlined as Gym,
 } from "@mui/icons-material";
 import BarTender from "./custom-icons/BarTender";
 
@@ -33,7 +37,11 @@ const amenityIconMap: Record<string, React.ElementType> = {
   restaurant: Restaurant,
   sitoutarea: Sitoutarea,
   gazebo: Gazebo,
-  raindance: Raindance
+  raindance: Raindance,
+  bathtub: Bathtub,
+  turf: Turf,
+  gym: Gym,
+  workspace: Workspace
 };
 
 export default amenityIconMap;
