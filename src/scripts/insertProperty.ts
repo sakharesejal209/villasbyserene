@@ -491,39 +491,57 @@ async function main() {
   //       unit_id: "47159732-ac52-4504-aa1c-190dc5fd765d",
   //       is_banner_image: 'true'
   //     },
-      
+
   //   ],
   // });
 
   // 11. food menu
 
-    await prisma.foodMenu.create({
-  data: {
-    property_id: '9cf43e86-e0ce-424c-81dd-301e29b3d624',
-    description: 'Enjoy the taste of freshly made home-cooked gourmet meals prepared using locally sourced ingredients by our in-house chef. Tea/Coffee will be served during breakfast and high tea time. If you would like tea/coffee at any other time of the day, it can be arranged at an additional charge.',
-    isVeg: true,
-    isNonVeg: true,
-    menuUrl: 'https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F11.webp?alt=media&token=3d5a3209-c1c8-4233-94b3-779c44318103',
-    breakfastTime: '08:00AM - 09.30AM',
-    lunchTime: '01.30PM - 03.00PM',
-    dinnerTime: '09:00PM-10:30PM',
-    highteaTime: '05:00PM-06:00PM'
-  }
-    })
+  //   await prisma.foodMenu.create({
+  // data: {
+  //   property_id: '9cf43e86-e0ce-424c-81dd-301e29b3d624',
+  //   description: 'Enjoy the taste of freshly made home-cooked gourmet meals prepared using locally sourced ingredients by our in-house chef. Tea/Coffee will be served during breakfast and high tea time. If you would like tea/coffee at any other time of the day, it can be arranged at an additional charge.',
+  //   isVeg: true,
+  //   isNonVeg: true,
+  //   menuUrl: 'https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F11.webp?alt=media&token=3d5a3209-c1c8-4233-94b3-779c44318103',
+  //   breakfastTime: '08:00AM - 09.30AM',
+  //   lunchTime: '01.30PM - 03.00PM',
+  //   dinnerTime: '09:00PM-10:30PM',
+  //   highteaTime: '05:00PM-06:00PM'
+  // }
+  //   })
 
   // 12. Near By Attractions
 
   // await prisma.nearByAttractions.createMany({
   //   data: [
   //     {
-  //       property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6",
-  //       title: "Peb Fort Trek",
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       title: "Morbe Dam",
   //       description:
-  //         "he Peb Fort trek, also known as Vikatgad. The trek offers a mix of easy and challenging sections, with a steep climb towards the fort and stunning views of the surrounding Sahyadri mountains. ",
+  //         "Morbe Dam in Raigad is a scenic reservoir surrounded by hills, known for its tranquil waters and lush greenery. A peaceful spot to enjoy nature and breathtaking views.",
   //       distance: "10 mins away",
   //       imageUrl:
   //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/near-by-attractions%2Fpeb-fort-trek.webp?alt=media&token=8ee564ae-a094-4693-8e95-221445dc9a79",
-  //     }
+  //     },
+  //     {
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       title: "Panchayatan Mandir",
+  //       description:
+  //         "Morbe Dam in Raigad is a scenic reservoir surrounded by hills, known for its tranquil waters and lush greenery. A peaceful spot to enjoy nature and breathtaking views.",
+  //       distance: "10 mins away",
+  //       imageUrl:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/near-by-attractions%2Fpanchayatan.webp?alt=media&token=46c32565-0a85-44d3-b3c8-c73b5eb0bc65",
+  //     },
+  //     {
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       title: "Bilavle Dam",
+  //       description:
+  //         "Bhilavle Dam offers a refreshing escape surrounded by nature. The drive to the dam is scenic and calming, with lush green plantations lining the way, making the journey as beautiful as the destination.",
+  //       distance: "20 mins away",
+  //       imageUrl:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/near-by-attractions%2Fbhilavle-dam.jpg?alt=media&token=5f03a0b7-d378-4ddd-80d1-5a61a8377c50",
+  //     },
   //   ],
   // });
 

@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
+import AllImages from "../components/admin-components/allImages";
 
-const Admin = () => {
-  return (
-    <div>Admin</div>
-  )
-}
+const Page = () => {
+  return <AllImages />;
+};
 
-export default Admin
+export default Page;

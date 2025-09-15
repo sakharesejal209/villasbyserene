@@ -49,7 +49,7 @@ const Login = () => {
               <div className="text-red-600 text-xs ml-1 mb-6">{error}</div>
             )}
           </div>
-          <Button className="w-full" variant="contained" onClick={handleLogin}>
+          <Button className="w-full !mt-4" variant="contained" onClick={handleLogin}>
             Login
           </Button>
         </div>

@@ -49,8 +49,8 @@ export const FadeInSection = ({ children }: { children: React.ReactNode }) => {
     <motion.div
       initial={{ opacity: 0, y: 60 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false, margin: "-100px" }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+      viewport={{ once: false }}
+      transition={{ duration: 0.5, ease: "easeIn" }}
     >
       {children}
     </motion.div>
@@ -169,21 +169,15 @@ const Home = () => {
           style={{ opacity: heroOpacity }}
           initial={{ opacity: 0, y: 100 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
+          transition={{ duration: 0.5, ease: "easeIn" }}
         >
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="p-4 md:p-0 slide-bottom">
-              <div className="text-white">
-                <Typography variant="h2">PLAN YOUR</Typography>
-                <Typography variant="h2">PERFECT GETAWAY!</Typography>
-              </div>
-              <SearchBox />
+          <div className="p-4 md:p-0 slide-bottom">
+            <div className="text-white">
+              <Typography variant="h2">PLAN YOUR</Typography>
+              <Typography variant="h2">PERFECT GETAWAY!</Typography>
             </div>
-          </motion.div>
+            <SearchBox />
+          </div>
         </motion.div>
       </section>
 
@@ -446,80 +440,82 @@ const Home = () => {
       {/* list property */}
       <section>
         <div className="container">
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
-            <div className="relative slide-right md:aspect-[4/3] aspect-[16/9]">
-              <Image
-                src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fswimmingpool9.webp?alt=media&token=4d4e883c-4172-44e3-986d-471816051039"
-                alt="Villa management services"
-                fill
-                style={{
-                  objectFit: "cover",
-                  objectPosition: "center center",
-                }}
-                sizes="100vw"
-                priority={true}
-              />
+          <FadeInSection>
+            <div className="grid lg:grid-cols-2 gap-8 items-center">
+              <div className="relative md:aspect-[4/3] aspect-[16/9]">
+                <Image
+                  src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fswimmingpool9.webp?alt=media&token=4d4e883c-4172-44e3-986d-471816051039"
+                  alt="Villa management services"
+                  fill
+                  style={{
+                    objectFit: "cover",
+                    objectPosition: "center center",
+                  }}
+                  sizes="100vw"
+                  priority={true}
+                />
+              </div>
+              <div>
+                <div className="my-4">
+                  <Typography variant="h4" className="!mb-2">
+                    Unlock The True Potential of Your Property
+                  </Typography>
+                  <Typography>
+                    We know managing a property is more than just opening doors.
+                    It&apos;s staff training, marketing, guest communication,
+                    upkeep, and a hundred little details.
+                  </Typography>
+                  <Typography>That&apos;s where we come in.</Typography>
+                </div>
+                <div className="my-4">
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="w-8 h-8 flex items-center justify-center mt-1">
+                      <TaskAltOutlined className="w-5 h-5" />
+                    </div>
+                    <Typography>
+                      <span>Complete Management:</span>
+                      From bookings, payments, and toiletries to property visits
+                      and staff management
+                    </Typography>
+                  </div>
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="w-8 h-8 flex items-center justify-center mt-1">
+                      <TrendingUpOutlined className="w-5 h-5" />
+                    </div>
+                    <Typography>
+                      <span>Revenue Optimization:</span>
+                      We suggest trendy upgrades and handle marketing to
+                      maximize your property&apos;s profitability
+                    </Typography>
+                  </div>
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="w-8 h-8 flex items-center justify-center mt-1">
+                      <SettingsOutlined className="w-5 h-5" />
+                    </div>
+                    <Typography>
+                      <span>Always Guest-Ready:</span>
+                      Your villa stays in perfect condition with our
+                      comprehensive maintenance and preparation services
+                    </Typography>
+                  </div>
+                </div>
+                <div className="!mt-6 text-center md:text-left">
+                  <Typography variant="h6">
+                    You relax. We manage. You earn.
+                  </Typography>
+                  <Button
+                    size="large"
+                    variant="contained"
+                    className="!mt-2 flex items-center gap-2"
+                    // onClick={() => navigate("contact")}
+                  >
+                    <HomeOutlined />
+                    List Your Home Today
+                  </Button>
+                </div>
+              </div>
             </div>
-            <div className="slide-left">
-              <div className="my-4">
-                <Typography variant="h4" className="!mb-2">
-                  Unlock The True Potential of Your Property
-                </Typography>
-                <Typography>
-                  We know managing a property is more than just opening doors.
-                  It&apos;s staff training, marketing, guest communication,
-                  upkeep, and a hundred little details.
-                </Typography>
-                <Typography>That&apos;s where we come in.</Typography>
-              </div>
-              <div className="my-4">
-                <div className="flex items-start gap-3 mb-3">
-                  <div className="w-8 h-8 flex items-center justify-center mt-1">
-                    <TaskAltOutlined className="w-5 h-5" />
-                  </div>
-                  <Typography>
-                    <span>Complete Management:</span>
-                    From bookings, payments, and toiletries to property visits
-                    and staff management
-                  </Typography>
-                </div>
-                <div className="flex items-start gap-3 mb-3">
-                  <div className="w-8 h-8 flex items-center justify-center mt-1">
-                    <TrendingUpOutlined className="w-5 h-5" />
-                  </div>
-                  <Typography>
-                    <span>Revenue Optimization:</span>
-                    We suggest trendy upgrades and handle marketing to maximize
-                    your property&apos;s profitability
-                  </Typography>
-                </div>
-                <div className="flex items-start gap-3 mb-3">
-                  <div className="w-8 h-8 flex items-center justify-center mt-1">
-                    <SettingsOutlined className="w-5 h-5" />
-                  </div>
-                  <Typography>
-                    <span>Always Guest-Ready:</span>
-                    Your villa stays in perfect condition with our comprehensive
-                    maintenance and preparation services
-                  </Typography>
-                </div>
-              </div>
-              <div className="!mt-6 text-center md:text-left">
-                <Typography variant="h6">
-                  You relax. We manage. You earn.
-                </Typography>
-                <Button
-                  size="large"
-                  variant="contained"
-                  className="!mt-2 flex items-center gap-2"
-                  // onClick={() => navigate("contact")}
-                >
-                  <HomeOutlined />
-                  List Your Home Today
-                </Button>
-              </div>
-            </div>
-          </div>
+          </FadeInSection>
         </div>
       </section>
 
