@@ -55,12 +55,13 @@ async function main() {
 
   // await prisma.unit.create({
   //   data: {
-  //     property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6",
-  //     unit_type: "VILLA",
-  //     title: "3BHK Villa",
-  //     description: "Escape to a spacious 3BHK fully air-conditioned villa designed for comfort and relaxation. With a private sit-out area, this villa is the perfect getaway for families or groups of friends looking to spend quality time together. The inviting interiors offer a warm and cozy ambiance, while the outdoor space is ideal for unwinding, chatting, or enjoying a quiet evening. Whether it’s a family vacation or a friends’ retreat, this villa ensures a memorable stay with privacy, comfort, and convenience.",
-  //     no_of_bedrooms: 3,
-  //     max_capacity: 18,
+  //     property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //     unit_type: "COTTAGE",
+  //     title: "Standard Cottage",
+  //     description:
+  //       "Our Standard Room is compact yet cozy, designed for comfort and simplicity. Perfect for couples or small groups, it offers a warm ambiance and all the essentials for a relaxed stay.",
+  //     no_of_bedrooms: 1,
+  //     max_capacity: 4,
   //   },
   // });
 
@@ -68,34 +69,94 @@ async function main() {
 
   // await prisma.propertyRule.createMany({
   //   data: [
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", rule_id: 'petCharge', display_order: 1 },
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", rule_id: 'poolTime', display_order: 2 },
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", rule_id: 'alcoholConsumption', display_order: 3 },
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", rule_id: 'damageCost', display_order: 4 },
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", rule_id: 'governmentId', display_order: 5 },
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", rule_id: 'lastServiceTime', display_order: 6 },
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", rule_id: "musicTime", display_order: 7 },
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", rule_id: "smoking", display_order: 8 },
+  //     // { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", rule_id: 'petCharge', display_order: 1 },
+  //     {
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       rule_id: "poolTime",
+  //       display_order: 2,
+  //     },
+  //     // { property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624", rule_id: 'alcoholConsumption', display_order: 3 },
+  //     {
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       rule_id: "damageCost",
+  //       display_order: 4,
+  //     },
+  //     {
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       rule_id: "governmentId",
+  //       display_order: 5,
+  //     },
+  //     {
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       rule_id: "lastServiceTime",
+  //       display_order: 6,
+  //     },
+  //     {
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       rule_id: "musicTime",
+  //       display_order: 7,
+  //     },
+  //     // { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", rule_id: "smoking", display_order: 8 },
   //   ],
   // });
 
   // 6. Link Amenities to property
   // await prisma.propertyAmenity.createMany({
   //   data: [
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", amenity_id: 'airconditioned', display_order: 1 },
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", amenity_id: 'bonfire', display_order: 2 },
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", amenity_id: 'swimmingpool', display_order: 3 },
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", amenity_id: 'gazebo', display_order: 4 },
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", amenity_id: 'evcharging', display_order: 5 },
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", amenity_id: 'lawn', display_order: 6 },
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", amenity_id: 'sitoutarea', display_order: 7 },
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", amenity_id: 'freeparking', display_order: 8 },
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", amenity_id: 'indoorgames', display_order: 9 },
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", amenity_id: 'restaurant', display_order: 10 },
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", amenity_id: 'television', display_order: 11 },
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", amenity_id: 'watersupply', display_order: 12 },
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", amenity_id: 'wifi', display_order: 13 },
-  //     { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", amenity_id: "geyser", display_order: 14 },
+  //     {
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       amenity_id: "airconditioned",
+  //       display_order: 1,
+  //     },
+  //     // { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", amenity_id: 'bonfire', display_order: 2 },
+  //     {
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       amenity_id: "swimmingpool",
+  //       display_order: 3,
+  //     },
+  //     // { property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624", amenity_id: 'gazebo', display_order: 4 },
+  //     // { property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624", amenity_id: 'evcharging', display_order: 5 },
+  //     {
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       amenity_id: "lawn",
+  //       display_order: 6,
+  //     },
+  //     {
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       amenity_id: "sitoutarea",
+  //       display_order: 7,
+  //     },
+  //     {
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       amenity_id: "freeparking",
+  //       display_order: 8,
+  //     },
+  //     {
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       amenity_id: "indoorgames",
+  //       display_order: 9,
+  //     },
+  //     {
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       amenity_id: "restaurant",
+  //       display_order: 10,
+  //     },
+  //     {
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       amenity_id: "television",
+  //       display_order: 11,
+  //     },
+  //     {
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       amenity_id: "watersupply",
+  //       display_order: 12,
+  //     },
+  //     {
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       amenity_id: "wifi",
+  //       display_order: 13,
+  //     },
+  //     // { property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6", amenity_id: "geyser", display_order: 14 },
   //   ],
   // });
 
@@ -119,10 +180,196 @@ async function main() {
   //   data: [
   //     {
   //       image_url:
-  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/air-eco%2Fbonfire.webp?alt=media&token=c9082c82-3936-4727-a948-3cc9c6d5702e",
-  //       image_category_id: 12,
-  //       image_alt: "air-eco-bonfire",
-  //     }
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fexterior9.webp?alt=media&token=53fb9a9a-eb24-41dc-8cbe-06304f6a5784",
+  //       image_category_id: 7,
+  //       image_alt: "savali-exterior",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fexterior8.webp?alt=media&token=ffb4baeb-b5be-4c3f-bdab-bee68efc1abf",
+  //       image_category_id: 7,
+  //       image_alt: "savali-exterior",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fexterior7.webp?alt=media&token=b7072e6e-f71a-4fea-bf83-a5330046095e",
+  //       image_category_id: 7,
+  //       image_alt: "savali-exterior",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fexterior6.webp?alt=media&token=0f709982-bd1b-4179-889d-a7306cba8e94",
+  //       image_category_id: 7,
+  //       image_alt: "savali-exterior",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fexterior5.webp?alt=media&token=62d05a57-1561-4902-a232-b5ff95bf001f",
+  //       image_category_id: 7,
+  //       image_alt: "savali-exterior",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fexterior4.webp?alt=media&token=cfdb0850-150e-42b0-a946-372021fffe87",
+  //       image_category_id: 7,
+  //       image_alt: "savali-exterior",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fexterior3.webp?alt=media&token=45ba3db9-5921-4486-99b5-3783d2b5f3bc",
+  //       image_category_id: 7,
+  //       image_alt: "savali-exterior",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fexterior2.webp?alt=media&token=cd65e385-61e2-4743-9a03-b1c46f71c4e5",
+  //       image_category_id: 7,
+  //       image_alt: "savali-exterior",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fexterior10.webp?alt=media&token=3d0f77df-7d4f-49e9-8233-1828278a5874",
+  //       image_category_id: 7,
+  //       image_alt: "savali-exterior",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fexterior1.webp?alt=media&token=1cfa5312-0af5-49f7-96ea-81c189553f1b",
+  //       image_category_id: 7,
+  //       image_alt: "savali-exterior",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Frestaurant1.webp?alt=media&token=ceb3fca8-64e7-41db-8fc8-75e09c3a012c",
+  //       image_category_id: 15,
+  //       image_alt: "savali-restaurant",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Frestaurant2.webp?alt=media&token=efb6245d-ff43-4165-8bdf-9b12d4cbd9ea",
+  //       image_category_id: 15,
+  //       image_alt: "savali-restaurant",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Frestaurant3.webp?alt=media&token=315845ab-3ee0-4b8d-8d6a-fe8ebe76191b",
+  //       image_category_id: 15,
+  //       image_alt: "savali-restaurant",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Frestaurant4.webp?alt=media&token=f4e4f260-a80a-439f-b9a6-d8d14f15733d",
+  //       image_category_id: 15,
+  //       image_alt: "savali-restaurant",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fswimming1.webp?alt=media&token=5c9a7206-e29a-4fb4-9f84-2c6d6696b187",
+  //       image_category_id: 6,
+  //       image_alt: "savali-swimmingpool",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fswimming2.jpg?alt=media&token=bb468ad5-ea62-419b-809a-926a66d46b6f",
+  //       image_category_id: 6,
+  //       image_alt: "savali-swimmingpool",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fwashroom1.webp?alt=media&token=bc8d8ab8-fefa-43c3-adbc-c5f4be3bff63",
+  //       image_category_id: 10,
+  //       image_alt: "savali-bathroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fsuite-swimming-4.webp?alt=media&token=cd3c097f-d37e-4305-b1ba-ed70fab10aca",
+  //       image_category_id: 6,
+  //       image_alt: "savali-suite-swimmingpool",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fsuite-swimming1.webp?alt=media&token=a092d8ca-a40d-480f-b3c5-307e28d70d56",
+  //       image_category_id: 6,
+  //       image_alt: "savali-suite-swimmingpool",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fsuite-swimming2.webp?alt=media&token=68130519-0ab2-4474-9166-1ce69c196308",
+  //       image_category_id: 6,
+  //       image_alt: "savali-suite-swimmingpool",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fsuite-swimming11.webp?alt=media&token=435c86de-4fa0-4044-90c6-d72c3dd20bbd",
+  //       image_category_id: 15,
+  //       image_alt: "savali-restaurant",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fsuite-swimming3.webp?alt=media&token=08372fcd-4221-4f8e-9ee3-b9d0be940177",
+  //       image_category_id: 6,
+  //       image_alt: "savali-suite-swimmingpool",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fsuite-swimming5.webp?alt=media&token=f908cd34-c3cd-4796-902b-897d32a2df4f",
+  //       image_category_id: 6,
+  //       image_alt: "savali-suite-swimmingpool",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fsuite-swimming6.webp?alt=media&token=dfec873d-9a89-43d5-8cf5-a93974feb160",
+  //       image_category_id: 6,
+  //       image_alt: "savali-suite-swimmingpool",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fsuite.webp?alt=media&token=594307a0-477b-4af0-bf2e-39f3f5038666",
+  //       image_category_id: 5,
+  //       image_alt: "savali-suite-bedroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fsuite1.webp?alt=media&token=d9f3657d-3972-4db5-911e-7e95e329e9b1",
+  //       image_category_id: 5,
+  //       image_alt: "savali-suite-bedroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fsuite2.webp?alt=media&token=050df274-b740-41d1-a5fc-d4eb19d15d28",
+  //       image_category_id: 5,
+  //       image_alt: "savali-suite-bedroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fsuite3.webp?alt=media&token=681052b0-5a16-4b93-954e-b952468c6739",
+  //       image_category_id: 5,
+  //       image_alt: "savali-suite-bedroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fstandard.webp?alt=media&token=ae8c6f71-0bba-4d39-aa0b-214ea2b90bb4",
+  //       image_category_id: 5,
+  //       image_alt: "savali-standard-bedroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fstandard1.webp?alt=media&token=9349e26e-8ada-40ac-91fb-7f44833a5f7c",
+  //       image_category_id: 5,
+  //       image_alt: "savali-standard-bedroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fstandard2.webp?alt=media&token=7780915e-ac50-4adc-9317-efade3836c48",
+  //       image_category_id: 5,
+  //       image_alt: "savali-standard-bedroom",
+  //     },
+  //     {
+  //       image_url:
+  //         "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/savali-red-stone%2Fstandard3.webp?alt=media&token=6a12fbb3-3597-49bd-8ccd-09cd23131977",
+  //       image_category_id: 5,
+  //       image_alt: "savali-standard-bedroom",
+  //     },
   //   ],
   //   skipDuplicates: true,
   // });
@@ -132,168 +379,98 @@ async function main() {
   // await prisma.propertyImage.createMany({
   //   data: [
   //     {
-  //       image_id:
-  //       "32566d3a-a367-4ba4-9dad-6ff60a75fc24",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
+  //       image_id: "6455df56-0fab-4718-8584-8fcced25bf98",
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       display_order: 1,
+  //       is_banner_image: "true",
+  //       is_carousel_image: "true",
+  //     },
+  //     {
+  //       image_id: "bee7c0e8-d359-49e3-9d2e-ce85dac6e3bb",
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
   //       display_order: 1,
   //     },
   //     {
-  //       image_id:
-  //       "aec83bda-041b-4e30-a394-1619fcd28980",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
+  //       image_id: "2186ce67-4796-43f7-9005-446de7d58333",
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
   //       display_order: 1,
   //     },
   //     {
-  //       image_id:
-  //       "56a6cd23-dc1a-49c7-bcd1-44c23b3851f3",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
+  //       image_id: "5bccc272-564e-4372-ac81-dfe90964180a",
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
   //       display_order: 1,
   //     },
   //     {
-  //       image_id:
-  //       "5d367773-acee-4c48-b0fb-11ceab5a59a3",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
+  //       image_id: "7c0951e5-a484-4637-9e52-827e0f242b27",
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
   //       display_order: 1,
   //     },
   //     {
-  //       image_id:
-  //       "e461ac90-0b6f-4f73-9b33-9dcbd36eab39",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
+  //       image_id: "7e84f09c-8e04-49fa-9edb-e7945ba1d673",
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
   //       display_order: 1,
   //     },
   //     {
-  //       image_id:
-  //       "9a101818-fbf8-474b-9dfa-f077bd9f3619",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
+  //       image_id: "93e4febd-13c5-44cc-8310-b64249a2c840",
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
   //       display_order: 1,
   //     },
   //     {
-  //       image_id:
-  //       "263d88a4-e00f-42d7-865e-5f14e8e47d96",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
+  //       image_id: "1a1e61c2-cdf1-45db-9377-37151311ff28",
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       display_order: 1,
+  //       is_carousel_image: "true",
+  //     },
+  //     {
+  //       image_id: "526419b5-14e4-4721-a27d-9f98a04084aa",
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
   //       display_order: 1,
   //     },
   //     {
-  //       image_id:
-  //       "ef3c9af3-f82c-46b4-84fe-f2da9f13148e",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
+  //       image_id: "622896b3-61f1-4818-b78d-d9ac8f71bd6a",
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
   //       display_order: 1,
   //     },
   //     {
-  //       image_id:
-  //       "406ea1f6-5485-4897-a833-5d8e4a344c89",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
+  //       image_id: "97828aad-e162-4d72-87f5-cd77988c2168",
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
   //       display_order: 1,
   //     },
   //     {
-  //       image_id:
-  //       "420905b4-a5fc-49b0-a653-769e47b2b662",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
+  //       image_id: "ada90abb-f700-43f2-8b9c-2b265cb69866",
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
   //       display_order: 1,
   //     },
   //     {
-  //       image_id:
-  //       "600887f9-d3cf-438a-8424-b70b2054d574",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
+  //       image_id: "8e70d05a-b785-449a-909a-a66d00f6456b",
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
   //       display_order: 1,
   //     },
   //     {
-  //       image_id:
-  //       "35029572-301c-4a4d-8520-9e1cb1496d32",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
+  //       image_id: "b2d02712-f90b-4265-9fd2-edd6de118235",
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
   //       display_order: 1,
   //     },
   //     {
-  //       image_id:
-  //       "3fbfd1ae-8d79-49de-a7c3-7dab26d09530",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
+  //       image_id: "93ba79d8-47a9-4d5c-99f0-ab86c2e9429e",
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
   //       display_order: 1,
   //     },
   //     {
-  //       image_id:
-  //       "b8c432af-fd7b-4a56-bf06-d1158a3f62f6",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
+  //       image_id: "4f1b7591-ef13-4c54-af53-d3a5a3860d4f",
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
   //       display_order: 1,
   //     },
   //     {
-  //       image_id:
-  //       "251732e8-f584-4cc2-a45d-572b62ac66e7",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
+  //       image_id: "0e657329-5629-4ec9-a0b5-5d9d729e28d6",
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
   //       display_order: 1,
   //     },
   //     {
-  //       image_id:
-  //       "d79bdb3d-a3de-4df6-82a8-dcb344cf0c47",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
+  //       image_id: "b06aa7b3-e2f0-443a-a6d1-b540a3ae6a7a",
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
   //       display_order: 1,
   //     },
-  //     {
-  //       image_id:
-  //       "5c1adf25-0a7e-4ed0-a067-776c3fdbbde5",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
-  //       display_order: 1,
-  //     },
-  //     {
-  //       image_id:
-  //       "a58d3349-840e-4619-8f04-9a2bc2bfd6c3",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
-  //       display_order: 1,
-  //     },
-  //     {
-  //       image_id:
-  //       "3a457fd6-9eb6-43ff-a5e2-70db8c9a6611",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
-  //       display_order: 1,
-  //     },
-  //     {
-  //       image_id:
-  //       "142f3a3b-02dd-46f6-8bb6-4e7b44e7814d",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
-  //       display_order: 1,
-  //     },
-  //     {
-  //       image_id:
-  //       "45a1a2ce-2c8d-49ea-b7f4-6b9094ebd03f",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
-  //       display_order: 1,
-  //     },
-  //     {
-  //       image_id:
-  //       "d811885b-25a4-4b7d-9252-3ded0484ab70",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
-  //       display_order: 1,
-  //     },
-  //     {
-  //       image_id:
-  //       "bfaf0bb6-94f0-4e61-9df4-e45a94cc536e",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
-  //       display_order: 1,
-  //     },
-  //     {
-  //       image_id:
-  //       "453184d5-a666-45ca-b2ed-c720a3a93ff3",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
-  //       display_order: 1,
-  //     },
-  //     {
-  //       image_id:
-  //       "178444c3-a615-4755-bf3a-1f2d69ec6d66",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
-  //       display_order: 1,
-  //     },
-  //     {
-  //       image_id:
-  //       "b3613b11-50ee-41ac-95f3-d240a7f68755",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
-  //       display_order: 1,
-  //     },
-  //     {
-  //       image_id:
-  //       "07c69103-4657-4a91-9af2-eb9409c13c29",
-  //       property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
-  //       display_order: 1,
-  //     }
-
   //   ],
   // });
 
@@ -302,83 +479,37 @@ async function main() {
   // await prisma.unitImage.createMany({
   //   data: [
   //     {
-  //       image_id: "d0d5fceb-cc00-47d8-9841-7d2628e98dde",
-  //       unit_id: "cd990069-156e-49f0-81ae-bee65a9300bb",
+  //       image_id: "3e70d05a-b785-449a-909a-a66d00f64560",
+  //       unit_id: "47159732-ac52-4504-aa1c-190dc5fd765d",
   //     },
   //     {
-  //       image_id: "6889e998-250c-448e-ac64-bf93bd6c162a",
-  //       unit_id: "cd990069-156e-49f0-81ae-bee65a9300bb",
+  //       image_id: "9e70d05a-b785-449a-909a-a66d00f64561",
+  //       unit_id: "47159732-ac52-4504-aa1c-190dc5fd765d",
   //     },
   //     {
-  //       image_id: "28e1f0db-2654-4887-8639-b5bbe23340ab",
-  //       unit_id: "cd990069-156e-49f0-81ae-bee65a9300bb",
+  //       image_id: "1e70d05a-b785-449a-909a-a66d00f64562",
+  //       unit_id: "47159732-ac52-4504-aa1c-190dc5fd765d",
+  //       is_banner_image: 'true'
   //     },
-  //     {
-  //       image_id: "010efe5a-34d2-40f0-a609-82670064d8dc",
-  //       unit_id: "cd990069-156e-49f0-81ae-bee65a9300bb",
-  //     },
-  //     {
-  //       image_id: "b3613b11-50ee-41ac-95f3-d240a7f68755",
-  //       unit_id: "cd990069-156e-49f0-81ae-bee65a9300bb",
-  //     },
-  //     {
-  //       image_id: "07c69103-4657-4a91-9af2-eb9409c13c29",
-  //       unit_id: "cd990069-156e-49f0-81ae-bee65a9300bb",
-  //     },
-  //     {
-  //       image_id: "967d6c51-0e29-4270-9397-44c5e2296d66",
-  //       unit_id: "cd990069-156e-49f0-81ae-bee65a9300bb",
-  //     },
-  //     {
-  //       image_id: "27308243-26f8-4bd1-94e3-abb2479de238",
-  //       unit_id: "cd990069-156e-49f0-81ae-bee65a9300bb",
-  //     },
-  //     {
-  //       image_id: "53d75b1b-9569-433f-8b9e-74c8c3e2cfba",
-  //       unit_id: "cd990069-156e-49f0-81ae-bee65a9300bb",
-  //     },
-  //     {
-  //       image_id: "8e3c4614-ac3b-4bfb-9dfb-c530dbf223ed",
-  //       unit_id: "cd990069-156e-49f0-81ae-bee65a9300bb",
-  //     },
-  //     {
-  //       image_id: "b38d6e85-ea5d-4346-9ed2-620d538079ed",
-  //       unit_id: "cd990069-156e-49f0-81ae-bee65a9300bb",
-  //     },
-  //     {
-  //       image_id: "e278c98e-d637-453a-bc22-1b77b974dd55",
-  //       unit_id: "cd990069-156e-49f0-81ae-bee65a9300bb",
-  //     },
-  //     {
-  //       image_id: "857cff06-ad5c-47f7-b004-d4bee15832ba",
-  //       unit_id: "cd990069-156e-49f0-81ae-bee65a9300bb",
-  //     },
-  //     {
-  //       image_id: "ca77c5d7-9b93-4c70-a095-0814a4e057c6",
-  //       unit_id: "cd990069-156e-49f0-81ae-bee65a9300bb",
-  //     },
-  //     {
-  //       image_id: "8a2bb249-81fb-4947-9677-3cb851e61ae7",
-  //       unit_id: "cd990069-156e-49f0-81ae-bee65a9300bb",
-  //     },
+      
   //   ],
   // });
 
   // 11. food menu
 
-  //   await prisma.foodMenu.create({
-  // data: {
-  //   property_id: '7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6',
-  //   description: 'Enjoy the taste of freshly made home-cooked gourmet meals prepared using locally sourced ingredients by our in-house chef. Tea/Coffee will be served during breakfast and high tea time. If you would like tea/coffee at any other time of the day, it can be arranged at an additional charge.',
-  //   isVeg: true,
-  //   isNonVeg: true,
-  //   menuUrl: 'https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F11.webp?alt=media&token=3d5a3209-c1c8-4233-94b3-779c44318103',
-  //   breakfastTime: '08:00AM - 09.30AM',
-  //   lunchTime: '01.30PM - 03.00PM',
-  //   dinnerTime: '09:00PM-10:30PM',
-  //   highteaTime: '05:00PM-06:00PM'
-  // }
-  //   })
+    await prisma.foodMenu.create({
+  data: {
+    property_id: '9cf43e86-e0ce-424c-81dd-301e29b3d624',
+    description: 'Enjoy the taste of freshly made home-cooked gourmet meals prepared using locally sourced ingredients by our in-house chef. Tea/Coffee will be served during breakfast and high tea time. If you would like tea/coffee at any other time of the day, it can be arranged at an additional charge.',
+    isVeg: true,
+    isNonVeg: true,
+    menuUrl: 'https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F11.webp?alt=media&token=3d5a3209-c1c8-4233-94b3-779c44318103',
+    breakfastTime: '08:00AM - 09.30AM',
+    lunchTime: '01.30PM - 03.00PM',
+    dinnerTime: '09:00PM-10:30PM',
+    highteaTime: '05:00PM-06:00PM'
+  }
+    })
 
   // 12. Near By Attractions
 

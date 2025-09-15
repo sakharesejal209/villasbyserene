@@ -128,7 +128,7 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
                 </div>
 
                 {"category" in e && e.hasOwnProperty("category") && (
-                  <div className="absolute bottom-5 left-5 bg-black/70 text-white text-md px-2 py-1 rounded-md">
+                  <div className="absolute bottom-5 md:bottom-14 left-5 bg-black/70 text-white text-md px-2 py-1 rounded-md">
                     {
                       (e as { src: string; alt: string; category: string })
                         .category
