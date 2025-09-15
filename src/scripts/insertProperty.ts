@@ -566,25 +566,25 @@ async function main() {
 
   // 14. Link themes to property
 
-  await prisma.propertyTheme.createMany({
-    data: [
-      {
-        property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6",
-        theme_id: "coupleFriendly",
-        propertyName: "Air Eco Stay By Serene",
-      },
-      {
-        property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6",
-        theme_id: "petFriendly",
-        propertyName: "Air Eco Stay By Serene",
-      },
-      {
-        property_id: "7dea80f2-f2a3-4dd9-a954-ed7b64ae0de6",
-        theme_id: "ecoRetreat",
-        propertyName: "Air Eco Stay By Serene",
-      },
-    ],
-  });
+  // await prisma.propertyTheme.createMany({
+  //   data: [
+  //     {
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       theme_id: "coupleFriendly",
+  //       propertyName: "Savali Red Stone By Serene",
+  //     },
+  //     // {
+  //     //   property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //     //   theme_id: "petFriendly",
+  //     //   propertyName: "Savali Red Stone By Serene",
+  //     // },
+  //     {
+  //       property_id: "9cf43e86-e0ce-424c-81dd-301e29b3d624",
+  //       theme_id: "ecoRetreat",
+  //       propertyName: "Savali Red Stone By Serene",
+  //     },
+  //   ],
+  // });
 
   console.log("Seed completed ✅");
 }
