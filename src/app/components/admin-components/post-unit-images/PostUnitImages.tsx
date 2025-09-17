@@ -54,6 +54,8 @@ export default function UnitImagesForm({ images }: Props) {
   };
 
   const handleSubmit = async () => {
+    console.log('unitimgs:', selectedImages);
+    
     if (selectedImages.length === 0) return;
 
     const res = await createManyUnitImages(selectedImages);
@@ -70,7 +72,7 @@ export default function UnitImagesForm({ images }: Props) {
     <div>
       <h2 className="text-xl font-semibold mb-4">Assign Images to Units</h2>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-4 gap-4">
         {images.map((img) => {
           const selected = selectedImages.find(
             (i) => i.image_id === img.image_id

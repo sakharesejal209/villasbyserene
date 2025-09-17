@@ -18,6 +18,7 @@ import {
   Paper,
   styled,
   Typography,
+  useTheme,
 } from "@mui/material";
 import {
   PeopleAltOutlined as PeopleIcon,
@@ -110,6 +111,7 @@ const Property: FC<PropertyPropType> = (props) => {
     useState<{ src: string; alt: string }[]>();
   const [unitGalleryImages, setunitGalleryImages] = useState<UnitImagesMap>();
   const [openForm, setOpenForm] = useState<boolean>(false);
+  const theme = useTheme();
 
   const foodMenu = propertyDetails.FoodMenu[0];
   const propertyImages = propertyDetails.PropertyImage;
@@ -344,7 +346,7 @@ const Property: FC<PropertyPropType> = (props) => {
                     </Box>
                   </AccordionDetails>
                 </Accordion>
-                {propertyDetails.mealsAvailable && (
+                {propertyDetails.mealsAvailable && foodMenu && (
                   <Accordion className="mb-3">
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon />}
@@ -356,7 +358,11 @@ const Property: FC<PropertyPropType> = (props) => {
                       </Typography>
                     </AccordionSummary>
                     <AccordionDetails>
-                      <ReadMore text={foodMenu.description} maxLength={200} />
+                      <ReadMore
+                        text={foodMenu.description || ""}
+                        maxLength={200}
+                      />
+
                       <div className="flex gap-6 my-6">
                         {foodMenu.isVeg && (
                           <div className="flex items-center gap-3">
@@ -493,12 +499,13 @@ const Property: FC<PropertyPropType> = (props) => {
                   Nearby Attractions
                 </Typography>
                 <Carousel
-                  spaceBetween={20}
+                  spaceBetween={15}
                   slidesPerView={2}
                   breakpoints={{
                     640: { slidesPerView: 2 },
                     900: { slidesPerView: 3 },
                   }}
+                  showDots={false}
                 >
                   <>
                     {propertyDetails.NearByAttractions?.map((item) => (
@@ -516,16 +523,16 @@ const Property: FC<PropertyPropType> = (props) => {
                                 }}
                               />
                             </div>
-                            <div className="m-4 ml-0 overflow-y-auto h-[43%] wrap-break-word">
+                            <div className={`m-2 overflow-y-auto h-[50%] wrap-break-word`}>
                               <Typography variant="h6">{item.title}</Typography>
                               <Typography variant="body2">
-                                <span className="font-bold">Distance:</span>{" "}
+                                <span className="font-bold">Distance: </span>
                                 {item.distance}
                               </Typography>
                               <ReadMore
-                                textVariant="body2"
+                                textVariant="subtitle2"
                                 text={item.description}
-                                maxLength={80}
+                                maxLength={100}
                               />
                             </div>
                           </div>

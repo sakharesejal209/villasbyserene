@@ -8,7 +8,7 @@ export async function fetchCliffViewImages() {
   return prisma.image.findMany({
     where: {
       image_alt: {
-        startsWith: "cliffview-",
+        startsWith: "deena-villa-",
       },
     },
     select: {

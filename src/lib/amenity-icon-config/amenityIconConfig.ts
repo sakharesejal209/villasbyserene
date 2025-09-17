@@ -18,6 +18,7 @@ import {
   SportsCricketOutlined as Turf,
   WorkspacesOutlined as Workspace,
   FitnessCenterOutlined as Gym,
+  ThermostatOutlined as TempControlPool,
 } from "@mui/icons-material";
 import BarTender from "./custom-icons/BarTender";
 
@@ -41,7 +42,9 @@ const amenityIconMap: Record<string, React.ElementType> = {
   bathtub: Bathtub,
   turf: Turf,
   gym: Gym,
-  workspace: Workspace
+  workspace: Workspace,
+  tempControlPool: TempControlPool,
+  openDinning: Gazebo,
 };
 
 export default amenityIconMap;

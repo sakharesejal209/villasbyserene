@@ -52,6 +52,8 @@ export default function PropertyImageForm({
   };
 
   const handleSubmit = async () => {
+    console.log('iages', images);
+    
     const res = await createManyPropertyImages(images);
     if (res.success) {
       alert("Property images created!");
@@ -62,8 +64,8 @@ export default function PropertyImageForm({
 
   return (
     <div>
-      <h2 className="text-xl font-semibold">Assign Cliff-View Images</h2>
-      <div className="grid grid-cols-3 gap-4 mt-4">
+      <h2 className="text-xl font-semibold">Assign property Images</h2>
+      <div className="grid grid-cols-4 gap-4 mt-4">
         {cliffImages.map((img) => {
           const selected = images.find((i) => i.image_id === img.image_id);
           return (
