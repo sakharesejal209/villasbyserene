@@ -95,6 +95,14 @@ const Footer = () => {
               >
                 Contact Us
               </button>
+              <button
+                onClick={() => {
+                  router.push("/our-story");
+                }}
+                className="block text-gray-300 hover:text-white hover:cursor-pointer transition-colors duration-200"
+              >
+                Our Story
+              </button>
               {/* <button className="text-gray-300 hover:text-white hover:cursor-pointer transition-colors duration-200">
                 About Us
               </button> */}

@@ -167,6 +167,7 @@ const Property: FC<PropertyPropType> = (props) => {
     (e) => e.is_banner_image === "true"
   )[0];
 
+  const nearby = [];
   console.log("propertydetails:", propertyDetails);
 
   return (
@@ -494,54 +495,60 @@ const Property: FC<PropertyPropType> = (props) => {
                 </Accordion>
               </div>
 
-              <div className="my-6">
-                <Typography className="!mb-4" variant="h6">
-                  Nearby Attractions
-                </Typography>
-                <Carousel
-                  spaceBetween={15}
-                  slidesPerView={2}
-                  breakpoints={{
-                    640: { slidesPerView: 2 },
-                    900: { slidesPerView: 3 },
-                  }}
-                  showDots={false}
-                >
-                  <>
-                    {propertyDetails.NearByAttractions?.map((item) => (
-                      <SwiperSlide key={item.attraction_id}>
-                        <div>
-                          <div className="h-[300px] md:h-[400px]">
-                            <div className="relative flex h-[50%]">
-                              <Image
-                                src={item.imageUrl}
-                                alt={item.title}
-                                fill
-                                style={{
-                                  objectFit: "cover",
-                                  objectPosition: "center",
-                                }}
-                              />
-                            </div>
-                            <div className={`m-2 overflow-y-auto h-[50%] wrap-break-word`}>
-                              <Typography variant="h6">{item.title}</Typography>
-                              <Typography variant="body2">
-                                <span className="font-bold">Distance: </span>
-                                {item.distance}
-                              </Typography>
-                              <ReadMore
-                                textVariant="subtitle2"
-                                text={item.description}
-                                maxLength={100}
-                              />
+              {nearby.length !== 0 && (
+                <div className="my-6">
+                  <Typography className="!mb-4" variant="h6">
+                    Nearby Attractions
+                  </Typography>
+                  <Carousel
+                    spaceBetween={15}
+                    slidesPerView={2}
+                    breakpoints={{
+                      640: { slidesPerView: 2 },
+                      900: { slidesPerView: 3 },
+                    }}
+                    showDots={false}
+                  >
+                    <>
+                      {propertyDetails.NearByAttractions?.map((item) => (
+                        <SwiperSlide key={item.attraction_id}>
+                          <div>
+                            <div className="h-[300px] md:h-[400px]">
+                              <div className="relative flex h-[50%]">
+                                <Image
+                                  src={item.imageUrl}
+                                  alt={item.title}
+                                  fill
+                                  style={{
+                                    objectFit: "cover",
+                                    objectPosition: "center",
+                                  }}
+                                />
+                              </div>
+                              <div
+                                className={`m-2 overflow-y-auto h-[50%] wrap-break-word`}
+                              >
+                                <Typography variant="h6">
+                                  {item.title}
+                                </Typography>
+                                <Typography variant="body2">
+                                  <span className="font-bold">Distance: </span>
+                                  {item.distance}
+                                </Typography>
+                                <ReadMore
+                                  textVariant="subtitle2"
+                                  text={item.description}
+                                  maxLength={100}
+                                />
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </SwiperSlide>
-                    ))}
-                  </>
-                </Carousel>
-              </div>
+                        </SwiperSlide>
+                      ))}
+                    </>
+                  </Carousel>
+                </div>
+              )}
 
               {propertyDetails.map_location !== null && (
                 <div>

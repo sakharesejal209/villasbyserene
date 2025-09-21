@@ -36,7 +36,7 @@ import { motion, useScroll, useTransform } from "motion/react";
 
 import { usePropertyStore } from "@/context/PropertyContext";
 import { Carousel, EmptyState } from "@/app/@application";
-import propertyThemeMap from "@/lib/propert-theme-config/propertyThemeConfig";
+import propertyThemeMap from "@/lib/property-theme-config/propertyThemeConfig";
 import SearchBox from "./searchBox";
 import { getAccomodation } from "../stays/stays";
 import testimonials from "./data/testimonials.json";
@@ -465,7 +465,9 @@ const Home = () => {
                     It&apos;s staff training, marketing, guest communication,
                     upkeep, and a hundred little details.
                   </Typography>
-                  <Typography className="!my-4">That&apos;s where we come in!</Typography>
+                  <Typography className="!my-4">
+                    That&apos;s where we come in!
+                  </Typography>
                 </div>
                 <div className="my-4">
                   <div className="flex items-start gap-3 mb-3">
@@ -507,7 +509,7 @@ const Home = () => {
                     size="large"
                     variant="contained"
                     className="!mt-2 flex items-center gap-2"
-                    onClick={() => router.push('/list')}
+                    onClick={() => router.push("/list")}
                   >
                     <HomeOutlined />
                     List Your Home Today

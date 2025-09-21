@@ -19,7 +19,15 @@ import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 
 import { FadeInSection } from "../home/home";
-import { Box, Button, Card, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  Paper,
+  styled,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { useRouter } from "next/navigation";
 
 const services = [
@@ -104,6 +112,14 @@ const ListYourProperty = () => {
   const router = useRouter();
   const contactNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER;
 
+  const StyledKPI = styled("div")(({ theme }) => ({
+    background: theme.palette.grey[100],
+  }));
+
+  const StyledKPICircle = styled('div')(({theme}) => ({
+    background: theme.palette.primary.main,
+  }))
+
   return (
     <div>
       <section
@@ -112,7 +128,7 @@ const ListYourProperty = () => {
       >
         <motion.div className="absolute inset-0" style={{ y: heroY }}>
           <Image
-            src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F7.webp?alt=media&token=666eb1fd-777b-4879-af8a-d6a315839ce1"
+            src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fexterior1.webp?alt=media&token=64cf6a47-c420-491e-9178-e82ded54f785"
             alt="Luxury villa property"
             fill
             style={{
@@ -120,7 +136,7 @@ const ListYourProperty = () => {
               objectPosition: "center center",
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/60 to-black/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/55 to-black/55"></div>
         </motion.div>
 
         <motion.div className="relative text-center px-4 text-white flex justify-center flex-col items-center">
@@ -196,22 +212,35 @@ const ListYourProperty = () => {
               </Typography>
             </div>
 
-            <div className="relative grid md:grid-cols-2 md:grid-cols-2 gap-8 items-center">
+            <div className="relative grid md:grid-cols-2 md:gap-12 items-center">
               {/* <FadeInSection> */}
-              <div className="md:py-6 order-2 md:order-1 ">
+              <div className="md:p-10 order-2 md:order-1 ">
                 <Typography variant="h5">
                   We specialize in end-to-end property management for owners who
                   don&apos;t have the time to handle everything themselves.
                 </Typography>
-                <Typography className="!text-lg">
+                <Typography className="!text-lg !mt-2">
                   With us, your property is always guest-ready and performing at
                   its best.
                 </Typography>
+                <StyledKPI className="flex items-center rounded-md gap-4 p-6 mt-4">
+                  <StyledKPICircle className="w-12 h-12 rounded-full flex items-center justify-center">
+                    <CheckCircle className="w-6 h-6 !text-white" />
+                  </StyledKPICircle>
+                  <div>
+                    <Typography className="!font-medium">
+                      Property always guest-ready
+                    </Typography>
+                    <Typography  variant="body2">
+                      Maximum performance, minimum effort
+                    </Typography>
+                  </div>
+                </StyledKPI>
               </div>
               {/* </FadeInSection> */}
               <div>
                 <img
-                  src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F6.webp?alt=media&token=2daf15d8-9e5a-4970-81dc-5203b4646433"
+                  src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/skapa-alibaug%2Fskapa-alibaug-livingroom.webp?alt=media&token=82832501-11c9-44af-a9fd-1e0b5e518ea4"
                   alt="Professional property management"
                   style={{
                     height: "350px",
@@ -245,7 +274,7 @@ const ListYourProperty = () => {
         <div className="container mx-auto px-4">
           <FadeInSection>
             <div className="text-center mb-8">
-              <Typography variant="h4" className="!mb-6">
+              <Typography variant="h4" className="!mb-2">
                 Complete Property Management
               </Typography>
               <Typography>
@@ -258,11 +287,7 @@ const ListYourProperty = () => {
               {services.map((service, index) => {
                 const IconComponent = service.icon;
                 return (
-                  <motion.div
-                    key={index}
-                    whileHover={{ y: -8 }}
-                    transition={{ duration: 0.3 }}
-                  >
+                  <>
                     <Card className="h-full">
                       <div className="p-8">
                         <Box
@@ -272,7 +297,7 @@ const ListYourProperty = () => {
                           className={`w-14 h-14 rounded-md flex items-center justify-center mb-6`}
                         >
                           {/* {service.icon} */}
-                          <IconComponent className="w-7 h-7 text-primary" />
+                          <IconComponent color="primary" />
                         </Box>
                         <Typography variant="h5" className="!mb-4">
                           {service.title}
@@ -280,7 +305,7 @@ const ListYourProperty = () => {
                         <Typography>{service.description}</Typography>
                       </div>
                     </Card>
-                  </motion.div>
+                  </>
                 );
               })}
             </div>
@@ -288,7 +313,7 @@ const ListYourProperty = () => {
         </div>
       </section>
 
-      {/* How It Works Section */}
+      {/* 3 steps */}
       <section>
         <div className="container mx-auto px-4">
           <FadeInSection>
@@ -296,7 +321,7 @@ const ListYourProperty = () => {
               <Typography variant="h4" className="!mb-2">
                 Simple 3-Step Process
               </Typography>
-              <Typography className="!text-lg text-center block slide-top delay-700">
+              <Typography className="!text-lg text-center block">
                 Getting started is easy. We&apos;ll handle the complex stuff so
                 you can focus on earning.
               </Typography>
@@ -307,28 +332,33 @@ const ListYourProperty = () => {
                 {steps.map((step, index) => {
                   const IconComponent = step.icon;
                   return (
-                    <motion.div
-                      key={index}
-                      whileHover={{ y: -5 }}
-                      transition={{ duration: 0.3 }}
-                      className="relative"
-                    >
+                    <>
                       <div className="text-center">
                         <div className="relative mb-8">
                           <Box
                             sx={{
-                              background: theme.palette.grey[300],
+                              background: theme.palette.grey[100],
+                              //  backdropFilter: 'blur(8px)', 
                             }}
                             className="w-20 h-20 flex items-center rounded-md justify-center mx-auto mb-4"
                           >
                             <IconComponent fontSize="large" />
                             {/* {step.icon} */}
                           </Box>
-                          <div className="absolute -top-2 -right-2 w-6 md:w-8 h-6 md:h-8 border-2 border-border rounded-full flex items-center justify-center shadow-lg">
-                            <span className="text-sm font-bold text-primary">
+                          <Box sx={{
+                            border: `2px solid ${theme.palette.primary.main}`,
+                            position: 'absolute',
+                            right: '-8px',
+                            top: '-8px',
+                            borderRadius: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }} className={`w-6 md:w-8 h-6 md:h-8 shadow-lg`}>
+                            <Box sx={{color: theme.palette.primary.main}} className="text-sm font-bold text-primary">
                               {step.number}
-                            </span>
-                          </div>
+                            </Box>
+                          </Box>
                         </div>
                         <Typography variant="h5" className="mb-4 ">
                           {step.title}
@@ -337,9 +367,9 @@ const ListYourProperty = () => {
                       </div>
 
                       {index < steps.length - 1 && (
-                        <div className="hidden md:block absolute top-10 -right-6 w-12 h-0.5 bg-gradient-to-r from-primary/30 to-transparent"></div>
+                        <Box className="hidden md:block absolute top-10 -right-6 w-12 h-0.5"></Box>
                       )}
-                    </motion.div>
+                  </>
                   );
                 })}
               </div>
@@ -348,7 +378,7 @@ const ListYourProperty = () => {
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
+      {/* Success priority */}
       <section>
         <div className="container">
           <FadeInSection>
@@ -357,11 +387,11 @@ const ListYourProperty = () => {
                 <Typography variant="h4" className="md:!mb-6">
                   Your Success Is Our Priority
                 </Typography>
-                <div className="my-6">
+                <div className="">
                   {benefits.map((benefit, index) => (
-                    <div key={index} className="flex items-center my-2">
+                    <div key={index} className="flex items-center my-4 gap-2">
                       <div className="w-6 h-6 flex items-center justify-center">
-                        <CheckCircle className="w-4 h-4 text-primary" />
+                        <CheckCircle color="primary" />
                       </div>
                       <span className="text-lg">{benefit}</span>
                     </div>
@@ -371,7 +401,7 @@ const ListYourProperty = () => {
 
               <div>
                 <img
-                  src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0005.webp?alt=media&token=157fe785-388f-4ee9-b342-9cc992e956c2"
+                  src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/deena-villa%2Fdeena-sitout.webp?alt=media&token=37ef993a-5404-424d-8bcf-13eec9dbc38f"
                   alt="Premium hospitality service"
                   style={{
                     objectFit: "cover",

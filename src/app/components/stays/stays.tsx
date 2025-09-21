@@ -17,7 +17,7 @@ import { useRouter } from "next/navigation";
 import PropertyDTO from "@/app/@types/property-dto";
 import { SwiperSlide } from "swiper/react";
 import Image from "next/image";
-import propertyThemeMap from "@/lib/propert-theme-config/propertyThemeConfig";
+import propertyThemeMap from "@/lib/property-theme-config/propertyThemeConfig";
 import Link from "next/link";
 
 type StaysPropType = {

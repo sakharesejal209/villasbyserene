@@ -6,7 +6,7 @@ import {
 } from "@mui/material";
 
 const commonColors = {
-  gold: "#f4b400",
+  gold: "#E3D6BA",
   goldLight: "#FFE496",
   coral: "#D64E5E",
   coralLight: "#E9A0A8",
