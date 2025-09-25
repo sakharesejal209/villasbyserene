@@ -116,9 +116,9 @@ const ListYourProperty = () => {
     background: theme.palette.grey[100],
   }));
 
-  const StyledKPICircle = styled('div')(({theme}) => ({
+  const StyledKPICircle = styled("div")(({ theme }) => ({
     background: theme.palette.primary.main,
-  }))
+  }));
 
   return (
     <div>
@@ -177,7 +177,7 @@ const ListYourProperty = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.6 }}
+            transition={{ duration: 0.8 }}
             className="mb-8"
           >
             <div className="bg-white/10 backdrop-blur-sm border border-white/20 mt-4 p-4 inline-block">
@@ -223,15 +223,15 @@ const ListYourProperty = () => {
                   With us, your property is always guest-ready and performing at
                   its best.
                 </Typography>
-                <StyledKPI className="flex items-center rounded-md gap-4 p-6 mt-4">
-                  <StyledKPICircle className="w-12 h-12 rounded-full flex items-center justify-center">
-                    <CheckCircle className="w-6 h-6 !text-white" />
+                <StyledKPI className="flex items-center rounded-md gap-2 md:gap-4 p-2 md:p-6 mt-4">
+                  <StyledKPICircle className="w-8 md:w-12 md:h-12 h-8 rounded-full flex items-center justify-center">
+                    <CheckCircle className="md:w-6 w-3 md:h-6 h-3 !text-white" />
                   </StyledKPICircle>
                   <div>
                     <Typography className="!font-medium">
                       Property always guest-ready
                     </Typography>
-                    <Typography  variant="body2">
+                    <Typography variant="body2">
                       Maximum performance, minimum effort
                     </Typography>
                   </div>
@@ -283,13 +283,13 @@ const ListYourProperty = () => {
               </Typography>
             </div>
 
-            <div className="grid md:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-3 gap-6">
               {services.map((service, index) => {
                 const IconComponent = service.icon;
                 return (
                   <>
                     <Card className="h-full">
-                      <div className="p-8">
+                      <div className="p-4 md:p-8">
                         <Box
                           sx={{
                             backgroundColor: theme.palette.grey[100],
@@ -334,28 +334,34 @@ const ListYourProperty = () => {
                   return (
                     <>
                       <div className="text-center">
-                        <div className="relative mb-8">
+                        <div className="relative md:mb-8">
                           <Box
                             sx={{
                               background: theme.palette.grey[100],
-                              //  backdropFilter: 'blur(8px)', 
+                              //  backdropFilter: 'blur(8px)',
                             }}
                             className="w-20 h-20 flex items-center rounded-md justify-center mx-auto mb-4"
                           >
                             <IconComponent fontSize="large" />
                             {/* {step.icon} */}
                           </Box>
-                          <Box sx={{
-                            border: `2px solid ${theme.palette.primary.main}`,
-                            position: 'absolute',
-                            right: '-8px',
-                            top: '-8px',
-                            borderRadius: '100%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center'
-                          }} className={`w-6 md:w-8 h-6 md:h-8 shadow-lg`}>
-                            <Box sx={{color: theme.palette.primary.main}} className="text-sm font-bold text-primary">
+                          <Box
+                            sx={{
+                              border: `2px solid ${theme.palette.primary.main}`,
+                              position: "absolute",
+                              right: "-8px",
+                              top: "-8px",
+                              borderRadius: "100%",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                            className={`w-6 md:w-8 h-6 md:h-8 shadow-lg`}
+                          >
+                            <Box
+                              sx={{ color: theme.palette.primary.main }}
+                              className="text-sm font-bold text-primary"
+                            >
                               {step.number}
                             </Box>
                           </Box>
@@ -369,7 +375,7 @@ const ListYourProperty = () => {
                       {index < steps.length - 1 && (
                         <Box className="hidden md:block absolute top-10 -right-6 w-12 h-0.5"></Box>
                       )}
-                  </>
+                    </>
                   );
                 })}
               </div>
@@ -382,9 +388,9 @@ const ListYourProperty = () => {
       <section>
         <div className="container">
           <FadeInSection>
-            <div className="grid md:grid-cols-2 md:grid-cols-2 lg:px-[150px]">
+            <div className="grid md:grid-cols-2 lg:px-[150px]">
               <div className="flex justify-center items-left flex-col">
-                <Typography variant="h4" className="md:!mb-6">
+                <Typography variant="h4" className="md:!mb-6 text-center md:text-left">
                   Your Success Is Our Priority
                 </Typography>
                 <div className="">

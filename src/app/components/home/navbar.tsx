@@ -20,6 +20,7 @@ import logoLight from "../../../../public/assets/logoDark.png";
 import logoDark from "../../../../public/assets/logoLight.png";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Instagram } from "@mui/icons-material";
 
 const Navbar = () => {
   const { mode, toggleTheme } = useThemeContext();
@@ -68,6 +69,17 @@ const Navbar = () => {
                     List your home
                   </Typography>
                 </button>
+                <button>
+                  <Link href="https://www.instagram.com/villasbyserene/">
+                    <Typography
+                      // color="primary"
+                      className="hover:underline cursor-pointer flex gap-1"
+                    >
+                      <Instagram />
+                      <span>villasbyserene</span>
+                    </Typography>
+                  </Link>
+                </button>
                 <IconButton onClick={toggleTheme}>
                   {mode === "light" ? (
                     <DarkModeOutlinedIcon />
@@ -106,7 +118,20 @@ const Navbar = () => {
                 onClose={handleCloseNavMenu}
                 sx={{ display: { xs: "block", md: "none" } }}
               >
-                <MenuItem>List your home</MenuItem>
+                <MenuItem onClick={() => router.push("/list")}>
+                  List your home
+                </MenuItem>
+                <MenuItem>
+                  <Link href="https://www.instagram.com/villasbyserene/">
+                    <Typography
+                      // color="primary"
+                      className="hover:underline cursor-pointer flex gap-1"
+                    >
+                      <Instagram />
+                      <span>villasbyserene</span>
+                    </Typography>
+                  </Link>
+                </MenuItem>
               </Menu>
             </div>
           </div>
