@@ -44,6 +44,42 @@ import testimonials from "./data/testimonials.json";
 import type PropertyDTO from "@/app/@types/property-dto";
 import type ThemesDTO from "@/app/@types/themes-dto";
 
+const topLocations = [
+  {
+    locationId: "Karjat",
+    locationImg:
+      "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sparsh-villa%2Fsparsh-villa-exterior6.webp?alt=media&token=0085db93-d058-4a5e-91fc-f47d01434d84",
+    description: "Breathtaking location with lush flora and several waterfalls",
+  },
+  {
+    locationId: "Alibaug",
+    locationImg:
+      "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/skapa-alibaug%2Fskapa-alibaug-exterior7.webp?alt=media&token=347e31f5-b5ff-4f9b-bbb2-b9c8fa9503d7",
+    description: "Scenic beaches and water sports, historic Kolaba Fort",
+  },
+  {
+    locationId: "Lonavala",
+    locationImg:
+      "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/deena-villa%2Fdeena-swimmingpool1.webp?alt=media&token=6b522cd1-cb79-4a5d-825b-a8d67e76a0ac",
+    description:
+      "Lush green landscapes, waterfalls, ancient caves, and historical forts",
+  },
+  {
+    locationId: "Gadeshwar",
+    locationImg:
+      "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/air-eco%2Fexterior8.webp?alt=media&token=78b017f2-6406-4668-8844-036ce45df3d5",
+    description:
+      "Located at foothills of Matheran. Lush green landscapes, waterfalls",
+  },
+  {
+    locationId: "Udaipur",
+    locationImg:
+      "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/air-eco%2Fexterior8.webp?alt=media&token=78b017f2-6406-4668-8844-036ce45df3d5",
+    description:
+      "Picturesque lakes, magnificent palaces, rich cultural heritage",
+  },
+];
+
 export const FadeInSection = ({ children }: { children: React.ReactNode }) => {
   return (
     <motion.div
@@ -180,6 +216,79 @@ const Home = () => {
           </div>
         </motion.div>
       </section>
+
+      {/* top locations */}
+      <ThemeSection>
+        <div className="container">
+          <FadeInSection>
+            <div className="text-center mb-10 md:mb-12">
+              <Typography variant="h4" className="!mb-2">
+                Discover Our Top Locations
+              </Typography>
+              <Typography className="!text-lg text-center block">
+                From serene beaches to mountain retreats, explore our handpicked
+                destinations
+              </Typography>
+            </div>
+            <Carousel
+              autoplay={{
+                delay: 3200,
+                disableOnInteraction: false,
+              }}
+              breakpoints={{
+                320: { slidesPerView: 2, spaceBetween: 0 },
+                480: { slidesPerView: 3, spaceBetween: 0 },
+                900: { slidesPerView: 4 },
+              }}
+              slidesPerView={3}
+              spaceBetween={20}
+              showDots={false}
+              // inverseControlsColor
+            >
+              <>
+                {topLocations.map((item) => (
+                  <SwiperSlide key={item.locationId}>
+                    <div className="relative group overflow-hidden shadow-premium hover:shadow-premium-lg transition-all duration-500 cursor-pointer">
+                      <div
+                        onClick={() => {
+                          router.push(`/stays/${item.locationId}?guests=1`);
+                        }}
+                        className="relative aspect-[4/5] overflow-hidden"
+                      >
+                        <Image
+                          src={item.locationImg}
+                          alt={item.locationId}
+                          fill
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-107"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                        <div className="absolute bottom-0 left-0 right-0 p-6">
+                          <Typography variant="h6" className="!mb-2 text-white">
+                            {item.locationId}
+                          </Typography>
+                          <Typography className="text-white">
+                            {item.description}
+                          </Typography>
+                        </div>
+                      </div>
+                    </div>
+                  </SwiperSlide>
+                ))}
+              </>
+            </Carousel>
+            <div className="flex justify-center mt-12">
+              <Button
+                onClick={() => {
+                  router.push("/stays/all");
+                }}
+                variant="contained"
+              >
+                Explore All Locations
+              </Button>
+            </div>
+          </FadeInSection>
+        </div>
+      </ThemeSection>
 
       {/* theme */}
       <ThemeSection>

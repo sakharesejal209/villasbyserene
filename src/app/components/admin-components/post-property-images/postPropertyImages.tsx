@@ -94,6 +94,7 @@ export default function PropertyImageForm({
                     onChange={(e) =>
                       handleChange(img.image_id, "property_id", e.target.value)
                     }
+                    name={img.image_id}
                     className="border p-1 rounded w-full"
                   />
                   <input
