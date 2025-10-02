@@ -20,6 +20,18 @@
     "name": "Indoor Games"
   },
   {
+    "amenity_id": "turf",
+    "name": "Turf"
+  },
+  {
+    "amenity_id": "bbqgrill",
+    "name": "BBQ Grill"
+  },
+  {
+    "amenity_id": "washingMachine",
+    "name": "Washing Machine"
+  },
+  {
     "amenity_id": "airconditioned",
     "name": "Air-conditioned"
   },

@@ -21,6 +21,10 @@ import {
   ThermostatOutlined as TempControlPool,
   HotTubOutlined as Hottub,
   OutdoorGrillOutlined as BBQGrill,
+  PowerOutlined as PowerBackup,
+  VideoCameraFrontOutlined as CCTV,
+  KitchenOutlined as Fridge,
+  LocalLaundryServiceOutlined as WashingMachine,
 } from "@mui/icons-material";
 import BarTender from "./custom-icons/BarTender";
 
@@ -49,6 +53,10 @@ const amenityIconMap: Record<string, React.ElementType> = {
   openDinning: Gazebo,
   hottub: Hottub,
   bbqgrill: BBQGrill,
+  powerBackup: PowerBackup,
+  cctv: CCTV,
+  fridge: Fridge,
+  washingMachine: WashingMachine
 };
 
 export default amenityIconMap;
