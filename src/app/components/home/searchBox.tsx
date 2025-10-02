@@ -20,6 +20,7 @@ export const locations = [
   "Karjat",
   "Alibaug",
   "Uran",
+  "Udaipur"
 ];
 
 const SearchBox = () => {
