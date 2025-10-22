@@ -63,8 +63,8 @@ export default function PropertyImageForm({
   };
 
   return (
-    <div>
-      <h2 className="text-xl font-semibold">Assign property Images</h2>
+    <div className="mt-[50px]">
+      <h2 className="text-xl font-semibold">property Images</h2>
       <div className="grid grid-cols-4 gap-4 mt-4">
         {cliffImages.map((img) => {
           const selected = images.find((i) => i.image_id === img.image_id);

@@ -60,7 +60,7 @@ export default function DeletePropertyImages({
 
   return (
     <div>
-      <div>
+      {/* <div>
         <h2 className="text-xl font-semibold mb-4">Delete Propetry Images</h2>
         <div className="grid grid-cols-3 gap-4">
           {propimages.map((img) => (
@@ -95,7 +95,7 @@ export default function DeletePropertyImages({
             Delete Selected ({selectedPropImages.length})
           </button>
         )}
-      </div>
+      </div> */}
       <div>
         <h2 className="text-xl font-semibold mb-4">Delete unit Images</h2>
         <div>

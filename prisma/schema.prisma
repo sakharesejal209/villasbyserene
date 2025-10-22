@@ -161,6 +161,7 @@ model FoodMenu {
   description   String
   isVeg         Boolean
   isNonVeg      Boolean
+  isJain        Boolean @default(false)
   menuUrl       String
   breakfastTime String
   lunchTime     String

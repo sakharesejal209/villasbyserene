@@ -40,45 +40,10 @@ import propertyThemeMap from "@/lib/property-theme-config/propertyThemeConfig";
 import SearchBox from "./searchBox";
 import { getAccomodation } from "../stays/stays";
 import testimonials from "./data/testimonials.json";
+import topLocations from "./data/topLocations.json";
 
 import type PropertyDTO from "@/app/@types/property-dto";
 import type ThemesDTO from "@/app/@types/themes-dto";
-
-const topLocations = [
-  {
-    locationId: "Karjat",
-    locationImg:
-      "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sparsh-villa%2Fsparsh-villa-exterior6.webp?alt=media&token=0085db93-d058-4a5e-91fc-f47d01434d84",
-    description: "Breathtaking location with lush flora and several waterfalls",
-  },
-  {
-    locationId: "Alibaug",
-    locationImg:
-      "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/skapa-alibaug%2Fskapa-alibaug-exterior7.webp?alt=media&token=347e31f5-b5ff-4f9b-bbb2-b9c8fa9503d7",
-    description: "Scenic beaches and water sports, historic Kolaba Fort",
-  },
-  {
-    locationId: "Lonavala",
-    locationImg:
-      "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/deena-villa%2Fdeena-swimmingpool1.webp?alt=media&token=6b522cd1-cb79-4a5d-825b-a8d67e76a0ac",
-    description:
-      "Lush green landscapes, waterfalls, ancient caves, and historical forts",
-  },
-  {
-    locationId: "Gadeshwar",
-    locationImg:
-      "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/air-eco%2Fexterior8.webp?alt=media&token=78b017f2-6406-4668-8844-036ce45df3d5",
-    description:
-      "Located at foothills of Matheran. Lush green landscapes, waterfalls",
-  },
-  {
-    locationId: "Udaipur",
-    locationImg:
-      "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/air-eco%2Fexterior8.webp?alt=media&token=78b017f2-6406-4668-8844-036ce45df3d5",
-    description:
-      "Picturesque lakes, magnificent palaces, rich cultural heritage",
-  },
-];
 
 export const FadeInSection = ({ children }: { children: React.ReactNode }) => {
   return (

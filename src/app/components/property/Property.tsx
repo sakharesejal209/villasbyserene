@@ -119,29 +119,33 @@ const Property: FC<PropertyPropType> = (props) => {
   const houseRules = propertyDetails.propertyRules;
 
   useEffect(() => {
-    const _galleryImages = propertyImages.map((e) => ({
-      src: e.image != null ? e.image.image_url : "",
+    const _galleryImages = propertyImages
+      .slice()
+      .sort((a, b) => a.display_order - b.display_order)
+      .map((e) => ({
+        src: e.image ? e.image.image_url : "",
+        alt: e.image ? e.image.image_alt || "" : "alt text",
+      }));
 
-      alt: e.image != null ? e.image.image_alt || "" : "alt text",
-    }));
     setGalleryImages(_galleryImages);
 
     const _unitGalleryImages = propertyDetails.Unit.reduce<UnitImagesMap>(
       (acc, unit) => {
-        acc[unit.unit_id] = unit.unitImages.map((img) => ({
-          src: img.image != null ? img.image.image_url : "",
-
-          alt: img.image != null ? img.image.image_alt || "" : "alt text",
-
-          category:
-            img.image != null && img.image.imageCategory != null
-              ? img.image.imageCategory.name
-              : "",
-        }));
+        acc[unit.unit_id] = unit.unitImages
+          .sort((a, b) => (a.display_order || 0) - (b.display_order || 0)) // sort by display_order ascending
+          .map((img) => ({
+            src: img.image ? img.image.image_url : "",
+            alt: img.image ? img.image.image_alt || "" : "alt text",
+            category:
+              img.image && img.image.imageCategory
+                ? img.image.imageCategory.name
+                : "",
+          }));
         return acc;
       },
       {}
     );
+
     setunitGalleryImages(_unitGalleryImages);
   }, [propertyDetails, propertyImages]);
 
@@ -262,33 +266,38 @@ const Property: FC<PropertyPropType> = (props) => {
                     <div className="w-full grid grid-cols-12 mb-8 gap-2 md:mb-4 md:grid-cols-12 md:gap-8 md:p-4 mt-2">
                       <button
                         onClick={() => handleOpenGallery(category.unit_id)}
-                        className="col-span-12 md:col-span-5 relative"
+                        className="col-span-12 md:col-span-5"
                       >
-                        <img
-                          className="max-w-full h-auto"
-                          src={
-                            category.unitImages.find(
-                              (e) => e.is_banner_image === "true"
-                            )?.image?.image_url ?? ""
-                          }
-                          alt={
-                            category.unitImages.find(
-                              (e) => e.is_banner_image === "true"
-                            )?.image?.image_alt ?? "image alt text"
-                          }
-                        />
-                        <div className="absolute bottom-0 right-0 cursor-pointer flex items-center text-white">
-                          <Typography
-                            variant="subtitle1"
-                            className="hover:underline"
-                          >
-                            See all
-                          </Typography>
-                          <ArrowRight />
+                        <div className="relative">
+                          <img
+                            className="max-w-full h-auto"
+                            src={
+                              category.unitImages.find(
+                                (e) => e.is_banner_image === "true"
+                              )?.image?.image_url ?? ""
+                            }
+                            alt={
+                              category.unitImages.find(
+                                (e) => e.is_banner_image === "true"
+                              )?.image?.image_alt ?? "image alt text"
+                            }
+                          />
+                          <div className="absolute bottom-0 right-0 cursor-pointer flex items-center text-white">
+                            <Typography
+                              variant="subtitle1"
+                              className="hover:underline"
+                            >
+                              See all
+                            </Typography>
+                            <ArrowRight />
+                          </div>
                         </div>
                       </button>
                       <div className="col-span-12 flex md:col-span-7 flex-col justify-center md:gap-2">
-                        <Typography>{category.description}</Typography>
+                        <ReadMore
+                          text={category.description || ""}
+                          maxLength={300}
+                        />
                         <div className="grid max-sm:grid-cols-1 min-[370px]:grid-cols-2 max-md:grid-cols-3 items-center gap-3 mt-3">
                           <Typography>
                             <BedIcon /> {category.no_of_bedrooms} beds
@@ -337,7 +346,7 @@ const Property: FC<PropertyPropType> = (props) => {
                               alignItems="center"
                               gap={1}
                             >
-                              {Icon && <Icon fontSize="small" />}
+                              {Icon && <Icon size={20} />}
                               <Typography variant="body2">
                                 {item.amenity.name}
                               </Typography>
@@ -553,7 +562,7 @@ const Property: FC<PropertyPropType> = (props) => {
               {propertyDetails.map_location !== null && (
                 <div>
                   <Typography variant="h5">Location</Typography>
-                  <div className="w-full h-[200px] md:h-[350px] mt-1 mb-3 rounded-lg overflow-hidden shadow">
+                  <div className="w-full h-[200px] md:h-[350px] mt-3 mb-3 rounded-lg overflow-hidden shadow">
                     {/* {coord && (
                       <MapContainer
                         // bounds={}

@@ -39,11 +39,11 @@ const EnquiryForm = ({ propertyName, whatsappNumber }: EnquiryFormProps) => {
     e.preventDefault();
     if (!validate()) return;
     const message = `📌 New Property Enquiry
-🏡 Property: ${propertyName}
-👤 Name: ${form.name}
-📅 Check-in: ${form.checkIn}
-📅 Check-out: ${form.checkOut}
-👥 Guests: ${form.guests}`;
+- Property: ${propertyName}
+- Name: ${form.name}
+- Check-in: ${form.checkIn}
+- Check-out: ${form.checkOut}
+- Guests: ${form.guests}`;
 
     const encodedMessage = encodeURIComponent(message);
     const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
