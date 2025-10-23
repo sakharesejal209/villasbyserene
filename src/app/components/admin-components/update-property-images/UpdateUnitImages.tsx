@@ -17,7 +17,6 @@ type UnitImageType = {
 };
 
 export default function UpdateUnitImagesForm({
-  unitId,
   unitImages,
 }: Readonly<{
   unitId: string;
@@ -60,10 +59,10 @@ export default function UpdateUnitImagesForm({
 
     const res = await updateUnitImages(updates);
 
-    if (res.success) {
+    if (res?.success) {
       alert("Unit images updated successfully!");
     } else {
-      alert(res.error || "Failed to update images");
+      alert("Failed to update images");
     }
   };
 

@@ -132,17 +132,6 @@ export default function UnitImagesForm({ images }: Props) {
                     />
                     Banner Image
                   </label>
-
-                  {/* <select
-                    value={selected.is_banner_image}
-                    onChange={(e) =>
-                      handleChange(img.image_id, "is_banner_image", e.target.value)
-                    }
-                    className="border p-1 rounded w-full"
-                  >
-                    <option value={null}>-- Banner? --</option>
-                    <option value="true">Yes</option>
-                  </select> */}
                 </div>
               )}
             </div>

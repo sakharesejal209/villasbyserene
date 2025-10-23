@@ -3,20 +3,8 @@
 import { useState } from "react";
 import { updatePropertyImages } from "@/scripts/updatePropertyImages";
 import { PropertyImageDTO } from "@/app/@types/property-image-dto";
-import Image from "next/image";
 import { Typography } from "@mui/material";
 
-// type PropertyImage = {
-//   image_id: string;
-//   property_id: string;
-//   display_order: number;
-//   is_banner_image: string | null;
-//   is_carousel_image: string | null;
-//   image: {
-//     image_url: string;
-//     image_alt: string;
-//   };
-// };
 
 export default function UpdatePropertyImagesForm({
   propertyId,

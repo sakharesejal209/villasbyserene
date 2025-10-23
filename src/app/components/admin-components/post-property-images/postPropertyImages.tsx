@@ -11,9 +11,9 @@ type ImageType = {
 
 export default function PropertyImageForm({
   cliffImages,
-}: {
+}: Readonly<{
   cliffImages: ImageType[];
-}) {
+}>) {
   const [images, setImages] = useState<
     {
       image_id: string;
