@@ -58,7 +58,6 @@ export default function UpdateUnitImagesForm({
     }));
 
     const res = await updateUnitImages(updates);
-
     if (res?.success) {
       alert("Unit images updated successfully!");
     } else {
