@@ -14,7 +14,7 @@ type UpdateUnitImageInput = {
 
 export async function updateUnitImages(
   updates: UpdateUnitImageInput[]
-): Promise<{ success: boolean; error?: string }> {
+) {
   try {
     for (const u of updates) {
       // Update UnitImage fields
@@ -41,8 +41,7 @@ export async function updateUnitImages(
     }
 
     return { success: true };
-  } catch (err: any) {
+  } catch (err) {
     console.error("Error updating unit images:", err);
-    return { success: false, error: err.message || "Unknown error" };
   }
 }

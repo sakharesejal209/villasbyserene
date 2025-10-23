@@ -32,9 +32,8 @@ export async function updatePropertyImages(
 
     await Promise.all(promises);
     return { success: true };
-  } catch (err: any) {
+  } catch (err) {
     console.error("Error updating PropertyImages:", err);
-    return { success: false, error: err.message };
   }
 }
 
@@ -65,8 +64,7 @@ export async function updateUnitImages(
 
     await Promise.all(promises);
     return { success: true };
-  } catch (err: any) {
+  } catch (err) {
     console.error("Error updating UnitImages:", err);
-    return { success: false, error: err.message };
   }
 }
