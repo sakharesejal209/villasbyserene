@@ -48,10 +48,10 @@ export default function UpdatePropertyImagesForm({
     }));
 
     const res = await updatePropertyImages(propertyId, updates);
-    if (res.success) {
+    if (res?.success) {
       alert("Images updated successfully!");
     } else {
-      alert(res.error || "Failed to update");
+      alert("Failed to update");
     }
   };
 
