@@ -117,6 +117,7 @@ const Property: FC<PropertyPropType> = (props) => {
   const propertyImages = propertyDetails.PropertyImage;
   const amenities = propertyDetails.PropertyAmenity;
   const houseRules = propertyDetails.propertyRules;
+  const nearby = propertyDetails.NearByAttractions;
 
   useEffect(() => {
     const _galleryImages = propertyImages
@@ -171,7 +172,6 @@ const Property: FC<PropertyPropType> = (props) => {
     (e) => e.is_banner_image === "true"
   )[0];
 
-  const nearby = [];
   console.log("propertydetails:", propertyDetails);
 
   return (
