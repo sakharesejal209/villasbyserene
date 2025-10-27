@@ -4,9 +4,8 @@ import { useState } from "react";
 import { Button, TextField, useTheme } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import darkImg from "../../../public/assets/logoDark.png";
-import lightImg from "../../../public/assets/logoLight.png";
-
+import darkImg from "../../../public/assets/villasbyserene-dark.png";
+import lightImg from "../../../public/assets/villasbyserene-light.png";
 
 const Login = () => {
   const router = useRouter();
@@ -28,13 +27,13 @@ const Login = () => {
       setError(data.message || "Login failed");
     }
   };
-  
+
   return (
     <div className="p-8 ">
       <div className="flex flex-col items-center">
         <Image
           src={theme.palette.mode === "light" ? darkImg : lightImg}
-          alt="logo"
+          alt="VillasBySerene: Your boutique getaway!"
           width={150}
         />
         <h1 className="text-xl mt-8 my-3">Admin Login</h1>
@@ -50,7 +49,11 @@ const Login = () => {
               <div className="text-red-600 text-xs ml-1 mb-6">{error}</div>
             )}
           </div>
-          <Button className="w-full !mt-4" variant="contained" onClick={handleLogin}>
+          <Button
+            className="w-full !mt-4"
+            variant="contained"
+            onClick={handleLogin}
+          >
             Login
           </Button>
         </div>

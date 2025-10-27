@@ -12,7 +12,7 @@ import {
   WhatsApp,
 } from "@mui/icons-material";
 
-import logoLight from "../../../../public/assets/logoLight.png";
+import logoLight from "../../../../public/assets/villasbyserene-light.png";
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -40,7 +40,7 @@ const Footer = () => {
               <Image
                 className="sm:w-[90px] xl:w-[100px] 2xl:w-[120px]"
                 width={100}
-                alt="villasbyserene logo"
+                alt="VillasBySerene: Your boutique getaway!"
                 src={logoLight}
               />
             </div>

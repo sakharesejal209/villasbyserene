@@ -16,8 +16,8 @@ import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 
 import { useThemeContext } from "@/context/ThemeContext";
 import Image from "next/image";
-import logoLight from "../../../../public/assets/logoDark.png";
-import logoDark from "../../../../public/assets/logoLight.png";
+import logoLight from "../../../../public/assets/villasbyserene-dark.png";
+import logoDark from "../../../../public/assets/villasbyserene-light.png";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Instagram } from "@mui/icons-material";
@@ -45,7 +45,7 @@ const Navbar = () => {
             <Link href="/">
               <Image
                 className="max-sm:w-[90px] sm:w-[100px] md:w-[110px]"
-                alt="villasbyserene logo"
+                alt="VillasBySerene: Your boutique getaway!"
                 src={mode === "light" ? logoLight : logoDark}
               />
             </Link>

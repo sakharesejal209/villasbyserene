@@ -12,7 +12,7 @@ import UpdateImagesForm from "../components/admin-components/update-property-ima
 import UpdateUnitImagesForm from "../components/admin-components/update-property-images/UpdateUnitImages";
 
 export default async function Page() {
-  const propertyId = "8c73c8ea-6cce-4cfa-8550-74ce566205b4";
+  const propertyId = "0d9ad374-c078-46e1-9fb5-380b1ed53e0d";
   const unitId = "494be685-1a34-4aca-91be-ddd1e2a4d1b7";
   const cliffImages = await fetchCliffViewImages();
   const propertyImages = await fetchPropertyImages(propertyId);
@@ -23,7 +23,7 @@ export default async function Page() {
       {/* <AllImages /> */}
       {/* <PropertyImageForm cliffImages={cliffImages} /> */}
       {/* <UnitImagesForm images={cliffImages} /> */}
-      {/* <UpdateImagesForm propertyId={propertyId} propertyImages={propertyImages} /> */}
+      <UpdateImagesForm propertyId={propertyId} propertyImages={propertyImages} />
       {/* <UpdateUnitImagesForm unitImages={unitImages} /> */}
       {/* <DeletePropertyImages propertyId="1cf56e86-e0ce-424c-81dd-301e29b3d624" /> */}
     </div>
