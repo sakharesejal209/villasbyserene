@@ -23,7 +23,7 @@ export default async function Page() {
       {/* <AllImages /> */}
       {/* <PropertyImageForm cliffImages={cliffImages} /> */}
       {/* <UnitImagesForm images={cliffImages} /> */}
-      <UpdateImagesForm propertyId={propertyId} propertyImages={propertyImages} />
+      {/* <UpdateImagesForm propertyId={propertyId} propertyImages={propertyImages} /> */}
       {/* <UpdateUnitImagesForm unitImages={unitImages} /> */}
       {/* <DeletePropertyImages propertyId="1cf56e86-e0ce-424c-81dd-301e29b3d624" /> */}
     </div>
