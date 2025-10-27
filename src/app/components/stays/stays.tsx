@@ -2,7 +2,14 @@
 
 import { useEffect, useState } from "react";
 
-import { Box, Card, Divider, keyframes, Typography, useTheme } from "@mui/material";
+import {
+  Box,
+  Card,
+  Divider,
+  keyframes,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import {
   PeopleAltOutlined as PeopleIcon,
   BedOutlined as BedIcon,
@@ -47,7 +54,7 @@ const Stays = (props: StaysPropType) => {
 
   const [fits, setFits] = useState<Record<number, "cover" | "contain">>({});
   const router = useRouter();
-  const theme= useTheme();
+  const theme = useTheme();
 
   const toPascalCase = (str: string) =>
     startCase(camelCase(str)).replace(/ /g, "");
@@ -100,40 +107,45 @@ const Stays = (props: StaysPropType) => {
                   <>
                     {item.PropertyImage.filter(
                       (img) => img.is_carousel_image === "true"
-                    ).map((e, idx) => (
-                      <SwiperSlide
-                        key={idx}
-                        className="hover:cursor-pointer"
-                        onClick={() => handleSelect(item)}
-                      >
-                        <div className="relative w-full h-full md:aspect-[5.5/3] aspect-[16/9]">
-                          <Image
-                            src={e.image != null ? e.image.image_url : ""}
-                            alt={
-                              e.image != null
-                                ? e.image.image_alt || ""
-                                : "alt text"
-                            }
-                            fill
-                            style={{
-                              objectFit: fits?.[idx] || "cover",
-                              objectPosition: "center",
-                            }}
-                            onLoadingComplete={(img) =>
-                              handleImageLoad(idx, img)
-                            }
-                            sizes="100vw"
-                            priority={idx === 0}
-                          />
-                        </div>
-                      </SwiperSlide>
-                    ))}
+                    )
+                      .sort(
+                        (a, b) =>
+                          (a.display_order ?? 0) - (b.display_order ?? 0)
+                      )
+                      .map((e, idx) => (
+                        <SwiperSlide
+                          key={idx}
+                          className="hover:cursor-pointer"
+                          onClick={() => handleSelect(item)}
+                        >
+                          <div className="relative w-full h-full md:aspect-[5.5/3] aspect-[16/9]">
+                            <Image
+                              src={e.image != null ? e.image.image_url : ""}
+                              alt={
+                                e.image != null
+                                  ? e.image.image_alt || ""
+                                  : "alt text"
+                              }
+                              fill
+                              style={{
+                                objectFit: fits?.[idx] || "cover",
+                                objectPosition: "center",
+                              }}
+                              onLoadingComplete={(img) =>
+                                handleImageLoad(idx, img)
+                              }
+                              sizes="100vw"
+                              priority={idx === 0}
+                            />
+                          </div>
+                        </SwiperSlide>
+                      ))}
                   </>
                 </Carousel>
               </div>
               <div className="md:col-span-7 flex flex-col justify-center md:gap-2 p-3 md:p-7">
                 <Typography
-                  className="hover:cursor-pointer"
+                  className="hover:cursor-pointer select-none"
                   onClick={() => handleSelect(item)}
                   variant="h6"
                 >
@@ -167,7 +179,7 @@ const Stays = (props: StaysPropType) => {
                         key={item.theme_id}
                         sx={{
                           background: theme.palette.grey[200],
-                            // "linear-gradient(90deg, #403f3f, #433f3f, #575253)",
+                          // "linear-gradient(90deg, #403f3f, #433f3f, #575253)",
                           //  background:
                           //    "linear-gradient(90deg, rgb(216, 95, 109), rgb(255, 122, 140), rgb(250, 167, 176))",
                           backgroundSize: "200% 200%",

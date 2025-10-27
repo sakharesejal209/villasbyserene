@@ -106,6 +106,11 @@ export const metadata: Metadata = {
   },
   authors: [{ name: "Villas by Serene" }],
   category: "Holiday Rentals & Hospitality",
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+  },
 };
 
 const roboto = Roboto({

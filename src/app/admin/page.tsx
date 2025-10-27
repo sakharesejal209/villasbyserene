@@ -12,7 +12,7 @@ import UpdateImagesForm from "../components/admin-components/update-property-ima
 import UpdateUnitImagesForm from "../components/admin-components/update-property-images/UpdateUnitImages";
 
 export default async function Page() {
-  const propertyId = "0d9ad374-c078-46e1-9fb5-380b1ed53e0d";
+  const propertyId ="f7131619-5e74-457b-8924-9b03c340f0fd";
   const unitId = "494be685-1a34-4aca-91be-ddd1e2a4d1b7";
   const cliffImages = await fetchCliffViewImages();
   const propertyImages = await fetchPropertyImages(propertyId);

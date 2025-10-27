@@ -20,7 +20,7 @@ export const locations = [
   "Karjat",
   "Alibaug",
   "Uran",
-  "Udaipur"
+  "Udaipur",
 ];
 
 const SearchBox = () => {
@@ -81,6 +81,7 @@ const SearchBox = () => {
                         label="Location"
                         fullWidth
                         sx={{
+                          cursor: 'context-menu !important',
                           "& label": {
                             color: "#ffffff",
                           },
@@ -169,7 +170,11 @@ const SearchBox = () => {
                   fullWidth
                   onClick={handleSubmit}
                 >
-                  {loadingButton ? <CircularProgress size={30} color="inherit" /> : "Search"}
+                  {loadingButton ? (
+                    <CircularProgress size={30} color="inherit" />
+                  ) : (
+                    "Search"
+                  )}
                 </Button>
               </form>
             </Box>
