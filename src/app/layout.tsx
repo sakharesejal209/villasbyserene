@@ -18,21 +18,60 @@ export const metadata: Metadata = {
     "Escape to nature with Villas by Serene. Handpicked luxury villas and retreats in India. Perfect for families, couples, and groups seeking private stays with pools and scenic views.",
   keywords: [
     "villas near me",
-    "luxury near me",
+    "luxury villas near me",
     "private villa near me",
     "private pool villa near me",
     "villas with swimming pool",
     "resorts near me",
     "villas in Karjat",
+    "villas in Navi mumbai",
     "villas in Panvel",
     "villas in Alibaug",
     "villas in Lonavala",
     "villas in Rajasthan",
     "villas in Udaipur",
-    "luxury villas Maharashtra",
-    "luxury villas India",
+    "luxury villas in Maharashtra",
+    "luxury villas in India",
     "private pool villa near Mumbai",
     "Villas by Serene",
+
+    "book luxury villas in India",
+    "private villas for rent",
+    "holiday villas with pool",
+    "exclusive villa stays",
+    "eco stays and private retreats",
+    "luxury stays for couples and families",
+    "villa resorts with private pool",
+    "weekend getaway villas",
+
+    // Location based (Pan India)
+    "villas in Goa",
+    "villas in Udaipur",
+    "villas in Rajasthan",
+    "villas in Maharashtra",
+    "villas in Karjat",
+    "villas in Lonavala",
+    "villas in Alibaug",
+    "villas near Mumbai",
+    "beachfront villas in Goa",
+    "beachfront villas in Alibaug",
+    "hill view villas in Lonavala",
+    "heritage villas in Udaipur",
+
+    // Experience based
+    "romantic villa stays",
+    "family villa getaways",
+    "pool villas for group stays",
+    "boutique luxury villas",
+    "eco-friendly villa stays",
+    "private villas for destination weddings",
+    "corporate retreat villas",
+
+    // Brand & recall
+    "Villas by Serene",
+    "Serene Villas India",
+    "Serene luxury stays",
+    "Serene private retreats",
   ],
   openGraph: {
     type: "website",
@@ -44,7 +83,7 @@ export const metadata: Metadata = {
     siteName: "VillasBySerene",
     images: [
       {
-        url: "/public/villasbyserene-dark.png",
+        url: "/assets/villasbyserene-dark.png",
         width: 1200,
         height: 630,
         alt: "Villas by Serene",
@@ -56,7 +95,7 @@ export const metadata: Metadata = {
     title: "Villas by Serene | Luxury Villas & Nature Retreats",
     description:
       "Experience the serenity of luxury villas with pools, scenic hill views, and curated hospitality.",
-    images: ["https://www.villasbyserene.com/og-image.jpg"],
+    images: ["https://www.villasbyserene.com/favicon.ico"],
     creator: "@villasbyserene",
   },
   alternates: {
