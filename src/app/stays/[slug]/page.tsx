@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import StaysClientPage from "./StaysClientPage";
 
-interface PageProps {
+interface Props {
   params: {
     slug: string;
   };
@@ -31,7 +31,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({ params }: PageProps) {
+export default async function Page({ params }: Props) {
   const villa = params.slug;
 
   if (!villa) {
