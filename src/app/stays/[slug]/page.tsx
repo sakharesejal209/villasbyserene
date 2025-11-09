@@ -9,7 +9,9 @@ interface PageProps {
 
 export async function generateMetadata({
   params,
-}: PageProps): Promise<Metadata> {
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
   const villa = params.slug;
 
   if (!villa) {
