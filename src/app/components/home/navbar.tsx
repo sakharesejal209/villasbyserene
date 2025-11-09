@@ -44,7 +44,7 @@ const Navbar = () => {
             {/* Brand (desktop) */}
             <Link href="/">
               <Image
-                className="max-sm:w-[90px] sm:w-[100px] md:w-[170px]"
+                className="max-sm:w-[130px] sm:w-[150px] md:w-[170px]"
                 alt="VillasBySerene: Your boutique getaway!"
                 src={mode === "light" ? logoLight : logoDark}
               />

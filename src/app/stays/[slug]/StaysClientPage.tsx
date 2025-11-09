@@ -61,7 +61,7 @@ export default function StaysClientPage() {
 
   return (
     <div className="mt-[40px]">
-      <section className="hidden h-full w-full md:grid grid-cols-12  relative">
+      <section className="hidden h-full w-full md:grid grid-cols-12 relative">
         <StaysSearchBox
           filters={filters}
           setFilters={setFilters}
@@ -69,9 +69,9 @@ export default function StaysClientPage() {
         />
         <Stays propertiesData={filteredProperties} location={params.slug} />
       </section>
-      
+
       <section className="md:hidden h-full w-full grid relative">
-        <div className="px-4">
+        <div>
           <Stays propertiesData={filteredProperties} location={params.slug} />
         </div>
 

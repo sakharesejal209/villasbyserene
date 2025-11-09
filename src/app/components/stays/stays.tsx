@@ -77,7 +77,7 @@ const Stays = (props: StaysPropType) => {
   };
 
   return (
-    <div className="col-span-12 md:col-span-9 w-full">
+    <div className="col-span-12 md:col-span-9 w-full px-4">
       <div className="flex items-center gap-1">
         <Typography variant="subtitle2" color="textSecondary">
           <Link href={"/"}>Home</Link>
@@ -98,7 +98,7 @@ const Stays = (props: StaysPropType) => {
               ? "All Properties"
               : `Properties in ${toPascalCase(location)}`}
           </Typography>
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-4">
             {propertiesData.map((item) => (
               <Card
                 key={item.property_id}
@@ -155,7 +155,7 @@ const Stays = (props: StaysPropType) => {
                 </div>
                 <div className="flex flex-col justify-center gap-2 p-4">
                   <Typography
-                  variant="h6"
+                    variant="h6"
                     className="hover:cursor-pointer select-none"
                   >
                     {item.name}
@@ -163,7 +163,7 @@ const Stays = (props: StaysPropType) => {
                   <Typography color="textSecondary">
                     {item.area}, {item.state}, {item.country}
                   </Typography>
-                  <div className="flex items-center gap-3 mb-2">
+                  <div className="flex items-center gap-3 mb-2 flex-wrap-reverse">
                     <div className="flex items-center gap-1">
                       <PeopleIcon color="primary" />
                       <Typography color="primary">
@@ -184,26 +184,27 @@ const Stays = (props: StaysPropType) => {
                     </div>
                   </div>
                   <Divider />
-                  <div className="mt-2 grid grid-cols-2 lg:grid-cols-3 w-max gap-4">
+                  <div className="mt-2 flex flex-wrap gap-2">
                     {item.themes
                       .filter((item) => item.theme.theme_id != "entireHome")
                       .map((item) => (
                         <Box
                           key={item.theme_id}
                           sx={{
-                            background: theme.palette.grey[200],
-                            // "linear-gradient(90deg, #403f3f, #433f3f, #575253)",
-                            //  background:
-                            //    "linear-gradient(90deg, rgb(216, 95, 109), rgb(255, 122, 140), rgb(250, 167, 176))",
-                            backgroundSize: "200% 200%",
-                            // color: "#fff",
-                            borderRadius: "999px",
                             fontWeight: "600",
                             textAlign: "center",
                           }}
-                          className="flex md:grid-cols-3 gap-3 px-1.5 py-0.5 !rounded-2xl reltive"
+                          className="flex gap-3"
                         >
-                          <Typography variant="caption" className="!font-[400]">
+                          <Typography
+                            sx={{
+                              background: theme.palette.grey[200],
+                              paddingX: '8px',
+                              borderRadius: "999px",
+                            }}
+                            variant="caption"
+                            className="!font-[400]"
+                          >
                             {propertyThemeMap[item.theme.theme_id].label}
                           </Typography>
                         </Box>
