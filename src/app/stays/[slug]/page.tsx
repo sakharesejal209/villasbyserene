@@ -31,7 +31,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({ params }: Props) {
+export default async function Page({ params }) {
   const villa = params.slug;
 
   if (!villa) {
