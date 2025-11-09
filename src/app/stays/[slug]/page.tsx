@@ -1,11 +1,6 @@
 import { Metadata } from "next";
 import StaysClientPage from "./StaysClientPage";
 
-interface Props {
-  params: {
-    slug: string;
-  };
-}
 
 export async function generateMetadata({
   params,
@@ -31,12 +26,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({ params }) {
-  const villa = params.slug;
-
-  if (!villa) {
-    return <div className="p-6 text-center text-gray-600">Villa not found</div>;
-  }
+export default async function Page() {
 
   return <StaysClientPage />;
 }
