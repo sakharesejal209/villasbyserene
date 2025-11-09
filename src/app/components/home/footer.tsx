@@ -30,7 +30,10 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-gradient-to-r from-[#0F1419] to-[#1A1F24] text-white border-t border-gray-800/50">
+    <footer
+      // className="bg-gradient-to-r from-[#0F1419] to-[#1A1F24] text-white border-t border-gray-800/50"
+      className="bg-[#272628] text-white"
+    >
       {/* Main Footer Content */}
       <div className="container py-8">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
@@ -38,7 +41,7 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center mb-1">
               <Image
-                className="sm:w-[90px] xl:w-[100px] 2xl:w-[120px]"
+                className="sm:w-[90px] xl:w-[120px] 2xl:w-[150px]"
                 width={100}
                 alt="VillasBySerene: Your boutique getaway!"
                 src={logoLight}
@@ -51,7 +54,7 @@ const Footer = () => {
                 target="_blank"
                 aria-label="Facebook"
                 size="small"
-                color="primary"
+                sx={{ color: "#fff" }}
               >
                 <Facebook className="w-4 h-4" />
               </IconButton>
@@ -60,7 +63,7 @@ const Footer = () => {
                 target="_blank"
                 aria-label="Instagram"
                 size="small"
-                color="primary"
+                sx={{ color: "#fff" }}
               >
                 <Instagram className="w-4 h-4" />
               </IconButton>
@@ -69,7 +72,9 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <Typography variant="h6">Quick Links</Typography>
+            <Typography color="secondary" variant="h6">
+              Quick Links
+            </Typography>
             <div className="my-3 flex flex-col items-start gap-1">
               <button
                 onClick={() => {
@@ -103,15 +108,14 @@ const Footer = () => {
               >
                 Our Story
               </button>
-              {/* <button className="text-gray-300 hover:text-white hover:cursor-pointer transition-colors duration-200">
-                About Us
-              </button> */}
             </div>
           </div>
 
           {/* Get in Touch */}
           <div className="space-y-4 col-span-2 md:col-span-1">
-            <Typography variant="h6">Get in Touch</Typography>
+            <Typography color="secondary" variant="h6">
+              Get in Touch
+            </Typography>
             <div className="flex flex-col gap-1.5 my-3">
               <div className="flex items-center space-x-3 text-gray-300">
                 <Phone className="w-4 h-4 text-primary" />

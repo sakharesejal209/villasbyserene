@@ -86,7 +86,7 @@ export const AboutPage = () => {
               <div className="md:pl-10 md:py-10">
                 <Typography variant="h3">
                   Welcome to
-                  <span className="!text-[#D64E5E]"> Villas by Serene</span>
+                  <span className="!text-[#1d5546]"> Villas by Serene</span>
                 </Typography>
                 <Typography className="!text-xl !my-4">
                   Where every stay feels like home, and every moment is crafted
@@ -162,7 +162,7 @@ export const AboutPage = () => {
               <Typography variant="h4" className="!mb-3 text-center">
                 Our Story
               </Typography>
-              <div className="w-20 h-1 bg-[#D64E5E] mx-auto rounded-full" />
+              <div className="w-20 h-1 bg-[#044231] mx-auto rounded-full" />
             </div>
             <div className="grid grid-cols-6 gap-4 md:gap-12 items-center mb-4 md:mb-10">
               <div className="col-span-6 md:col-span-4">
@@ -240,7 +240,7 @@ export const AboutPage = () => {
                           height: "60px",
                         }}
                       >
-                        <value.icon fontSize="large" />
+                        <value.icon color="secondary" fontSize="large" />
                       </Box>
                       <Typography variant="h6" className="!my-3">
                         {value.title}
@@ -278,11 +278,7 @@ export const AboutPage = () => {
       {/* CTA Section */}
       <section
         className={`text-white p-6
-        ${
-          theme.palette.mode == "light"
-            ? "bg-gradient-to-r from-[color:var(--cta-light)] to-[color:color-mix(in_oklab,var(--cta-light)_80%,transparent)]"
-            : "bg-gradient-to-r from-[color:var(--cta-dark)] to-[color:color-mix(in_oklab,var(--cta-dark)_80%,transparent)]"
-        }
+        bg-[#3b3a3b]
         `}
       >
         <div className="container">
@@ -301,6 +297,7 @@ export const AboutPage = () => {
             </Button>
             <Button
               variant="outlined"
+              color="secondary"
               size="large"
               onClick={() => router.push("/contact")}
             >

@@ -5,6 +5,8 @@
   --foreground: #171717;
   --font-playfair: "Playfair Display", serif;
   --font-roboto: "Roboto", sans-serif;
+  --font-montserrat: "Montserrat", sans-serif;
+  --font-eb-garamond: "EB Garamond", serif;
   --font-ibmPlex: "IBM Plex Serif", serif;
   --cta-light: #1b1b2f; /* Example primary color */
   --cta-dark: #131314;
@@ -62,9 +64,9 @@ section {
 .loader,
 .loader:before,
 .loader:after {
-  background: radial-gradient(closest-side at 50% 12.5%, #d64e5e 96%, #0000) 50%
+  background: radial-gradient(closest-side at 50% 12.5%, #044231 96%, #0000) 50%
       0/20% 80% repeat-y,
-    radial-gradient(closest-side at 12.5% 50%, #d64e5e 96%, #0000) 0 50%/80% 20%
+    radial-gradient(closest-side at 12.5% 50%, #044231 96%, #0000) 0 50%/80% 20%
       repeat-x;
 }
 .loader:before,

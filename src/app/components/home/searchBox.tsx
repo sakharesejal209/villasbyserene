@@ -52,7 +52,7 @@ const SearchBox = () => {
     <div>
       <ClickAwayListener onClickAway={() => setOpen(false)}>
         <div className="mt-3 relative">
-          <Box
+          {/* <Box
             ref={anchorRef}
             onClick={() => setOpen((prev) => !prev)}
             sx={{
@@ -65,9 +65,9 @@ const SearchBox = () => {
             }}
           >
             <SearchIcon /> search for location, guest count...
-          </Box>
+          </Box> */}
 
-          <Collapse in={open} timeout={300} unmountOnExit>
+          {/* <Collapse in={open} timeout={300} unmountOnExit> */}
             <Box className="mt-1 p-2 rounded-lg w-full flex flex-col justify-center">
               <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-2 gap-2">
@@ -178,7 +178,7 @@ const SearchBox = () => {
                 </Button>
               </form>
             </Box>
-          </Collapse>
+          {/* </Collapse> */}
         </div>
       </ClickAwayListener>
     </div>

@@ -6,10 +6,10 @@ import {
 } from "@mui/material";
 
 const commonColors = {
-  gold: "#E3D6BA",
-  goldLight: "#FFE496",
-  coral: "#D64E5E",
-  coralLight: "#E9A0A8",
+  gold: "#fecc89",
+  goldLight: "#fecc89",
+  coral: "#044231",
+  coralLight: "#1d5546",
   sand: "#ffffff",
   white: "#ffffff",
   black: "#000000",
@@ -70,7 +70,7 @@ let lightTheme: Theme = createTheme({
     borderRadius: 12,
   },
   typography: {
-    fontFamily: "var(--font-roboto), serif",
+    fontFamily: "var(--font-montserrat), serif !important",
     button: { textTransform: "none" },
     h1: {
       fontWeight: "700",
@@ -140,12 +140,12 @@ let lightTheme: Theme = createTheme({
         },
         contained: {
           "&:hover": {
-            backgroundColor: "#D13647",
+            backgroundColor: "#032e22",
             boxShadow: "none",
           },
           "&:active": {
             boxShadow: "none",
-            backgroundColor: "#AA2736",
+            backgroundColor: "#02281d",
           },
         },
         text: {

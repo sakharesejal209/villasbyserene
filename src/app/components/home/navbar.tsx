@@ -40,11 +40,11 @@ const Navbar = () => {
     <Slide appear={false} direction="down" in={!trigger}>
       <AppBar color="default" component="header">
         <div className="container px-2">
-          <div className="p-1 flex justify-between items-center w-full">
+          <div className="p-2 flex justify-between items-center w-full">
             {/* Brand (desktop) */}
             <Link href="/">
               <Image
-                className="max-sm:w-[90px] sm:w-[100px] md:w-[110px]"
+                className="max-sm:w-[90px] sm:w-[100px] md:w-[170px]"
                 alt="VillasBySerene: Your boutique getaway!"
                 src={mode === "light" ? logoLight : logoDark}
               />

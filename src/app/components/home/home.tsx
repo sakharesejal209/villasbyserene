@@ -213,7 +213,7 @@ const Home = () => {
               <>
                 {topLocations.map((item) => (
                   <SwiperSlide key={item.locationId}>
-                    <div className="relative group overflow-hidden shadow-premium hover:shadow-premium-lg transition-all duration-500 cursor-pointer">
+                    <div className="relative group overflow-hidden shadow-premium hover:shadow-premium-lg transition-all duration-250 cursor-pointer">
                       <div
                         onClick={() => {
                           router.push(`/stays/${item.locationId}?guests=1`);
@@ -224,7 +224,7 @@ const Home = () => {
                           src={item.locationImg}
                           alt={item.locationId}
                           fill
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-107"
+                          className="w-full h-full object-cover transition-transform duration-250 group-hover:scale-108"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
                         <div className="absolute bottom-0 left-0 right-0 p-6">
@@ -241,12 +241,13 @@ const Home = () => {
                 ))}
               </>
             </Carousel>
-            <div className="flex justify-center mt-12">
+            <div className="flex justify-center mt-8">
               <Button
                 onClick={() => {
                   router.push("/stays/all");
                 }}
                 variant="contained"
+                size="large"
               >
                 Explore All Locations
               </Button>
@@ -275,7 +276,7 @@ const Home = () => {
               breakpoints={{
                 320: { slidesPerView: 2, spaceBetween: 0 },
                 480: { slidesPerView: 3, spaceBetween: 0 },
-                900: { slidesPerView: 4 },
+                900: { slidesPerView: 4, spaceBetween: 0 },
               }}
               slidesPerView={4}
               spaceBetween={0}
@@ -300,7 +301,11 @@ const Home = () => {
                         }}
                       >
                         <Image
-                          src={propertyThemeMap[proptheme].image}
+                          src={
+                            theme.palette.mode == "light"
+                              ? propertyThemeMap[proptheme].lightImg
+                              : propertyThemeMap[proptheme].darkImg
+                          }
                           alt={propertyThemeMap[proptheme].label}
                           width={90}
                           height={90}
@@ -343,21 +348,21 @@ const Home = () => {
               <div className="grid md:grid-cols-3 gap-2 md:gap-8">
                 <div className="text-center p-2 md:p-6">
                   <Box
-                    // style={{
-                    //   backgroundColor:
-                    //     theme.palette.mode == "light"
-                    //       ? theme.palette.background.paper
-                    //       : theme.palette.grey[100],
-                    // }}
                     sx={{
-                      backgroundColor: alpha(theme.palette.primary.main, 0.1),
+                      backgroundColor:
+                        theme.palette.mode == "light"
+                          ? alpha(theme.palette.primary.main, 0.1)
+                          : alpha(theme.palette.secondary.main, 0.1),
                     }}
                     className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
                   >
                     <Star
                       sx={{
                         fontSize: "32px",
-                        color: theme.palette.primary.main,
+                        color:
+                          theme.palette.mode == "light"
+                            ? theme.palette.primary.main
+                            : theme.palette.secondary.main,
                       }}
                     />
                   </Box>
@@ -375,21 +380,21 @@ const Home = () => {
 
                 <div className="text-center p-2 md:p-6">
                   <Box
-                    // style={{
-                    //   backgroundColor:
-                    //     theme.palette.mode == "light"
-                    //       ? theme.palette.background.paper
-                    //       : theme.palette.grey[100],
-                    // }}
                     sx={{
-                      backgroundColor: alpha(theme.palette.primary.main, 0.1),
+                      backgroundColor:
+                        theme.palette.mode == "light"
+                          ? alpha(theme.palette.primary.main, 0.1)
+                          : alpha(theme.palette.secondary.main, 0.1),
                     }}
                     className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
                   >
                     <Shield
                       sx={{
                         fontSize: "32px",
-                        color: theme.palette.primary.main,
+                        color:
+                          theme.palette.mode == "light"
+                            ? theme.palette.primary.main
+                            : theme.palette.secondary.main,
                       }}
                     />
                   </Box>
@@ -407,21 +412,21 @@ const Home = () => {
 
                 <div className="text-center p-2 md:p-6">
                   <Box
-                    // style={{
-                    //   backgroundColor:
-                    //     theme.palette.mode == "light"
-                    //       ? theme.palette.background.paper
-                    //       : theme.palette.grey[100],
-                    // }}
                     sx={{
-                      backgroundColor: alpha(theme.palette.primary.main, 0.1),
+                      backgroundColor:
+                        theme.palette.mode == "light"
+                          ? alpha(theme.palette.primary.main, 0.1)
+                          : alpha(theme.palette.secondary.main, 0.1),
                     }}
                     className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
                   >
                     <Clock
                       sx={{
                         fontSize: "32px",
-                        color: theme.palette.primary.main,
+                        color:
+                          theme.palette.mode == "light"
+                            ? theme.palette.primary.main
+                            : theme.palette.secondary.main,
                       }}
                     />
                   </Box>
@@ -598,12 +603,7 @@ const Home = () => {
       {/* ready to book */}
       <section
         className={`text-white p-6
-        ${
-          theme.palette.mode == "light"
-            ? "bg-gradient-to-r from-[color:var(--cta-light)] to-[color:color-mix(in_oklab,var(--cta-light)_80%,transparent)]"
-            : "bg-gradient-to-r from-[color:var(--cta-dark)] to-[color:color-mix(in_oklab,var(--cta-dark)_80%,transparent)]"
-        }
-        `}
+        bg-[#3b3a3b]`}
       >
         <div className="container px-4 text-center">
           <Typography variant="h5" className="!mb-1">
@@ -625,6 +625,7 @@ const Home = () => {
             <Button
               size="large"
               variant="outlined"
+              color="secondary"
               className="text-lg px-8 py-3 border-white text-white hover:bg-white hover:text-primary"
               onClick={() => {
                 router.push("/stays/all");

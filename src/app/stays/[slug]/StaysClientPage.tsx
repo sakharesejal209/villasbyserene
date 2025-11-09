@@ -69,6 +69,7 @@ export default function StaysClientPage() {
         />
         <Stays propertiesData={filteredProperties} location={params.slug} />
       </section>
+      
       <section className="md:hidden h-full w-full grid relative">
         <div className="px-4">
           <Stays propertiesData={filteredProperties} location={params.slug} />

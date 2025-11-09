@@ -18,7 +18,6 @@ import {
   Paper,
   styled,
   Typography,
-  useTheme,
 } from "@mui/material";
 import {
   PeopleAltOutlined as PeopleIcon,
@@ -31,7 +30,6 @@ import {
   ExpandMoreOutlined as ExpandMoreIcon,
   EventAvailableOutlined as Available,
 } from "@mui/icons-material";
-import { Edu_SA_Beginner } from "next/font/google";
 
 import { Carousel, ReadMore } from "@/app/@application";
 import amenityIconMap from "@/lib/amenity-icon-config/amenityIconConfig";
@@ -42,8 +40,7 @@ import PropertyDTO from "@/app/@types/property-dto";
 import EnquiryForm from "./enquiry";
 import { SwiperSlide } from "swiper/react";
 import Image from "next/image";
-import { FadeInSection } from "../home/home";
-import { motion, useScroll, useTransform } from "motion/react";
+import { motion } from "motion/react";
 
 type PropertyPropType = {
   propertyDetails: PropertyDTO;
@@ -79,11 +76,6 @@ const Customsection = styled("section")<CustomSectionProps>(
   })
 );
 
-export const badScript = Edu_SA_Beginner({
-  subsets: ["latin"],
-  weight: "400",
-});
-
 export const SlideTopSection = ({
   children,
 }: {
@@ -111,7 +103,6 @@ const Property: FC<PropertyPropType> = (props) => {
     useState<{ src: string; alt: string }[]>();
   const [unitGalleryImages, setunitGalleryImages] = useState<UnitImagesMap>();
   const [openForm, setOpenForm] = useState<boolean>(false);
-  const theme = useTheme();
 
   const foodMenu = propertyDetails.FoodMenu[0];
   const propertyImages = propertyDetails.PropertyImage;
@@ -172,8 +163,6 @@ const Property: FC<PropertyPropType> = (props) => {
     (e) => e.is_banner_image === "true"
   )[0];
 
-  console.log("propertydetails:", propertyDetails);
-
   return (
     <div>
       <Customsection
@@ -211,10 +200,9 @@ const Property: FC<PropertyPropType> = (props) => {
           <div className="col-span-12 md:col-span-8">
             <div>
               <ReadMore
-                fontFamily={badScript.style.fontFamily}
                 maxLength={250}
                 text={propertyDetails.description}
-                className="!text-xl"
+                className="!italic"
               />
 
               {/* desktop view */}

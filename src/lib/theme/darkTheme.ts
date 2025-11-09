@@ -6,11 +6,11 @@ import {
 } from "@mui/material";
 
 const commonColors = {
-  gold: "#f4b400",
-  goldLight: "#FFE496",
-  coral: "#D64E5E",
-  coralLight: "#E9A0A8",
-  sand: "#0B1119",
+  gold: "#fecc89",
+  goldLight: "#fecc89",
+  coral: "#044231",
+  coralLight: "#1d5546",
+  sand: "#1a1a1a",
   white: "#ffffff",
   black: "#000000",
   textPrimary: "#ffffff",
@@ -53,11 +53,11 @@ let darkTheme: Theme = createTheme({
     },
     grey: {
       "100": "#3B3B3B",
-      "200": "#525252"
+      "200": "#525252",
     },
     background: {
       default: commonColors.sand,
-      paper: "#161A1D",
+      paper: "#212021",
     },
     text: {
       primary: commonColors.textPrimary,
@@ -69,7 +69,7 @@ let darkTheme: Theme = createTheme({
     borderRadius: 12,
   },
   typography: {
-    fontFamily: "var(--font-roboto), serif",
+    fontFamily: "var(--font-montserrat), serif !important",
     button: { textTransform: "none" },
     h1: {
       fontWeight: "700",
@@ -158,13 +158,14 @@ let darkTheme: Theme = createTheme({
           },
         },
         contained: {
+          color: "#fff",
           "&:hover": {
-            backgroundColor: "#D13647",
+            backgroundColor: "#032e22",
             boxShadow: "none",
           },
           "&:active": {
             boxShadow: "none",
-            backgroundColor: "#AA2736",
+            backgroundColor: "#02281d",
           },
         },
         text: {

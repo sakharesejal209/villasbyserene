@@ -1,7 +1,7 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./globals.css";
-import { IBM_Plex_Serif, Roboto } from "next/font/google";
+import { Montserrat, EB_Garamond } from "next/font/google";
 import Navbar from "./components/home/navbar";
 import Footer from "./components/home/footer";
 import { fetchAllData } from "@/scripts/getProperties";
@@ -95,7 +95,7 @@ export const metadata: Metadata = {
     title: "Villas by Serene | Luxury Villas & Nature Retreats",
     description:
       "Experience the serenity of luxury villas with pools, scenic hill views, and curated hospitality.",
-    images: ["https://www.villasbyserene.com/favicon.ico"],
+    images: ["https://www.villasbyserene.com/assets/villasbyserene-dark.png"],
     creator: "@villasbyserene",
   },
   alternates: {
@@ -113,13 +113,13 @@ export const metadata: Metadata = {
   },
 };
 
-const roboto = Roboto({
+const roboto = Montserrat({
   weight: ["100", "200", "300", "400", "500", "600", "700"],
   subsets: ["latin"],
-  variable: "--font-roboto",
+  variable: "--font-montserrat",
 });
 
-const ibmPlex = IBM_Plex_Serif({
+const ibmPlex = EB_Garamond({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
   variable: "--font-ibmPlex",

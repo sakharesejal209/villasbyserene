@@ -190,7 +190,11 @@ const ListYourProperty = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <Button variant="contained" size="large">
+            <Button
+              variant="contained"
+              size="large"
+              onClick={() => router.push("/contact")}
+            >
               Get Started Today
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>
@@ -390,7 +394,10 @@ const ListYourProperty = () => {
           <FadeInSection>
             <div className="grid md:grid-cols-2 lg:px-[150px]">
               <div className="flex justify-center items-left flex-col">
-                <Typography variant="h4" className="md:!mb-6 text-center md:text-left">
+                <Typography
+                  variant="h4"
+                  className="md:!mb-6 text-center md:text-left"
+                >
                   Your Success Is Our Priority
                 </Typography>
                 <div className="">
@@ -455,7 +462,7 @@ const ListYourProperty = () => {
               </Typography>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   className="text-xl px-10 py-4"
                   onClick={() => router.push("/contact")}
                 >
