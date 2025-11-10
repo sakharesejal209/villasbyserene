@@ -6,10 +6,9 @@ import {
   Button,
   CircularProgress,
   ClickAwayListener,
-  Collapse,
   TextField,
 } from "@mui/material";
-import React, { FormEvent, useRef, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { useRouter } from "next/navigation";
 
@@ -29,7 +28,6 @@ const SearchBox = () => {
 
   const [open, setOpen] = useState(false);
   const [loadingButton, setLoadingButton] = useState(false);
-  const anchorRef = useRef(null);
   const router = useRouter();
 
   const handleSubmit = (e: FormEvent) => {

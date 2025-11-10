@@ -474,6 +474,7 @@ const ListYourProperty = () => {
                 <a href={`tel:${contactNumber}`}>
                   <Button
                     variant="outlined"
+                    color="secondary"
                     className="text-xl px-10 py-4 border-white text-white hover:bg-white hover:text-primary"
                   >
                     <Phone className="w-6 h-6 mr-3" />

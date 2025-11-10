@@ -86,15 +86,32 @@ export const AboutPage = () => {
               <div className="md:pl-10 md:py-10">
                 <Typography variant="h3">
                   Welcome to
-                  <span className="!text-[#1d5546]"> Villas by Serene</span>
+                  <Typography
+                    variant="h3"
+                    color={
+                      theme.palette.mode == "light" ? "primary" : "secondary"
+                    }
+                    className="!inline-block !ml-2"
+                  >
+                    Villas by Serene
+                  </Typography>
                 </Typography>
                 <Typography className="!text-xl !my-4">
                   Where every stay feels like home, and every moment is crafted
                   with care.
                 </Typography>
                 <div className="flex items-center my-4">
-                  <MapPin color="primary" className="w-5 h-5" />
-                  <Typography color="primary">
+                  <MapPin
+                    color={
+                      theme.palette.mode == "light" ? "primary" : "secondary"
+                    }
+                    className="w-5 h-5"
+                  />
+                  <Typography
+                    color={
+                      theme.palette.mode == "light" ? "primary" : "secondary"
+                    }
+                  >
                     Curating serene escapes worldwide
                   </Typography>
                 </div>
@@ -196,8 +213,12 @@ export const AboutPage = () => {
               </div>
               <div className="relative col-span-6 md:col-span-2 aspect-square">
                 <div className="absolute bottom-0 w-full z-50 bg-black/40 backdrop-blur-xs">
-                  <Typography className="text-center text-white" variant="h6">Abhijeet Mhatre</Typography>
-                  <Typography className="text-center text-white">Founder</Typography>
+                  <Typography className="text-center text-white" variant="h6">
+                    Abhijeet Mhatre
+                  </Typography>
+                  <Typography className="text-center text-white">
+                    Founder
+                  </Typography>
                 </div>
                 <div className="flex justify-end w-full">
                   <Image
@@ -282,7 +303,9 @@ export const AboutPage = () => {
         `}
       >
         <div className="container">
-          <Typography variant="h5" className="text-center !mb-1">Ready to Experience Serenity?</Typography>
+          <Typography variant="h5" className="text-center !mb-1">
+            Ready to Experience Serenity?
+          </Typography>
           <Typography className="!text-xl !mb-8 opacity-90 text-center">
             Discover our carefully curated collection of villas and find your
             perfect home away from home.

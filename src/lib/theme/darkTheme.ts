@@ -8,8 +8,8 @@ import {
 const commonColors = {
   gold: "#fecc89",
   goldLight: "#fecc89",
-  coral: "#044231",
-  coralLight: "#1d5546",
+  coral: "#099A73",
+  coralLight: "#099A73",
   sand: "#1a1a1a",
   white: "#ffffff",
   black: "#000000",
@@ -52,8 +52,9 @@ let darkTheme: Theme = createTheme({
       main: commonColors.info,
     },
     grey: {
-      "100": "#3B3B3B",
-      "200": "#525252",
+      "100": "#ADADAD",
+      "200": "#808080",
+      "300": "#696969",
     },
     background: {
       default: commonColors.sand,
@@ -73,28 +74,28 @@ let darkTheme: Theme = createTheme({
     button: { textTransform: "none" },
     h1: {
       fontWeight: "700",
-      fontFamily: "var(--font-ibmPlex), serif",
+      fontFamily: "var(--font-eb-garamond), serif",
     },
     h2: {
       fontWeight: "600",
-      fontFamily: "var(--font-ibmPlex), serif",
+      fontFamily: "var(--font-eb-garamond), serif",
     },
     h3: {
       fontWeight: "600",
-      fontFamily: "var(--font-ibmPlex), serif",
+      fontFamily: "var(--font-eb-garamond), serif",
     },
     h4: {
       fontWeight: "500",
-      fontFamily: "var(--font-ibmPlex), serif",
+      fontFamily: "var(--font-eb-garamond), serif",
     },
     h5: {
       fontWeight: "500",
-      fontFamily: "var(--font-ibmPlex), serif",
+      fontFamily: "var(--font-eb-garamond), serif",
     },
     h6: {
       fontWeight: "500",
-      fontFamily: "var(--font-ibmPlex), serif",
-    },
+      fontFamily: "var(--font-eb-garamond), serif",
+    }
   },
   components: {
     MuiPaper: {
@@ -160,12 +161,12 @@ let darkTheme: Theme = createTheme({
         contained: {
           color: "#fff",
           "&:hover": {
-            backgroundColor: "#032e22",
+            backgroundColor: "#07785a",
             boxShadow: "none",
           },
           "&:active": {
             boxShadow: "none",
-            backgroundColor: "#02281d",
+            backgroundColor: "#066048",
           },
         },
         text: {

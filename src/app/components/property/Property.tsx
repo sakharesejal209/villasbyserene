@@ -439,6 +439,7 @@ const Property: FC<PropertyPropType> = (props) => {
                       </div>
                       <Button
                         variant="outlined"
+                        color="secondary"
                         onClick={() => window.open(foodMenu.menuUrl)}
                       >
                         View Menu
@@ -586,6 +587,7 @@ const Property: FC<PropertyPropType> = (props) => {
                       );
                     }}
                     variant="outlined"
+                    color="secondary"
                   >
                     Get Directions <ArrowRight />
                   </Button>

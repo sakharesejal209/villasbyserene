@@ -153,32 +153,59 @@ const Stays = (props: StaysPropType) => {
                     </>
                   </Carousel>
                 </div>
-                <div className="flex flex-col justify-center gap-2 p-4">
+                <div className="flex flex-col justify-center p-4">
                   <Typography
+                    color={
+                      theme.palette.mode == "light" ? "primary" : "secondary"
+                    }
                     variant="h6"
                     className="hover:cursor-pointer select-none"
                   >
                     {item.name}
                   </Typography>
-                  <Typography color="textSecondary">
+                  <Typography color="">
                     {item.area}, {item.state}, {item.country}
                   </Typography>
-                  <div className="flex items-center gap-3 mb-2 flex-wrap-reverse">
+                  <div className="flex items-center gap-3 mt-4 mb-1 flex-wrap-reverse">
                     <div className="flex items-center gap-1">
-                      <PeopleIcon color="primary" />
-                      <Typography color="primary">
+                      <PeopleIcon
+                        sx={{
+                          color: theme.palette.grey[100],
+                        }}
+                      />
+                      <Typography
+                        sx={{
+                          color: theme.palette.grey[100],
+                        }}
+                      >
                         {item.maxcapacity}
                       </Typography>
                     </div>
                     <div className="flex items-center gap-1">
-                      <BedIcon color="primary" />
-                      <Typography color="primary">
+                      <BedIcon
+                        sx={{
+                          color: theme.palette.grey[100],
+                        }}
+                      />
+                      <Typography
+                        sx={{
+                          color: theme.palette.grey[100],
+                        }}
+                      >
                         {item.bedroomcount}
                       </Typography>
                     </div>
                     <div className="flex items-center gap-1">
-                      <HouseIcon color="primary" />
-                      <Typography color="primary">
+                      <HouseIcon
+                        sx={{
+                          color: theme.palette.grey[100],
+                        }}
+                      />
+                      <Typography
+                        sx={{
+                          color: theme.palette.grey[100],
+                        }}
+                      >
                         {getAccomodation(item.accommodationType)}
                       </Typography>
                     </div>
@@ -198,8 +225,8 @@ const Stays = (props: StaysPropType) => {
                         >
                           <Typography
                             sx={{
-                              background: theme.palette.grey[200],
-                              paddingX: '8px',
+                              background: theme.palette.grey[300],
+                              paddingX: "8px",
                               borderRadius: "999px",
                             }}
                             variant="caption"

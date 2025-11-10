@@ -6,7 +6,7 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const villa = (await params).slug;
+  const { slug: villa } = await params;
 
   if (!villa) {
     return {
