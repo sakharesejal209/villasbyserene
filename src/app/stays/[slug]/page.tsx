@@ -1,13 +1,12 @@
 import { Metadata } from "next";
 import StaysClientPage from "./StaysClientPage";
 
-
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const villa = params.slug;
+  const villa = (await params).slug;
 
   if (!villa) {
     return {
@@ -27,6 +26,5 @@ export async function generateMetadata({
 }
 
 export default async function Page() {
-
   return <StaysClientPage />;
 }
