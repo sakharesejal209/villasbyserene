@@ -1,6 +1,7 @@
 import * as React from "react";
 import { PrismaClient } from "../../../../generated/prisma";
 import Property from "@/app/components/property/Property";
+import { propertiesService } from "@/app/@services";
 
 const prisma = new PrismaClient();
 
@@ -67,7 +68,7 @@ export default async function Page({
     },
   });
 
-  console.log("property:", property);
+  const uniqueProperty = await propertiesService.fetchPropertyDetails(id);
 
   if (!property) return <div>Property not found</div>;
 

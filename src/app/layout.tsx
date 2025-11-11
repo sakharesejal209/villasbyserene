@@ -7,6 +7,7 @@ import Footer from "./components/home/footer";
 import { fetchAllData } from "@/scripts/getProperties";
 import ClientProviders from "./components/client-providers/ClientProviders";
 import { Metadata } from "next";
+import { propertiesService } from "@/app/@services";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.villasbyserene.com"),
@@ -131,6 +132,8 @@ export default async function Layout({
   children: React.ReactNode;
 }>) {
   const propertiesData = await fetchAllData();
+
+  const data = await propertiesService.fetchAllProperties();
 
   return (
     <html lang="en" className={roboto.className + " " + ibmPlex.className}>
