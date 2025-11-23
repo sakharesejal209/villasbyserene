@@ -8,8 +8,8 @@ import {
 const commonColors = {
   gold: "#fecc89",
   goldLight: "#fecc89",
-  coral: "#044231",
-  coralLight: "#1d5546",
+  coral: "#066F53",
+  coralLight: "#099A73",
   sand: "#1a1a1a",
   white: "#ffffff",
   black: "#000000",
@@ -160,7 +160,7 @@ let darkTheme: Theme = createTheme({
         contained: {
           color: "#fff",
           "&:hover": {
-            backgroundColor: "#032e22",
+            backgroundColor: "#076E51",
             boxShadow: "none",
           },
           "&:active": {
