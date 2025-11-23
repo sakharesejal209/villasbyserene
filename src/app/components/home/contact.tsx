@@ -210,6 +210,7 @@ const Contact = () => {
                   className="w-full"
                   size="large"
                   variant="outlined"
+                  color="secondary"
                   onClick={handleWhatsAppSubmit}
                 >
                   <Message className="w-4 h-4 mr-2" />

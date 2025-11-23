@@ -1,16 +1,12 @@
 import { Metadata } from "next";
 import StaysClientPage from "./StaysClientPage";
 
-interface PageProps {
-  params: {
-    slug: string;
-  };
-}
-
 export async function generateMetadata({
   params,
-}: PageProps): Promise<Metadata> {
-  const villa = params.slug;
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug: villa } = await params;
 
   if (!villa) {
     return {
@@ -29,12 +25,6 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({ params }: Readonly<PageProps>) {
-  const villa = params.slug;
-
-  if (!villa) {
-    return <div className="p-6 text-center text-gray-600">Villa not found</div>;
-  }
-
+export default async function Page() {
   return <StaysClientPage />;
 }

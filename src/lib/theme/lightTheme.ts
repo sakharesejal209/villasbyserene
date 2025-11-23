@@ -52,8 +52,8 @@ let lightTheme: Theme = createTheme({
       main: commonColors.info,
     },
     grey: {
-      "100": "#F5F5F5",
-      "200": "#DBDBDB",
+      "100": "#969696",
+      "200": "#ADADAD",
       "300": "#C6C6C6",
     },
     background: {
@@ -74,27 +74,27 @@ let lightTheme: Theme = createTheme({
     button: { textTransform: "none" },
     h1: {
       fontWeight: "700",
-      fontFamily: "var(--font-ibmPlex), serif",
+      fontFamily: "var(--font-eb-garamond), serif",
     },
     h2: {
       fontWeight: "600",
-      fontFamily: "var(--font-ibmPlex), serif",
+      fontFamily: "var(--font-eb-garamond), serif",
     },
     h3: {
       fontWeight: "600",
-      fontFamily: "var(--font-ibmPlex), serif",
+      fontFamily: "var(--font-eb-garamond), serif",
     },
     h4: {
       fontWeight: "500",
-      fontFamily: "var(--font-ibmPlex), serif",
+      fontFamily: "var(--font-eb-garamond), serif",
     },
     h5: {
       fontWeight: "500",
-      fontFamily: "var(--font-ibmPlex), serif",
+      fontFamily: "var(--font-eb-garamond), serif",
     },
     h6: {
       fontWeight: "500",
-      fontFamily: "var(--font-ibmPlex), serif",
+      fontFamily: "var(--font-eb-garamond), serif",
     },
   },
   components: {
@@ -140,12 +140,12 @@ let lightTheme: Theme = createTheme({
         },
         contained: {
           "&:hover": {
-            backgroundColor: "#032e22",
+            backgroundColor: "#066048",
             boxShadow: "none",
           },
           "&:active": {
             boxShadow: "none",
-            backgroundColor: "#02281d",
+            backgroundColor: "#07785a",
           },
         },
         text: {

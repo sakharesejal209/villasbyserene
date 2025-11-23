@@ -9,6 +9,7 @@ import {
   Slide,
   Typography,
   useScrollTrigger,
+  useTheme,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
@@ -35,10 +36,11 @@ const Navbar = () => {
   const handleCloseNavMenu = () => setAnchorElNav(null);
 
   const trigger = useScrollTrigger();
+  const theme = useTheme();
 
   return (
     <Slide appear={false} direction="down" in={!trigger}>
-      <AppBar color="default" component="header">
+      <AppBar sx={{background: theme.palette.mode == 'light' ? '#fff' : '#1A1A1A'}} color="default" component="header">
         <div className="container px-2">
           <div className="p-2 flex justify-between items-center w-full">
             {/* Brand (desktop) */}

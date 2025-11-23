@@ -128,7 +128,7 @@ const Footer = () => {
               <div className="flex items-start space-x-3 text-gray-300">
                 <MapPin className="w-4 h-4 text-primary mt-1" />
                 <span>
-                  Raj Avenue, MCCH Society, Panvel
+                  B-104, Yashonarayan CHS., Takka Rd, Panvel 
                   <br />
                   Raigad, Maharashtra 410206
                 </span>

@@ -80,8 +80,8 @@ export default function StaysClientPage() {
             <Button
               size="small"
               onClick={() => setopenFilters(true)}
-              startIcon={<TuneOutlined />}
-              className=" w-full gap-3"
+              startIcon={<TuneOutlined color="secondary" />}
+              className=" w-full"
             >
               <div>
                 <Typography className="!mb-0.5 " variant="subtitle1">
