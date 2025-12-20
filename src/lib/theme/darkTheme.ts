@@ -70,6 +70,7 @@ let darkTheme: Theme = createTheme({
     borderRadius: 12,
   },
   typography: {
+    fontSize: 13,
     fontFamily: "var(--font-montserrat), serif !important",
     button: { textTransform: "none" },
     h1: {

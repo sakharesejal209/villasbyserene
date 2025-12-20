@@ -5,7 +5,9 @@ import { Button, styled, TextField, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { WhatsApp } from "@mui/icons-material";
 import { PickerValue } from "@mui/x-date-pickers/internals";
-
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 interface EnquiryFormProps {
   propertyName: string;
   whatsappNumber: string;
@@ -38,11 +40,20 @@ const EnquiryForm = ({ propertyName, whatsappNumber }: EnquiryFormProps) => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
+
+    const checkIn = form.checkIn
+      ? dayjs(form.checkIn).format("DD/MM/YYYY")
+      : "N/A";
+
+    const checkOut = form.checkOut
+      ? dayjs(form.checkOut).format("DD/MM/YYYY")
+      : "N/A";
+
     const message = `📌 New Property Enquiry
 - Property: ${propertyName}
 - Name: ${form.name}
-- Check-in: ${form.checkIn}
-- Check-out: ${form.checkOut}
+- Check-in: ${checkIn}
+- Check-out: ${checkOut}
 - Guests: ${form.guests}`;
 
     const encodedMessage = encodeURIComponent(message);

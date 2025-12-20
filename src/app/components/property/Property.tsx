@@ -18,6 +18,7 @@ import {
   Paper,
   styled,
   Typography,
+  useTheme,
 } from "@mui/material";
 import {
   PeopleAltOutlined as PeopleIcon,
@@ -31,6 +32,10 @@ import {
   EventAvailableOutlined as Available,
 } from "@mui/icons-material";
 
+import { motion } from "motion/react";
+import Image from "next/image";
+import { SwiperSlide } from "swiper/react";
+
 import { Carousel, ReadMore } from "@/app/@application";
 import amenityIconMap from "@/lib/amenity-icon-config/amenityIconConfig";
 import { getAccomodation } from "../stays/stays";
@@ -38,9 +43,6 @@ import ImageGallery from "./ImageGallery";
 import CancellationPolicy from "../cancellation-policy/CancellationPolicy";
 import PropertyDTO from "@/app/@types/property-dto";
 import EnquiryForm from "./enquiry";
-import { SwiperSlide } from "swiper/react";
-import Image from "next/image";
-import { motion } from "motion/react";
 
 type PropertyPropType = {
   propertyDetails: PropertyDTO;
@@ -163,6 +165,8 @@ const Property: FC<PropertyPropType> = (props) => {
     (e) => e.is_banner_image === "true"
   )[0];
 
+  const theme = useTheme();
+
   return (
     <div>
       <Customsection
@@ -179,7 +183,7 @@ const Property: FC<PropertyPropType> = (props) => {
           </div>
           <div className="flex h-full justify-end items-end">
             <button
-              className={`hover:cursor-pointer z-50 text-white absolute top-[78%] md:top-[70%] right-[3%] px-4 py-5 md:px-8 md:py-10 font-bold bg-cover bg-center border-white border-[2px] border-solid rounded-md bg-black/50 bg-blend-overlay`}
+              className={`hover:cursor-pointer z-50 text-white absolute top-[87%] md:top-[73%] xs:right-[5%] right-[3.5%] px-2 py-3 md:px-8 md:py-10 font-bold bg-cover bg-center border-white border-[2px] border-solid rounded-md bg-black/50 bg-blend-overlay`}
               style={{
                 backgroundImage: `url(${
                   bannerimage != null ? bannerimage.image?.image_url : ""
@@ -335,9 +339,7 @@ const Property: FC<PropertyPropType> = (props) => {
                               gap={1}
                             >
                               {Icon && <Icon size={20} />}
-                              <Typography variant="body2">
-                                {item.amenity.name}
-                              </Typography>
+                              <Typography>{item.amenity.name}</Typography>
                             </Box>
                           );
                         })}
@@ -551,7 +553,7 @@ const Property: FC<PropertyPropType> = (props) => {
               {propertyDetails.map_location !== null && (
                 <div>
                   <Typography variant="h5">Location</Typography>
-                  <div className="w-full h-[200px] md:h-[350px] mt-3 mb-3 rounded-lg overflow-hidden shadow">
+                  <div className="w-full h-[200px] md:h-[350px] mt-3 mb-3 overflow-hidden shadow">
                     {/* {coord && (
                       <MapContainer
                         // bounds={}
@@ -587,7 +589,9 @@ const Property: FC<PropertyPropType> = (props) => {
                       );
                     }}
                     variant="outlined"
-                    color="secondary"
+                    color={
+                      theme.palette.mode == "light" ? "primary" : "secondary"
+                    }
                   >
                     Get Directions <ArrowRight />
                   </Button>

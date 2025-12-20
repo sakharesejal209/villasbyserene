@@ -20,9 +20,9 @@ const commonColors = {
   error: "#EF5136",
   warning: "#EEB329",
   info: "#1DB8D7",
-  border: "#E0E3E7",
-  borderHover: "#B2BAC2",
-  borderFocused: "#7e8c9a",
+  border: "#A3ACB8",
+  borderHover: "#8995A4",
+  borderFocused: "#6F7D90",
   textBtnHover: "#FAFAFA",
   textBtnFocus: "#F2F2F2",
 };
@@ -70,6 +70,7 @@ let lightTheme: Theme = createTheme({
     borderRadius: 12,
   },
   typography: {
+    fontSize: 13,
     fontFamily: "var(--font-montserrat), serif !important",
     button: { textTransform: "none" },
     h1: {

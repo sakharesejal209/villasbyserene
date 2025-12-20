@@ -293,7 +293,7 @@ const Home = () => {
                       <Box
                         className="w-15 md:w-22 h-15 md:h-22"
                         sx={{
-                          backgroundColor: theme.palette.grey[100],
+                          backgroundColor: theme.palette.grey[300],
                           // backgroundColor: alpha(theme.palette.primary.main, 0.1),
                           padding: "1.5rem",
                           borderRadius: "9999px",
