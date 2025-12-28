@@ -36,7 +36,7 @@ import { motion } from "motion/react";
 import Image from "next/image";
 import { SwiperSlide } from "swiper/react";
 
-import { Carousel, ReadMore } from "@/app/@application";
+import { Carousel, ReadMore } from "@/app/@application/default";
 import amenityIconMap from "@/lib/amenity-icon-config/amenityIconConfig";
 import { getAccomodation } from "../stays/stays";
 import ImageGallery from "./ImageGallery";

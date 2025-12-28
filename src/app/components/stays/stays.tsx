@@ -17,7 +17,7 @@ import {
 } from "@mui/icons-material";
 import { startCase, camelCase } from "lodash";
 
-import { Carousel, EmptyState } from "@/app/@application";
+import { Carousel, EmptyState } from "@/app/@application/default";
 
 import { useRouter } from "next/navigation";
 import PropertyDTO from "@/app/@types/property-dto";

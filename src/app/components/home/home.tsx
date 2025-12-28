@@ -35,7 +35,7 @@ import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 
 import { usePropertyStore } from "@/context/PropertyContext";
-import { Carousel, EmptyState } from "@/app/@application";
+import { Carousel, EmptyState } from "@/app/@application/default";
 import propertyThemeMap from "@/lib/property-theme-config/propertyThemeConfig";
 import SearchBox from "./searchBox";
 import { getAccomodation } from "../stays/stays";
