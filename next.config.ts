@@ -1,9 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    turbo: false, // 👈 IMPORTANT
-  },
+  turbopack: {},
   images: {
     domains: ["firebasestorage.googleapis.com"],
   },
