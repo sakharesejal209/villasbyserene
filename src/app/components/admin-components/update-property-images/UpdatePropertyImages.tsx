@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { updatePropertyImages } from "@/scripts/updatePropertyImages";
-import { PropertyImageDTO } from "@/app/@types/property-image-dto";
+import { PropertyImageDTO } from "@/types/property-image-dto";
 import { Typography } from "@mui/material";
 
 

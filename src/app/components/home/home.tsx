@@ -35,15 +35,15 @@ import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 
 import { usePropertyStore } from "@/context/PropertyContext";
-import { Carousel, EmptyState } from "@/app/@application/default";
+import { Carousel, EmptyState } from "@/application/default";
 import propertyThemeMap from "@/lib/property-theme-config/propertyThemeConfig";
 import SearchBox from "./searchBox";
 import { getAccomodation } from "../stays/stays";
 import testimonials from "./data/testimonials.json";
 import topLocations from "./data/topLocations.json";
 
-import type PropertyDTO from "@/app/@types/property-dto";
-import type ThemesDTO from "@/app/@types/themes-dto";
+import type PropertyDTO from "@/types/property-dto";
+import type ThemesDTO from "@/types/themes-dto";
 
 export const FadeInSection = ({ children }: { children: React.ReactNode }) => {
   return (

@@ -17,10 +17,10 @@ import {
 } from "@mui/icons-material";
 import { startCase, camelCase } from "lodash";
 
-import { Carousel, EmptyState } from "@/app/@application/default";
+import { Carousel, EmptyState } from "@/application/default";
 
 import { useRouter } from "next/navigation";
-import PropertyDTO from "@/app/@types/property-dto";
+import PropertyDTO from "@/types/property-dto";
 import { SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import propertyThemeMap from "@/lib/property-theme-config/propertyThemeConfig";

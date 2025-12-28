@@ -1,7 +1,7 @@
 "use client";
 
-import { PropertyImageDTO } from "@/app/@types/property-image-dto";
-import { UnitDTO } from "@/app/@types/unit-dto";
+import { PropertyImageDTO } from "@/types/property-image-dto";
+import { UnitDTO } from "@/types/unit-dto";
 import deletePropertyImages from "@/scripts/deletePropertyImages";
 import { deleteUnitImages } from "@/scripts/deleteUnitImages";
 import { fetchAssignedPropertyImages } from "@/scripts/fetchAssignedPropertyImages";

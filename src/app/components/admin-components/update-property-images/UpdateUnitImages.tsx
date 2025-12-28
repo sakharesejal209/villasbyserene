@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { updateUnitImages } from "@/scripts/updateUnitImages";
-import { UnitDTO } from "@/app/@types/unit-dto";
+import { UnitDTO } from "@/types/unit-dto";
 import { Typography } from "@mui/material";
 
 type UnitImageType = {
