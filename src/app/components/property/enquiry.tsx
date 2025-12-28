@@ -6,8 +6,6 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { WhatsApp } from "@mui/icons-material";
 import { PickerValue } from "@mui/x-date-pickers/internals";
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
 interface EnquiryFormProps {
   propertyName: string;
   whatsappNumber: string;

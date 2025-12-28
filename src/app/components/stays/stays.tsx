@@ -4,10 +4,8 @@ import { useEffect, useState } from "react";
 
 import {
   Box,
-  Button,
   Card,
   Divider,
-  keyframes,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -58,10 +56,10 @@ const Stays = (props: StaysPropType) => {
   const theme = useTheme();
 
   const toPascalCase = (str: string) =>
-    startCase(camelCase(str)).replace(/ /g, "");
+    startCase(camelCase(str)).replaceAll(' ', "");
 
   function slugify(str: string) {
-    return str.toLowerCase().replace(/\s+/g, "-");
+    return str.toLowerCase().replaceAll(/\s+/g, "-");
   }
   const handleSelect = (property: PropertyDTO) => {
     const slug = slugify(property.name);

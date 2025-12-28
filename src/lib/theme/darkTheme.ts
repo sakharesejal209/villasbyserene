@@ -52,9 +52,9 @@ let darkTheme: Theme = createTheme({
       main: commonColors.info,
     },
     grey: {
-      "100": "#ADADAD",
-      "200": "#808080",
-      "300": "#696969",
+      "100": "#666B69",
+      "200": "#585959",
+      "300": "#393b3a",
     },
     background: {
       default: commonColors.sand,
