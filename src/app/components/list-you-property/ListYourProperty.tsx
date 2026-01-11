@@ -113,7 +113,7 @@ const ListYourProperty = () => {
   const contactNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER;
 
   const StyledKPI = styled("div")(({ theme }) => ({
-    background: theme.palette.grey[300],
+    background: theme.palette.grey[600],
   }));
 
   const StyledKPICircle = styled("div")(({ theme }) => ({
@@ -281,7 +281,7 @@ const ListYourProperty = () => {
                       <div className="p-4 md:p-8">
                         <Box
                           sx={{
-                            backgroundColor: theme.palette.grey[300],
+                            backgroundColor: theme.palette.grey[600],
                           }}
                           className={`w-14 h-14 rounded-md flex items-center justify-center mb-6`}
                         >
@@ -325,7 +325,7 @@ const ListYourProperty = () => {
                         <div className="relative md:mb-8">
                           <Box
                             sx={{
-                              background: theme.palette.grey[300],
+                              background: theme.palette.grey[600],
                             }}
                             className="w-20 h-20 flex items-center rounded-md justify-center mx-auto mb-4"
                           >

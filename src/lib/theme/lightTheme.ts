@@ -52,9 +52,12 @@ let lightTheme: Theme = createTheme({
       main: commonColors.info,
     },
     grey: {
-      "100": "#C0CDCD",
-      "200": "#DAE1E1",
-      "300": "#f5f7f7",
+      "100": "#708F8F",
+      "200": "#8AA3A3",
+      "300":"#A4B7B7",
+      "400": "#C0CDCD",
+      "500": "#DAE1E1",
+      "600": "#f1f4f4",
     },
     background: {
       default: commonColors.sand,

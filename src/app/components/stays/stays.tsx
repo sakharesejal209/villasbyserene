@@ -223,7 +223,7 @@ const Stays = (props: StaysPropType) => {
                         >
                           <Typography
                             sx={{
-                              background: theme.palette.grey[300],
+                              background: theme.palette.grey[500],
                               paddingX: "8px",
                               borderRadius: "999px",
                             }}
