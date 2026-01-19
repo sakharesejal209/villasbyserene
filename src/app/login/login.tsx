@@ -29,7 +29,7 @@ const Login = () => {
   };
 
   return (
-    <div className="p-8 ">
+    <section>
       <div className="flex flex-col items-center">
         <Image
           src={theme.palette.mode === "light" ? darkImg : lightImg}
@@ -58,7 +58,7 @@ const Login = () => {
           </Button>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
