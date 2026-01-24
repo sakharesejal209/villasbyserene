@@ -59,6 +59,7 @@ const Carousel: React.FC<CarouselPropType> = (props) => {
         },
         "& .swiper-button-next, & .swiper-button-prev": {
           transition: "opacity 0.3s ease",
+          zIndex: 800,
           ...(inverseControlsColor
             ? {
                 color: "inherit",
@@ -73,10 +74,10 @@ const Carousel: React.FC<CarouselPropType> = (props) => {
               }
             : {
                 color: "#ffffff",
-                width: 24,
-                height: 24,
+                width: 32,
+                height: 32,
                 "&::after": {
-                  fontSize: "24px",
+                  fontSize: "20px",
                   fontWeight: "600",
                   zIndex: "800",
                 },
