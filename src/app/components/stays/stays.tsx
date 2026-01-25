@@ -4,10 +4,8 @@ import { useEffect, useState } from "react";
 
 import {
   Box,
-  Button,
   Card,
   Divider,
-  keyframes,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -19,10 +17,10 @@ import {
 } from "@mui/icons-material";
 import { startCase, camelCase } from "lodash";
 
-import { Carousel, EmptyState } from "@/app/@application";
+import { Carousel, EmptyState } from "@/application/default";
 
 import { useRouter } from "next/navigation";
-import PropertyDTO from "@/app/@types/property-dto";
+import PropertyDTO from "@/types/property-dto";
 import { SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import propertyThemeMap from "@/lib/property-theme-config/propertyThemeConfig";
@@ -58,11 +56,12 @@ const Stays = (props: StaysPropType) => {
   const theme = useTheme();
 
   const toPascalCase = (str: string) =>
-    startCase(camelCase(str)).replace(/ /g, "");
+    startCase(camelCase(str)).replaceAll(' ', "");
 
   function slugify(str: string) {
-    return str.toLowerCase().replace(/\s+/g, "-");
+    return str.toLowerCase().replaceAll(/\s+/g, "-");
   }
+  
   const handleSelect = (property: PropertyDTO) => {
     const slug = slugify(property.name);
     router.push(`/property/${slug}-${property.property_id}`);
@@ -93,7 +92,7 @@ const Stays = (props: StaysPropType) => {
       </div>
       {propertiesData?.length ? (
         <>
-          <Typography variant="h4" className="!my-4 md:!my-6">
+          <Typography variant="h4" className="my-4! md:my-6!">
             {location === "all"
               ? "All Properties"
               : `Properties in ${toPascalCase(location)}`}
@@ -127,14 +126,14 @@ const Stays = (props: StaysPropType) => {
                             key={idx}
                             className="hover:cursor-pointer"
                           >
-                            <div className="relative w-full h-full md:aspect-[5.5/3] aspect-[16/9]">
+                            <div className="relative w-full h-full md:aspect-[5.5/3] aspect-video">
                               <Image
                                 className="transition-transform duration-250 group-hover:scale-105"
-                                src={e.image != null ? e.image.image_url : ""}
+                                src={e.image == null ? "" : e.image.image_url}
                                 alt={
-                                  e.image != null
-                                    ? e.image.image_alt || ""
-                                    : "alt text"
+                                  e.image == null
+                                    ? "alt text"
+                                    : e.image.image_alt || ""
                                 }
                                 fill
                                 style={{
@@ -225,12 +224,12 @@ const Stays = (props: StaysPropType) => {
                         >
                           <Typography
                             sx={{
-                              background: theme.palette.grey[300],
+                              background: theme.palette.grey[500],
                               paddingX: "8px",
                               borderRadius: "999px",
                             }}
                             variant="caption"
-                            className="!font-[400]"
+                            className="font-normal!"
                           >
                             {propertyThemeMap[item.theme.theme_id].label}
                           </Typography>

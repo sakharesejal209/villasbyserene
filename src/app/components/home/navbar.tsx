@@ -46,7 +46,7 @@ const Navbar = () => {
             {/* Brand (desktop) */}
             <Link href="/">
               <Image
-                className="max-sm:w-[130px] sm:w-[150px] md:w-[170px]"
+                className="max-sm:w-32.5 sm:w-37.5 md:w-42.5"
                 alt="VillasBySerene: Your boutique getaway!"
                 src={mode === "light" ? logoLight : logoDark}
               />
@@ -65,7 +65,7 @@ const Navbar = () => {
               <div className="hidden md:flex justify-end items-center gap-4">
                 <button onClick={() => router.push("/list")}>
                   <Typography
-                    // color="primary"
+                    color="textPrimary"
                     className="hover:underline cursor-pointer"
                   >
                     List your home
@@ -74,7 +74,7 @@ const Navbar = () => {
                 <button>
                   <Link href="https://www.instagram.com/villasbyserene/">
                     <Typography
-                      // color="primary"
+                      color="textPrimary"
                       className="hover:underline cursor-pointer flex gap-1"
                     >
                       <Instagram />

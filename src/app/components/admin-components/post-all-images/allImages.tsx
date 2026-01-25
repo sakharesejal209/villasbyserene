@@ -1,7 +1,7 @@
 "use client";
 
 import { createManyImages } from "@/scripts/postImages";
-import { Button, Checkbox, TextField } from "@mui/material";
+import { Button, Checkbox, TextField, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { fetchFirebaseImages } from "./fetchFromFirebase";
 import Image from "next/image";
@@ -91,7 +91,10 @@ const AllImages = () => {
         Logout
       </Button>
 
-      <div>
+      <div className="p-6">
+        <Typography variant="h5" className="my-3!">
+          Add New Images
+        </Typography>
         <div className="grid grid-cols-3 gap-3 my-4">
           {images.map((img, index) => (
             <div key={img.image_url} className="border rounded p-2">
@@ -140,7 +143,6 @@ const AllImages = () => {
             </div>
           ))}
         </div>
-
         <Button variant="contained" onClick={handleSubmit}>
           Submit Selected
         </Button>

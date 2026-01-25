@@ -54,7 +54,7 @@ const StaysSearchBox: FC<StaysSearchBoxPropType> = (props) => {
     if (isDesktop) {
       router.replace(`/stays/${filters.location}?${params.toString()}`);
     }
-  }, [filters, router]);
+  }, [filters, isDesktop, router]);
 
   return (
     <div className="block md:col-span-3 sticky top-0 md:h-fit px-4">

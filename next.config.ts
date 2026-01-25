@@ -1,12 +1,11 @@
 import type { NextConfig } from "next";
-import path from "path";
 
 const nextConfig: NextConfig = {
+  turbopack: {},
   images: {
     domains: ["firebasestorage.googleapis.com"],
   },
-  webpack: (config, { isServer }) => {
-    // Ignore the problematic directory
+  webpack: (config) => {
     config.watchOptions = {
       ...config.watchOptions,
       ignored: [

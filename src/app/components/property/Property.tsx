@@ -18,6 +18,7 @@ import {
   Paper,
   styled,
   Typography,
+  useTheme,
 } from "@mui/material";
 import {
   PeopleAltOutlined as PeopleIcon,
@@ -31,16 +32,17 @@ import {
   EventAvailableOutlined as Available,
 } from "@mui/icons-material";
 
-import { Carousel, ReadMore } from "@/app/@application";
+import { motion } from "motion/react";
+import Image from "next/image";
+import { SwiperSlide } from "swiper/react";
+
+import { Carousel, ReadMore } from "@/application/default";
 import amenityIconMap from "@/lib/amenity-icon-config/amenityIconConfig";
 import { getAccomodation } from "../stays/stays";
 import ImageGallery from "./ImageGallery";
 import CancellationPolicy from "../cancellation-policy/CancellationPolicy";
-import PropertyDTO from "@/app/@types/property-dto";
+import PropertyDTO from "@/types/property-dto";
 import EnquiryForm from "./enquiry";
-import { SwiperSlide } from "swiper/react";
-import Image from "next/image";
-import { motion } from "motion/react";
 
 type PropertyPropType = {
   propertyDetails: PropertyDTO;
@@ -73,7 +75,7 @@ const Customsection = styled("section")<CustomSectionProps>(
     "@media (min-width:768px)": {
       height: "80vh",
     },
-  })
+  }),
 );
 
 export const SlideTopSection = ({
@@ -135,7 +137,7 @@ const Property: FC<PropertyPropType> = (props) => {
           }));
         return acc;
       },
-      {}
+      {},
     );
 
     setunitGalleryImages(_unitGalleryImages);
@@ -160,14 +162,16 @@ const Property: FC<PropertyPropType> = (props) => {
   }, [propertyDetails]);
 
   const bannerimage = propertyImages.filter(
-    (e) => e.is_banner_image === "true"
+    (e) => e.is_banner_image === "true",
   )[0];
+
+  const theme = useTheme();
 
   return (
     <div>
       <Customsection
         background={
-          bannerimage != null ? bannerimage.image?.image_url || "" : ""
+          bannerimage.image == null ? "" : bannerimage.image.image_url
         }
       >
         <div className="container p-4 md:p-0">
@@ -179,10 +183,10 @@ const Property: FC<PropertyPropType> = (props) => {
           </div>
           <div className="flex h-full justify-end items-end">
             <button
-              className={`hover:cursor-pointer z-50 text-white absolute top-[78%] md:top-[70%] right-[3%] px-4 py-5 md:px-8 md:py-10 font-bold bg-cover bg-center border-white border-[2px] border-solid rounded-md bg-black/50 bg-blend-overlay`}
+              className={`hover:cursor-pointer z-50 text-white absolute top-[87%] md:top-[73%] xs:right-[5%] right-[3.5%] px-2 py-3 md:px-8 md:py-10 font-bold bg-cover bg-center border-white border-[2px] border-solid rounded-md bg-black/50 bg-blend-overlay`}
               style={{
                 backgroundImage: `url(${
-                  bannerimage != null ? bannerimage.image?.image_url : ""
+                  bannerimage == null ? "" : bannerimage.image?.image_url
                 })`,
               }}
               onClick={() => {
@@ -202,23 +206,23 @@ const Property: FC<PropertyPropType> = (props) => {
               <ReadMore
                 maxLength={250}
                 text={propertyDetails.description}
-                className="!italic"
+                className="italic!"
               />
 
               {/* desktop view */}
               <div className="hidden md:grid grid-cols-4 items-center gap-4 my-6">
-                <Card className="p-2 !rounded-lg">
+                <Card className="p-2 rounded-lg!">
                   <HouseIcon />{" "}
                   {getAccomodation(propertyDetails.accommodationType)}
                 </Card>
-                <Card className="p-2 !rounded-lg">
+                <Card className="p-2 rounded-lg!">
                   <PeopleIcon /> {propertyDetails.maxcapacity} Guests
                 </Card>
-                <Card className="p-2 !rounded-lg">
+                <Card className="p-2 rounded-lg!">
                   <BedIcon /> {propertyDetails.bedroomcount} Bedrooms
                 </Card>
                 {propertyDetails.mealsAvailable && (
-                  <Card className="p-2 !rounded-lg">
+                  <Card className="p-2 rounded-lg!">
                     <MealsIcon /> Meals Available
                   </Card>
                 )}
@@ -226,18 +230,18 @@ const Property: FC<PropertyPropType> = (props) => {
 
               {/* mobile vew */}
               <div className="grid max-sm:grid-cols-1 min-[370px]:grid-cols-2 max-md:grid-cols-2 md:hidden items-start gap-3">
-                <Card className="p-2 !rounded-lg">
+                <Card className="p-2 rounded-lg!">
                   <HouseIcon />{" "}
                   {getAccomodation(propertyDetails.accommodationType)}
                 </Card>
-                <Card className="p-2 !rounded-lg">
+                <Card className="p-2 rounded-lg!">
                   <PeopleIcon /> {propertyDetails.maxcapacity} Guests
                 </Card>
-                <Card className="p-2 !rounded-lg">
+                <Card className="p-2 rounded-lg!">
                   <BedIcon /> {propertyDetails.bedroomcount} Bedrooms
                 </Card>
                 {propertyDetails.mealsAvailable && (
-                  <Card className="p-2 !rounded-lg">
+                  <Card className="p-2 rounded-lg!">
                     <MealsIcon /> Meals Available
                   </Card>
                 )}
@@ -247,7 +251,7 @@ const Property: FC<PropertyPropType> = (props) => {
                 <Typography variant="h5">Accomodation</Typography>
                 {propertyDetails.Unit.map((category) => (
                   <div key={category.unit_id} className="mt-3">
-                    <Typography className="!text-lg" variant="inherit">
+                    <Typography className="text-lg!" variant="inherit">
                       {category.title}
                     </Typography>
 
@@ -261,12 +265,12 @@ const Property: FC<PropertyPropType> = (props) => {
                             className="max-w-full h-auto"
                             src={
                               category.unitImages.find(
-                                (e) => e.is_banner_image === "true"
+                                (e) => e.is_banner_image === "true",
                               )?.image?.image_url ?? ""
                             }
                             alt={
                               category.unitImages.find(
-                                (e) => e.is_banner_image === "true"
+                                (e) => e.is_banner_image === "true",
                               )?.image?.image_alt ?? "image alt text"
                             }
                           />
@@ -313,7 +317,7 @@ const Property: FC<PropertyPropType> = (props) => {
                     aria-controls="amenities-content"
                     id="amenities-header"
                   >
-                    <Typography className="!font-bold" component="span">
+                    <Typography className="font-bold!" component="span">
                       Amenities
                     </Typography>
                   </AccordionSummary>
@@ -335,9 +339,7 @@ const Property: FC<PropertyPropType> = (props) => {
                               gap={1}
                             >
                               {Icon && <Icon size={20} />}
-                              <Typography variant="body2">
-                                {item.amenity.name}
-                              </Typography>
+                              <Typography>{item.amenity.name}</Typography>
                             </Box>
                           );
                         })}
@@ -351,7 +353,7 @@ const Property: FC<PropertyPropType> = (props) => {
                       aria-controls="foodmenu-content"
                       id="foodmenu-header"
                     >
-                      <Typography className="!font-bold" component="span">
+                      <Typography className="font-bold!" component="span">
                         Food Menu
                       </Typography>
                     </AccordionSummary>
@@ -424,22 +426,26 @@ const Property: FC<PropertyPropType> = (props) => {
                         )}
                       </div>
                       <div className="mb-4">
-                        <Typography className="!my-2">
+                        <Typography className="my-2!">
                           Breakfast Time: {foodMenu.breakfastTime}
                         </Typography>
-                        <Typography className="!my-2">
+                        <Typography className="my-2!">
                           Lunch Time: {foodMenu.lunchTime}
                         </Typography>
-                        <Typography className="!my-2">
+                        <Typography className="my-2!">
                           Hightea Time: {foodMenu.highteaTime}
                         </Typography>
-                        <Typography className="!my-2">
+                        <Typography className="my-2!">
                           Dinner Time: {foodMenu.dinnerTime}
                         </Typography>
                       </div>
                       <Button
                         variant="outlined"
-                        color="secondary"
+                        color={
+                          theme.palette.mode == "light"
+                            ? "primary"
+                            : "secondary"
+                        }
                         onClick={() => window.open(foodMenu.menuUrl)}
                       >
                         View Menu
@@ -453,16 +459,16 @@ const Property: FC<PropertyPropType> = (props) => {
                     aria-controls="houserules-content"
                     id="houserules-header"
                   >
-                    <Typography className="!font-bold" component="span">
+                    <Typography className="font-bold!" component="span">
                       House Rules
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
                     <div className="mb-2">
-                      <Typography className="!font-bold">
+                      <Typography className="font-bold!">
                         Check-in Time: {propertyDetails.checkin_time}
                       </Typography>
-                      <Typography className="!font-bold">
+                      <Typography className="font-bold!">
                         Check-out Time: {propertyDetails.checkout_time}
                       </Typography>
                     </div>
@@ -483,7 +489,7 @@ const Property: FC<PropertyPropType> = (props) => {
                     aria-controls="cancellation-content"
                     id="cancellation-header"
                   >
-                    <Typography className="!font-bold" component="span">
+                    <Typography className="font-bold!" component="span">
                       Cancellation Policy
                     </Typography>
                   </AccordionSummary>
@@ -495,7 +501,7 @@ const Property: FC<PropertyPropType> = (props) => {
 
               {nearby.length !== 0 && (
                 <div className="my-6">
-                  <Typography className="!mb-4" variant="h6">
+                  <Typography className="mb-4!" variant="h6">
                     Nearby Attractions
                   </Typography>
                   <Carousel
@@ -511,7 +517,7 @@ const Property: FC<PropertyPropType> = (props) => {
                       {propertyDetails.NearByAttractions?.map((item) => (
                         <SwiperSlide key={item.attraction_id}>
                           <div>
-                            <div className="h-[300px] md:h-[400px]">
+                            <div className="h-75 md:h-100">
                               <div className="relative flex h-[50%]">
                                 <Image
                                   src={item.imageUrl}
@@ -551,7 +557,7 @@ const Property: FC<PropertyPropType> = (props) => {
               {propertyDetails.map_location !== null && (
                 <div>
                   <Typography variant="h5">Location</Typography>
-                  <div className="w-full h-[200px] md:h-[350px] mt-3 mb-3 rounded-lg overflow-hidden shadow">
+                  <div className="w-full h-50 md:h-87.5 mt-3 mb-3 overflow-hidden shadow">
                     {/* {coord && (
                       <MapContainer
                         // bounds={}
@@ -583,11 +589,13 @@ const Property: FC<PropertyPropType> = (props) => {
                     onClick={() => {
                       window.open(
                         `https://www.google.com/maps/dir/?api=1&destination=${coord?.lat},${coord?.lng}`,
-                        "_blank"
+                        "_blank",
                       );
                     }}
                     variant="outlined"
-                    color="secondary"
+                    color={
+                      theme.palette.mode == "light" ? "primary" : "secondary"
+                    }
                   >
                     Get Directions <ArrowRight />
                   </Button>
@@ -595,11 +603,11 @@ const Property: FC<PropertyPropType> = (props) => {
               )}
             </div>
           </div>
-          <div className="hidden md:block col-span-4 sticky top-[90px] h-fit">
-            <Typography className="!mb-2" variant="h6">
+          <div className="hidden md:block col-span-4 sticky top-22.5 h-fit">
+            <Typography className="mb-2!" variant="h6">
               Plan Your Exclusive Escape!
             </Typography>
-            <Card className="!shadow-lg">
+            <Card className="shadow-lg!">
               <EnquiryForm
                 propertyName={propertyDetails.name}
                 whatsappNumber="9594377736"
@@ -609,14 +617,14 @@ const Property: FC<PropertyPropType> = (props) => {
         </div>
       </section>
 
-      <Paper className="md:hidden fixed bottom-0 h-fit w-full px-2 md:px-4 py-1.5 md:py-3 !rounded-none z-50">
-        <Typography className="mb-1 md:!mb-3" color="success">
+      <Paper className="md:hidden fixed bottom-0 h-fit w-full px-2 md:px-4 py-1.5 md:py-3 rounded-none! z-50">
+        <Typography className="mb-1 md:mb-3!" color="success">
           <Available /> Add dates to check the availability
         </Typography>
         <div className="flex justify-between items-center w-full gap-3">
           <div>
             <Typography
-              className="!mb-0.5 !text-[18px] md:!text-[25px]"
+              className="mb-0.5! text-[18px]! md:text-[25px]!"
               variant="h4"
             >
               Escape to Comfort!

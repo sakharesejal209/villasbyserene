@@ -44,18 +44,16 @@ export default function UnitImagesForm({ images }: Props) {
   const handleChange = (
     image_id: string,
     field: keyof UnitImageInput,
-    value: string | number | null
+    value: string | number | null,
   ) => {
     setSelectedImages((prev) =>
       prev.map((item) =>
-        item.image_id === image_id ? { ...item, [field]: value } : item
-      )
+        item.image_id === image_id ? { ...item, [field]: value } : item,
+      ),
     );
   };
 
   const handleSubmit = async () => {
-    console.log('unitimgs:', selectedImages);
-    
     if (selectedImages.length === 0) return;
 
     const res = await createManyUnitImages(selectedImages);
@@ -69,84 +67,84 @@ export default function UnitImagesForm({ images }: Props) {
   };
 
   return (
-    <div>
-      <h2 className="text-xl font-semibold mb-4">Assign Images to Units</h2>
+    <section>
+      <div className="p-3">
+        <h2 className="text-xl font-semibold mb-4">Add Images to Units</h2>
+        <div className="grid grid-cols-4 gap-4">
+          {images.map((img) => {
+            const selected = selectedImages.find(
+              (i) => i.image_id === img.image_id,
+            );
 
-      <div className="grid grid-cols-4 gap-4">
-        {images.map((img) => {
-          const selected = selectedImages.find(
-            (i) => i.image_id === img.image_id
-          );
+            return (
+              <div
+                key={img.image_id}
+                className={`border rounded p-2 ${
+                  selected ? "ring-2 ring-blue-500" : ""
+                }`}
+              >
+                <img
+                  src={img.image_url}
+                  alt={img.image_alt || ""}
+                  className="rounded mb-2 cursor-pointer"
+                  onClick={() => handleSelect(img)}
+                />
 
-          return (
-            <div
-              key={img.image_id}
-              className={`border rounded p-2 ${
-                selected ? "ring-2 ring-blue-500" : ""
-              }`}
-            >
-              <img
-                src={img.image_url}
-                alt={img.image_alt || ''}
-                className="rounded mb-2 cursor-pointer"
-                onClick={() => handleSelect(img)}
-              />
-
-              {selected && (
-                <div className="space-y-2">
-                  <input
-                    type="text"
-                    placeholder="Unit ID"
-                    value={selected.unit_id}
-                    onChange={(e) =>
-                      handleChange(img.image_id, "unit_id", e.target.value)
-                    }
-                    className="border p-1 rounded w-full"
-                  />
-
-                  <input
-                    type="number"
-                    placeholder="Display Order"
-                    value={selected.display_order}
-                    onChange={(e) =>
-                      handleChange(
-                        img.image_id,
-                        "display_order",
-                        Number(e.target.value)
-                      )
-                    }
-                    className="border p-1 rounded w-full"
-                  />
-
-                  <label className="flex items-center gap-2">
+                {selected && (
+                  <div className="space-y-2">
                     <input
-                      type="checkbox"
-                      checked={!!selected.is_banner_image}
+                      type="text"
+                      placeholder="Unit ID"
+                      value={selected.unit_id}
+                      onChange={(e) =>
+                        handleChange(img.image_id, "unit_id", e.target.value)
+                      }
+                      className="border p-1 rounded w-full"
+                    />
+
+                    <input
+                      type="number"
+                      placeholder="Display Order"
+                      value={selected.display_order}
                       onChange={(e) =>
                         handleChange(
                           img.image_id,
-                          "is_banner_image",
-                          e.target.checked ? "true" : null
+                          "display_order",
+                          Number(e.target.value),
                         )
                       }
+                      className="border p-1 rounded w-full"
                     />
-                    Banner Image
-                  </label>
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
 
-      {selectedImages.length > 0 && (
-        <button
-          onClick={handleSubmit}
-          className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          Save Unit Images
-        </button>
-      )}
-    </div>
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={!!selected.is_banner_image}
+                        onChange={(e) =>
+                          handleChange(
+                            img.image_id,
+                            "is_banner_image",
+                            e.target.checked ? "true" : null,
+                          )
+                        }
+                      />
+                      Banner Image
+                    </label>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        {selectedImages.length > 0 && (
+          <button
+            onClick={handleSubmit}
+            className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
+          >
+            Save Unit Images
+          </button>
+        )}
+      </div>
+    </section>
   );
 }

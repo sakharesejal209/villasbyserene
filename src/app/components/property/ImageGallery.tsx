@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { Masonry } from "@mui/lab";
 import { Dialog, DialogContent, IconButton } from "@mui/material";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import { Carousel } from "@/app/@application";
+import { Carousel } from "@/application/default";
 import { SwiperSlide } from "swiper/react";
 import Image from "next/image";
 

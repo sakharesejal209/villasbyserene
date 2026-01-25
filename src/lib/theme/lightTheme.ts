@@ -20,9 +20,9 @@ const commonColors = {
   error: "#EF5136",
   warning: "#EEB329",
   info: "#1DB8D7",
-  border: "#E0E3E7",
-  borderHover: "#B2BAC2",
-  borderFocused: "#7e8c9a",
+  border: "#A3ACB8",
+  borderHover: "#8995A4",
+  borderFocused: "#6F7D90",
   textBtnHover: "#FAFAFA",
   textBtnFocus: "#F2F2F2",
 };
@@ -52,9 +52,12 @@ let lightTheme: Theme = createTheme({
       main: commonColors.info,
     },
     grey: {
-      "100": "#969696",
-      "200": "#ADADAD",
-      "300": "#C6C6C6",
+      "100": "#708F8F",
+      "200": "#8AA3A3",
+      "300":"#A4B7B7",
+      "400": "#C0CDCD",
+      "500": "#DAE1E1",
+      "600": "#f1f4f4",
     },
     background: {
       default: commonColors.sand,
@@ -70,6 +73,7 @@ let lightTheme: Theme = createTheme({
     borderRadius: 12,
   },
   typography: {
+    fontSize: 13,
     fontFamily: "var(--font-montserrat), serif !important",
     button: { textTransform: "none" },
     h1: {

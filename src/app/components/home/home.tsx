@@ -35,15 +35,15 @@ import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 
 import { usePropertyStore } from "@/context/PropertyContext";
-import { Carousel, EmptyState } from "@/app/@application";
+import { Carousel, EmptyState } from "@/application/default";
 import propertyThemeMap from "@/lib/property-theme-config/propertyThemeConfig";
 import SearchBox from "./searchBox";
 import { getAccomodation } from "../stays/stays";
 import testimonials from "./data/testimonials.json";
 import topLocations from "./data/topLocations.json";
 
-import type PropertyDTO from "@/app/@types/property-dto";
-import type ThemesDTO from "@/app/@types/themes-dto";
+import type PropertyDTO from "@/types/property-dto";
+import type ThemesDTO from "@/types/themes-dto";
 
 export const FadeInSection = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -57,6 +57,10 @@ export const FadeInSection = ({ children }: { children: React.ReactNode }) => {
     </motion.div>
   );
 };
+
+function slugify(str: string) {
+  return str.toLowerCase().replaceAll(/\s+/g, "-");
+}
 
 const Home = () => {
   const theme = useTheme();
@@ -81,7 +85,7 @@ const Home = () => {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     observer.observe(section);
@@ -92,16 +96,13 @@ const Home = () => {
 
   const handleThemeSelection = (proptheme: string) => {
     const filteredProperties = properties.filter((p) =>
-      p.themes.some((t: ThemesDTO) => t.theme_id === proptheme)
+      p.themes.some((t: ThemesDTO) => t.theme_id === proptheme),
     );
     setSelectedPropTheme(proptheme);
     setFilteredProperties(filteredProperties);
     setOpenPropTheme(true);
   };
 
-  function slugify(str: string) {
-    return str.toLowerCase().replace(/\s+/g, "-");
-  }
   const handleSelect = (property: PropertyDTO) => {
     const slug = slugify(property.name);
     router.push(`/property/${slug}-${property.property_id}`);
@@ -119,7 +120,7 @@ const Home = () => {
     const message =
       "Hi, I'd like to know more about your villas and availability";
     const whatsappUrl = `https://wa.me/9594377736?text=${encodeURIComponent(
-      message
+      message,
     )}`;
     window.open(whatsappUrl, "_blank");
   };
@@ -138,12 +139,20 @@ const Home = () => {
     backgroundColor: theme.palette.background.default,
   }));
 
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.playbackRate = 0.85;
+    }
+  }, []);
+
   return (
     <div>
       {/* hero image */}
       <section
         ref={heroRef}
-        className="flex justify-center items-center w-[100vw] h-[100vh]"
+        className="flex justify-center items-center w-screen h-screen"
       >
         <motion.div className="absolute inset-0" style={{ y: heroY }}>
           <video
@@ -151,18 +160,19 @@ const Home = () => {
             loop
             muted
             playsInline
+            ref={videoRef}
             style={{
               position: "absolute",
               width: "100%",
               height: "100%",
               objectFit: "cover",
-              filter: "brightness(0.55)",
+              filter: "brightness(0.60)",
               top: 0,
               left: 0,
               zIndex: -1,
             }}
           >
-            <source src="/assets/herovideo1.mp4" type="video/mp4" />
+            <source src="/assets/herovideo-new.mp4" type="video/mp4" />
           </video>
         </motion.div>
 
@@ -187,10 +197,10 @@ const Home = () => {
         <div className="container">
           <FadeInSection>
             <div className="text-center mb-10 md:mb-12">
-              <Typography variant="h4" className="!mb-2">
+              <Typography variant="h4" className="mb-2!">
                 Discover Our Top Locations
               </Typography>
-              <Typography className="!text-lg text-center block">
+              <Typography className="text-lg! text-center block">
                 From serene beaches to mountain retreats, explore our handpicked
                 destinations
               </Typography>
@@ -201,8 +211,8 @@ const Home = () => {
                 disableOnInteraction: false,
               }}
               breakpoints={{
-                320: { slidesPerView: 2, spaceBetween: 0 },
-                480: { slidesPerView: 3, spaceBetween: 0 },
+                320: { slidesPerView: 2, spaceBetween: 4 },
+                480: { slidesPerView: 3, spaceBetween: 8 },
                 900: { slidesPerView: 4 },
               }}
               slidesPerView={3}
@@ -226,12 +236,12 @@ const Home = () => {
                           fill
                           className="w-full h-full object-cover transition-transform duration-250 group-hover:scale-108"
                         />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                        <div className="absolute bottom-0 left-0 right-0 p-6">
-                          <Typography variant="h6" className="!mb-2 text-white">
+                        <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
+                        <div className="absolute bottom-0 left-0 right-0 p-2 md:p-6">
+                          <Typography variant="h6" className="mb-0! md:mb-2! text-white">
                             {item.locationId}
                           </Typography>
-                          <Typography className="text-white">
+                          <Typography className="hidden md:block text-white">
                             {item.description}
                           </Typography>
                         </div>
@@ -264,7 +274,7 @@ const Home = () => {
               <Typography variant="h4" className="!mb-2">
                 Select your sanctuary of comfort and calm
               </Typography>
-              <Typography className="!text-lg text-center block">
+              <Typography className="text-lg! text-center block">
                 Explore handpicked homes for every kind of getaway.
               </Typography>
             </div>
@@ -293,8 +303,7 @@ const Home = () => {
                       <Box
                         className="w-15 md:w-22 h-15 md:h-22"
                         sx={{
-                          backgroundColor: theme.palette.grey[100],
-                          // backgroundColor: alpha(theme.palette.primary.main, 0.1),
+                          backgroundColor: theme.palette.grey[600],
                           padding: "1.5rem",
                           borderRadius: "9999px",
                           display: "relative",
@@ -452,10 +461,10 @@ const Home = () => {
         <div className="container">
           <FadeInSection>
             <div className="flex flex-col justify-center items-center">
-              <Typography className="text-center block !mb-2" variant="h4">
+              <Typography className="text-center block mb-2!" variant="h4">
                 What Our Guests Say
               </Typography>
-              <Typography className="text-center w-full md:w-[65%] block mx-auto !text-lg !mb-8">
+              <Typography className="text-center w-full md:w-[65%] block mx-auto text-lg! mb-8!">
                 Hospitality that goes beyond expectations. Discover what makes
                 each stay a truly refined experience through the words of our
                 delighted guests.
@@ -466,8 +475,8 @@ const Home = () => {
                 spaceBetween={20}
                 slidesPerView={3}
                 breakpoints={{
-                  320: { slidesPerView: 1 },
-                  768: { slidesPerView: 2 },
+                  320: { slidesPerView: 2, spaceBetween: 8 },
+                  768: { slidesPerView: 3, spaceBetween: 8 },
                   1024: { slidesPerView: 3 },
                 }}
                 showDots={false}
@@ -690,7 +699,7 @@ const Home = () => {
                         <Carousel slidesPerView={1}>
                           <button>
                             {item.PropertyImage.filter(
-                              (img) => img.is_carousel_image === "true"
+                              (img) => img.is_carousel_image === "true",
                             ).map((e, idx) => (
                               <SwiperSlide
                                 className="hover:cursor-pointer"

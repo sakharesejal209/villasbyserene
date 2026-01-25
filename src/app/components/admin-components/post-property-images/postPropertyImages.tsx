@@ -1,6 +1,7 @@
 "use client";
 
 import { createManyPropertyImages } from "@/scripts/createPropertyImages";
+import { Typography } from "@mui/material";
 import { useState } from "react";
 
 type ImageType = {
@@ -52,8 +53,8 @@ export default function PropertyImageForm({
   };
 
   const handleSubmit = async () => {
-    console.log('iages', images);
-    
+    console.log("iages", images);
+
     const res = await createManyPropertyImages(images);
     if (res.success) {
       alert("Property images created!");
@@ -63,93 +64,101 @@ export default function PropertyImageForm({
   };
 
   return (
-    <div className="mt-[50px]">
-      <h2 className="text-xl font-semibold">property Images</h2>
-      <div className="grid grid-cols-4 gap-4 mt-4">
-        {cliffImages.map((img) => {
-          const selected = images.find((i) => i.image_id === img.image_id);
-          return (
-            <div
-              key={img.image_id}
-              className={`border p-2 rounded cursor-pointer ${
-                selected ? "ring-4 ring-blue-500" : ""
-              }`}
-              onClick={() => handleSelect(img)}
-            >
-              <img
-                src={img.image_url}
-                alt={img.image_alt || ""}
-                className="rounded mb-2"
-              />
+    <section>
+      <div className="p-6">
+        <Typography variant="h5" className="text-xl font-semibold my-3!">
+          Add Property Images
+        </Typography>
+        <div className="grid grid-cols-4 gap-4 mt-4">
+          {cliffImages.map((img) => {
+            const selected = images.find((i) => i.image_id === img.image_id);
+            return (
+              <div
+                key={img.image_id}
+                className={`border p-2 rounded cursor-pointer ${
+                  selected ? "ring-4 ring-blue-500" : ""
+                }`}
+                onClick={() => handleSelect(img)}
+              >
+                <img
+                  src={img.image_url}
+                  alt={img.image_alt || ""}
+                  className="rounded mb-2"
+                />
 
-              {selected && (
-                <div
-                  className="space-y-2"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <input
-                    type="text"
-                    placeholder="Property ID"
-                    value={selected.property_id}
-                    onChange={(e) =>
-                      handleChange(img.image_id, "property_id", e.target.value)
-                    }
-                    name={img.image_id}
-                    className="border p-1 rounded w-full"
-                  />
-                  <input
-                    type="number"
-                    placeholder="Display Order"
-                    value={selected.display_order}
-                    onChange={(e) =>
-                      handleChange(
-                        img.image_id,
-                        "display_order",
-                        Number(e.target.value)
-                      )
-                    }
-                    className="border p-1 rounded w-full"
-                  />
-                  <label className="flex items-center gap-2">
+                {selected && (
+                  <div
+                    className="space-y-2"
+                    onClick={(e) => e.stopPropagation()}
+                  >
                     <input
-                      type="checkbox"
-                      checked={!!selected.is_banner_image}
+                      type="text"
+                      placeholder="Property ID"
+                      value={selected.property_id}
                       onChange={(e) =>
                         handleChange(
                           img.image_id,
-                          "is_banner_image",
-                          e.target.checked ? "true" : null
+                          "property_id",
+                          e.target.value
                         )
                       }
+                      name={img.image_id}
+                      className="border p-1 rounded w-full"
                     />
-                    Banner Image
-                  </label>
-                  <label className="flex items-center gap-2">
                     <input
-                      type="checkbox"
-                      checked={!!selected.is_carousel_image}
+                      type="number"
+                      placeholder="Display Order"
+                      value={selected.display_order}
                       onChange={(e) =>
                         handleChange(
                           img.image_id,
-                          "is_carousel_image",
-                          e.target.checked ? "true" : null
+                          "display_order",
+                          Number(e.target.value)
                         )
                       }
+                      className="border p-1 rounded w-full"
                     />
-                    Carousel Image
-                  </label>
-                </div>
-              )}
-            </div>
-          );
-        })}
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={!!selected.is_banner_image}
+                        onChange={(e) =>
+                          handleChange(
+                            img.image_id,
+                            "is_banner_image",
+                            e.target.checked ? "true" : null
+                          )
+                        }
+                      />
+                      Banner Image
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={!!selected.is_carousel_image}
+                        onChange={(e) =>
+                          handleChange(
+                            img.image_id,
+                            "is_carousel_image",
+                            e.target.checked ? "true" : null
+                          )
+                        }
+                      />
+                      Carousel Image
+                    </label>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        <button
+          onClick={handleSubmit}
+          className="bg-blue-600 text-white px-4 py-2 rounded mt-4"
+        >
+          Save Property Images
+        </button>
       </div>
-      <button
-        onClick={handleSubmit}
-        className="bg-blue-600 text-white px-4 py-2 rounded mt-4"
-      >
-        Save Property Images
-      </button>
-    </div>
+    </section>
   );
 }

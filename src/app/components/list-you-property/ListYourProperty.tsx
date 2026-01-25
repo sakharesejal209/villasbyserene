@@ -113,7 +113,7 @@ const ListYourProperty = () => {
   const contactNumber = process.env.NEXT_PUBLIC_PHONE_NUMBER;
 
   const StyledKPI = styled("div")(({ theme }) => ({
-    background: theme.palette.grey[100],
+    background: theme.palette.grey[600],
   }));
 
   const StyledKPICircle = styled("div")(({ theme }) => ({
@@ -242,31 +242,16 @@ const ListYourProperty = () => {
                 </StyledKPI>
               </div>
               {/* </FadeInSection> */}
-              <div>
-                <img
+              <div className="relative w-full h-[350px]">
+                <Image
                   src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/skapa-alibaug%2Fskapa-alibaug-livingroom.webp?alt=media&token=82832501-11c9-44af-a9fd-1e0b5e518ea4"
                   alt="Professional property management"
+                  fill
                   style={{
-                    height: "350px",
-                    width: "100%",
                     objectFit: "cover",
                     objectPosition: "center center",
                   }}
                 />
-                {/* <Image
-                src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2F6.webp?alt=media&token=2daf15d8-9e5a-4970-81dc-5203b4646433"
-                alt="Professional property management"
-                // className="w-full"
-                width={400}
-                height={350}
-                fill
-                style={{
-                  objectFit: "cover",
-                  objectPosition: "center center",
-                }}
-                sizes="100vw"
-                priority={true}
-              /> */}
               </div>
             </div>
           </FadeInSection>
@@ -288,7 +273,7 @@ const ListYourProperty = () => {
             </div>
 
             <div className="grid md:grid-cols-3 gap-6">
-              {services.map((service, index) => {
+              {services.map((service) => {
                 const IconComponent = service.icon;
                 return (
                   <>
@@ -296,11 +281,10 @@ const ListYourProperty = () => {
                       <div className="p-4 md:p-8">
                         <Box
                           sx={{
-                            backgroundColor: theme.palette.grey[100],
+                            backgroundColor: theme.palette.grey[600],
                           }}
                           className={`w-14 h-14 rounded-md flex items-center justify-center mb-6`}
                         >
-                          {/* {service.icon} */}
                           <IconComponent color="primary" />
                         </Box>
                         <Typography variant="h5" className="!mb-4">
@@ -341,13 +325,11 @@ const ListYourProperty = () => {
                         <div className="relative md:mb-8">
                           <Box
                             sx={{
-                              background: theme.palette.grey[100],
-                              //  backdropFilter: 'blur(8px)',
+                              background: theme.palette.grey[600],
                             }}
                             className="w-20 h-20 flex items-center rounded-md justify-center mx-auto mb-4"
                           >
                             <IconComponent fontSize="large" />
-                            {/* {step.icon} */}
                           </Box>
                           <Box
                             sx={{
@@ -412,29 +394,16 @@ const ListYourProperty = () => {
                 </div>
               </div>
 
-              <div>
-                <img
+              <div className="relative w-full h-[300px]">
+                <Image
                   src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/deena-villa%2Fdeena-sitout.webp?alt=media&token=37ef993a-5404-424d-8bcf-13eec9dbc38f"
                   alt="Premium hospitality service"
-                  style={{
-                    objectFit: "cover",
-                    objectPosition: "center center",
-                    height: "300px",
-                    width: "100%",
-                  }}
-                />
-                {/* <Image
-                  src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sarthak-villa%2FIMG-20250816-WA0005.webp?alt=media&token=157fe785-388f-4ee9-b342-9cc992e956c2"
-                  alt="Premium hospitality service"
-                  className="w-full rounded-2xl shadow-2xl"
                   fill
                   style={{
                     objectFit: "cover",
                     objectPosition: "center center",
                   }}
-                  sizes="100vw"
-                  priority={true}
-                /> */}
+                />
               </div>
             </div>
           </FadeInSection>
