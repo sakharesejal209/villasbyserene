@@ -1,131 +1,147 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent } from "react";
 import { Button, styled, TextField, Typography } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { WhatsApp } from "@mui/icons-material";
-import { PickerValue } from "@mui/x-date-pickers/internals";
+import { Controller, useForm } from "react-hook-form";
 import dayjs from "dayjs";
+import bookingService from "@/services/bookings/bookingService";
+
 interface EnquiryFormProps {
   propertyName: string;
   whatsappNumber: string;
 }
 
+interface EnquiryFormData {
+  name: string;
+  checkIn: dayjs.Dayjs | null;
+  checkOut: dayjs.Dayjs | null;
+  guests: string;
+}
+
+const CustomDatePicker = styled(DatePicker)({
+  "& label.Mui-focused": {
+    color: "#A0AAB4",
+  },
+});
+
 const EnquiryForm = ({ propertyName, whatsappNumber }: EnquiryFormProps) => {
-  const [errors, setErrors] = useState<{ name?: string; guests?: string }>({});
-  const [form, setForm] = useState<{
-    name: string;
-    checkIn: PickerValue;
-    checkOut: PickerValue;
-    guests: string;
-  }>({
-    name: "",
-    checkIn: null,
-    checkOut: null,
-    guests: "",
+  const {
+    control,
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<EnquiryFormData>({
+    defaultValues: {
+      name: "",
+      checkIn: null,
+      checkOut: null,
+      guests: "",
+    },
   });
 
-  const validate = () => {
-    const newErrors: { name?: string; guests?: string } = {};
+  const checkInValue = watch("checkIn");
 
-    if (!form.name.trim()) newErrors.name = "Name is required";
-    if (!form.guests.trim()) newErrors.guests = "Guest count is required";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!validate()) return;
-
-    const checkIn = form.checkIn
-      ? dayjs(form.checkIn).format("DD/MM/YYYY")
+  const onSubmit = (data: EnquiryFormData) => {
+    const checkIn = data.checkIn
+      ? dayjs(data.checkIn).format("DD/MM/YYYY")
       : "N/A";
 
-    const checkOut = form.checkOut
-      ? dayjs(form.checkOut).format("DD/MM/YYYY")
+    const checkOut = data.checkOut
+      ? dayjs(data.checkOut).format("DD/MM/YYYY")
       : "N/A";
 
     const message = `📌 New Property Enquiry
 - Property: ${propertyName}
-- Name: ${form.name}
+- Name: ${data.name}
 - Check-in: ${checkIn}
 - Check-out: ${checkOut}
-- Guests: ${form.guests}`;
+- Guests: ${data.guests}`;
 
-    const encodedMessage = encodeURIComponent(message);
-    const url = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+      message,
+    )}`;
 
     window.open(url, "_blank");
   };
 
-  const CustomDatePicker = styled(DatePicker)({
-    "& label.Mui-focused": {
-      color: "#A0AAB4",
-    },
-  });
+  const handleBookNow = () => {
+    bookingService.createBooking({
+      amount: 12000,
+      checkIn: "",
+      checkOut: "",
+      currency: "INR",
+      propertyId: "",
+      unitId: "",
+      userId: "",
+    });
+  };
 
   return (
     <form
-      onSubmit={(e) => handleSubmit(e)}
+      onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col justify-center gap-4 px-6 py-8 w-full"
     >
-      <div>
-        <TextField
-          name="name"
-          label="Your Name"
-          color="primary"
-          value={form.name}
-          className="w-full"
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-          required
-        />
-        {errors.name && (
-          <Typography className="block pl-1" variant="caption" color="error">
-            {errors.name}
-          </Typography>
-        )}
-      </div>
+      {/* Name */}
+      <TextField
+        label="Your Name"
+        className="w-full"
+        {...register("name", { required: "Name is required" })}
+        error={!!errors.name}
+        helperText={errors.name?.message}
+      />
 
-      <CustomDatePicker
-        label="Checkin Date"
-        value={form.checkIn}
-        onChange={(newVal) => setForm({ ...form, checkIn: newVal })}
-        slotProps={{
-          textField: { fullWidth: true },
-        }}
-        format="DD/MM/YYYY"
-        disablePast
-      />
-      <CustomDatePicker
-        label="Checkout Date"
-        value={form.checkOut}
-        onChange={(newVal) => setForm({ ...form, checkOut: newVal })}
-        format="DD/MM/YYYY"
-        shouldDisableDate={(date) => {
-          return form.checkIn ? date.isBefore(form.checkIn, "day") : false;
-        }}
-      />
-      <div>
-        <TextField
-          name="guests"
-          label="Guests Count"
-          type="number"
-          className="w-full"
-          value={form.guests}
-          onChange={(e) => setForm({ ...form, guests: e.target.value })}
-          required
-        />
-        {errors.guests && (
-          <Typography className="block pl-1" variant="caption" color="error">
-            {errors.guests}
-          </Typography>
+      {/* Check-in */}
+      <Controller
+        name="checkIn"
+        control={control}
+        render={({ field }) => (
+          <CustomDatePicker
+            label="Check-in Date"
+            {...field}
+            format="DD/MM/YYYY"
+            disablePast
+            slotProps={{ textField: { fullWidth: true } }}
+          />
         )}
-      </div>
-      <Button type="submit" variant="contained" onClick={handleSubmit}>
+      />
+
+      {/* Check-out */}
+      <Controller
+        name="checkOut"
+        control={control}
+        render={({ field }) => (
+          <CustomDatePicker
+            label="Check-out Date"
+            {...field}
+            format="DD/MM/YYYY"
+            shouldDisableDate={(date) =>
+              checkInValue ? date.isBefore(checkInValue, "day") : false
+            }
+            slotProps={{ textField: { fullWidth: true } }}
+          />
+        )}
+      />
+
+      {/* Guests */}
+      <TextField
+        label="Guests Count"
+        type="number"
+        className="w-full"
+        {...register("guests", { required: "Guest count is required" })}
+        error={!!errors.guests}
+        helperText={errors.guests?.message}
+      />
+
+      {/* WhatsApp */}
+      <Button type="submit" variant="contained">
         Send Enquiry on WhatsApp <WhatsApp className="ml-1" />
       </Button>
+
+      {/* Book now */}
+      <Button onClick={handleBookNow}>Book Now</Button>
     </form>
   );
 };
