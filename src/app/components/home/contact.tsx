@@ -79,7 +79,7 @@ const Contact = () => {
 
     const message = generateWhatsAppMessage();
     const whatsappUrl = `https://wa.me/9594377736?text=${encodeURIComponent(
-      message
+      message,
     )}`;
 
     window.open(whatsappUrl, "_blank");
@@ -235,13 +235,13 @@ const Contact = () => {
                     Get in Touch
                   </Typography>
                   <div className="my-4">
-                    <div className="flex items-center">
+                    <div className="flex items-center my-3">
                       <div className="w-[20%] flex items-center justify-center">
                         <Phone className="w-5 h-5 text-primary" />
                       </div>
                       <div className="w-[80%]">
                         <Typography className="font-semibold">
-                          WhatsATypography
+                          WhatsApp
                         </Typography>
                         <Typography className="text-muted-foreground">
                           +91 95943 77736
@@ -249,7 +249,7 @@ const Contact = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-center">
+                    <div className="flex items-center my-3">
                       <div className="w-[20%] flex items-center justify-center">
                         <Mail className="w-5 h-5 text-primary" />
                       </div>
@@ -261,15 +261,15 @@ const Contact = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-center">
+                    <div className="flex items-center my-3">
                       <div className="w-[20%] flex items-center justify-center">
                         <MapPin className="w-5 h-5 text-primary" />
                       </div>
                       <div className="w-[80%]">
                         <Typography>Office</Typography>
                         <Typography>
-                          Raj Avenue, MCCH Society, Panvel, Raigad Maharashtra,
-                          410206
+                          B-104, Yashonarayan CHS., Takka Rd, Panvel
+                          <div>Raigad, Maharashtra, 410206</div>
                         </Typography>
                       </div>
                     </div>

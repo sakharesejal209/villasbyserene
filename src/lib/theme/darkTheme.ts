@@ -117,7 +117,7 @@ let darkTheme: Theme = createTheme({
       styleOverrides: {
         root: {
           "& label.Mui-focused": {
-            color: commonColors.borderFocused,
+            color: commonColors.white,
           },
         },
       },
