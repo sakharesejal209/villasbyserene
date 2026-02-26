@@ -1,11 +1,11 @@
 [
   {
     "id": "30plusDays",
-    "description": "Cancellations made before 21+ days check-in are eligible for 100% refund."
+    "description": "Cancellations made before 30+ days check-in are eligible for 100% refund."
   },
   {
     "id": "14plusDays",
-    "description": "Any cancellations made before 14+days are eligible for 50% refund."
+    "description": "Any cancellations made before 14+ days are eligible for 50% refund."
   },
   {
     "id": "14daysLesser",
@@ -13,7 +13,7 @@
   },
   {
     "id": "noShow",
-    "description": "In case of extreme last-minute cancellations due to extenuating circumstances, Guests will be refunded 85% of booking amount if SaffronStays gets another booking for the same date(s). If not, Guests will not be given a refund, and the cancellation will be treated as a no-show."
+    "description": "In case of extreme last-minute cancellations due to extenuating circumstances, Guests will be refunded 85% of booking amount if VillasBySerene gets another booking for the same date(s). If not, Guests will not be given a refund, and the cancellation will be treated as a no-show."
   },
   {
     "id": "partialPayment",
