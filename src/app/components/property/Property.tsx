@@ -200,7 +200,7 @@ const Property: FC<PropertyPropType> = (props) => {
       </Customsection>
 
       <section>
-        <div className="container w-full grid grid-cols-12 md:gap-12 p-0">
+        <div className="container w-full grid grid-cols-12 md:gap-8 p-0">
           <div className="col-span-12 md:col-span-8">
             <div>
               <ReadMore
@@ -611,6 +611,7 @@ const Property: FC<PropertyPropType> = (props) => {
               <EnquiryForm
                 propertyName={propertyDetails.name}
                 whatsappNumber="9594377736"
+                propertyId={propertyDetails.property_id}
               />
             </Card>
           </div>
@@ -742,6 +743,7 @@ const Property: FC<PropertyPropType> = (props) => {
           <EnquiryForm
             propertyName={propertyDetails.name}
             whatsappNumber="9594377736"
+            propertyId={propertyDetails.property_id}
           />
         </Box>
       </Drawer>

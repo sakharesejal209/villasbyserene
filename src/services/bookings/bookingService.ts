@@ -2,9 +2,12 @@ import { CreateBookingDTO } from "@/types";
 import httpService from "../http-service";
 
 class BookingService {
- 
-  createBooking = (data: CreateBookingDTO) => {
-    return httpService().post('booking/', data);
+  createBooking = (data: CreateBookingDTO, idempotencyKey: string) => {
+    return httpService().post("booking/", data, {
+      headers: {
+        idempotencyKey: idempotencyKey,
+      },
+    });
   };
 }
 

@@ -44,6 +44,7 @@ import topLocations from "./data/topLocations.json";
 
 import type PropertyDTO from "@/types/property-dto";
 import type ThemesDTO from "@/types/themes-dto";
+import userService from "@/app/@services/user/user-service";
 
 export const FadeInSection = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -72,6 +73,16 @@ const Home = () => {
   const [fits, setFits] = useState<Record<number, "cover" | "contain">>({});
   const sectionRef = useRef<HTMLDivElement>(null);
   const { properties } = usePropertyStore();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    userService
+      .getCurrentUser()
+      .then(setUser)
+      .catch((err) => {
+        console.log("err:", err);
+      });
+  }, []);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -238,7 +249,10 @@ const Home = () => {
                         />
                         <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
                         <div className="absolute bottom-0 left-0 right-0 p-2 md:p-6">
-                          <Typography variant="h6" className="mb-0! md:mb-2! text-white">
+                          <Typography
+                            variant="h6"
+                            className="mb-0! md:mb-2! text-white"
+                          >
                             {item.locationId}
                           </Typography>
                           <Typography className="hidden md:block text-white">

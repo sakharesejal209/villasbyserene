@@ -6,4 +6,7 @@ export default interface CreateBookingDTO {
   amount: number;
   userId: string;
   currency: string;
+  adultCount: number;
+  kidsCount: number;
+  petCount: number;
 }

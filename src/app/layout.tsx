@@ -133,7 +133,7 @@ export default async function Layout({
 }>) {
   const propertiesData = await fetchAllData();
 
-  const data = await propertiesService.fetchAllProperties();
+  // const data = await propertiesService.fetchAllProperties();
 
   return (
     <html lang="en" className={roboto.className + " " + ibmPlex.className}>

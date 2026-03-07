@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: process.env.API_BASE_URL,
+  baseURL: "http://localhost:4000/",
   timeout: 30000,
 });
 
