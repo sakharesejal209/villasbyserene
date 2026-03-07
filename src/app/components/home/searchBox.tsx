@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 export const locations = [
   "All",
   "Lonavala",
-  "Gadeshwar",
+  "Panvel",
   "Karjat",
   "Alibaug",
   "Uran",
