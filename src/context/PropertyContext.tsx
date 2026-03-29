@@ -1,11 +1,11 @@
 "use client";
 
-import PropertyDTO from "@/types/property-dto";
+import { PropertyListItemDTO } from "@/app/@types/property/property.type";
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 type PropertyContextType = {
-  properties: PropertyDTO[];
-  setProperties: (data: PropertyDTO[]) => void;
+  properties: PropertyListItemDTO[];
+  setProperties: (data: PropertyListItemDTO[]) => void;
 };
 
 const PropertyContext = createContext<PropertyContextType | undefined>(
@@ -17,10 +17,10 @@ export const PropertyContextProvider = ({
   initialProperties = [],
 }: {
   children: ReactNode;
-  initialProperties?: PropertyDTO[];
+  initialProperties?: PropertyListItemDTO[];
 }) => {
   const [properties, setProperties] =
-    useState<PropertyDTO[]>(initialProperties);
+    useState<PropertyListItemDTO[]>(initialProperties);
 
   return (
     <PropertyContext.Provider value={{ properties, setProperties }}>

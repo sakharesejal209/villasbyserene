@@ -42,9 +42,14 @@ import { getAccomodation } from "../stays/stays";
 import testimonials from "./data/testimonials.json";
 import topLocations from "./data/topLocations.json";
 
-import type PropertyDTO from "@/types/property-dto";
-import type ThemesDTO from "@/types/themes-dto";
+// import type PropertyDTO from "@/types/property-list-item-dto";
+// import type ThemesDTO from "@/types/themes-dto";
 import userService from "@/app/@services/user/user-service";
+import {
+  PropertyDetailDTO,
+  PropertyListItemDTO,
+  ThemeDTO,
+} from "@/app/@types/property/property.type";
 
 export const FadeInSection = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -59,16 +64,13 @@ export const FadeInSection = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-function slugify(str: string) {
-  return str.toLowerCase().replaceAll(/\s+/g, "-");
-}
-
 const Home = () => {
   const theme = useTheme();
   const router = useRouter();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [openPropTheme, setOpenPropTheme] = useState<boolean>(false);
-  const [filteredProperties, setFilteredProperties] = useState<PropertyDTO[]>();
+  const [filteredProperties, setFilteredProperties] =
+    useState<PropertyListItemDTO[]>();
   const [selectedPropTheme, setSelectedPropTheme] = useState<string>();
   const [fits, setFits] = useState<Record<number, "cover" | "contain">>({});
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -107,16 +109,15 @@ const Home = () => {
 
   const handleThemeSelection = (proptheme: string) => {
     const filteredProperties = properties.filter((p) =>
-      p.themes.some((t: ThemesDTO) => t.theme_id === proptheme),
+      p.themes.some((t: ThemeDTO) => t.theme_id === proptheme),
     );
     setSelectedPropTheme(proptheme);
     setFilteredProperties(filteredProperties);
     setOpenPropTheme(true);
   };
 
-  const handleSelect = (property: PropertyDTO) => {
-    const slug = slugify(property.name);
-    router.push(`/property/${slug}-${property.property_id}`);
+  const handleSelect = (name: string, propertyId: string) => {
+    router.push(`/property/${name}-${propertyId}`);
   };
 
   const handleImageLoad = (idx: number, img: HTMLImageElement) => {
@@ -177,7 +178,7 @@ const Home = () => {
               width: "100%",
               height: "100%",
               objectFit: "cover",
-              filter: "brightness(0.60)",
+              filter: "brightness(0.50)",
               top: 0,
               left: 0,
               zIndex: -1,
@@ -193,7 +194,7 @@ const Home = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeIn" }}
         >
-          <div className="p-4 md:p-0 slide-bottom">
+          <div className="p-4 md:p-0 slide-bottom w-full md:w-[70%] mx-auto">
             <div className="text-white">
               <Typography variant="h2">PLAN YOUR</Typography>
               <Typography variant="h2">PERFECT GETAWAY!</Typography>
@@ -712,23 +713,19 @@ const Home = () => {
                       <div className="md:col-span-5">
                         <Carousel slidesPerView={1}>
                           <button>
-                            {item.PropertyImage.filter(
-                              (img) => img.is_carousel_image === "true",
-                            ).map((e, idx) => (
+                            {item.carousel_images.map((e, idx) => (
                               <SwiperSlide
                                 className="hover:cursor-pointer"
-                                onClick={() => handleSelect(item)}
+                                onClick={() =>
+                                  handleSelect(item.name, item.property_id)
+                                }
                                 key={idx}
                               >
                                 <div className="relative w-full aspect-[5/3] md:aspect-[16/9] overflow-hidden">
                                   <Image
-                                    src={
-                                      e.image != null ? e.image.image_url : ""
-                                    }
+                                    src={e.image_url}
                                     alt={
-                                      e.image != null
-                                        ? e.image.image_alt || ""
-                                        : "alt text"
+                                      e.image_alt ? e.image_alt : "Some image"
                                     }
                                     fill
                                     style={{
@@ -750,7 +747,9 @@ const Home = () => {
                       <div className="md:col-span-7 flex flex-col justify-center md:gap-2">
                         <Typography
                           className="hover:cursor-pointer"
-                          onClick={() => handleSelect(item)}
+                          onClick={() =>
+                            handleSelect(item.name, item.property_id)
+                          }
                           variant="h5"
                         >
                           {item.name}
@@ -761,16 +760,16 @@ const Home = () => {
                         <div className="flex items-center gap-3">
                           <div className="flex items-center gap-1">
                             <PeopleIcon />
-                            <Typography>{item.maxcapacity}</Typography>
+                            <Typography>{item.max_capacity}</Typography>
                           </div>
                           <div className="flex items-center gap-1">
                             <BedIcon />
-                            <Typography>{item.bedroomcount}</Typography>
+                            <Typography>{item.bedroom_count}</Typography>
                           </div>
                           <div className="flex items-center gap-1">
                             <HouseIcon />
                             <Typography>
-                              {getAccomodation(item.accommodationType)}
+                              {getAccomodation(item.accommodation_type)}
                             </Typography>
                           </div>
                         </div>

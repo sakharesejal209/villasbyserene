@@ -7,7 +7,7 @@ import Footer from "./components/home/footer";
 import { fetchAllData } from "@/scripts/getProperties";
 import ClientProviders from "./components/client-providers/ClientProviders";
 import { Metadata } from "next";
-import { propertiesService } from "@/app/@services";
+import { propertiesService } from "./@services";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.villasbyserene.com"),
@@ -35,7 +35,6 @@ export const metadata: Metadata = {
     "luxury villas in India",
     "private pool villa near Mumbai",
     "Villas by Serene",
-
     "book luxury villas in India",
     "private villas for rent",
     "holiday villas with pool",
@@ -44,8 +43,6 @@ export const metadata: Metadata = {
     "luxury stays for couples and families",
     "villa resorts with private pool",
     "weekend getaway villas",
-
-    // Location based (Pan India)
     "villas in Goa",
     "villas in Udaipur",
     "villas in Rajasthan",
@@ -58,8 +55,6 @@ export const metadata: Metadata = {
     "beachfront villas in Alibaug",
     "hill view villas in Lonavala",
     "heritage villas in Udaipur",
-
-    // Experience based
     "romantic villa stays",
     "family villa getaways",
     "pool villas for group stays",
@@ -67,8 +62,6 @@ export const metadata: Metadata = {
     "eco-friendly villa stays",
     "private villas for destination weddings",
     "corporate retreat villas",
-
-    // Brand & recall
     "Villas by Serene",
     "Serene Villas India",
     "Serene luxury stays",
@@ -107,11 +100,6 @@ export const metadata: Metadata = {
   },
   authors: [{ name: "Villas by Serene" }],
   category: "Holiday Rentals & Hospitality",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
 };
 
 const roboto = Montserrat({
@@ -131,9 +119,7 @@ export default async function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const propertiesData = await fetchAllData();
-
-  // const data = await propertiesService.fetchAllProperties();
+const propertiesData = await propertiesService.getProperties();
 
   return (
     <html lang="en" className={roboto.className + " " + ibmPlex.className}>

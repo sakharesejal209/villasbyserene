@@ -5,10 +5,14 @@ import {
   Box,
   Button,
   CircularProgress,
+  styled,
   TextField,
 } from "@mui/material";
 import React, { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { DatePicker } from "@mui/x-date-pickers";
+import { PickerValue } from "@mui/x-date-pickers/internals";
+import dayjs from "dayjs";
 
 export const locations = [
   "All",
@@ -16,13 +20,21 @@ export const locations = [
   "Panvel",
   "Karjat",
   "Alibaug",
-  "Uran",
+  "Navi Mumbai",
   "Udaipur",
 ];
+
+const CustomDatePicker = styled(DatePicker)({
+  "& label.Mui-focused": {
+    color: "#ffffff",
+  },
+});
 
 const SearchBox = () => {
   const [location, setLocation] = useState<string>("All");
   const [guests, setGuests] = useState<number>(1);
+  const [checkIn, setCheckIn] = useState<PickerValue>(dayjs());
+  const [checkOut, setCheckOut] = useState<PickerValue>(dayjs().add(1, "day"));
 
   const [loadingButton, setLoadingButton] = useState(false);
   const router = useRouter();
@@ -31,16 +43,12 @@ const SearchBox = () => {
     setLoadingButton(true);
     e.preventDefault();
 
-    const locSlug = location
-      ? location.toLowerCase().replace(/\s+/g, "-")
-      : "all";
+    const params = new URLSearchParams();
+    if (guests) params.set("guests", String(guests));
+    if (checkIn) params.set("checkIn", checkIn.format("YYYY-MM-DD"));
+    if (checkOut) params.set("checkOut", checkOut.format("YYYY-MM-DD"));
 
-    let path = `/stays/${locSlug}`;
-
-    if (guests && guests > 0) {
-      path += `?guests=${guests}`;
-    }
-    router.push(path);
+    router.push(`/stays/${location}?${params.toString()}`);
   };
 
   return (
@@ -48,8 +56,9 @@ const SearchBox = () => {
       <div className="mt-3 relative">
         <Box className="mt-1 p-2 rounded-lg w-full flex flex-col justify-center">
           <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 md:grid-cols-12 gap-2">
               <Autocomplete
+                className="col-span-2 mb-0! md:col-span-4 "
                 options={locations}
                 value={location}
                 onChange={(e, val) => setLocation(val || "")}
@@ -101,7 +110,37 @@ const SearchBox = () => {
                   },
                 }}
               />
+
+              <CustomDatePicker
+                className="md:col-span-2 col-span-1"
+                label="Check-in Date"
+                format="DD/MM/YYYY"
+                disablePast
+                minDate={dayjs()}
+                slotProps={{ textField: { fullWidth: true } }}
+                value={checkIn}
+                onChange={(newVal) => {
+                  if (newVal) {
+                    setCheckIn(newVal);
+                    if (newVal.isAfter(checkOut)) {
+                      setCheckOut(newVal.add(1, "day"));
+                    }
+                  }
+                }}
+              />
+              <CustomDatePicker
+                className="md:col-span-2 col-span-1"
+                label="Check-out Date"
+                format="DD/MM/YYYY"
+                disablePast
+                slotProps={{ textField: { fullWidth: true } }}
+                value={checkOut}
+                onChange={(newVal) => {
+                  if (newVal) setCheckOut(newVal);
+                }}
+              />
               <TextField
+                className="col-span-2"
                 type="number"
                 label="Guests"
                 fullWidth
@@ -140,20 +179,21 @@ const SearchBox = () => {
                   },
                 }}
               />
-            </div>
 
-            <Button
-              type="submit"
-              variant="contained"
-              fullWidth
-              onClick={handleSubmit}
-            >
-              {loadingButton ? (
-                <CircularProgress size={30} color="inherit" />
-              ) : (
-                "Search"
-              )}
-            </Button>
+              <Button
+                className="col-span-2"
+                type="submit"
+                variant="contained"
+                fullWidth
+                onClick={handleSubmit}
+              >
+                {loadingButton ? (
+                  <CircularProgress size={30} color="inherit" />
+                ) : (
+                  "SEARCH"
+                )}
+              </Button>
+            </div>
           </form>
         </Box>
       </div>

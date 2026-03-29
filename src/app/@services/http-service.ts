@@ -1,7 +1,10 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: process.env.API_BASE_URL,
+  baseURL:
+    process.env.NEXT_PUBLIC_API_BASE_URL ||
+    process.env.API_BASE_URL ||
+    "http://localhost:4000",
   timeout: 30000,
 });
 
@@ -15,7 +18,7 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 function httpService<T = any>() {
@@ -28,7 +31,7 @@ function httpService<T = any>() {
     post: (
       url: string,
       data?: unknown,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig,
     ): Promise<T> =>
       axiosInstance
         .post<T>(url, data, config)
@@ -37,7 +40,7 @@ function httpService<T = any>() {
     put: (
       url: string,
       data?: unknown,
-      config?: AxiosRequestConfig
+      config?: AxiosRequestConfig,
     ): Promise<T> =>
       axiosInstance
         .put<T>(url, data, config)
