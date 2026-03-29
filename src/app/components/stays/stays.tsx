@@ -183,32 +183,34 @@ const Stays = (props: StaysPropType) => {
                     </div>
                   </div>
 
-                  <Divider />
-
-                  {/* Themes */}
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {item.themes
-                      .filter((t) => t.theme_id !== "entireHome")
-                      .map((t) => (
-                        <Box
-                          key={t.theme_id}
-                          sx={{ fontWeight: "600", textAlign: "center" }}
-                          className="flex gap-3"
-                        >
-                          <Typography
-                            sx={{
-                              background: theme.palette.grey[500],
-                              paddingX: "8px",
-                              borderRadius: "999px",
-                            }}
-                            variant="caption"
-                            className="font-normal!"
-                          >
-                            {propertyThemeMap[t.theme_id].label}
-                          </Typography>
-                        </Box>
-                      ))}
-                  </div>
+                  {!!item.themes.length && (
+                    <>
+                      <Divider />
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {item.themes
+                          .filter((t) => t.theme_id !== "entireHome")
+                          .map((t) => (
+                            <Box
+                              key={t.theme_id}
+                              sx={{ fontWeight: "600", textAlign: "center" }}
+                              className="flex gap-3"
+                            >
+                              <Typography
+                                sx={{
+                                  background: theme.palette.grey[500],
+                                  paddingX: "8px",
+                                  borderRadius: "999px",
+                                }}
+                                variant="caption"
+                                className="font-normal!"
+                              >
+                                {propertyThemeMap[t.theme_id].label}
+                              </Typography>
+                            </Box>
+                          ))}
+                      </div>
+                    </>
+                  )}
 
                   {/* Price */}
                   <Divider sx={{ mt: 1.5, mb: 1 }} />
