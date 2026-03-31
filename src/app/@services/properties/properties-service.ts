@@ -28,14 +28,9 @@
 
 // src/services/properties.service.ts
 
+import { BookingQuoteDTO, PropertyDetailDTO, PropertyFiltersDTO, PropertyListItemDTO, QuoteRequestDTO } from "@/app/@types";
 import httpService from "../http-service";
-import {
-  BookingQuoteDTO,
-  PropertyDetailDTO,
-  PropertyFiltersDTO,
-  PropertyListItemDTO,
-  QuoteRequestDTO,
-} from "@/app/@types/property/property.type";
+
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";

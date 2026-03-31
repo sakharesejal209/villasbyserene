@@ -64,7 +64,7 @@ const StaysClientPage: FC = () => {
 
   const filteredProperties = useMemo(() => {
     return properties.filter((p) => {
-      if (filters.location && filters.location !== "all") {
+      if (filters.location && filters.location.toLowerCase() !== "all") {
         const loc = filters.location.toLowerCase();
         const matches =
           p.city.toLowerCase().includes(loc) ||

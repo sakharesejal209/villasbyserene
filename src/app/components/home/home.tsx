@@ -49,7 +49,7 @@ import {
   PropertyDetailDTO,
   PropertyListItemDTO,
   ThemeDTO,
-} from "@/app/@types/property/property.type";
+} from "@/app/@types/property/PropertyFiltersDTO";
 
 export const FadeInSection = ({ children }: { children: React.ReactNode }) => {
   return (

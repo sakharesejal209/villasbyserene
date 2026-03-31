@@ -1,5 +1,5 @@
 import dayjs, { Dayjs } from "dayjs";
-import type { UnitGroupDTO, PropertyListItemDTO } from "@/app/@types/property/property.type";
+import type { UnitGroupDTO, PropertyListItemDTO } from "@/app/@types/property/PropertyFiltersDTO";
 
 export interface PriceResult {
   price:    number;

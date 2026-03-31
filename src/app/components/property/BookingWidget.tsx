@@ -1,958 +1,640 @@
 "use client";
 
-import { FC, useMemo, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import {
+  FC,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import dayjs, { Dayjs } from "dayjs";
 import {
-  Alert,
   Box,
   Button,
   Chip,
   CircularProgress,
-  Collapse,
   Divider,
   IconButton,
+  Popover,
+  Skeleton,
   TextField,
-  Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import {
   AddOutlined,
-  CalendarMonthOutlined,
   CheckCircleOutlined,
-  ExpandMoreOutlined,
-  InfoOutlined,
   PeopleAltOutlined,
-  ReceiptOutlined,
   RemoveOutlined,
   WhatsApp,
 } from "@mui/icons-material";
-import type {
-  BookingQuoteDTO,
-  NightlyBreakdownDTO,
-  UnitGroupDTO,
-} from "@/app/@types/property/property.type";
-import { BookingType } from "@/app/@types/property/property.type";
-import { propertiesService } from "@/app/@services";
+import {propertiesService, bookingService} from "@/app/@services/";
+import GuestDetailsModal, { type GuestDetails } from "./GuestDetailsModal";
+import { useRazorpay }  from "@/hooks/useRazorpay";
+import { useRouter }    from "next/navigation";
+import type { BookingQuoteDTO, UnitGroupDTO } from "@/app/@types";
+import { BookingType } from "@/app/@types";
 
-// ── Types ─────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────
+// Types
+// ─────────────────────────────────────────────────────────────────
 
-interface BookingFormValues {
-  checkIn: Dayjs | null;
+interface FormValues {
+  checkIn:  Dayjs | null;
   checkOut: Dayjs | null;
-  adults: number;
+  adults:   number;
   children: number;
+  infants:  number;
 }
 
 interface BookingWidgetProps {
-  propertyId: string;
-  propertyName: string;
-  unitGroups: UnitGroupDTO[];
-  bookingType: BookingType;
-  defaultCheckIn?: string; // YYYY-MM-DD from URL
-  defaultCheckOut?: string; // YYYY-MM-DD from URL
+  propertyId:       string;
+  propertyName:     string;
+  unitGroups:       UnitGroupDTO[];
+  bookingType:      BookingType;
+  userId?:          string;
+  defaultCheckIn?:  string;
+  defaultCheckOut?: string;
 }
 
-// ── Helpers ───────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────
+// Helpers
+// ─────────────────────────────────────────────────────────────────
 
-function formatINR(amount: number) {
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
+export const formatINR = (n: number) =>
+  new Intl.NumberFormat("en-IN", {
+    style: "currency", currency: "INR", maximumFractionDigits: 0,
+  }).format(n);
 
-function getDayOfWeek(date: Dayjs): "weekday" | "weekend" {
-  const dow = date.day(); // 0=Sun, 5=Fri, 6=Sat
-  return dow === 0 || dow === 5 || dow === 6 ? "weekend" : "weekday";
-}
-
-// Get effective price for a specific date considering seasonal rates
-function getPriceForDate(
-  date: Dayjs,
-  group: UnitGroupDTO,
-): { price: number; label: string; type: "seasonal" | "weekend" | "weekday" } {
-  // Check seasonal rate first
+function getCheckinRate(checkIn: Dayjs, group: UnitGroupDTO) {
   if (group.seasonal_rate) {
-    const start = dayjs(group.seasonal_rate.start_date);
-    const end = dayjs(group.seasonal_rate.end_date);
-    if (
-      (date.isAfter(start) || date.isSame(start, "day")) &&
-      (date.isBefore(end) || date.isSame(end, "day"))
-    ) {
-      return {
-        price: group.seasonal_rate.price_per_night,
-        label: group.seasonal_rate.label,
-        type: "seasonal",
-      };
-    }
+    const s = dayjs(group.seasonal_rate.start_date);
+    const e = dayjs(group.seasonal_rate.end_date);
+    if (!checkIn.isBefore(s, "day") && !checkIn.isAfter(e, "day"))
+      return { price: group.seasonal_rate.price_per_night, label: group.seasonal_rate.label, type: "seasonal" as const };
   }
-
-  if (!group.pricing) return { price: 0, label: "", type: "weekday" };
-
-  const type = getDayOfWeek(date);
-  return {
-    price:
-      type === "weekend"
-        ? group.pricing.weekend_price
-        : group.pricing.weekday_price,
-    label: type === "weekend" ? "Weekend rate" : "Weekday rate",
-    type,
-  };
+  if (!group.pricing) return null;
+  const isWeekend = [0, 5, 6].includes(checkIn.day());
+  return isWeekend
+    ? { price: group.pricing.weekend_price, label: "Weekend rate", type: "weekend"  as const }
+    : { price: group.pricing.weekday_price, label: "Weekday rate", type: "weekday"  as const };
 }
 
-// ── Component ─────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────
+// GuestRow — stable sub-component, no closure bugs
+// ─────────────────────────────────────────────────────────────────
+
+const GuestRow: FC<{
+  label: string; sub: string;
+  value: number; min: number; max: number;
+  onChange: (v: number) => void;
+}> = ({ label, sub, value, min, max, onChange }) => (
+  <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", py: 1.25 }}>
+    <Box>
+      <Typography variant="body2" fontWeight={600}>{label}</Typography>
+      <Typography variant="caption" color="text.secondary">{sub}</Typography>
+    </Box>
+    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+      <IconButton size="small" disabled={value <= min} onClick={() => onChange(value - 1)}
+        sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1, width: 28, height: 28 }}>
+        <RemoveOutlined sx={{ fontSize: 14 }} />
+      </IconButton>
+      <Typography fontWeight={700} sx={{ minWidth: 20, textAlign: "center" }}>{value}</Typography>
+      <IconButton size="small" disabled={value >= max} onClick={() => onChange(value + 1)}
+        sx={{
+          border: "1px solid",
+          borderColor: value < max ? "primary.main" : "divider",
+          borderRadius: 1, width: 28, height: 28,
+          bgcolor: value < max ? "primary.main" : "transparent",
+          color:   value < max ? "#fff" : "text.disabled",
+          "&:hover": { bgcolor: value < max ? "primary.dark" : "transparent" },
+        }}>
+        <AddOutlined sx={{ fontSize: 14 }} />
+      </IconButton>
+    </Box>
+  </Box>
+);
+
+// ─────────────────────────────────────────────────────────────────
+// BookingWidget
+// ─────────────────────────────────────────────────────────────────
 
 const BookingWidget: FC<BookingWidgetProps> = ({
   propertyId,
   propertyName,
   unitGroups,
   bookingType,
+  userId = "",
   defaultCheckIn,
   defaultCheckOut,
 }) => {
-  const theme = useTheme();
-  const isDirect = bookingType === BookingType.DIRECT;
+  const theme          = useTheme();
+  const router         = useRouter();
+  const { openCheckout } = useRazorpay();
+  const isDirect         = bookingType === BookingType.DIRECT;
 
-  const [selectedGroupIndex, setSelectedGroupIndex] = useState(0);
-  const selectedGroup = unitGroups[selectedGroupIndex];
-  const hasPricing = isDirect && !!selectedGroup?.pricing;
-  const isVilla = selectedGroup?.unit_type === "VILLA";
-  const maxRooms = selectedGroup?.available_count ?? 1;
+  // unit
+  const [selectedIdx, setSelectedIdx] = useState(0);
+  const group       = unitGroups[selectedIdx];
+  const hasPricing  = isDirect && !!group?.pricing;
+  const isVilla     = group?.unit_type === "VILLA";
+  const maxRooms    = group?.available_count ?? 1;
+  const maxCapacity = group?.display_unit.max_capacity ?? 99;
 
-  const [quote, setQuote] = useState<BookingQuoteDTO | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [step, setStep] = useState<"dates" | "quote">("dates");
+  // room count (non-villa)
   const [roomCount, setRoomCount] = useState(1);
-  const [showBreakdown, setShowBreakdown] = useState(false);
+  const units = isVilla ? 1 : roomCount;
 
-  const { control, watch, getValues, setValue } = useForm<BookingFormValues>({
+  // quote
+  const [quote,        setQuote]        = useState<BookingQuoteDTO | null>(null);
+  const [quoteLoading, setQuoteLoading] = useState(false);
+  const [quoteError,   setQuoteError]   = useState<string | null>(null);
+
+  // ui
+  const [guestAnchor,  setGuestAnchor]  = useState<HTMLElement | null>(null);
+  const [modalOpen,    setModalOpen]    = useState(false);
+  const [modalLoading, setModalLoading] = useState(false);
+  const [modalError,   setModalError]   = useState<string | null>(null);
+
+  // form
+  const { control, setValue, getValues } = useForm<FormValues>({
     defaultValues: {
-      checkIn: defaultCheckIn ? dayjs(defaultCheckIn) : null,
-      checkOut: defaultCheckOut ? dayjs(defaultCheckOut) : null,
-      adults: 2,
+      checkIn:  defaultCheckIn  ? dayjs(defaultCheckIn)  : null,
+      checkOut: defaultCheckOut ? dayjs(defaultCheckOut)
+              : defaultCheckIn  ? dayjs(defaultCheckIn).add(1, "day") : null,
+      adults:   2,
       children: 0,
+      infants:  0,
     },
   });
 
-  const checkIn = watch("checkIn");
-  const checkOut = watch("checkOut");
-  const nights = checkIn && checkOut ? checkOut.diff(checkIn, "day") : 0;
+  const checkIn  = useWatch({ control, name: "checkIn" });
+  const checkOut = useWatch({ control, name: "checkOut" });
+  const adults   = useWatch({ control, name: "adults" });
+  const children = useWatch({ control, name: "children" });
+  const infants  = useWatch({ control, name: "infants" });
 
-  // Dynamic price for selected check-in date
-  const checkinPricing = useMemo(() => {
-    if (!checkIn || !selectedGroup || !hasPricing) return null;
-    return getPriceForDate(checkIn, selectedGroup);
-  }, [checkIn, selectedGroup, hasPricing]);
+  const nights   = checkIn && checkOut ? checkOut.diff(checkIn, "day") : 0;
+  const totalPax = adults + children;
 
-  // Estimated total before quote
-  const estimatedTotal = useMemo(() => {
-    if (!checkIn || !checkOut || !selectedGroup || nights < 1 || !hasPricing)
-      return null;
-    let total = 0;
-    for (let i = 0; i < nights; i++) {
-      const date = checkIn.add(i, "day");
-      total += getPriceForDate(date, selectedGroup).price;
+  const checkinRate = checkIn && group && hasPricing
+    ? getCheckinRate(checkIn, group) : null;
+
+  // ── Auto-fetch quote on any input change (500ms debounce) ───
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // fetchQuote reads adults/children from ref to avoid stale closure
+  // without making them part of the debounce dependency
+  const adultsRef   = useRef(adults);
+  const childrenRef = useRef(children);
+  adultsRef.current   = adults;
+  childrenRef.current = children;
+
+  const fetchQuote = useCallback(async () => {
+    if (!group?.display_unit || !checkIn || !checkOut || nights < 1 || !hasPricing) {
+      setQuote(null);
+      return;
     }
-    return total * (isVilla ? 1 : roomCount);
-  }, [
-    checkIn,
-    checkOut,
-    selectedGroup,
-    nights,
-    isVilla,
-    roomCount,
-    hasPricing,
-  ]);
+    setQuoteLoading(true);
+    setQuoteError(null);
+    try {
+      const result = await propertiesService.getBookingQuote({
+        unitId:   group.display_unit.unit_id,
+        checkIn:  checkIn.format("YYYY-MM-DD"),
+        checkOut: checkOut.format("YYYY-MM-DD"),
+        adults:   adultsRef.current,
+        children: childrenRef.current,
+        hasPet:   false,
+      });
+      setQuote(result);
+    } catch {
+      setQuoteError("Unable to fetch pricing. Please try again.");
+      setQuote(null);
+    } finally {
+      setQuoteLoading(false);
+    }
+  }, [group, checkIn, checkOut, nights, hasPricing]); // adults/children excluded — read via ref
 
-  const handleSelectGroup = (idx: number) => {
-    setSelectedGroupIndex(idx);
+  // Debounced fetch on date change only
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(fetchQuote, 500);
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
+  }, [fetchQuote]);
+
+  // reset on unit change
+  const handleSelectUnit = (idx: number) => {
+    setSelectedIdx(idx);
     setQuote(null);
-    setStep("dates");
-    setError(null);
+    setQuoteError(null);
     setRoomCount(1);
   };
 
+  // whatsapp enquiry
   const handleWhatsApp = () => {
-    const values = getValues();
-    const unitLabel =
-      selectedGroup?.display_unit.title ?? selectedGroup?.type_label ?? "";
-    const roomInfo = !isVilla && roomCount > 1 ? ` (${roomCount} units)` : "";
-    const dateInfo =
-      values.checkIn && values.checkOut && nights > 0
-        ? `\n\nCheck-in: ${values.checkIn.format("DD MMM YYYY")}\nCheck-out: ${values.checkOut.format("DD MMM YYYY")}\nGuests: ${values.adults} adults${values.children > 0 ? `, ${values.children} children` : ""}`
-        : "";
-    const msg = `Hi! I'd like to enquire about *${propertyName}* — ${unitLabel}${roomInfo}.${dateInfo}`;
+    const unit    = group?.display_unit.title ?? group?.type_label ?? "";
+    const rooms   = !isVilla && roomCount > 1 ? ` (${roomCount} units)` : "";
+    const guests  = `${adults} adults${children > 0 ? `, ${children} children` : ""}${infants > 0 ? `, ${infants} infants` : ""}`;
+    const dates   = checkIn && checkOut && nights > 0
+      ? `\n\nCheck-in: ${checkIn.format("DD MMM YYYY")}\nCheck-out: ${checkOut.format("DD MMM YYYY")}\nGuests: ${guests}`
+      : "";
     window.open(
-      `https://wa.me/9594377736?text=${encodeURIComponent(msg)}`,
+      `https://wa.me/9594377736?text=${encodeURIComponent(`Hi! I'd like to enquire about *${propertyName}* — ${unit}${rooms}.${dates}`)}`,
       "_blank",
     );
   };
 
-  const fetchQuote = async () => {
-    if (!selectedGroup?.display_unit || !checkIn || !checkOut) return;
-    setLoading(true);
-    setError(null);
+  // open modal
+  const handleProceedToBook = () => {
+    if (!quote || nights < 1) return;
+    setModalError(null);
+    setModalOpen(true);
+  };
+
+  // create booking → razorpay
+  const handleGuestConfirm = async (guestDetails: GuestDetails) => {
+    if (!group || !checkIn || !checkOut || !quote) return;
+    setModalLoading(true);
+    setModalError(null);
     try {
-      const values = getValues();
-      const result = await propertiesService.getBookingQuote({
-        unitId: selectedGroup.display_unit.unit_id,
-        checkIn: checkIn.format("YYYY-MM-DD"),
-        checkOut: checkOut.format("YYYY-MM-DD"),
-        adults: values.adults,
-        children: values.children,
-        hasPet: false,
+      const key          = `${group.display_unit.unit_id}-${checkIn.format("YYYY-MM-DD")}-${checkOut.format("YYYY-MM-DD")}-${Date.now()}`;
+      const totalPayable = quote.total * units;
+
+      const booking = await bookingService.createBooking(
+        {
+          unitId:     group.display_unit.unit_id,
+          propertyId,
+          checkIn:    checkIn.format("YYYY-MM-DD"),
+          checkOut:   checkOut.format("YYYY-MM-DD"),
+          amount:     totalPayable,
+          userId,
+          currency:   "INR",
+          adultCount: adults,
+          kidsCount:  children,
+          petCount:   0,
+        },
+        key,
+      );
+
+      setModalOpen(false);
+
+      openCheckout({
+        key:         process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ?? "",
+        amount:      booking.amount,
+        currency:    booking.currency,
+        order_id:    booking.orderId,
+        name:        "Villas by Serene",
+        description: `${propertyName} — ${group.display_unit.title ?? group.type_label}`,
+        image:       "/logo.png",
+        prefill:     { name: guestDetails.name, email: guestDetails.email, contact: guestDetails.phone },
+        notes:       { bookingId: booking.bookingId, specialRequests: guestDetails.specialRequests },
+        theme:       { color: "#1B4332" },
+        handler: async (response) => {
+          try {
+            await bookingService.verifyPayment({
+              razorpay_order_id:   response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature:  response.razorpay_signature,
+              bookingId:           booking.bookingId,
+              guestName:    guestDetails.name,
+              guestEmail:   guestDetails.email,
+              guestPhone:   guestDetails.phone,
+              propertyName,
+              unitName:     group.display_unit.title ?? group.type_label ?? "",
+              adults,
+              children,
+            });
+            router.push(`/booking/confirmed/${booking.bookingId}`);
+          } catch {
+            setQuoteError("Payment verification failed. Please contact support.");
+          }
+        },
+        modal: { ondismiss: () => setModalLoading(false) },
       });
-      setQuote(result);
-      setStep("quote");
-      setShowBreakdown(false);
-    } catch {
-      setError("Unable to fetch pricing. Please try again.");
+    } catch (err: any) {
+      setModalError(err.message ?? "Something went wrong. Please try again.");
     } finally {
-      setLoading(false);
+      setModalLoading(false);
     }
   };
 
-  // ── Render ────────────────────────────────────────────────────────
+  // ── Render ────────────────────────────────────────────────────
 
   return (
     <Box sx={{ p: 2.5 }}>
+
+      {/* ── 1. Unit selector ────────────────────────────────── */}
       <Box sx={{ mb: 2.5 }}>
-        <Typography variant="subtitle2" color="textSecondary" sx={{ mb: 1 }}>
+        <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
           Select accommodation
         </Typography>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-          {unitGroups.map((group, idx) => {
-            const isSelected = idx === selectedGroupIndex;
-            // Show starting price on card — lowest possible rate
-            const cardPrice = isDirect
-              ? (group.pricing?.weekday_price ?? null)
-              : null;
+          {unitGroups.map((g, idx) => {
+            const selected   = idx === selectedIdx;
+            const rate       = isDirect && selected && checkinRate
+              ? checkinRate.price
+              : g.pricing?.weekday_price ?? null;
+            const rateLabel  = isDirect && selected && checkinRate ? checkinRate : null;
 
             return (
-              <Box
-                key={group.unit_type}
-                onClick={() => handleSelectGroup(idx)}
+              <Box key={g.unit_type}
+                onClick={() => g.available_count > 0 && handleSelectUnit(idx)}
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1.5,
-                  p: 1.5,
-                  borderRadius: 2,
-                  border: "1.5px solid",
-                  borderColor: isSelected ? "primary.main" : "divider",
-                  bgcolor: isSelected
-                    ? theme.palette.mode === "dark"
-                      ? "primary.900"
-                      : "primary.50"
+                  display: "flex", alignItems: "center", gap: 1.5, p: 1,
+                  borderRadius: 2, border: "1.5px solid",
+                  borderColor:  selected ? "primary.main" : "divider",
+                  bgcolor:      selected
+                    ? theme.palette.mode === "dark" ? "primary.900" : "primary.50"
                     : "background.paper",
-                  cursor:
-                    group.available_count === 0 ? "not-allowed" : "pointer",
-                  opacity: group.available_count === 0 ? 0.5 : 1,
+                  cursor:    g.available_count === 0 ? "not-allowed" : "pointer",
+                  opacity:   g.available_count === 0 ? 0.5 : 1,
                   transition: "all 0.15s",
-                  boxShadow: isSelected
-                    ? `0 0 0 3px ${theme.palette.primary.main}22`
-                    : "none",
-                  "&:hover":
-                    group.available_count > 0
-                      ? { borderColor: "primary.main" }
-                      : {},
+                  boxShadow:  selected ? `0 0 0 3px ${theme.palette.primary.main}22` : "none",
+                  "&:hover":  g.available_count > 0 ? { borderColor: "primary.main" } : {},
                 }}
               >
-                {group.display_unit.images[0]?.image?.image_url && (
-                  <Box
-                    component="img"
-                    src={group.display_unit.images[0].image.image_url}
-                    alt={group.display_unit.title ?? group.type_label}
-                    sx={{
-                      width: 52,
-                      height: 52,
-                      borderRadius: 1.5,
-                      objectFit: "cover",
-                      flexShrink: 0,
-                    }}
+                {g.display_unit.images[0]?.image?.image_url && (
+                  <Box component="img"
+                    src={g.display_unit.images[0].image.image_url}
+                    alt={g.display_unit.title ?? g.type_label}
+                    sx={{ width: 52, height: 52, borderRadius: 1.5, objectFit: "cover", flexShrink: 0 }}
                   />
                 )}
-
                 <Box sx={{ flex: 1, minWidth: 0 }}>
                   <Typography variant="body2" fontWeight={600} noWrap>
-                    {group.display_unit.title ?? group.type_label}
+                    {g.display_unit.title ?? g.type_label}
                   </Typography>
-                  <Typography
-                    variant="caption"
-                    color={
-                      group.available_count > 0 ? "success.main" : "error.main"
-                    }
-                  >
-                    {group.available_count > 0
-                      ? `${group.available_count} available`
-                      : "Sold out"}
-                  </Typography>
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mt: 0.25 }}>
+                    <Typography variant="caption" color={g.available_count > 0 ? "success.main" : "error.main"}>
+                      {g.available_count > 0 ? `${g.available_count} available` : "Sold out"}
+                    </Typography>
+                    {selected && rateLabel && rateLabel.type === "seasonal" && (
+                      <Chip label={rateLabel.label} size="small" color="warning" sx={{ height: 14, fontSize: 9 }} />
+                    )}
+                    {selected && rateLabel && rateLabel.type === "weekend" && (
+                      <Typography variant="caption" color="text.secondary" sx={{ fontStyle: "italic" }}>
+                        · weekend
+                      </Typography>
+                    )}
+                  </Box>
                 </Box>
-
                 <Box sx={{ textAlign: "right", flexShrink: 0 }}>
-                  {cardPrice !== null ? (
+                  {isDirect && rate !== null ? (
                     <>
-                      <Typography
-                        variant="body2"
-                        fontWeight={700}
-                        color="primary"
-                        lineHeight={1.2}
-                      >
-                        {formatINR(cardPrice)}
+                      <Typography variant="body1" fontWeight={800} color="primary" lineHeight={1.2}>
+                        {formatINR(rate)}
                       </Typography>
-                      <Typography variant="caption" color="textSecondary">
-                        /night
-                      </Typography>
+                      <Typography variant="caption" color="text.secondary">/night</Typography>
                     </>
                   ) : (
-                    <Typography variant="caption" color="textSecondary">
-                      Enquire
-                    </Typography>
+                    <Typography variant="caption" color="text.secondary">Enquire</Typography>
                   )}
                 </Box>
-
-                {isSelected && (
-                  <CheckCircleOutlined
-                    sx={{ color: "primary.main", fontSize: 18, flexShrink: 0 }}
-                  />
-                )}
+                {selected && <CheckCircleOutlined sx={{ color: "primary.main", fontSize: 18, flexShrink: 0 }} />}
               </Box>
             );
           })}
         </Box>
       </Box>
 
+      {/* ── ENQUIRY notice ──────────────────────────────────── */}
       {!isDirect && (
-        <Box
-          sx={{
-            mb: 2,
-            p: 1.5,
-            bgcolor: "background.secondary",
-            borderRadius: 2,
-            border: "1px solid",
-            borderColor: "divider",
+        <Box sx={{ mb: 2, p: 1.5, borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
+          <Typography variant="body2" fontWeight={600}>Contact us for pricing</Typography>
+          <Typography variant="caption" color="text.secondary">
+            Fill in your dates and we'll get back to you with availability
+          </Typography>
+        </Box>
+      )}
+
+      {/* ── 2. Inputs ───────────────────────────────────────── */}
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
+
+        {/* Dates */}
+        <Box sx={{ display: "flex", gap: 1 }}>
+          <Controller name="checkIn" control={control} render={({ field }) => (
+            <DatePicker label="Check-in" value={field.value} format="DD/MM/YYYY" disablePast
+              onChange={(val) => {
+                field.onChange(val);
+                const co = getValues("checkOut");
+                if (val && co && !val.isBefore(co)) setValue("checkOut", val.add(1, "day"));
+              }}
+              slotProps={{ textField: { fullWidth: true, size: "small" } }}
+            />
+          )} />
+          <Controller name="checkOut" control={control} render={({ field }) => (
+            <DatePicker label="Check-out" value={field.value} format="DD/MM/YYYY" disablePast
+              minDate={checkIn ? checkIn.add(1, "day") : dayjs().add(1, "day")}
+              onChange={(val) => field.onChange(val)}
+              slotProps={{ textField: { fullWidth: true, size: "small" } }}
+            />
+          )} />
+        </Box>
+
+        {/* Guest trigger */}
+        <TextField size="small" fullWidth label="Guests"
+          value={`${totalPax} guest${totalPax !== 1 ? "s" : ""}${infants > 0 ? `, ${infants} infant${infants !== 1 ? "s" : ""}` : ""}`}
+          onClick={(e) => setGuestAnchor(e.currentTarget)}
+          slotProps={{
+            input: {
+              readOnly: true,
+              style:    { cursor: "pointer" },
+              startAdornment: <PeopleAltOutlined sx={{ mr: 0.5, color: "text.secondary", fontSize: 16 }} />,
+            },
           }}
+        />
+
+        {/* Guest popover */}
+        <Popover open={Boolean(guestAnchor)} anchorEl={guestAnchor}
+          onClose={() => setGuestAnchor(null)}
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          transformOrigin={{ vertical: "top", horizontal: "left" }}
+          slotProps={{ paper: { sx: { width: 280, p: 2, borderRadius: 2 } } }}
         >
-          <Typography variant="body2" fontWeight={600}>
-            Contact us for pricing
-          </Typography>
-          <Typography variant="caption" color="textSecondary">
-            Fill in your dates and we&apos;ll get back to you with availability
-          </Typography>
-        </Box>
-      )}
-
-      {step === "dates" && (
-        <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
-          {hasPricing && (
-            <Box
-              sx={{
-                p: 1.5,
-                borderRadius: 2,
-                bgcolor: "background.paper",
-                border: "1px solid",
-                borderColor: "divider",
-              }}
-            >
-              {checkinPricing ? (
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "baseline",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Box>
-                    <Typography
-                      variant="h5"
-                      fontWeight={800}
-                      color="primary"
-                      lineHeight={1}
-                    >
-                      {formatINR(checkinPricing.price)}
-                      <Typography
-                        component="span"
-                        variant="body2"
-                        color="textSecondary"
-                        sx={{ ml: 0.5 }}
-                      >
-                        / night
-                      </Typography>
-                    </Typography>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 0.5,
-                        mt: 0.25,
-                      }}
-                    >
-                      {checkinPricing.type === "seasonal" ? (
-                        <Chip
-                          label={checkinPricing.label}
-                          size="small"
-                          color="warning"
-                          sx={{ height: 18, fontSize: 10 }}
-                        />
-                      ) : (
-                        <Typography variant="caption" color="textSecondary">
-                          {checkinPricing.label}
-                        </Typography>
-                      )}
-                    </Box>
-                  </Box>
-                  {estimatedTotal && nights > 0 && (
-                    <Box sx={{ textAlign: "right" }}>
-                      <Typography variant="caption" color="textSecondary">
-                        {nights} night
-                      </Typography>
-                      <Typography variant="body1" fontWeight={700}>
-                        {formatINR(estimatedTotal)}
-                      </Typography>
-                    </Box>
-                  )}
-                </Box>
-              ) : (
-                <Box>
-                  <Typography
-                    variant="h5"
-                    fontWeight={800}
-                    color="primary"
-                    lineHeight={1}
-                  >
-                    {formatINR(selectedGroup?.pricing?.weekday_price ?? 0)}
-                    <Typography
-                      component="span"
-                      variant="body2"
-                      color="textSecondary"
-                      sx={{ ml: 0.5 }}
-                    >
-                      / night
-                    </Typography>
-                  </Typography>
-                  <Typography variant="caption" color="textSecondary">
-                    Select dates to see exact pricing
-                  </Typography>
-                </Box>
-              )}
-            </Box>
-          )}
-
-          <Box sx={{ display: "flex", gap: 1 }}>
-            <Controller
-              name="checkIn"
-              control={control}
-              render={({ field }) => (
-                <DatePicker
-                  label="Check-in"
-                  value={field.value}
-                  format="DD/MM/YYYY"
-                  disablePast
-                  minDate={dayjs()}
-                  onChange={(val) => {
-                    field.onChange(val);
-                    const currentCheckOut = getValues("checkOut");
-                    if (
-                      val &&
-                      currentCheckOut &&
-                      !val.isBefore(currentCheckOut)
-                    ) {
-                      setValue("checkOut", val.add(1, "day"));
-                    }
-                  }}
-                  slotProps={{
-                    textField: {
-                      fullWidth: true,
-                      size: "small",
-                      label: "Check-in",
-                    },
-                  }}
-                />
-              )}
-            />
-            <Controller
-              name="checkOut"
-              control={control}
-              render={({ field }) => (
-                <DatePicker
-                  label="Check-out"
-                  value={field.value}
-                  format="DD/MM/YYYY"
-                  disablePast
-                  minDate={
-                    checkIn ? checkIn.add(1, "day") : dayjs().add(1, "day")
-                  }
-                  onChange={(val) => field.onChange(val)}
-                  slotProps={{
-                    textField: {
-                      fullWidth: true,
-                      size: "small",
-                      label: "Check-out",
-                    },
-                  }}
-                />
-              )}
-            />
-          </Box>
-
-          <Box sx={{ display: "flex", gap: 1 }}>
-            <Controller
-              name="adults"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  label="Adults"
-                  type="number"
-                  size="small"
-                  fullWidth
-                  value={field.value}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                  slotProps={{
-                    input: {
-                      inputProps: { min: 1, max: 70 },
-                      startAdornment: (
-                        <PeopleAltOutlined
-                          sx={{
-                            mr: 0.5,
-                            color: "textSecondary",
-                            fontSize: 16,
-                          }}
-                        />
-                      ),
-                    },
-                  }}
-                />
-              )}
-            />
-            <Controller
-              name="children"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  label="Children"
-                  type="number"
-                  size="small"
-                  fullWidth
-                  value={field.value}
-                  onChange={(e) => field.onChange(Number(e.target.value))}
-                  slotProps={{
-                    input: { inputProps: { min: 0, max: 20 } },
-                  }}
-                />
-              )}
-            />
-          </Box>
-
-          {!isVilla && (
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                p: 1.5,
-                borderRadius: 2,
-                border: "1px solid",
-                borderColor: "divider",
-              }}
-            >
-              <Box>
-                <Typography variant="body2" fontWeight={500}>
-                  No. of {selectedGroup?.type_label ?? "Room"}s
-                </Typography>
-                <Typography variant="caption" color="textSecondary">
-                  {maxRooms} available
-                </Typography>
-              </Box>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <IconButton
-                  size="small"
-                  onClick={() => setRoomCount((c) => Math.max(1, c - 1))}
-                  disabled={roomCount <= 1}
-                  sx={{
-                    border: "1px solid",
-                    borderColor: "divider",
-                    borderRadius: 1,
-                    width: 28,
-                    height: 28,
-                  }}
-                >
-                  <RemoveOutlined sx={{ fontSize: 14 }} />
-                </IconButton>
-                <Typography
-                  fontWeight={700}
-                  sx={{ minWidth: 20, textAlign: "center" }}
-                >
-                  {roomCount}
-                </Typography>
-                <IconButton
-                  size="small"
-                  onClick={() => setRoomCount((c) => Math.min(maxRooms, c + 1))}
-                  disabled={roomCount >= maxRooms}
-                  sx={{
-                    border: "1px solid",
-                    borderColor:
-                      roomCount < maxRooms ? "primary.main" : "divider",
-                    borderRadius: 1,
-                    width: 28,
-                    height: 28,
-                    bgcolor:
-                      roomCount < maxRooms ? "primary.main" : "transparent",
-                    color: roomCount < maxRooms ? "#fff" : "text.disabled",
-                    "&:hover": {
-                      bgcolor:
-                        roomCount < maxRooms ? "primary.dark" : "transparent",
-                    },
-                  }}
-                >
-                  <AddOutlined sx={{ fontSize: 14 }} />
-                </IconButton>
-              </Box>
-            </Box>
-          )}
-
-          {error && (
-            <Alert severity="error" sx={{ py: 0.5 }}>
-              {error}
-            </Alert>
-          )}
-
-          {hasPricing && (
-            <Button
-              variant="contained"
-              fullWidth
-              size="large"
-              onClick={fetchQuote}
-              disabled={loading || nights < 1}
-              sx={{ borderRadius: 2, fontWeight: 700, py: 1.25 }}
-            >
-              {loading ? (
-                <CircularProgress size={20} color="inherit" />
-              ) : nights > 0 ? (
-                `Check Price for ${nights} Night${nights !== 1 ? "s" : ""}`
-              ) : (
-                "Select Dates to Continue"
-              )}
-            </Button>
-          )}
-
-          <Button
-            variant={hasPricing ? "outlined" : "contained"}
-            fullWidth
-            size="large"
-            onClick={handleWhatsApp}
-            startIcon={<WhatsApp />}
-            sx={
-              !hasPricing
-                ? {
-                    borderRadius: 2,
-                    fontWeight: 700,
-                    py: 1.25,
-                    bgcolor: "#25D366",
-                    "&:hover": { bgcolor: "#1ebe5d" },
-                    color: "#fff",
-                    border: "none",
-                  }
-                : { borderRadius: 2, fontWeight: 600, py: 1 }
-            }
-          >
-            {hasPricing ? "Enquire on WhatsApp" : "Send Enquiry on WhatsApp"}
-          </Button>
-
-          {hasPricing && (
-            <Typography
-              variant="caption"
-              color="textSecondary"
-              sx={{ textAlign: "center" }}
-            >
-              Prices shown exclude taxes · Final price shown before payment
-            </Typography>
-          )}
-        </Box>
-      )}
-
-      {step === "quote" && quote && (
-        <Box>
-          <Box
-            sx={{
-              p: 1.5,
-              mb: 1.5,
-              borderRadius: 2,
-              bgcolor: "background.paper",
-              border: "1px solid",
-              borderColor: "divider",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-              }}
-            >
-              <Box>
-                <Typography variant="body2" fontWeight={600}>
-                  {selectedGroup?.display_unit.title ??
-                    selectedGroup?.type_label}
-                  {!isVilla && roomCount > 1 && (
-                    <Typography
-                      component="span"
-                      variant="caption"
-                      color="textSecondary"
-                      sx={{ ml: 0.5 }}
-                    >
-                      × {roomCount}
-                    </Typography>
-                  )}
-                </Typography>
-                <Typography variant="caption" color="textSecondary">
-                  {checkIn?.format("DD MMM")} →{" "}
-                  {checkOut?.format("DD MMM YYYY")} · {nights} night
-                  {nights !== 1 ? "s" : ""}
-                </Typography>
-              </Box>
-              <Button
-                size="small"
-                onClick={() => setStep("dates")}
-                sx={{ minWidth: "auto", px: 1 }}
-              >
-                Edit
-              </Button>
-            </Box>
-          </Box>
-
-          <Box
-            onClick={() => setShowBreakdown((v) => !v)}
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              cursor: "pointer",
-              mb: 1,
-            }}
-          >
-            <Typography
-              variant="body2"
-              color="textSecondary"
-              sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
-            >
-              <CalendarMonthOutlined sx={{ fontSize: 14 }} />
-              Nightly breakdown
-            </Typography>
-            <ExpandMoreOutlined
-              sx={{
-                fontSize: 16,
-                color: "textSecondary",
-                transition: "transform 0.2s",
-                transform: showBreakdown ? "rotate(180deg)" : "none",
-              }}
-            />
-          </Box>
-
-          <Collapse in={showBreakdown}>
-            <Box
-              sx={{
-                mb: 1.5,
-                p: 1.5,
-                borderRadius: 2,
-                bgcolor: "background.paper",
-                border: "1px solid",
-                borderColor: "divider",
-                maxHeight: 160,
-                overflowY: "auto",
-              }}
-            >
-              {quote.nightly_breakdown.map(
-                (night: NightlyBreakdownDTO, idx: number) => (
-                  <Box
-                    key={idx}
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      py: 0.5,
-                    }}
-                  >
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                      <Typography variant="caption" color="textSecondary">
-                        {dayjs(night.date).format("ddd, DD MMM")}
-                      </Typography>
-                      {night.type === "seasonal" && (
-                        <Chip
-                          label={night.label}
-                          size="small"
-                          color="warning"
-                          sx={{ height: 16, fontSize: 9 }}
-                        />
-                      )}
-                      {night.type === "weekend" && (
-                        <Typography
-                          variant="caption"
-                          color="textSecondary"
-                          sx={{ fontStyle: "italic" }}
-                        >
-                          weekend
-                        </Typography>
-                      )}
-                    </Box>
-                    <Typography variant="caption" fontWeight={600}>
-                      {formatINR(night.price)}
-                    </Typography>
-                  </Box>
-                ),
-              )}
-            </Box>
-          </Collapse>
-
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 0.75,
-              mb: 1.5,
-            }}
-          >
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Typography variant="body2" color="textSecondary">
-                {nights} night{nights !== 1 ? "s" : ""}
-                {!isVilla && roomCount > 1 && ` × ${roomCount} units`}
-              </Typography>
-              <Typography variant="body2">
-                {formatINR(quote.subtotal * (isVilla ? 1 : roomCount))}
-              </Typography>
-            </Box>
-
-            {quote.extra_guest_charge > 0 && (
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography variant="body2" color="textSecondary">
-                  Extra guest charge
-                </Typography>
-                <Typography variant="body2">
-                  {formatINR(quote.extra_guest_charge)}
-                </Typography>
-              </Box>
-            )}
-            {quote.child_charge > 0 && (
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography variant="body2" color="textSecondary">
-                  Child charge
-                </Typography>
-                <Typography variant="body2">
-                  {formatINR(quote.child_charge)}
-                </Typography>
-              </Box>
-            )}
-            {quote.cleaning_fee > 0 && (
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography variant="body2" color="textSecondary">
-                  Cleaning fee
-                </Typography>
-                <Typography variant="body2">
-                  {formatINR(quote.cleaning_fee * (isVilla ? 1 : roomCount))}
-                </Typography>
-              </Box>
-            )}
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                <Typography variant="body2" color="textSecondary">
-                  GST ({quote.tax_percent}%)
-                </Typography>
-                <Tooltip title="Goods and Services Tax as applicable">
-                  <InfoOutlined sx={{ fontSize: 13, color: "text.disabled" }} />
-                </Tooltip>
-              </Box>
-              <Typography variant="body2">
-                {formatINR(quote.tax_amount)}
-              </Typography>
-            </Box>
-            {quote.security_deposit > 0 && (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                  <Typography variant="body2" color="textSecondary">
-                    Security deposit
-                  </Typography>
-                  <Tooltip title="Fully refundable after checkout">
-                    <InfoOutlined
-                      sx={{ fontSize: 13, color: "text.disabled" }}
-                    />
-                  </Tooltip>
-                </Box>
-                <Typography variant="body2">
-                  {formatINR(quote.security_deposit)}
-                </Typography>
-              </Box>
-            )}
-          </Box>
-
+          <GuestRow label="Adults"   sub="Age 13+"
+            value={adults}   min={1} max={maxCapacity - children}
+            onChange={(v) => setValue("adults", v)} />
           <Divider />
-
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              my: 1.5,
+          <GuestRow label="Children" sub="Age 2–12"
+            value={children} min={0} max={Math.max(0, maxCapacity - adults)}
+            onChange={(v) => setValue("children", v)} />
+          <Divider />
+          <GuestRow label="Infants"  sub="Under 2 · Free · Don't count toward capacity"
+            value={infants}  min={0} max={maxCapacity}
+            onChange={(v) => setValue("infants", v)} />
+          <Typography variant="caption" color="text.secondary" sx={{ display: "block", mt: 1 }}>
+            Max {maxCapacity} guests (adults + children)
+          </Typography>
+          <Button fullWidth variant="contained" size="small"
+            onClick={() => {
+              setGuestAnchor(null);
+              fetchQuote(); // fetch with latest guest counts
             }}
-          >
-            <Typography variant="subtitle1" fontWeight={700}>
-              Total payable
-            </Typography>
-            <Box sx={{ textAlign: "right" }}>
-              <Typography
-                variant="h6"
-                fontWeight={800}
-                color="primary"
-                lineHeight={1.2}
-              >
-                {formatINR(quote.total * (isVilla ? 1 : roomCount))}
-              </Typography>
-              <Typography variant="caption" color="textSecondary">
-                incl. all taxes
-              </Typography>
+            sx={{ mt: 1.5, borderRadius: 1.5 }}>
+            Done
+          </Button>
+        </Popover>
+
+        {/* Room count — non-villa only */}
+        {!isVilla && (
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", p: 1.5, borderRadius: 2, border: "1px solid", borderColor: "divider" }}>
+            <Box>
+              <Typography variant="body2" fontWeight={500}>No. of {group?.type_label ?? "Room"}s</Typography>
+              <Typography variant="caption" color="text.secondary">{maxRooms} available</Typography>
+            </Box>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+              <IconButton size="small" disabled={roomCount <= 1} onClick={() => setRoomCount((c) => c - 1)}
+                sx={{ border: "1px solid", borderColor: "divider", borderRadius: 1, width: 28, height: 28 }}>
+                <RemoveOutlined sx={{ fontSize: 14 }} />
+              </IconButton>
+              <Typography fontWeight={700} sx={{ minWidth: 20, textAlign: "center" }}>{roomCount}</Typography>
+              <IconButton size="small" disabled={roomCount >= maxRooms} onClick={() => setRoomCount((c) => c + 1)}
+                sx={{
+                  border: "1px solid",
+                  borderColor: roomCount < maxRooms ? "primary.main" : "divider",
+                  borderRadius: 1, width: 28, height: 28,
+                  bgcolor: roomCount < maxRooms ? "primary.main" : "transparent",
+                  color:   roomCount < maxRooms ? "#fff" : "text.disabled",
+                  "&:hover": { bgcolor: roomCount < maxRooms ? "primary.dark" : "transparent" },
+                }}>
+                <AddOutlined sx={{ fontSize: 14 }} />
+              </IconButton>
             </Box>
           </Box>
+        )}
 
-          <Button
-            variant="contained"
-            fullWidth
-            size="large"
-            onClick={() =>
-              console.log("Proceed:", {
-                quote,
-                unitGroup: selectedGroup,
-                roomCount,
-              })
-            }
-            startIcon={<ReceiptOutlined />}
+        {/* ── 3. Billing summary ───────────────────────────── */}
+        {hasPricing && (
+          <Box sx={{ borderRadius: 2, border: "1px solid", borderColor: "divider", overflow: "hidden" }}>
+            <Box sx={{ px: 1.5, py: 1, bgcolor: "action.hover" }}>
+              <Typography variant="caption" color="text.secondary" fontWeight={600}>
+                Price summary
+              </Typography>
+            </Box>
+            <Box sx={{ px: 1.5, py: 1.25, display: "flex", flexDirection: "column", gap: 0.75 }}>
+              {quoteLoading ? (
+                <>
+                  <Skeleton variant="text" width="70%" height={20} />
+                  <Skeleton variant="text" width="50%" height={20} />
+                  <Skeleton variant="text" width="40%" height={20} />
+                </>
+              ) : quoteError ? (
+                <Typography variant="caption" color="error">{quoteError}</Typography>
+              ) : quote && nights > 0 ? (
+                <>
+                  {/* Stay charges (subtotal = nightly + min guest, all baked in) */}
+                  <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                    <Typography variant="body2" color="text.secondary">Stay charges</Typography>
+                    <Typography variant="body2" fontWeight={600}>
+                      {formatINR((quote.subtotal + quote.extra_guest_charge + quote.child_charge) * units)}
+                    </Typography>
+                  </Box>
+
+                  {/* Convenience fee */}
+                  {quote.cleaning_fee > 0 && (
+                    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                      <Typography variant="body2" color="text.secondary">Convenience fee</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {formatINR(quote.cleaning_fee * units)}
+                      </Typography>
+                    </Box>
+                  )}
+
+                  {/* GST */}
+                  <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                    <Typography variant="body2" color="text.secondary">
+                      GST ({quote.tax_percent}%)
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {quote.tax_percent === 0 ? "Nil" : formatINR(quote.tax_amount)}
+                    </Typography>
+                  </Box>
+
+                  <Divider sx={{ my: 0.25 }} />
+
+                  {/* Total */}
+                  <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <Typography variant="body2" fontWeight={700}>Total payable now</Typography>
+                    <Typography variant="body1" fontWeight={800} color="primary">
+                      {formatINR(quote.total * units)}
+                    </Typography>
+                  </Box>
+                </>
+              ) : (
+                <Box sx={{ py: 0.25 }}>
+                  <Typography variant="body2" color="text.secondary">
+                    Select dates to see price
+                  </Typography>
+                  {group?.pricing && (
+                    <Typography variant="caption" color="text.secondary">
+                      From {formatINR(group.pricing.weekday_price)}/night
+                    </Typography>
+                  )}
+                </Box>
+              )}
+            </Box>
+          </Box>
+        )}
+
+        {/* Security deposit note */}
+        {hasPricing && group?.pricing && (
+          <Typography variant="caption" color="text.secondary" sx={{ textAlign: "center" }}>
+            💡 Security deposit ₹{Number(group.pricing.security_deposit).toLocaleString("en-IN")} payable at property · fully refundable
+          </Typography>
+        )}
+
+        {/* CTA */}
+        {hasPricing && (
+          <Button variant="contained" fullWidth size="large"
+            onClick={handleProceedToBook}
+            disabled={!quote || nights < 1 || quoteLoading}
             sx={{ borderRadius: 2, fontWeight: 700, py: 1.25 }}
           >
-            Proceed to Book
+            {quoteLoading
+              ? <CircularProgress size={20} color="inherit" />
+              : nights > 0 ? "Proceed to Book" : "Select Dates to Continue"
+            }
           </Button>
+        )}
 
-          <Typography
-            variant="caption"
-            color="textSecondary"
-            sx={{ display: "block", textAlign: "center", mt: 1 }}
-          >
-            You won&apos;t be charged yet
-          </Typography>
-        </Box>
+        <Button
+          variant={hasPricing ? "outlined" : "contained"}
+          fullWidth size="large"
+          onClick={handleWhatsApp}
+          startIcon={<WhatsApp />}
+          sx={!hasPricing
+            ? { borderRadius: 2, fontWeight: 700, py: 1.25, bgcolor: "#25D366", "&:hover": { bgcolor: "#1ebe5d" }, color: "#fff", border: "none" }
+            : { borderRadius: 2, fontWeight: 600, py: 1 }
+          }
+        >
+          {hasPricing ? "Enquire on WhatsApp" : "Send Enquiry on WhatsApp"}
+        </Button>
+      </Box>
+
+      {/* ── Modal ───────────────────────────────────────────── */}
+      {quote && checkIn && checkOut && (
+        <GuestDetailsModal
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          loading={modalLoading}
+          error={modalError}
+          onConfirm={handleGuestConfirm}
+          quote={quote}
+          units={units}
+          summary={{
+            propertyName,
+            unitName:  group?.display_unit.title ?? group?.type_label ?? "",
+            checkIn:   checkIn.format("YYYY-MM-DD"),
+            checkOut:  checkOut.format("YYYY-MM-DD"),
+            nights,
+            adults,
+            children,
+            infants,
+            securityDeposit: group?.pricing?.security_deposit ?? 0,
+          }}
+        />
       )}
     </Box>
   );

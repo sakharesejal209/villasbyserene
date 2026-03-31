@@ -6,7 +6,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { ThemeContextProvider } from "@/context/ThemeContext";
 import { PropertyContextProvider } from "@/context/PropertyContext";
-import { PropertyListItemDTO } from "@/app/@types/property/property.type";
+import { PropertyListItemDTO } from "@/app/@types/property/PropertyFiltersDTO";
 
 export default function ClientProviders({
   children,

@@ -16,9 +16,8 @@ import Link from "next/link";
 import { Carousel, EmptyState } from "@/application/default";
 import { SwiperSlide } from "swiper/react";
 import propertyThemeMap from "@/lib/property-theme-config/propertyThemeConfig";
-import type { PropertyListItemDTO } from "@/app/@types/property/property.type";
-import { BookingType } from "@/app/@types/property/property.type";
 import { getCardPrice } from "@/lib/pricing.utils.ts";
+import { BookingType, PropertyListItemDTO } from "@/app/@types";
 
 type StaysPropType = {
   location: string;

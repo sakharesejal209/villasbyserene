@@ -34,6 +34,7 @@ let darkTheme: Theme = createTheme({
       main: commonColors.coral,
       light: commonColors.coralLight,
       contrastText: commonColors.black,
+      50: "rgba(9, 154, 115, 0.1)"
     },
     secondary: {
       main: commonColors.gold,

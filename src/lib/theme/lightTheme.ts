@@ -34,6 +34,7 @@ let lightTheme: Theme = createTheme({
       main: commonColors.coral,
       light: commonColors.coralLight,
       contrastText: commonColors.white,
+      50: "rgba(4, 66, 49, 0.2)"
     },
     secondary: {
       main: commonColors.gold,

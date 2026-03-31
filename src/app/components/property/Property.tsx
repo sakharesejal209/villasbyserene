@@ -42,12 +42,9 @@ import { getAccomodation } from "../stays/stays";
 import ImageGallery from "./ImageGallery";
 import CancellationPolicy from "../cancellation-policy/CancellationPolicy";
 import BookingWidget from "./BookingWidget";
-import {
-  BookingType,
-  PropertyDetailDTO,
-} from "@/app/@types/property/property.type";
 import dayjs from "dayjs";
 import { getPriceForDate } from "@/lib/pricing.utils.ts";
+import { BookingType, PropertyDetailDTO } from "@/app/@types";
 
 // ── Types ─────────────────────────────────────────────────────────
 
@@ -239,23 +236,10 @@ const Property: FC<PropertyPropType> = ({
             </div>
 
             <div className="my-6">
-              <Typography variant="h5">Accommodation</Typography>
+              <Typography variant="h5" className="font-bold!">Accommodation</Typography>
               {propertyDetails.unit_groups.map((group) => (
                 <div key={group.unit_type} className="mt-3">
-                  <Typography className="text-lg!" variant="inherit">
-                    {group.display_unit.title ?? group.type_label}
-                  </Typography>
-                  {group.total_count > 1 && (
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                      sx={{ ml: 1 }}
-                    >
-                      ({group.total_count} units available)
-                    </Typography>
-                  )}
-
-                  <div className="w-full grid grid-cols-12 mb-8 gap-2 md:mb-4 md:grid-cols-12 md:gap-8 md:p-4 mt-2">
+                  <div className="w-full grid grid-cols-12 mb-8 gap-2 md:mb-4 md:grid-cols-12 md:gap-8">
                     <button
                       onClick={() => handleOpenGallery(group.unit_type)}
                       className="col-span-12 md:col-span-5"
@@ -289,120 +273,38 @@ const Property: FC<PropertyPropType> = ({
                     </button>
 
                     <div className="col-span-12 flex md:col-span-7 flex-col justify-center md:gap-2">
+                      <div className="flex items-center">
+                        <Typography variant="h5" className="font-bold!">
+                          {group.display_unit.title ?? group.type_label}
+                        </Typography>
+                        {group.total_count > 1 && (
+                          <Typography
+                            variant="caption"
+                            color="text.secondary"
+                            sx={{ ml: 1 }}
+                          >
+                            ({group.total_count} units available)
+                          </Typography>
+                        )}
+                      </div>
                       <ReadMore
                         text={group.display_unit.description ?? ""}
                         maxLength={300}
                       />
-
-                      {isDirect && group.pricing && (
-                        <Box sx={{ mt: 1.5, mb: 1 }}>
-                          {(() => {
-                            const priceResult = checkIn
-                              ? getPriceForDate(dayjs(checkIn), group)
-                              : null;
-
-                            if (priceResult) {
-                              return (
-                                <Box>
-                                  <Box
-                                    sx={{
-                                      display: "flex",
-                                      alignItems: "baseline",
-                                      gap: 0.5,
-                                    }}
-                                  >
-                                    <Typography
-                                      component="span"
-                                      fontWeight={700}
-                                      color="primary"
-                                      variant="body1"
-                                    >
-                                      ₹
-                                      {priceResult.price.toLocaleString(
-                                        "en-IN",
-                                      )}
-                                    </Typography>
-                                    <Typography
-                                      variant="body2"
-                                      color="text.secondary"
-                                    >
-                                      /night
-                                    </Typography>
-                                  </Box>
-                                  <Typography
-                                    variant="caption"
-                                    color={
-                                      priceResult.type === "seasonal"
-                                        ? "warning.main"
-                                        : "text.secondary"
-                                    }
-                                  >
-                                    {priceResult.label}
-                                  </Typography>
-                                </Box>
-                              );
-                            }
-
-                            // No date selected — show starting price with helper
-                            return (
-                              <Box>
-                                <Box
-                                  sx={{
-                                    display: "flex",
-                                    alignItems: "baseline",
-                                    gap: 0.5,
-                                  }}
-                                >
-                                  <Typography
-                                    variant="caption"
-                                    color="text.secondary"
-                                  >
-                                    From
-                                  </Typography>
-                                  <Typography
-                                    component="span"
-                                    fontWeight={700}
-                                    color="primary"
-                                    variant="body1"
-                                  >
-                                    ₹
-                                    {group.pricing.weekday_price.toLocaleString(
-                                      "en-IN",
-                                    )}
-                                  </Typography>
-                                  <Typography
-                                    variant="body2"
-                                    color="text.secondary"
-                                  >
-                                    /night
-                                  </Typography>
-                                </Box>
-                                <Typography
-                                  variant="caption"
-                                  color="text.secondary"
-                                >
-                                  Select dates for exact price
-                                </Typography>
-                              </Box>
-                            );
-                          })()}
-                        </Box>
-                      )}
-
                       <div className="grid max-sm:grid-cols-1 min-[370px]:grid-cols-2 max-md:grid-cols-3 items-center gap-3 mt-3">
                         {group.display_unit.no_of_bedrooms !== null && (
                           <Typography>
                             <BedIcon /> {group.display_unit.no_of_bedrooms} bed
-                            {group.display_unit.no_of_bedrooms !== 1 ? "s" : ""}
+                            {group.display_unit.no_of_bedrooms === 1 ? "" : "s"}
                           </Typography>
                         )}
                         {group.display_unit.no_of_restrooms !== null && (
                           <Typography>
                             <ShowerIcon /> {group.display_unit.no_of_restrooms}{" "}
                             bathroom
-                            {group.display_unit.no_of_restrooms !== 1
-                              ? "s"
-                              : ""}
+                            {group.display_unit.no_of_restrooms === 1
+                              ? ""
+                              : "s"}
                           </Typography>
                         )}
                         {group.display_unit.is_pool_available && (
@@ -420,7 +322,7 @@ const Property: FC<PropertyPropType> = ({
             <div className="my-6">
               <Accordion defaultExpanded className="mb-3">
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography className="font-bold!" component="span">
+                  <Typography variant="h5" className="font-bold!" component="span">
                     Amenities
                   </Typography>
                 </AccordionSummary>
@@ -453,7 +355,7 @@ const Property: FC<PropertyPropType> = ({
               {propertyDetails.meals_available && foodMenu && (
                 <Accordion className="mb-3">
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className="font-bold!" component="span">
+                    <Typography variant="h5" className="font-bold!" component="span">
                       Food Menu
                     </Typography>
                   </AccordionSummary>
@@ -551,16 +453,16 @@ const Property: FC<PropertyPropType> = ({
 
               <Accordion className="mb-3">
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography className="font-bold!" component="span">
+                  <Typography variant="h5" className="font-bold!" component="span">
                     House Rules
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                   <div className="mb-2">
-                    <Typography className="font-bold!">
+                    <Typography variant="h5">
                       Check-in: {propertyDetails.checkin_time}
                     </Typography>
-                    <Typography className="font-bold!">
+                    <Typography variant="h5">
                       Check-out: {propertyDetails.checkout_time}
                     </Typography>
                   </div>
@@ -574,7 +476,7 @@ const Property: FC<PropertyPropType> = ({
 
               <Accordion className="mb-3">
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography className="font-bold!" component="span">
+                  <Typography variant="h5" className="font-bold!" component="span">
                     Cancellation Policy
                   </Typography>
                 </AccordionSummary>
@@ -586,7 +488,7 @@ const Property: FC<PropertyPropType> = ({
 
             {nearby.length > 0 && (
               <div className="my-6">
-                <Typography className="mb-4!" variant="h6">
+                <Typography className="mb-2! font-bold!" variant="h5">
                   Nearby Attractions
                 </Typography>
                 <Carousel
@@ -613,7 +515,7 @@ const Property: FC<PropertyPropType> = ({
                               }}
                             />
                           </div>
-                          <div className="m-2 overflow-y-auto h-[50%] wrap-break-word">
+                          <div className="mt-2 overflow-y-auto h-[50%] wrap-break-word">
                             <Typography variant="h6">{item.title}</Typography>
                             <Typography variant="body2">
                               <span className="font-bold">Distance: </span>
@@ -635,7 +537,7 @@ const Property: FC<PropertyPropType> = ({
 
             {propertyDetails.map_location && (
               <div className="mb-6">
-                <Typography variant="h5">Location</Typography>
+                <Typography variant="h5" className="font-bold!">Location</Typography>
                 <div className="w-full h-50 md:h-87.5 mt-3 mb-3 overflow-hidden shadow">
                   <iframe
                     src={propertyDetails.map_location}
@@ -668,7 +570,7 @@ const Property: FC<PropertyPropType> = ({
             )}
           </div>
 
-          <div className="hidden md:block col-span-4 sticky top-22.5 h-fit">
+          <div className="hidden md:block col-span-4 sticky top-2 h-fit">
             <Typography className="mb-2!" variant="h6">
               Plan Your Exclusive Escape!
             </Typography>
@@ -703,7 +605,6 @@ const Property: FC<PropertyPropType> = ({
                   variant="caption"
                   color="text.secondary"
                 >
-                  {" "}
                   /night
                 </Typography>
               </Typography>

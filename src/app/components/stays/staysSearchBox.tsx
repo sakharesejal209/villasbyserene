@@ -163,7 +163,12 @@ const StaysSearchBox: FC<StaysSearchBoxProps> = ({
                 <Autocomplete
                   options={locations}
                   value={field.value}
-                  onChange={(_, val) => handleChange("location", val || "all")}
+                  onChange={(_, val) =>
+                    handleChange(
+                      "location",
+                      val?.toLowerCase() === "all" ? "all" : val || "all",
+                    )
+                  }
                   renderInput={(params) => (
                     <TextField
                       {...params}
