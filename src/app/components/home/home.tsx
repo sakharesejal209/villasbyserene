@@ -80,7 +80,9 @@ const Home = () => {
   useEffect(() => {
     userService
       .getCurrentUser()
-      .then(setUser)
+      .then((data) => {
+        setUser(data ?? null);
+      })
       .catch((err) => {
         console.log("err:", err);
       });

@@ -6,6 +6,7 @@ const axiosInstance: AxiosInstance = axios.create({
     process.env.API_BASE_URL ||
     "http://localhost:4000",
   timeout: 30000,
+  withCredentials: true, // ← sends httpOnly cookies with every request
 });
 
 axiosInstance.interceptors.request.use((config) => {

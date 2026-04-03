@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import dayjs from "dayjs";
 import {
@@ -24,10 +24,7 @@ import {
 } from "@mui/icons-material";
 import { formatINR } from "./BookingWidget";
 import type { BookingQuoteDTO } from "@/app/@types/";
-
-// ─────────────────────────────────────────────────────────────────
-// Types
-// ─────────────────────────────────────────────────────────────────
+import { useAuth } from "@/hooks/useAuth";
 
 export interface GuestDetails {
   name: string;
@@ -46,6 +43,7 @@ interface BookingSummary {
   children: number;
   infants: number;
   securityDeposit: number;
+  returnUrl?: string;
 }
 
 interface GuestDetailsModalProps {
@@ -55,13 +53,9 @@ interface GuestDetailsModalProps {
   error: string | null;
   onConfirm: (details: GuestDetails) => Promise<void>;
   quote: BookingQuoteDTO;
-  units: number; // room count multiplier
+  units: number;
   summary: BookingSummary;
 }
-
-// ─────────────────────────────────────────────────────────────────
-// Component
-// ─────────────────────────────────────────────────────────────────
 
 const GuestDetailsModal: FC<GuestDetailsModalProps> = ({
   open,
@@ -74,26 +68,45 @@ const GuestDetailsModal: FC<GuestDetailsModalProps> = ({
   summary,
 }) => {
   const [breakdownOpen, setBreakdownOpen] = useState(false);
+  const { user, loading: authLoading, login } = useAuth();
 
   const {
     control,
     handleSubmit,
+    setValue: setFormValue,
     formState: { errors },
   } = useForm<GuestDetails>({
     defaultValues: { name: "", email: "", phone: "", specialRequests: "" },
   });
 
+  // Pre-fill form when user is available
+  useEffect(() => {
+    if (user) {
+      if (user.full_name) setFormValue("name", user.full_name);
+      if (user.email) setFormValue("email", user.email);
+    }
+  }, [user, setFormValue]);
+
+  const handleFormSubmit = useCallback(
+    async (details: GuestDetails) => {
+      await onConfirm(details);
+    },
+    [onConfirm],
+  );
+
+  const handleLoginClick = () => {
+    login(
+      summary.returnUrl ?? window.location.pathname + window.location.search,
+    );
+  };
+
   const nights = dayjs(summary.checkOut).diff(dayjs(summary.checkIn), "day");
   const totalPayable = quote.total * units;
   const convenienceFee = quote.cleaning_fee * units;
-  const totalGuests = summary.adults + summary.children;
 
-  // Extra adult/child counts derived from charges and per-night rates
-  // We show counts only if the charge exists — backend has the authoritative values
   const breakdownRows = [
     {
-      // label: `Rental cost for ${nights} night${nights !== 1 ? "s" : ""}`,
-      label: `${quote.min_occupancy} Guest${quote.min_occupancy !== 1 ? "s" : ""}`,
+      label: `${quote.min_occupancy} Guest${quote.min_occupancy === 1 ? "" : "s"}`,
       amount: quote.subtotal * units,
       show: true,
     },
@@ -108,21 +121,26 @@ const GuestDetailsModal: FC<GuestDetailsModalProps> = ({
       show: quote.child_charge > 0,
     },
     {
+      label: "Property charges",
+      amount: quote.commission_amount * units,
+      show: quote.commission_amount > 0,
+    },
+    {
+      label: "GST on property charges",
+      amount: quote.commission_gst * units,
+      show: quote.commission_gst > 0,
+    },
+    {
       label: "Convenience fee",
       amount: convenienceFee,
       show: convenienceFee > 0,
-    },
-    {
-      label: `GST (${quote.tax_percent}%)`,
-      amount: quote.tax_amount,
-      show: true,
     },
   ].filter((r) => r.show);
 
   return (
     <Dialog
       open={open}
-      onClose={!loading ? onClose : undefined}
+      onClose={loading ? undefined : onClose}
       maxWidth="sm"
       fullWidth
       slotProps={{
@@ -160,7 +178,6 @@ const GuestDetailsModal: FC<GuestDetailsModalProps> = ({
             bgcolor: "action.hover",
           }}
         >
-          {/* Property + unit */}
           <Typography variant="subtitle2" fontWeight={700}>
             {summary.propertyName}
           </Typography>
@@ -168,25 +185,22 @@ const GuestDetailsModal: FC<GuestDetailsModalProps> = ({
             {summary.unitName}
             {units > 1 && ` × ${units}`}
           </Typography>
-
-          {/* Dates + guests */}
           <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
             {dayjs(summary.checkIn).format("DD MMM YYYY")} →{" "}
             {dayjs(summary.checkOut).format("DD MMM YYYY")}
             {" · "}
-            {nights} night{nights !== 1 ? "s" : ""}
+            {nights} night{nights === 1 ? "" : "s"}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {summary.adults} adult{summary.adults !== 1 ? "s" : ""}
+            {summary.adults} adult{summary.adults === 1 ? "" : "s"}
             {summary.children > 0 &&
-              `, ${summary.children} child${summary.children !== 1 ? "ren" : ""}`}
+              `, ${summary.children} child${summary.children === 1 ? "" : "ren"}`}
             {summary.infants > 0 &&
-              `, ${summary.infants} infant${summary.infants !== 1 ? "s" : ""}`}
+              `, ${summary.infants} infant${summary.infants === 1 ? "" : "s"}`}
           </Typography>
 
           <Divider sx={{ my: 1 }} />
 
-          {/* Total + breakdown toggle */}
           <Box
             sx={{
               display: "flex",
@@ -202,7 +216,6 @@ const GuestDetailsModal: FC<GuestDetailsModalProps> = ({
             </Typography>
           </Box>
 
-          {/* Breakdown toggle button */}
           <Button
             size="small"
             endIcon={
@@ -227,7 +240,6 @@ const GuestDetailsModal: FC<GuestDetailsModalProps> = ({
             {breakdownOpen ? "Hide" : "View"} price breakdown
           </Button>
 
-          {/* Collapsible breakdown */}
           <Collapse in={breakdownOpen}>
             <Box
               sx={{ mt: 1, display: "flex", flexDirection: "column", gap: 0.5 }}
@@ -244,24 +256,19 @@ const GuestDetailsModal: FC<GuestDetailsModalProps> = ({
                     alignItems: "flex-start",
                   }}
                 >
-                  <Box>
-                    <Typography
-                      variant="caption"
-                      fontWeight={400}
-                      color="text.primary"
-                    >
-                      {row.label}
-                    </Typography>
-                  </Box>
+                  <Typography
+                    variant="caption"
+                    fontWeight={400}
+                    color="text.primary"
+                  >
+                    {row.label}
+                  </Typography>
                   <Typography variant="caption" fontWeight={500}>
                     {formatINR(row.amount)}
                   </Typography>
                 </Box>
               ))}
-
               <Divider sx={{ my: 0.5 }} />
-
-              {/* Total */}
               <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Typography variant="caption" fontWeight={700}>
                   Total
@@ -270,8 +277,6 @@ const GuestDetailsModal: FC<GuestDetailsModalProps> = ({
                   {formatINR(totalPayable)}
                 </Typography>
               </Box>
-
-              {/* Security deposit */}
               {summary.securityDeposit > 0 && (
                 <Box
                   sx={{
@@ -299,7 +304,7 @@ const GuestDetailsModal: FC<GuestDetailsModalProps> = ({
 
         <Box
           component="form"
-          onSubmit={handleSubmit(onConfirm)}
+          onSubmit={handleSubmit(handleFormSubmit)}
           sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}
         >
           <Controller
@@ -317,7 +322,6 @@ const GuestDetailsModal: FC<GuestDetailsModalProps> = ({
               />
             )}
           />
-
           <Box sx={{ display: "flex", gap: 1 }}>
             <Controller
               name="email"
@@ -365,7 +369,6 @@ const GuestDetailsModal: FC<GuestDetailsModalProps> = ({
               )}
             />
           </Box>
-
           <Controller
             name="specialRequests"
             control={control}
@@ -388,31 +391,71 @@ const GuestDetailsModal: FC<GuestDetailsModalProps> = ({
             </Alert>
           )}
 
-          <Button
-            type="submit"
-            variant="contained"
-            fullWidth
-            size="large"
-            disabled={loading}
-            startIcon={
-              loading ? (
-                <CircularProgress size={18} color="inherit" />
-              ) : (
-                <LockOutlined />
-              )
-            }
-            sx={{ borderRadius: 2, fontWeight: 700, py: 1.25, mt: 0.5 }}
-          >
-            {loading ? "Processing..." : `Pay ${formatINR(totalPayable)}`}
-          </Button>
-
-          <Typography
-            variant="caption"
-            color="text.secondary"
-            sx={{ textAlign: "center" }}
-          >
-            You'll be redirected to Razorpay's secure payment page
-          </Typography>
+          {/* ── Auth gate ──────────────────────────────────── */}
+          {!authLoading && !user ? (
+            <Box
+              sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 0.5 }}
+            >
+              <Alert severity="info" sx={{ py: 0.5 }}>
+                Please log in to complete your booking
+              </Alert>
+              <Button
+                variant="outlined"
+                fullWidth
+                size="large"
+                onClick={handleLoginClick}
+                startIcon={
+                  <Box
+                    component="img"
+                    src="https://www.google.com/favicon.ico"
+                    sx={{ width: 16, height: 16 }}
+                  />
+                }
+                sx={{
+                  borderRadius: 2,
+                  fontWeight: 700,
+                  py: 1.25,
+                  bgcolor: "background.paper",
+                }}
+              >
+                Continue with Google
+              </Button>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ textAlign: "center" }}
+              >
+                Your booking details will be saved after login
+              </Typography>
+            </Box>
+          ) : (
+            <>
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                size="large"
+                disabled={loading || authLoading}
+                startIcon={
+                  loading ? (
+                    <CircularProgress size={18} color="inherit" />
+                  ) : (
+                    <LockOutlined />
+                  )
+                }
+                sx={{ borderRadius: 2, fontWeight: 700, py: 1.25, mt: 0.5 }}
+              >
+                {loading ? "Processing..." : `Pay ${formatINR(totalPayable)}`}
+              </Button>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ textAlign: "center" }}
+              >
+                You'll be redirected to Razorpay's secure payment page
+              </Typography>
+            </>
+          )}
         </Box>
       </DialogContent>
     </Dialog>

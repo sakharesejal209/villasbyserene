@@ -45,6 +45,7 @@ import BookingWidget from "./BookingWidget";
 import dayjs from "dayjs";
 import { getPriceForDate } from "@/lib/pricing.utils.ts";
 import { BookingType, PropertyDetailDTO } from "@/app/@types";
+import { useSearchParams } from "next/navigation";
 
 // ── Types ─────────────────────────────────────────────────────────
 
@@ -110,6 +111,8 @@ const Property: FC<PropertyPropType> = ({
   checkIn,
   checkOut,
 }) => {
+  const searchParams = useSearchParams();
+
   const [openGallery, setOpenGallery] = useState(false);
   const [openUnitGallery, setOpenUnitGallery] = useState(false);
   const [selectedUnit, setSelectedUnit] = useState<string>();
@@ -162,6 +165,17 @@ const Property: FC<PropertyPropType> = ({
     propertyImages.find((e) => e.is_banner_image === true) ?? propertyImages[0];
   const bannerUrl = bannerImage?.image?.image_url ?? "";
   const theme = useTheme();
+
+  useEffect(() => {
+    // Auto-open booking form after Google login redirect
+    if (searchParams.get("bookingIntent") === "true") {
+      setOpenForm(true);
+      // Clean URL without reload
+      const url = new URL(window.location.href);
+      url.searchParams.delete("bookingIntent");
+      window.history.replaceState({}, "", url.toString());
+    }
+  }, [searchParams]);
 
   return (
     <div>
@@ -236,7 +250,9 @@ const Property: FC<PropertyPropType> = ({
             </div>
 
             <div className="my-6">
-              <Typography variant="h5" className="font-bold!">Accommodation</Typography>
+              <Typography variant="h5" className="font-bold!">
+                Accommodation
+              </Typography>
               {propertyDetails.unit_groups.map((group) => (
                 <div key={group.unit_type} className="mt-3">
                   <div className="w-full grid grid-cols-12 mb-8 gap-2 md:mb-4 md:grid-cols-12 md:gap-8">
@@ -322,7 +338,11 @@ const Property: FC<PropertyPropType> = ({
             <div className="my-6">
               <Accordion defaultExpanded className="mb-3">
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography variant="h5" className="font-bold!" component="span">
+                  <Typography
+                    variant="h5"
+                    className="font-bold!"
+                    component="span"
+                  >
                     Amenities
                   </Typography>
                 </AccordionSummary>
@@ -355,7 +375,11 @@ const Property: FC<PropertyPropType> = ({
               {propertyDetails.meals_available && foodMenu && (
                 <Accordion className="mb-3">
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography variant="h5" className="font-bold!" component="span">
+                    <Typography
+                      variant="h5"
+                      className="font-bold!"
+                      component="span"
+                    >
                       Food Menu
                     </Typography>
                   </AccordionSummary>
@@ -453,7 +477,11 @@ const Property: FC<PropertyPropType> = ({
 
               <Accordion className="mb-3">
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography variant="h5" className="font-bold!" component="span">
+                  <Typography
+                    variant="h5"
+                    className="font-bold!"
+                    component="span"
+                  >
                     House Rules
                   </Typography>
                 </AccordionSummary>
@@ -476,7 +504,11 @@ const Property: FC<PropertyPropType> = ({
 
               <Accordion className="mb-3">
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography variant="h5" className="font-bold!" component="span">
+                  <Typography
+                    variant="h5"
+                    className="font-bold!"
+                    component="span"
+                  >
                     Cancellation Policy
                   </Typography>
                 </AccordionSummary>
@@ -537,7 +569,9 @@ const Property: FC<PropertyPropType> = ({
 
             {propertyDetails.map_location && (
               <div className="mb-6">
-                <Typography variant="h5" className="font-bold!">Location</Typography>
+                <Typography variant="h5" className="font-bold!">
+                  Location
+                </Typography>
                 <div className="w-full h-50 md:h-87.5 mt-3 mb-3 overflow-hidden shadow">
                   <iframe
                     src={propertyDetails.map_location}
