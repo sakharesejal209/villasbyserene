@@ -61,6 +61,12 @@ class BookingService {
       payload,
     );
   }
+
+  checkAvailability = (unitId: string, checkIn: string, checkOut: string) => {
+    return httpService<{ available: boolean }>().get(
+      `/booking/check-availability/${unitId}?checkIn=${checkIn}&checkOut=${checkOut}`,
+    );
+  };
 }
 
 const bookingService = new BookingService();

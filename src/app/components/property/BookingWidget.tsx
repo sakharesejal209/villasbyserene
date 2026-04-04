@@ -24,14 +24,14 @@ import {
   RemoveOutlined,
   WhatsApp,
 } from "@mui/icons-material";
-import {propertiesService, bookingService} from "@/app/@services/";
+import { propertiesService, bookingService } from "@/app/@services/";
 import GuestDetailsModal, { type GuestDetails } from "./GuestDetailsModal";
 import { useRazorpay } from "@/hooks/useRazorpay";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import { BookingType, UnitGroupDTO } from "@/app/@types";
-import { BookingQuoteDTO } from "@/app/@types/property/BookingQuoteDTO";
-
+import { encryptCheckout } from "@/lib/crypto/checkout-crypto";
+import { BookingQuoteDTO } from "@/app/@types/booking/BookingQuoteDTO";
 interface FormValues {
   checkIn: Dayjs | null;
   checkOut: Dayjs | null;
@@ -297,11 +297,20 @@ const BookingWidget: FC<BookingWidgetProps> = ({
     );
   };
 
-  // open modal
+  // navigate to checkout — state encrypted in URL (shareable)
   const handleProceedToBook = () => {
-    if (!quote || nights < 1) return;
-    setModalError(null);
-    setModalOpen(true);
+    if (!quote || nights < 1 || !group) return;
+    const token = encryptCheckout({
+      propertyId,
+      unitId: group.display_unit.unit_id,
+      checkIn: checkIn!.format("YYYY-MM-DD"),
+      checkOut: checkOut!.format("YYYY-MM-DD"),
+      adults,
+      children,
+      infants,
+      rooms: units,
+    });
+    router.push(`/checkout?b=${token}`);
   };
 
   // create booking → razorpay
@@ -371,7 +380,16 @@ const BookingWidget: FC<BookingWidgetProps> = ({
             );
           }
         },
-        modal: { ondismiss: () => setModalLoading(false) },
+        modal: {
+          ondismiss: () => {
+            setModalLoading(false);
+            setModalOpen(false);
+            document.body.style.overflow = "";
+            document.body.style.pointerEvents = "";
+            const overlay = document.querySelector(".razorpay-backdrop");
+            if (overlay) overlay.remove();
+          },
+        },
       });
     } catch (err: any) {
       setModalError(err.message ?? "Something went wrong. Please try again.");
@@ -530,7 +548,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
             Contact us for pricing
           </Typography>
           <Typography variant="caption" color="text.secondary">
-            Fill in your dates and we'll get back to you with availability
+            Fill in your dates and we&apos;ll get back to you with availability
           </Typography>
         </Box>
       )}
@@ -761,7 +779,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                 </Typography>
               ) : quote && nights > 0 ? (
                 <>
-                  {/* Stay charges */}
+                  {/* Stay charges (subtotal = nightly + min guest, all baked in) */}
                   <Box
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
@@ -769,11 +787,31 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                       Stay charges
                     </Typography>
                     <Typography variant="body2" fontWeight={600}>
-                      {formatINR(quote.total_base * units)}
+                      {formatINR(
+                        (quote.subtotal +
+                          quote.extra_guest_charge +
+                          quote.child_charge) *
+                          units,
+                      )}
                     </Typography>
                   </Box>
 
-                  {/* Property charges — informational */}
+                  {/* Convenience fee */}
+                  {quote.cleaning_fee > 0 && (
+                    <Box
+                      sx={{ display: "flex", justifyContent: "space-between" }}
+                    >
+                      <Typography variant="body2" color="text.secondary">
+                        Convenience fee
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {formatINR(quote.cleaning_fee * units)}
+                      </Typography>
+                    </Box>
+                  )}
+
+                  {/* GST */}
+                  {/* Property charges (commission) */}
                   {quote.commission_amount > 0 && (
                     <Box
                       sx={{ display: "flex", justifyContent: "space-between" }}
@@ -797,20 +835,6 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
                         {formatINR(quote.commission_gst * units)}
-                      </Typography>
-                    </Box>
-                  )}
-
-                  {/* Convenience fee */}
-                  {quote.cleaning_fee > 0 && (
-                    <Box
-                      sx={{ display: "flex", justifyContent: "space-between" }}
-                    >
-                      <Typography variant="body2" color="text.secondary">
-                        Convenience fee
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {formatINR(quote.cleaning_fee * units)}
                       </Typography>
                     </Box>
                   )}

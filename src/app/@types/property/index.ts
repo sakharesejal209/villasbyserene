@@ -13,7 +13,7 @@ export type { default as ThemeDTO } from "./ThemeDTO";
 export type { default as PropertyDetailDTO } from "./PropertyDetailDTO";
 export type { default as QuoteRequestDTO } from "./QuoteRequestDTO";
 export type { default as NightlyBreakdownDTO } from "./NightlyBreakdownDTO";
-export type { default as BookingQuoteDTO } from "./BookingQuoteDTO";
+export type { default as BookingQuoteDTO } from "../booking/BookingQuoteDTO";
 export type { default as PropertyFiltersDTO } from "./PropertyFiltersDTO";
 export type { default as PropertyListItemDTO } from "./PropertyListItemDTO";
 

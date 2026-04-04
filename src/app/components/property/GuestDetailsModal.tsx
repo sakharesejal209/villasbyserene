@@ -452,7 +452,7 @@ const GuestDetailsModal: FC<GuestDetailsModalProps> = ({
                 color="text.secondary"
                 sx={{ textAlign: "center" }}
               >
-                You'll be redirected to Razorpay's secure payment page
+                You&apos;ll be redirected to Razorpay&apos;s secure payment page
               </Typography>
             </>
           )}

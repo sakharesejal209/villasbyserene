@@ -126,7 +126,7 @@ const Property: FC<PropertyPropType> = ({
   const amenities = propertyDetails.amenities;
   const houseRules = propertyDetails.house_rules;
   const nearby = propertyDetails.nearby_attractions;
-  const isDirect = propertyDetails.booking_type === BookingType.DIRECT;
+  const isDirect = propertyDetails.booking_type === BookingType.DIRECT;  
 
   useEffect(() => {
     const _galleryImages = [...propertyImages]
@@ -164,7 +164,7 @@ const Property: FC<PropertyPropType> = ({
   const bannerImage =
     propertyImages.find((e) => e.is_banner_image === true) ?? propertyImages[0];
   const bannerUrl = bannerImage?.image?.image_url ?? "";
-  const theme = useTheme();
+  const theme = useTheme();  
 
   useEffect(() => {
     // Auto-open booking form after Google login redirect
@@ -346,7 +346,7 @@ const Property: FC<PropertyPropType> = ({
                     Amenities
                   </Typography>
                 </AccordionSummary>
-                <AccordionDetails>
+                <AccordionDetails className="pt-0!">
                   <Box
                     display="grid"
                     gridTemplateColumns="repeat(auto-fill, minmax(160px, 1fr))"
@@ -383,7 +383,7 @@ const Property: FC<PropertyPropType> = ({
                       Food Menu
                     </Typography>
                   </AccordionSummary>
-                  <AccordionDetails>
+                  <AccordionDetails className="pt-0!">
                     <ReadMore
                       text={foodMenu.description ?? ""}
                       maxLength={200}
@@ -485,15 +485,7 @@ const Property: FC<PropertyPropType> = ({
                     House Rules
                   </Typography>
                 </AccordionSummary>
-                <AccordionDetails>
-                  <div className="mb-2">
-                    <Typography variant="h5">
-                      Check-in: {propertyDetails.checkin_time}
-                    </Typography>
-                    <Typography variant="h5">
-                      Check-out: {propertyDetails.checkout_time}
-                    </Typography>
-                  </div>
+                <AccordionDetails className="pt-0!">
                   <ul className="list-disc pl-5">
                     {houseRules.map((item) => (
                       <li key={item.rule_id}>{item.description}</li>
@@ -512,7 +504,7 @@ const Property: FC<PropertyPropType> = ({
                     Cancellation Policy
                   </Typography>
                 </AccordionSummary>
-                <AccordionDetails>
+                <AccordionDetails className="pt-0!">
                   <CancellationPolicy />
                 </AccordionDetails>
               </Accordion>

@@ -50,6 +50,9 @@ export default async function Page({ params, searchParams }: PageProps) {
     notFound();
   }
 
+  console.log('property:', property);
+  
+
   return (
     <Property
       propertyDetails={property}

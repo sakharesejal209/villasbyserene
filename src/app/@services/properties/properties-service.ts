@@ -28,20 +28,14 @@
 
 // src/services/properties.service.ts
 
-import { BookingQuoteDTO, PropertyDetailDTO, PropertyFiltersDTO, PropertyListItemDTO, QuoteRequestDTO } from "@/app/@types";
+import {
+  BookingQuoteDTO,
+  PropertyDetailDTO,
+  PropertyFiltersDTO,
+  PropertyListItemDTO,
+  QuoteRequestDTO,
+} from "@/app/@types";
 import httpService from "../http-service";
-
-
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";
-
-async function serverFetch<T>(path: string): Promise<T> {
-  const res = await fetch(`${API_BASE_URL}${path}`, {
-    next: { revalidate: 300 },
-  });
-  if (!res.ok) throw new Error(`API error: ${res.status} ${path}`);
-  return res.json();
-}
 
 function buildQueryString(filters: PropertyFiltersDTO): string {
   const params = new URLSearchParams();
@@ -64,36 +58,30 @@ function buildQueryString(filters: PropertyFiltersDTO): string {
 }
 
 class PropertiesService {
-  async getProperties(
-    filters: PropertyFiltersDTO = {},
-  ): Promise<PropertyListItemDTO[]> {
+  getProperties = (filters: PropertyFiltersDTO = {}) => {
     const qs = buildQueryString(filters);
-    return serverFetch<PropertyListItemDTO[]>(`/properties${qs}`);
-  }
+    return httpService<PropertyListItemDTO[]>().get(`/properties${qs}`);
+  };
 
-  async getProperty(
-    propertyId: string,
-    checkIn?: string,
-    checkOut?: string,
-  ): Promise<PropertyDetailDTO> {
+  async getProperty(propertyId: string, checkIn?: string, checkOut?: string) {
     const params = new URLSearchParams();
     if (checkIn) params.set("checkIn", checkIn);
     if (checkOut) params.set("checkOut", checkOut);
     const qs = params.toString() ? `?${params.toString()}` : "";
-    return serverFetch<PropertyDetailDTO>(`/properties/${propertyId}${qs}`);
+    return httpService<PropertyDetailDTO>().get(
+      `/properties/${propertyId}${qs}`,
+    );
   }
 
-  async getPropertyBySlug(
-    slug: string,
-    checkIn?: string,
-    checkOut?: string,
-  ): Promise<PropertyDetailDTO> {
+  getPropertyBySlug = (slug: string, checkIn?: string, checkOut?: string) => {
     const params = new URLSearchParams();
     if (checkIn) params.set("checkIn", checkIn);
     if (checkOut) params.set("checkOut", checkOut);
     const qs = params.toString() ? `?${params.toString()}` : "";
-    return serverFetch<PropertyDetailDTO>(`/properties/slug/${slug}${qs}`);
-  }
+    return httpService<PropertyDetailDTO>().get(
+      `/properties/slug/${slug}${qs}`,
+    );
+  };
 
   getBookingQuote = (data: QuoteRequestDTO) => {
     return httpService<BookingQuoteDTO>().post("/pricing/quote", data);

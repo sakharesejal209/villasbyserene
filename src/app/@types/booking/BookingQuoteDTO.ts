@@ -1,4 +1,4 @@
-import NightlyBreakdownDTO from "./NightlyBreakdownDTO";
+import NightlyBreakdownDTO from "../property/NightlyBreakdownDTO";
 
 export interface BookingQuoteDTO {
   unitId: string;
@@ -20,4 +20,5 @@ export interface BookingQuoteDTO {
   security_deposit: number;
   min_occupancy: number;
   total: number;
+  total_base: number;
 }
