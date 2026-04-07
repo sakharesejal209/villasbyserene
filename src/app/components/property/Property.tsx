@@ -41,11 +41,17 @@ import amenityIconMap from "@/lib/amenity-icon-config/amenityIconConfig";
 import { getAccomodation } from "../stays/stays";
 import ImageGallery from "./ImageGallery";
 import CancellationPolicy from "../cancellation-policy/CancellationPolicy";
-import BookingWidget from "./BookingWidget";
+import BookingWidget, { WidgetState } from "./BookingWidget";
 import dayjs from "dayjs";
 import { getPriceForDate } from "@/lib/pricing.utils.ts";
 import { BookingType, PropertyDetailDTO } from "@/app/@types";
 import { useSearchParams } from "next/navigation";
+import {
+  BiLeftArrow,
+  BiSolidArrowToLeft,
+  BiSolidLeftArrowAlt,
+} from "react-icons/bi";
+import { IoArrowBackOutline, IoChevronBack } from "react-icons/io5";
 
 // ── Types ─────────────────────────────────────────────────────────
 
@@ -120,13 +126,14 @@ const Property: FC<PropertyPropType> = ({
     useState<{ src: string; alt: string }[]>();
   const [unitGalleryImages, setUnitGalleryImages] = useState<UnitImagesMap>();
   const [openForm, setOpenForm] = useState(false);
+  const [widgetState, setWidgetState] = useState<WidgetState | null>(null);
 
   const foodMenu = propertyDetails.food_menus[0];
   const propertyImages = propertyDetails.all_images;
   const amenities = propertyDetails.amenities;
   const houseRules = propertyDetails.house_rules;
   const nearby = propertyDetails.nearby_attractions;
-  const isDirect = propertyDetails.booking_type === BookingType.DIRECT;  
+  const isDirect = propertyDetails.booking_type === BookingType.DIRECT;
 
   useEffect(() => {
     const _galleryImages = [...propertyImages]
@@ -164,7 +171,7 @@ const Property: FC<PropertyPropType> = ({
   const bannerImage =
     propertyImages.find((e) => e.is_banner_image === true) ?? propertyImages[0];
   const bannerUrl = bannerImage?.image?.image_url ?? "";
-  const theme = useTheme();  
+  const theme = useTheme();
 
   useEffect(() => {
     // Auto-open booking form after Google login redirect
@@ -193,7 +200,7 @@ const Property: FC<PropertyPropType> = ({
           {propertyImages.length > 0 && (
             <div className="flex h-full justify-end items-end">
               <button
-                className="hover:cursor-pointer z-50 text-white absolute top-[87%] md:top-[73%] xs:right-[5%] right-[3.5%] px-2 py-3 md:px-8 md:py-10 font-bold bg-cover bg-center border-white border-[2px] border-solid rounded-md bg-black/50 bg-blend-overlay"
+                className="hover:cursor-pointer z-50 text-white absolute top-[87%] md:top-[73%] xs:right-[5%] right-[3.5%] px-2 py-3 md:px-8 md:py-10 font-bold bg-cover bg-center border-white border-[2px] border-solid rounded-sm bg-black/50 bg-blend-overlay"
                 style={{ backgroundImage: `url(${bannerUrl})` }}
                 onClick={() => setOpenGallery(true)}
               >
@@ -214,36 +221,36 @@ const Property: FC<PropertyPropType> = ({
             />
 
             <div className="hidden md:grid grid-cols-4 items-center gap-4 my-6">
-              <Card className="p-2 rounded-lg!">
+              <Card className="p-2 rounded-sm!">
                 <HouseIcon />{" "}
                 {getAccomodation(propertyDetails.accommodation_type)}
               </Card>
-              <Card className="p-2 rounded-lg!">
+              <Card className="p-2 rounded-sm!">
                 <PeopleIcon /> {propertyDetails.max_capacity} Guests
               </Card>
-              <Card className="p-2 rounded-lg!">
+              <Card className="p-2 rounded-sm!">
                 <BedIcon /> {propertyDetails.bedroom_count} Bedrooms
               </Card>
               {propertyDetails.meals_available && (
-                <Card className="p-2 rounded-lg!">
+                <Card className="p-2 rounded-sm!">
                   <MealsIcon /> Meals Available
                 </Card>
               )}
             </div>
 
             <div className="grid max-sm:grid-cols-1 min-[370px]:grid-cols-2 max-md:grid-cols-2 md:hidden items-start gap-3">
-              <Card className="p-2 rounded-lg!">
+              <Card className="p-2 rounded-sm!">
                 <HouseIcon />{" "}
                 {getAccomodation(propertyDetails.accommodation_type)}
               </Card>
-              <Card className="p-2 rounded-lg!">
+              <Card className="p-2 rounded-sm!">
                 <PeopleIcon /> {propertyDetails.max_capacity} Guests
               </Card>
-              <Card className="p-2 rounded-lg!">
+              <Card className="p-2 rounded-sm!">
                 <BedIcon /> {propertyDetails.bedroom_count} Bedrooms
               </Card>
               {propertyDetails.meals_available && (
-                <Card className="p-2 rounded-lg!">
+                <Card className="p-2 rounded-sm!">
                   <MealsIcon /> Meals Available
                 </Card>
               )}
@@ -608,39 +615,74 @@ const Property: FC<PropertyPropType> = ({
                 bookingType={propertyDetails.booking_type}
                 defaultCheckIn={checkIn}
                 defaultCheckOut={checkOut}
+                onStateChange={setWidgetState} // ← add this
               />
             </Card>
           </div>
         </div>
       </section>
 
-      <Paper className="md:hidden fixed bottom-0 h-fit w-full px-2 py-1.5 rounded-none! z-50">
-        <Typography className="mb-1!" color="success">
-          <Available /> Add dates to check availability
-        </Typography>
+      <Paper className="md:hidden fixed bottom-0 h-fit w-full px-3 py-2 rounded-none! z-50">
         <div className="flex justify-between items-center w-full gap-3">
-          <div>
+          <div className="flex-1 min-w-0">
             {isDirect && propertyDetails.unit_groups[0]?.pricing ? (
-              <Typography variant="h6" color="primary" fontWeight={700}>
-                From ₹
-                {propertyDetails.unit_groups[0].pricing.weekday_price.toLocaleString(
-                  "en-IN",
-                )}
+              <div>
+                {/* Show actual quote total if available, else fall back to base rate */}
                 <Typography
-                  component="span"
-                  variant="caption"
-                  color="text.secondary"
+                  variant="h6"
+                  color="primary"
+                  fontWeight={700}
+                  noWrap
                 >
-                  /night
+                  {widgetState?.totalPrice
+                    ? `₹${widgetState.totalPrice.toLocaleString("en-IN")}`
+                    : `From ₹${propertyDetails.unit_groups[0].pricing.weekday_price.toLocaleString("en-IN")}`}
+                  <Typography
+                    component="span"
+                    variant="caption"
+                    color="text.secondary"
+                  >
+                    {widgetState?.totalPrice && widgetState.nights > 0
+                      ? ` · ${widgetState.nights} night${widgetState.nights !== 1 ? "s" : ""}`
+                      : "/night"}
+                  </Typography>
                 </Typography>
-              </Typography>
+
+                {/* Dates + guests if selected */}
+                {widgetState?.checkIn && widgetState?.checkOut ? (
+                  <Typography variant="caption" noWrap>
+                    {dayjs(widgetState.checkIn).format("DD MMM")}-{" "}
+                    {dayjs(widgetState.checkOut).format("DD MMM")}
+                    {` · ${widgetState.adults + widgetState.children} guest${widgetState.adults + widgetState.children !== 1 ? "s" : ""}`}
+                    {widgetState.infants > 0
+                      ? `, ${widgetState.infants} infant${widgetState.infants !== 1 ? "s" : ""}`
+                      : ""}
+                  </Typography>
+                ) : (
+                  <Typography variant="caption" color="text.secondary">
+                    Select dates to see total
+                  </Typography>
+                )}
+              </div>
             ) : (
-              <Typography variant="subtitle1" fontWeight={600}>
-                Enquire for pricing
-              </Typography>
+              <div>
+                <Typography variant="subtitle1" fontWeight={600}>
+                  Enquire for pricing
+                </Typography>
+                {widgetState?.checkIn && widgetState?.checkOut && (
+                  <Typography variant="caption" color="text.secondary" noWrap>
+                    {dayjs(widgetState.checkIn).format("DD MMM")} →{" "}
+                    {dayjs(widgetState.checkOut).format("DD MMM")}
+                  </Typography>
+                )}
+              </div>
             )}
           </div>
-          <Button variant="contained" onClick={() => setOpenForm(true)}>
+          <Button
+            variant="contained"
+            onClick={() => setOpenForm(true)}
+            sx={{ flexShrink: 0 }}
+          >
             {isDirect ? "Book Now" : "Enquire Now"}
           </Button>
         </div>
@@ -713,9 +755,17 @@ const Property: FC<PropertyPropType> = ({
       >
         <Box sx={{ p: 2 }}>
           <Typography
-            sx={{ textWrap: "pretty", textAlign: "center" }}
+            sx={{
+              textWrap: "pretty",
+              textAlign: "center",
+              display: "flex",
+              alignItems: "center",
+              gap: "20px",
+              marginBottom: "12px"
+            }}
             variant="h5"
           >
+            <IoArrowBackOutline size={16} onClick={() => setOpenForm(false)} />
             {isDirect ? "Lock in Your Dates!" : "Send Your Enquiry"}
           </Typography>
           <BookingWidget
@@ -725,6 +775,7 @@ const Property: FC<PropertyPropType> = ({
             bookingType={propertyDetails.booking_type}
             defaultCheckIn={checkIn}
             defaultCheckOut={checkOut}
+            onStateChange={setWidgetState} // ← add this
           />
         </Box>
       </Drawer>

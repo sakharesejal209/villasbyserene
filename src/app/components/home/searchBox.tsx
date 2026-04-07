@@ -25,9 +25,28 @@ export const locations = [
 ];
 
 const CustomDatePicker = styled(DatePicker)({
-  "& label.Mui-focused": {
-    color: "#ffffff",
+  "& .MuiInputLabel-root": {
+    color: "#fff", // label color
   },
+  "& .MuiPickersInputBase-root": { color: "#fff" },
+  "& .MuiPickersOutlinedInput-root": { color: "#fff" },
+  // The actual input value text
+  "& .MuiPickersInputBase-input": { color: "#fff" },
+  // Label
+  // "& .MuiInputLabel-root": { color: "rgba(255,255,255,0.7)" },
+  "& .MuiInputLabel-root.Mui-focused": { color: "#fff" },
+  // Border
+  "& .MuiPickersOutlinedInput-notchedOutline": {
+    borderColor: "rgba(255,255,255,0.4)",
+  },
+  "&:hover .MuiPickersOutlinedInput-notchedOutline": {
+    borderColor: "rgba(255,255,255,0.7)",
+  },
+  "& .Mui-focused .MuiPickersOutlinedInput-notchedOutline": {
+    borderColor: "#fff",
+  },
+  // Calendar icon
+  "& .MuiSvgIcon-root": { color: "#fff" },
 });
 
 const SearchBox = () => {
@@ -54,7 +73,7 @@ const SearchBox = () => {
   return (
     <div>
       <div className="mt-3 relative">
-        <Box className="mt-1 p-2 rounded-lg w-full flex flex-col justify-center">
+        <Box className="mt-1 p-2 rounded-sm w-full flex flex-col justify-center">
           <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-2 md:grid-cols-12 gap-2">
               <Autocomplete
@@ -113,11 +132,16 @@ const SearchBox = () => {
 
               <CustomDatePicker
                 className="md:col-span-2 col-span-1"
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                  },
+                }}
                 label="Check-in Date"
                 format="DD/MM/YYYY"
                 disablePast
                 minDate={dayjs()}
-                slotProps={{ textField: { fullWidth: true } }}
+                // slotProps={{ textField: { fullWidth: true } }}
                 value={checkIn}
                 onChange={(newVal) => {
                   if (newVal) {

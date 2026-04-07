@@ -44,9 +44,6 @@ interface StaysSearchBoxProps {
   setopenFilters: Dispatch<SetStateAction<boolean>>;
 }
 
-const PRICE_MIN = 0;
-const PRICE_MAX = 50000;
-
 const StaysSearchBox: FC<StaysSearchBoxProps> = ({
   filters,
   setFilters,
@@ -96,8 +93,8 @@ const StaysSearchBox: FC<StaysSearchBoxProps> = ({
       params.set("checkIn", values.checkIn.format("YYYY-MM-DD"));
     if (values.checkOut)
       params.set("checkOut", values.checkOut.format("YYYY-MM-DD"));
-    if (price[0] > PRICE_MIN) params.set("priceMin", String(price[0]));
-    if (price[1] < PRICE_MAX) params.set("priceMax", String(price[1]));
+    if (price[0] > 0) params.set("priceMin", String(price[0]));
+    if (price[1] < 50000) params.set("priceMax", String(price[1]));
 
     router.replace(`/stays/${city}?${params.toString()}`, { scroll: false });
   };
@@ -295,8 +292,8 @@ const StaysSearchBox: FC<StaysSearchBoxProps> = ({
             <Slider
               value={priceRange}
               onChange={(_, value) => setPriceRange(value as [number, number])}
-              min={PRICE_MIN}
-              max={PRICE_MAX}
+              min={0}
+              max={50000}
               step={5000}
               valueLabelDisplay="auto"
               valueLabelFormat={(v) => `₹${v.toLocaleString("en-IN")}`}

@@ -24,11 +24,8 @@ import {
   RemoveOutlined,
   WhatsApp,
 } from "@mui/icons-material";
-import { propertiesService, bookingService } from "@/app/@services/";
-import GuestDetailsModal, { type GuestDetails } from "./GuestDetailsModal";
-import { useRazorpay } from "@/hooks/useRazorpay";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useAuth } from "@/hooks/useAuth";
+import { propertiesService } from "@/app/@services/";
+import { useRouter } from "next/navigation";
 import { BookingType, UnitGroupDTO } from "@/app/@types";
 import { encryptCheckout } from "@/lib/crypto/checkout-crypto";
 import { BookingQuoteDTO } from "@/app/@types/booking/BookingQuoteDTO";
@@ -40,6 +37,16 @@ interface FormValues {
   infants: number;
 }
 
+export interface WidgetState {
+  checkIn:    string | null;
+  checkOut:   string | null;
+  adults:     number;
+  children:   number;
+  infants:    number;
+  nights:     number;
+  totalPrice: number | null;
+}
+
 interface BookingWidgetProps {
   propertyId: string;
   propertyName: string;
@@ -48,6 +55,7 @@ interface BookingWidgetProps {
   userId?: string;
   defaultCheckIn?: string;
   defaultCheckOut?: string;
+  onStateChange?: (state: WidgetState) => void;
 }
 
 // ─────────────────────────────────────────────────────────────────
@@ -123,7 +131,7 @@ const GuestRow: FC<{
         sx={{
           border: "1px solid",
           borderColor: "divider",
-          borderRadius: 1,
+          borderRadius: 0.2,
           width: 28,
           height: 28,
         }}
@@ -140,7 +148,7 @@ const GuestRow: FC<{
         sx={{
           border: "1px solid",
           borderColor: value < max ? "primary.main" : "divider",
-          borderRadius: 1,
+          borderRadius: 0.2,
           width: 28,
           height: 28,
           bgcolor: value < max ? "primary.main" : "transparent",
@@ -163,15 +171,12 @@ const BookingWidget: FC<BookingWidgetProps> = ({
   propertyName,
   unitGroups,
   bookingType,
-  userId = "",
   defaultCheckIn,
   defaultCheckOut,
+  onStateChange,
 }) => {
   const theme = useTheme();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const { openCheckout } = useRazorpay();
-  const { user } = useAuth();
   const isDirect = bookingType === BookingType.DIRECT;
 
   // unit
@@ -190,12 +195,10 @@ const BookingWidget: FC<BookingWidgetProps> = ({
   const [quote, setQuote] = useState<BookingQuoteDTO | null>(null);
   const [quoteLoading, setQuoteLoading] = useState(false);
   const [quoteError, setQuoteError] = useState<string | null>(null);
+  const [processing, serProcessing] = useState(false);
 
   // ui
   const [guestAnchor, setGuestAnchor] = useState<HTMLElement | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalLoading, setModalLoading] = useState(false);
-  const [modalError, setModalError] = useState<string | null>(null);
 
   // form
   const { control, setValue, getValues } = useForm<FormValues>({
@@ -274,6 +277,18 @@ const BookingWidget: FC<BookingWidgetProps> = ({
     };
   }, [fetchQuote]);
 
+  useEffect(() => {
+    onStateChange?.({
+      checkIn: checkIn ? checkIn.format("YYYY-MM-DD") : null,
+      checkOut: checkOut ? checkOut.format("YYYY-MM-DD") : null,
+      adults,
+      children,
+      infants,
+      nights,
+      totalPrice: quote ? quote.total * units : null,
+    });
+  }, [checkIn, checkOut, adults, children, infants, nights, quote, units]);
+
   // reset on unit change
   const handleSelectUnit = (idx: number) => {
     setSelectedIdx(idx);
@@ -299,6 +314,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
 
   // navigate to checkout — state encrypted in URL (shareable)
   const handleProceedToBook = () => {
+    serProcessing(true)
     if (!quote || nights < 1 || !group) return;
     const token = encryptCheckout({
       propertyId,
@@ -311,100 +327,13 @@ const BookingWidget: FC<BookingWidgetProps> = ({
       rooms: units,
     });
     router.push(`/checkout?b=${token}`);
+    serProcessing(false)
   };
-
-  // create booking → razorpay
-  const handleGuestConfirm = async (guestDetails: GuestDetails) => {
-    if (!group || !checkIn || !checkOut || !quote) return;
-    setModalLoading(true);
-    setModalError(null);
-    try {
-      const key = `${group.display_unit.unit_id}-${checkIn.format("YYYY-MM-DD")}-${checkOut.format("YYYY-MM-DD")}-${Date.now()}`;
-      const totalPayable = quote.total * units;
-
-      const booking = await bookingService.createBooking(
-        {
-          unitId: group.display_unit.unit_id,
-          propertyId,
-          checkIn: checkIn.format("YYYY-MM-DD"),
-          checkOut: checkOut.format("YYYY-MM-DD"),
-          amount: totalPayable,
-          userId: user?.id ?? userId,
-          currency: "INR",
-          adultCount: adults,
-          kidsCount: children,
-          petCount: 0,
-        },
-        key,
-      );
-
-      setModalOpen(false);
-
-      openCheckout({
-        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ?? "",
-        amount: booking.amount,
-        currency: booking.currency,
-        order_id: booking.orderId,
-        name: "Villas by Serene",
-        description: `${propertyName} — ${group.display_unit.title ?? group.type_label}`,
-        image: "/logo.png",
-        prefill: {
-          name: guestDetails.name,
-          email: guestDetails.email,
-          contact: guestDetails.phone,
-        },
-        notes: {
-          bookingId: booking.bookingId,
-          specialRequests: guestDetails.specialRequests,
-        },
-        theme: { color: "#1B4332" },
-        handler: async (response) => {
-          try {
-            await bookingService.verifyPayment({
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-              bookingId: booking.bookingId,
-              guestName: guestDetails.name,
-              guestEmail: guestDetails.email,
-              guestPhone: guestDetails.phone,
-              propertyName,
-              unitName: group.display_unit.title ?? group.type_label ?? "",
-              adults,
-              children,
-            });
-            router.push(`/booking/confirmed/${booking.bookingId}`);
-          } catch {
-            setQuoteError(
-              "Payment verification failed. Please contact support.",
-            );
-          }
-        },
-        modal: {
-          ondismiss: () => {
-            setModalLoading(false);
-            setModalOpen(false);
-            document.body.style.overflow = "";
-            document.body.style.pointerEvents = "";
-            const overlay = document.querySelector(".razorpay-backdrop");
-            if (overlay) overlay.remove();
-          },
-        },
-      });
-    } catch (err: any) {
-      setModalError(err.message ?? "Something went wrong. Please try again.");
-    } finally {
-      setModalLoading(false);
-    }
-  };
-
-  // ── Render ────────────────────────────────────────────────────
 
   return (
-    <Box sx={{ p: 2.5 }}>
-      {/* ── 1. Unit selector ────────────────────────────────── */}
+    <div className="md:p-5">
       <Box sx={{ mb: 2.5 }}>
-        <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
+        <Typography variant="subtitle2" sx={{ mb: 1 }}>
           Select accommodation
         </Typography>
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
@@ -426,7 +355,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                   alignItems: "center",
                   gap: 1.5,
                   p: 1,
-                  borderRadius: 2,
+                  borderRadius: 0.2,
                   border: "1.5px solid",
                   borderColor: selected ? "primary.main" : "divider",
                   bgcolor: selected
@@ -454,7 +383,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                     sx={{
                       width: 52,
                       height: 52,
-                      borderRadius: 1.5,
+                      borderRadius: 0.2,
                       objectFit: "cover",
                       flexShrink: 0,
                     }}
@@ -539,7 +468,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
           sx={{
             mb: 2,
             p: 1.5,
-            borderRadius: 2,
+            borderRadius: 0.2,
             border: "1px solid",
             borderColor: "divider",
           }}
@@ -600,7 +529,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
           size="small"
           fullWidth
           label="Guests"
-          value={`${totalPax} guest${totalPax !== 1 ? "s" : ""}${infants > 0 ? `, ${infants} infant${infants !== 1 ? "s" : ""}` : ""}`}
+          value={`${totalPax} guest${totalPax === 1 ? "" : "s"}${infants > 0 ? `, ${infants} infant${infants === 1 ? "" : "s"}` : ""}`}
           onClick={(e) => setGuestAnchor(e.currentTarget)}
           slotProps={{
             input: {
@@ -622,7 +551,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
           onClose={() => setGuestAnchor(null)}
           anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
           transformOrigin={{ vertical: "top", horizontal: "left" }}
-          slotProps={{ paper: { sx: { width: 280, p: 2, borderRadius: 2 } } }}
+          slotProps={{ paper: { sx: { width: 280, p: 2, borderRadius: 0.2 } } }}
         >
           <GuestRow
             label="Adults"
@@ -665,7 +594,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
               setGuestAnchor(null);
               fetchQuote(); // fetch with latest guest counts
             }}
-            sx={{ mt: 1.5, borderRadius: 1.5 }}
+            sx={{ mt: 1.5, borderRadius: 0.2 }}
           >
             Done
           </Button>
@@ -679,7 +608,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
               alignItems: "center",
               justifyContent: "space-between",
               p: 1.5,
-              borderRadius: 2,
+              borderRadius: 0.2,
               border: "1px solid",
               borderColor: "divider",
             }}
@@ -700,7 +629,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                 sx={{
                   border: "1px solid",
                   borderColor: "divider",
-                  borderRadius: 1,
+                  borderRadius: 0.2,
                   width: 28,
                   height: 28,
                 }}
@@ -721,7 +650,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                   border: "1px solid",
                   borderColor:
                     roomCount < maxRooms ? "primary.main" : "divider",
-                  borderRadius: 1,
+                  borderRadius: 0.2,
                   width: 28,
                   height: 28,
                   bgcolor:
@@ -743,7 +672,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
         {hasPricing && (
           <Box
             sx={{
-              borderRadius: 2,
+              borderRadius: 0.2,
               border: "1px solid",
               borderColor: "divider",
               overflow: "hidden",
@@ -879,11 +808,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
 
         {/* Security deposit note */}
         {hasPricing && group?.pricing && (
-          <Typography
-            variant="caption"
-            color="text.secondary"
-            sx={{ textAlign: "center" }}
-          >
+          <Typography variant="caption" sx={{ textAlign: "center" }}>
             💡 Security deposit ₹
             {Number(group.pricing.security_deposit).toLocaleString("en-IN")}{" "}
             payable at property · fully refundable
@@ -898,7 +823,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
             size="large"
             onClick={handleProceedToBook}
             disabled={!quote || nights < 1 || quoteLoading}
-            sx={{ borderRadius: 2, fontWeight: 700, py: 1.25 }}
+            sx={{ borderRadius: 0.2, fontWeight: 700, py: 1.25 }}
           >
             {quoteLoading ? (
               <CircularProgress size={20} color="inherit" />
@@ -917,9 +842,10 @@ const BookingWidget: FC<BookingWidgetProps> = ({
           onClick={handleWhatsApp}
           startIcon={<WhatsApp />}
           sx={
-            !hasPricing
-              ? {
-                  borderRadius: 2,
+            hasPricing
+              ? { borderRadius: 0.2, fontWeight: 600, py: 1 }
+              : {
+                  borderRadius: 0.2,
                   fontWeight: 700,
                   py: 1.25,
                   bgcolor: "#25D366",
@@ -927,41 +853,12 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                   color: "#fff",
                   border: "none",
                 }
-              : { borderRadius: 2, fontWeight: 600, py: 1 }
           }
         >
           {hasPricing ? "Enquire on WhatsApp" : "Send Enquiry on WhatsApp"}
         </Button>
       </Box>
-
-      {/* ── Modal ───────────────────────────────────────────── */}
-      {quote && checkIn && checkOut && (
-        <GuestDetailsModal
-          open={modalOpen}
-          onClose={() => setModalOpen(false)}
-          loading={modalLoading}
-          error={modalError}
-          onConfirm={handleGuestConfirm}
-          quote={quote}
-          units={units}
-          summary={{
-            propertyName,
-            unitName: group?.display_unit.title ?? group?.type_label ?? "",
-            checkIn: checkIn.format("YYYY-MM-DD"),
-            checkOut: checkOut.format("YYYY-MM-DD"),
-            nights,
-            adults,
-            children,
-            infants,
-            securityDeposit: group?.pricing?.security_deposit ?? 0,
-            returnUrl:
-              typeof window !== "undefined"
-                ? window.location.pathname + window.location.search
-                : undefined,
-          }}
-        />
-      )}
-    </Box>
+    </div>
   );
 };
 

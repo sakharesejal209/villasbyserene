@@ -227,7 +227,7 @@ const ListYourProperty = () => {
                   With us, your property is always guest-ready and performing at
                   its best.
                 </Typography>
-                <StyledKPI className="flex items-center rounded-md gap-2 md:gap-4 p-2 md:p-6 mt-4">
+                <StyledKPI className="flex items-center rounded-sm gap-2 md:gap-4 p-2 md:p-6 mt-4">
                   <StyledKPICircle className="w-8 md:w-12 md:h-12 h-8 rounded-full flex items-center justify-center">
                     <CheckCircle className="md:w-6 w-3 md:h-6 h-3 !text-white" />
                   </StyledKPICircle>
@@ -283,7 +283,7 @@ const ListYourProperty = () => {
                           sx={{
                             backgroundColor: theme.palette.grey[600],
                           }}
-                          className={`w-14 h-14 rounded-md flex items-center justify-center mb-6`}
+                          className={`w-14 h-14 rounded-sm flex items-center justify-center mb-6`}
                         >
                           <IconComponent color="primary" />
                         </Box>
@@ -327,7 +327,7 @@ const ListYourProperty = () => {
                             sx={{
                               background: theme.palette.grey[600],
                             }}
-                            className="w-20 h-20 flex items-center rounded-md justify-center mx-auto mb-4"
+                            className="w-20 h-20 flex items-center rounded-sm justify-center mx-auto mb-4"
                           >
                             <IconComponent fontSize="large" />
                           </Box>

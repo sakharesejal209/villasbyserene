@@ -74,7 +74,7 @@ export default function DeletePropertyImages({
                       : [...prev, img.image_id],
                   )
                 }
-                className={`cursor-pointer border rounded-lg overflow-hidden ${
+                className={`cursor-pointer border rounded-sm overflow-hidden ${
                   selectedPropImages.includes(img.image_id)
                     ? "ring-4 ring-red-500"
                     : ""
@@ -114,7 +114,7 @@ export default function DeletePropertyImages({
                             : [...prev, unitimgs.image_id],
                         )
                       }
-                      className={`cursor-pointer border rounded-lg overflow-hidden ${
+                      className={`cursor-pointer border rounded-sm overflow-hidden ${
                         selectedUnitImages.includes(unitimgs.image_id)
                           ? "ring-4 ring-red-500"
                           : ""

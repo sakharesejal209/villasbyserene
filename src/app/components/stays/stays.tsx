@@ -1,12 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Box, Card, Divider, Typography, useTheme } from "@mui/material";
+import { useState } from "react";
+import {
+  Box,
+  Button,
+  Card,
+  Chip,
+  Divider,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import {
   PeopleAltOutlined as PeopleIcon,
   BedOutlined as BedIcon,
-  HouseOutlined as HouseIcon,
   ArrowForwardIosRounded,
+  CalendarMonthOutlined,
+  WhatsApp,
 } from "@mui/icons-material";
 import { startCase, camelCase } from "lodash";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -18,6 +27,7 @@ import { SwiperSlide } from "swiper/react";
 import propertyThemeMap from "@/lib/property-theme-config/propertyThemeConfig";
 import { getCardPrice } from "@/lib/pricing.utils.ts";
 import { BookingType, PropertyListItemDTO } from "@/app/@types";
+import dayjs from "dayjs";
 
 type StaysPropType = {
   location: string;
@@ -33,244 +43,364 @@ export const getAccomodation = (type: string) => {
     case "ENTIRE_HOME_AND_SEPARATE_ROOMS":
       return "Entire Home & Separate Rooms";
     default:
-      return "Unknown Type";
+      return type;
   }
 };
 
 function toPropertySlug(name: string, id: string): string {
-  const cleanName = name
+  return `${name
     .toLowerCase()
-    .replaceAll(/[^a-z0-9\s]/g, "") // remove special chars
-    .replaceAll(/\s+/g, "-") // spaces to hyphens
-    .replaceAll(/-+/g, "-") // collapse multiple hyphens
-    .trim();
-  const shortId = id.slice(0, 8); // first 8 chars of UUID
-  return `${cleanName}-${shortId}`;
+    .replaceAll(/[^a-z0-9\s]/g, "")
+    .replaceAll(/\s+/g, "-")
+    .replaceAll(/-+/g, "-")
+    .trim()}-${id.slice(0, 8)}`;
 }
 
-const Stays = (props: StaysPropType) => {
-  const { location, propertiesData } = props;
+const Stays = ({ location, propertiesData }: StaysPropType) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const theme = useTheme();
+  const [fits, setFits] = useState<Record<string, "cover" | "contain">>({});
 
-  const [fits, setFits] = useState<Record<number, "cover" | "contain">>({});
+  const checkIn = searchParams.get("checkIn");
+  const checkOut = searchParams.get("checkOut");
+  const nights =
+    checkIn && checkOut ? dayjs(checkOut).diff(dayjs(checkIn), "day") : null;
+
+  const buildUrl = (property: PropertyListItemDTO) => {
+    const slug = toPropertySlug(property.name, property.property_id);
+    const params = new URLSearchParams();
+    if (checkIn) params.set("checkIn", checkIn);
+    if (checkOut) params.set("checkOut", checkOut);
+    return `/property/${slug}${params.toString() ? `?${params.toString()}` : ""}`;
+  };
 
   const toPascalCase = (str: string) =>
     startCase(camelCase(str)).replaceAll(" ", "");
 
-  const handleSelect = (property: PropertyListItemDTO) => {
-    // Build clean slug URL
-    const slug = toPropertySlug(property.name, property.property_id);
-
-    // Carry checkIn/checkOut from current URL if present
-    const params = new URLSearchParams();
-    const checkIn = searchParams.get("checkIn");
-    const checkOut = searchParams.get("checkOut");
-    if (checkIn) params.set("checkIn", checkIn);
-    if (checkOut) params.set("checkOut", checkOut);
-
-    const qs = params.toString() ? `?${params.toString()}` : "";
-    router.push(`/property/${slug}${qs}`);
-  };
-
-  const handleImageLoad = (idx: number, img: HTMLImageElement) => {
-    const ratio = img.naturalWidth / img.naturalHeight;
-    setFits((prev) => ({ ...prev, [idx]: ratio < 1 ? "contain" : "cover" }));
-  };
+  const dateLabel =
+    checkIn && checkOut
+      ? `${dayjs(checkIn).format("DD MMM")} – ${dayjs(checkOut).format("DD MMM")}`
+      : null;
 
   return (
     <div className="col-span-12 md:col-span-9 w-full px-4 min-h-screen">
-      <div className="flex items-center gap-1">
-        <Typography variant="subtitle2" color="textSecondary">
-          <Link href={"/"}>Home</Link>
+      {/* Breadcrumb + heading */}
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          gap: 0.5,
+          mb: 2,
+          mt: { xs: 2, md: 0 },
+        }}
+      >
+        <Typography variant="caption" color="text.secondary">
+          <Link href="/">Home</Link>
         </Typography>
-        <Typography variant="subtitle2" color="textSecondary">
-          <ArrowForwardIosRounded sx={{ fontSize: "16px" }} />
-        </Typography>
-        <Typography variant="subtitle2" color="textSecondary">
+        <ArrowForwardIosRounded sx={{ fontSize: 10, color: "text.disabled" }} />
+        <Typography variant="caption" color="text.secondary">
           {location === "all"
             ? "All Properties"
             : `Properties in ${toPascalCase(location)}`}
         </Typography>
-      </div>
+      </Box>
 
-      {propertiesData?.length ? (
-        <>
-          <Typography variant="h4" className="my-4! md:my-6!">
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "flex-end",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          gap: 1,
+          mb: 3,
+        }}
+      >
+        <Box>
+          <Typography variant="h4" fontWeight={800}>
             {location === "all"
               ? "All Properties"
               : `Properties in ${toPascalCase(location)}`}
           </Typography>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {propertiesData.map((item) => (
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.25 }}>
+            {propertiesData.length} propert
+            {propertiesData.length === 1 ? "y" : "ies"} found
+          </Typography>
+        </Box>
+        {dateLabel && (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 0.75,
+              px: 1.5,
+              py: 0.75,
+              borderRadius: 2,
+              border: "1px solid",
+              borderColor: "divider",
+              bgcolor: "action.hover",
+            }}
+          >
+            <CalendarMonthOutlined
+              sx={{ fontSize: 15, color: "primary.main" }}
+            />
+            <Typography variant="body2" fontWeight={600}>
+              {dateLabel}
+              {nights && ` · ${nights} night${nights !== 1 ? "s" : ""}`}
+            </Typography>
+          </Box>
+        )}
+      </Box>
+
+      {propertiesData.length ? (
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr 1fr" },
+            gap: 3,
+          }}
+        >
+          {propertiesData.map((item) => {
+            const isDirect = item.booking_type === BookingType.DIRECT;
+            const priceResult = isDirect ? getCardPrice(item, checkIn) : null;
+            const url = buildUrl(item);
+
+            return (
               <Card
                 key={item.property_id}
+                elevation={0}
+                onClick={() => router.push(url)}
                 sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  borderRadius: 0.2,
+                  border: "1px solid",
+                  borderColor: "divider",
+                  overflow: "hidden",
+                  cursor: "pointer",
+                  transition: "all 0.2s ease",
                   "&:hover": {
-                    border: `1px solid ${theme.palette.primary.main}`,
-                    transition: "0.25s linear",
-                    cursor: "pointer",
+                    borderColor: "primary.main",
+                    boxShadow: `0 8px 32px ${theme.palette.primary.main}22`,
+                    transform: "translateY(-2px)",
                   },
                 }}
-                className="w-full flex flex-col group"
-                onClick={() => handleSelect(item)}
               >
-                {/* Images */}
-                <div>
+                {/* Image */}
+                <Box
+                  sx={{
+                    position: "relative",
+                    aspectRatio: "16/9",
+                    overflow: "hidden",
+                  }}
+                >
                   <Carousel slidesPerView={1}>
                     <>
                       {item.carousel_images.map((e, idx) => (
-                        <SwiperSlide key={idx} className="hover:cursor-pointer">
-                          <div className="relative w-full h-full md:aspect-[5.5/3] aspect-video">
+                        <SwiperSlide key={idx}>
+                          <Box
+                            sx={{
+                              position: "relative",
+                              width: "100%",
+                              aspectRatio: "16/9",
+                            }}
+                          >
                             <Image
-                              className="transition-transform duration-250 group-hover:scale-105"
-                              src={e == null ? "" : e.image_url}
-                              alt={e == null ? "alt text" : e.image_alt || ""}
+                              src={e?.image_url ?? ""}
+                              alt={e?.image_alt ?? item.name}
                               fill
                               style={{
-                                objectFit: fits?.[idx] || "cover",
+                                objectFit:
+                                  fits[`${item.property_id}-${idx}`] ?? "cover",
                                 objectPosition: "center",
+                                transition: "transform 0.3s ease",
                               }}
-                              onLoadingComplete={(img) =>
-                                handleImageLoad(idx, img)
-                              }
-                              sizes="100vw"
+                              onLoadingComplete={(img) => {
+                                const ratio =
+                                  img.naturalWidth / img.naturalHeight;
+                                setFits((prev) => ({
+                                  ...prev,
+                                  [`${item.property_id}-${idx}`]:
+                                    ratio < 1 ? "contain" : "cover",
+                                }));
+                              }}
+                              sizes="(max-width: 600px) 100vw, 50vw"
                               priority={idx === 0}
                             />
-                          </div>
+                          </Box>
                         </SwiperSlide>
                       ))}
                     </>
                   </Carousel>
-                </div>
+                </Box>
 
-                {/* Card content */}
-                <div className="flex flex-col justify-center p-4">
+                {/* Content */}
+                <Box
+                  sx={{
+                    p: 2.5,
+                    display: "flex",
+                    flexDirection: "column",
+                    flex: 1,
+                  }}
+                >
+                  {/* Name + location */}
                   <Typography
-                    color={
-                      theme.palette.mode === "light" ? "primary" : "secondary"
-                    }
                     variant="h6"
-                    className="hover:cursor-pointer select-none"
+                    fontWeight={700}
+                    sx={{ mb: 0.25, lineHeight: 1.3 }}
                   >
                     {item.name}
                   </Typography>
-                  <Typography>
-                    {item.area}, {item.state}, {item.country}
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mb: 1.5 }}
+                  >
+                    {item.area}, {item.state}
                   </Typography>
 
                   {/* Stats */}
-                  <div className="flex items-center gap-3 mt-4 mb-1 flex-wrap-reverse">
-                    <div className="flex items-center gap-1">
-                      <PeopleIcon sx={{ color: theme.palette.grey[100] }} />
-                      <Typography sx={{ color: theme.palette.grey[100] }}>
-                        {item.max_capacity}
+                  <Box sx={{ display: "flex", gap: 2, mb: 1.5 }}>
+                    <Box
+                      sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                    >
+                      <PeopleIcon
+                        sx={{ fontSize: 15, color: "text.secondary" }}
+                      />
+                      <Typography variant="caption" color="text.secondary">
+                        {item.max_capacity} guests
                       </Typography>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <BedIcon sx={{ color: theme.palette.grey[100] }} />
-                      <Typography sx={{ color: theme.palette.grey[100] }}>
-                        {item.bedroom_count}
+                    </Box>
+                    <Box
+                      sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+                    >
+                      <BedIcon sx={{ fontSize: 15, color: "text.secondary" }} />
+                      <Typography variant="caption" color="text.secondary">
+                        {item.bedroom_count} bedroom
+                        {item.bedroom_count !== 1 ? "s" : ""}
                       </Typography>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <HouseIcon sx={{ color: theme.palette.grey[100] }} />
-                      <Typography sx={{ color: theme.palette.grey[100] }}>
-                        {getAccomodation(item.accommodation_type)}
-                      </Typography>
-                    </div>
-                  </div>
+                    </Box>
+                  </Box>
 
-                  {!!item.themes.length && (
-                    <>
-                      <Divider />
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        {item.themes
-                          .filter((t) => t.theme_id !== "entireHome")
-                          .map((t) => (
-                            <Box
-                              key={t.theme_id}
-                              sx={{ fontWeight: "600", textAlign: "center" }}
-                              className="flex gap-3"
-                            >
-                              <Typography
-                                sx={{
-                                  background: theme.palette.grey[500],
-                                  paddingX: "8px",
-                                  borderRadius: "999px",
-                                }}
-                                variant="caption"
-                                className="font-normal!"
-                              >
-                                {propertyThemeMap[t.theme_id].label}
-                              </Typography>
-                            </Box>
-                          ))}
-                      </div>
-                    </>
+                  {/* Themes */}
+                  {!!item.themes.filter((t) => t.theme_id !== "entireHome")
+                    .length && (
+                    <Box
+                      sx={{
+                        display: "flex",
+                        gap: 0.75,
+                        flexWrap: "wrap",
+                        mb: 1.5,
+                      }}
+                    >
+                      {item.themes
+                        .filter((t) => t.theme_id !== "entireHome")
+                        .slice(0, 3)
+                        .map((t) => (
+                          <Chip
+                            key={t.theme_id}
+                            label={
+                              propertyThemeMap[t.theme_id]?.label ?? t.theme_id
+                            }
+                            size="small"
+                            variant="outlined"
+                            sx={{ fontSize: 11, height: 22, borderRadius: 1 }}
+                          />
+                        ))}
+                    </Box>
                   )}
 
-                  {/* Price */}
-                  <Divider sx={{ mt: 1.5, mb: 1 }} />
-                  {(() => {
-                    if (item.booking_type !== BookingType.DIRECT) {
-                      return (
-                        <Typography variant="body2" color="text.secondary">
+                  <Box sx={{ flex: 1 }} />
+                  <Divider sx={{ mb: 1.5 }} />
+
+                  {/* Price + CTA */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: 1,
+                    }}
+                  >
+                    {/* Price */}
+                    <Box>
+                      {!isDirect ? (
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          fontWeight={500}
+                        >
                           Enquire for pricing
                         </Typography>
-                      );
-                    }
-                    const checkIn = searchParams.get("checkIn");
-                    const priceResult = getCardPrice(item, checkIn);
-                    if (!priceResult) return null;
-                    return (
-                      <Box>
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "baseline",
-                            gap: 0.5,
-                          }}
-                        >
-                          {priceResult.type !== "starting" && (
+                      ) : priceResult ? (
+                        <>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "baseline",
+                              gap: 0.5,
+                            }}
+                          >
+                            {priceResult.type === "starting" && (
+                              <Typography
+                                variant="caption"
+                                color="text.secondary"
+                              >
+                                From
+                              </Typography>
+                            )}
+                            <Typography
+                              variant="h6"
+                              fontWeight={800}
+                              color="primary"
+                              lineHeight={1}
+                            >
+                              ₹{priceResult.price.toLocaleString("en-IN")}
+                            </Typography>
                             <Typography
                               variant="caption"
                               color="text.secondary"
                             >
-                              From
+                              /night
                             </Typography>
-                          )}
+                          </Box>
                           <Typography
-                            variant="body2"
-                            fontWeight={700}
-                            color="primary"
+                            variant="caption"
+                            color="text.secondary"
+                            sx={{ display: "block" }}
                           >
-                            ₹{priceResult.price.toLocaleString("en-IN")}
+                            {priceResult.label}
                           </Typography>
-                          <Typography variant="caption" color="text.secondary">
-                            /night
-                          </Typography>
-                        </Box>
-                        <Typography
-                          variant="caption"
-                          color="text.secondary"
-                          sx={{ display: "block", lineHeight: 1.3 }}
-                        >
-                          {priceResult.label}
-                        </Typography>
-                      </Box>
-                    );
-                  })()}
-                </div>
+                        </>
+                      ) : null}
+                    </Box>
+
+                    {/* CTA */}
+                    <Button
+                      variant="contained"
+                      size="small"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        router.push(url);
+                      }}
+                      startIcon={
+                        !isDirect ? (
+                          <WhatsApp sx={{ fontSize: "14px !important" }} />
+                        ) : undefined
+                      }
+                    >
+                      {isDirect ? "Book Now" : "Enquire Now"}
+                    </Button>
+                  </Box>
+                </Box>
               </Card>
-            ))}
-          </div>
-        </>
+            );
+          })}
+        </Box>
       ) : (
         <EmptyState
-          message="No properties"
-          description="Couldn't find properties for your search"
+          message="No properties found"
+          description="Try adjusting your filters or dates"
         />
       )}
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import { Swiper } from "swiper/react";
 
 import "swiper/css";
@@ -32,25 +32,38 @@ const Carousel: React.FC<CarouselPropType> = (props) => {
     children,
     autoplay = false,
     inverseControlsColor = false,
-    spaceBetween = 15
+    spaceBetween = 15,
   } = props;
   const theme = useTheme();
 
+  // Stop nav button clicks from bubbling to parent card
+  const handleNavClick = (e: React.MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (
+      target.closest(".swiper-button-next") ||
+      target.closest(".swiper-button-prev") ||
+      target.closest(".swiper-pagination")
+    ) {
+      e.stopPropagation();
+    }
+  };
+
   return (
     <Box
+      onClick={handleNavClick}
       sx={{
         width: "100%",
         aspectRatio: "auto",
-        "& .swiper-pagination-bullet": { 
+        "& .swiper-pagination-bullet": {
           backgroundColor: "rgba(255,255,255,0.5)",
           opacity: 1,
-          width: 10,
-          height: 10,
+          width: 8,
+          height: 8,
           [theme.breakpoints.down("md")]: {
-            width: 7,
-            height: 7,
+            width: 5,
+            height: 5,
             "&::after": {
-              fontSize: "7px",
+              fontSize: "5px",
             },
           },
         },
