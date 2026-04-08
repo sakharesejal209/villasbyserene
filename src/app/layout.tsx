@@ -126,7 +126,7 @@ const propertiesData = await propertiesService.getProperties();
       <body className="flex flex-col min-h-screen">
         <ClientProviders propertiesData={propertiesData}>
           <Navbar />
-          <main>{children}</main>
+          <main className="min-h-screen">{children}</main>
           <Footer />
         </ClientProviders>
       </body>

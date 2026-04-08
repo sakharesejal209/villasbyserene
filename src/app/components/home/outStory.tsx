@@ -20,7 +20,7 @@ function Counter({
 }: Readonly<{ target: number; suffix?: string }>) {
   const count = useMotionValue(0);
   const rounded = useTransform(count, (latest) =>
-    target % 1 === 0 ? Math.round(latest) : latest.toFixed(1)
+    target % 1 === 0 ? Math.round(latest) : latest.toFixed(1),
   );
 
   useEffect(() => {
@@ -77,10 +77,10 @@ export const AboutPage = () => {
   ];
 
   return (
-    <div className="mt-[40px] md:mt-[70px]">
-      {/* Hero Section */}
-      <section>
-        <div className="container">
+    <section className="pb-0!">
+      <div className="container my-12">
+        {/* Hero Section */}
+        <div className="">
           <FadeInSection>
             <div className="grid lg:grid-cols-2 gap-2 md:gap-10 items-center">
               <div className="md:pl-10 md:py-10">
@@ -117,7 +117,7 @@ export const AboutPage = () => {
                 </div>
               </div>
 
-              <div className="relative h-[200px] md:h-[350px]">
+              <div className="relative h-50 md:h-87.5">
                 <Image
                   src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/deena-villa%2Fdeena-swimmingpool1.webp?alt=media&token=6b522cd1-cb79-4a5d-825b-a8d67e76a0ac"
                   alt="Villa with pool"
@@ -134,10 +134,10 @@ export const AboutPage = () => {
             </div>
           </FadeInSection>
         </div>
-      </section>
+      </div>
 
       {/* Stats Section */}
-      <section className="md:!py-4 !py-0">
+      <div className="my-12">
         <Paper
           className={`py-10 ${
             theme.palette.mode == "light"
@@ -169,10 +169,10 @@ export const AboutPage = () => {
             </FadeInSection>
           </div>
         </Paper>
-      </section>
+      </div>
 
       {/* Our Story Section */}
-      <section>
+      <div className="my-12">
         <div className="container">
           <FadeInSection>
             <div className="mb-0 md:mb-6">
@@ -231,10 +231,10 @@ export const AboutPage = () => {
             </div>
           </FadeInSection>
         </div>
-      </section>
+      </div>
 
       {/* Values Section */}
-      <section>
+      <div className="my-12">
         <div className="container">
           <FadeInSection>
             <Typography variant="h4" className="!mb-3 text-center">
@@ -276,10 +276,10 @@ export const AboutPage = () => {
             </div>
           </FadeInSection>
         </div>
-      </section>
+      </div>
 
       {/* Vision Section */}
-      <section>
+      <div className="my-12">
         <div className="container">
           <FadeInSection>
             <div className="max-w-4xl mx-auto text-center">
@@ -294,12 +294,12 @@ export const AboutPage = () => {
             </div>
           </FadeInSection>
         </div>
-      </section>
+      </div>
 
       {/* CTA Section */}
-      <section
+      <div
         className={`text-white p-6
-        bg-[#3b3a3b]
+        bg-[#3b3a3b] mt-12
         `}
       >
         <div className="container">
@@ -328,7 +328,7 @@ export const AboutPage = () => {
             </Button>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 };

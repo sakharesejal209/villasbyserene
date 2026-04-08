@@ -6,6 +6,7 @@ export interface AuthUser {
   full_name: string;
   email: string;
   profile_image: string | null;
+  phone: string
 }
 
 interface UseAuthReturn {

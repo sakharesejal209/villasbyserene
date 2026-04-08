@@ -128,7 +128,6 @@ const BookingConfirmed: FC<{ bookingId: string }> = ({ bookingId }) => {
           alignItems: "center",
           minHeight: "80vh",
           p: 2,
-          marginTop: "30px"
         }}
       >
         <Paper
@@ -143,7 +142,7 @@ const BookingConfirmed: FC<{ bookingId: string }> = ({ bookingId }) => {
           {/* Success header */}
           <Box
             sx={{
-              bgcolor: "success.main",
+              bgcolor: "primary.main",
               p: 4,
               display: "flex",
               flexDirection: "column",
@@ -246,15 +245,16 @@ const BookingConfirmed: FC<{ bookingId: string }> = ({ bookingId }) => {
               <Button
                 variant="contained"
                 fullWidth
+                color="success"
                 startIcon={<WhatsApp />}
                 onClick={handleWhatsApp}
-                sx={{
-                   borderRadius: 0.2,
-                  fontWeight: 700,
-                  py: 1.25,
-                  bgcolor: "#25D366",
-                  "&:hover": { bgcolor: "#1ebe5d" },
-                }}
+                // sx={{
+                //    borderRadius: 0.2,
+                //   fontWeight: 700,
+                //   py: 1.25,
+                //   bgcolor: "success.main",
+                //   "&:hover": { bgcolor: "success.light" },
+                // }}
               >
                 Message us on WhatsApp
               </Button>

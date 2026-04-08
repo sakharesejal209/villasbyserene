@@ -141,12 +141,12 @@ const StaysSearchBox: FC<StaysSearchBoxProps> = ({
       <Card className="p-3">
         {/* Header */}
         <div className="md:hidden flex justify-between items-center">
-          <Typography variant="h6">Filters</Typography>
+          <Typography variant="h5">Filters</Typography>
           <IconButton onClick={() => setopenFilters(false)}>
             <CloseOutlined />
           </IconButton>
         </div>
-        <Typography className="hidden md:block" variant="h6">
+        <Typography className="hidden md:block" variant="h5">
           Filters
         </Typography>
 

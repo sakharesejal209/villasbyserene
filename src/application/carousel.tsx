@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React from "react";
 import { Swiper } from "swiper/react";
 
 import "swiper/css";
@@ -77,22 +77,28 @@ const Carousel: React.FC<CarouselPropType> = (props) => {
             ? {
                 color: "inherit",
                 borderRadius: "50%",
-                width: 32,
-                height: 32,
+                width: 15,
+                height: 15,
                 "&::after": {
-                  fontSize: "20px",
+                  fontSize: "12px",
                   fontWeight: "600",
                   zIndex: "800",
+                  background: "rgba(0, 0, 0, 0.5)",
+                  borderRadius: "100%",
+                  padding: "4px 6px"
                 },
               }
             : {
                 color: "#ffffff",
-                width: 32,
-                height: 32,
+                width: 15,
+                height: 15,
                 "&::after": {
-                  fontSize: "20px",
+                  fontSize: "12px",
                   fontWeight: "600",
                   zIndex: "800",
+                  background: "rgba(0, 0, 0, 0.5)",
+                  borderRadius: "100%",
+                  padding: "4px 6px"
                 },
               }),
 

@@ -38,12 +38,12 @@ interface FormValues {
 }
 
 export interface WidgetState {
-  checkIn:    string | null;
-  checkOut:   string | null;
-  adults:     number;
-  children:   number;
-  infants:    number;
-  nights:     number;
+  checkIn: string | null;
+  checkOut: string | null;
+  adults: number;
+  children: number;
+  infants: number;
+  nights: number;
   totalPrice: number | null;
 }
 
@@ -195,7 +195,6 @@ const BookingWidget: FC<BookingWidgetProps> = ({
   const [quote, setQuote] = useState<BookingQuoteDTO | null>(null);
   const [quoteLoading, setQuoteLoading] = useState(false);
   const [quoteError, setQuoteError] = useState<string | null>(null);
-  const [processing, serProcessing] = useState(false);
 
   // ui
   const [guestAnchor, setGuestAnchor] = useState<HTMLElement | null>(null);
@@ -314,7 +313,6 @@ const BookingWidget: FC<BookingWidgetProps> = ({
 
   // navigate to checkout — state encrypted in URL (shareable)
   const handleProceedToBook = () => {
-    serProcessing(true)
     if (!quote || nights < 1 || !group) return;
     const token = encryptCheckout({
       propertyId,
@@ -327,7 +325,6 @@ const BookingWidget: FC<BookingWidgetProps> = ({
       rooms: units,
     });
     router.push(`/checkout?b=${token}`);
-    serProcessing(false)
   };
 
   return (
@@ -451,11 +448,6 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                     </Typography>
                   )}
                 </Box>
-                {selected && (
-                  <CheckCircleOutlined
-                    sx={{ color: "primary.main", fontSize: 18, flexShrink: 0 }}
-                  />
-                )}
               </Box>
             );
           })}

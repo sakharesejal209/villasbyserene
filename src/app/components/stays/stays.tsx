@@ -26,12 +26,16 @@ import { Carousel, EmptyState } from "@/application/default";
 import { SwiperSlide } from "swiper/react";
 import propertyThemeMap from "@/lib/property-theme-config/propertyThemeConfig";
 import { getCardPrice } from "@/lib/pricing.utils.ts";
-import { BookingType, PropertyListItemDTO } from "@/app/@types";
+import {
+  BookingType,
+  PropertyDetailDTO,
+  PropertyListItemDTO,
+} from "@/app/@types";
 import dayjs from "dayjs";
 
 type StaysPropType = {
   location: string;
-  propertiesData: PropertyListItemDTO[];
+  propertiesData: PropertyDetailDTO[];
 };
 
 export const getAccomodation = (type: string) => {
@@ -95,11 +99,11 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
           mt: { xs: 2, md: 0 },
         }}
       >
-        <Typography variant="caption" color="text.secondary">
+        <Typography variant="body2" color="text.secondary">
           <Link href="/">Home</Link>
         </Typography>
         <ArrowForwardIosRounded sx={{ fontSize: 10, color: "text.disabled" }} />
-        <Typography variant="caption" color="text.secondary">
+        <Typography variant="body2" color="text.secondary">
           {location === "all"
             ? "All Properties"
             : `Properties in ${toPascalCase(location)}`}
@@ -162,14 +166,16 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
         >
           {propertiesData.map((item) => {
             const isDirect = item.booking_type === BookingType.DIRECT;
-            const priceResult = isDirect ? getCardPrice(item, checkIn) : null;
+            const priceResult = getCardPrice(item, checkIn);
             const url = buildUrl(item);
+            console.log("priceResult:", priceResult);
 
             return (
               <Card
                 key={item.property_id}
                 elevation={0}
                 onClick={() => router.push(url)}
+                className="group"
                 sx={{
                   display: "flex",
                   flexDirection: "column",
@@ -179,11 +185,11 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
                   overflow: "hidden",
                   cursor: "pointer",
                   transition: "all 0.2s ease",
-                  "&:hover": {
-                    borderColor: "primary.main",
-                    boxShadow: `0 8px 32px ${theme.palette.primary.main}22`,
-                    transform: "translateY(-2px)",
-                  },
+                  // "&:hover": {
+                  //   borderColor: "primary.main",
+                  //   boxShadow: `0 8px 32px ${theme.palette.primary.main}22`,
+                  //   transform: "scale(0.95)",
+                  // },
                 }}
               >
                 {/* Image */}
@@ -209,6 +215,7 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
                               src={e?.image_url ?? ""}
                               alt={e?.image_alt ?? item.name}
                               fill
+                              className="transition-transform! duration-300! group-hover:scale-105"
                               style={{
                                 objectFit:
                                   fits[`${item.property_id}-${idx}`] ?? "cover",
@@ -245,14 +252,14 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
                 >
                   {/* Name + location */}
                   <Typography
-                    variant="h6"
-                    fontWeight={700}
+                    variant="h5"
+                    // fontWeight={700}
                     sx={{ mb: 0.25, lineHeight: 1.3 }}
                   >
                     {item.name}
                   </Typography>
                   <Typography
-                    variant="body2"
+                    variant="body1"
                     color="text.secondary"
                     sx={{ mb: 1.5 }}
                   >
@@ -267,7 +274,7 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
                       <PeopleIcon
                         sx={{ fontSize: 15, color: "text.secondary" }}
                       />
-                      <Typography variant="caption" color="text.secondary">
+                      <Typography variant="body2" color="text.secondary">
                         {item.max_capacity} guests
                       </Typography>
                     </Box>
@@ -275,9 +282,9 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
                       sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
                     >
                       <BedIcon sx={{ fontSize: 15, color: "text.secondary" }} />
-                      <Typography variant="caption" color="text.secondary">
+                      <Typography variant="body2" color="text.secondary">
                         {item.bedroom_count} bedroom
-                        {item.bedroom_count !== 1 ? "s" : ""}
+                        {item.bedroom_count === 1 ? "" : "s"}
                       </Typography>
                     </Box>
                   </Box>
@@ -322,17 +329,8 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
                       gap: 1,
                     }}
                   >
-                    {/* Price */}
                     <Box>
-                      {!isDirect ? (
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          fontWeight={500}
-                        >
-                          Enquire for pricing
-                        </Typography>
-                      ) : priceResult ? (
+                      {priceResult ? (
                         <>
                           <Box
                             sx={{
@@ -350,10 +348,9 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
                               </Typography>
                             )}
                             <Typography
-                              variant="h6"
-                              fontWeight={800}
+                              variant="h5"
+                              fontWeight={600}
                               color="primary"
-                              lineHeight={1}
                             >
                               ₹{priceResult.price.toLocaleString("en-IN")}
                             </Typography>
@@ -361,18 +358,19 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
                               variant="caption"
                               color="text.secondary"
                             >
-                              /night
+                              {isDirect ? "/ night" : "Onwards"}
                             </Typography>
                           </Box>
-                          <Typography
-                            variant="caption"
-                            color="text.secondary"
-                            sx={{ display: "block" }}
-                          >
-                            {priceResult.label}
-                          </Typography>
                         </>
-                      ) : null}
+                      ) : (
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          fontWeight={500}
+                        >
+                          Enquire for pricing
+                        </Typography>
+                      )}
                     </Box>
 
                     {/* CTA */}
@@ -384,9 +382,9 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
                         router.push(url);
                       }}
                       startIcon={
-                        !isDirect ? (
+                        isDirect ? undefined : (
                           <WhatsApp sx={{ fontSize: "14px !important" }} />
-                        ) : undefined
+                        )
                       }
                     >
                       {isDirect ? "Book Now" : "Enquire Now"}

@@ -47,36 +47,6 @@ const Login = () => {
   };
 
   return (
-    // <div className="p-8 ">
-    //   <div className="flex flex-col items-center">
-    //     <Image
-    //       src={theme.palette.mode === "light" ? darkImg : lightImg}
-    //       alt="VillasBySerene: Your boutique getaway!"
-    //       width={150}
-    //     />
-    //     <h1 className="text-xl mt-8 my-3">Admin Login</h1>
-    //     <div>
-    //       <TextField
-    //         label="Password"
-    //         type="password"
-    //         value={password}
-    //         onChange={(e) => setPassword(e.target.value)}
-    //       />
-    //       <div>
-    //         {error && (
-    //           <div className="text-red-600 text-xs ml-1 mb-6">{error}</div>
-    //         )}
-    //       </div>
-    //       <Button
-    //         className="w-full !mt-4"
-    //         variant="contained"
-    //         onClick={handleLogin}
-    //       >
-    //         Login
-    //       </Button>
-    //     </div>
-    //   </div>
-    // </div>
     <section>
       <div className="min-h-screen flex justify-center items-center overflow-hidden bg-[#044231]">
         <div className="max-w-md mx-auto px-4 py-12">

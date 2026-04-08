@@ -29,7 +29,6 @@ import {
   PoolOutlined as PoolIcon,
   ArrowRightOutlined as ArrowRight,
   ExpandMoreOutlined as ExpandMoreIcon,
-  EventAvailableOutlined as Available,
 } from "@mui/icons-material";
 import { SlLocationPin } from "react-icons/sl";
 import { motion } from "motion/react";
@@ -43,15 +42,9 @@ import ImageGallery from "./ImageGallery";
 import CancellationPolicy from "../cancellation-policy/CancellationPolicy";
 import BookingWidget, { WidgetState } from "./BookingWidget";
 import dayjs from "dayjs";
-import { getPriceForDate } from "@/lib/pricing.utils.ts";
 import { BookingType, PropertyDetailDTO } from "@/app/@types";
 import { useSearchParams } from "next/navigation";
-import {
-  BiLeftArrow,
-  BiSolidArrowToLeft,
-  BiSolidLeftArrowAlt,
-} from "react-icons/bi";
-import { IoArrowBackOutline, IoChevronBack } from "react-icons/io5";
+import { IoArrowBackOutline } from "react-icons/io5";
 
 // ── Types ─────────────────────────────────────────────────────────
 
@@ -69,7 +62,7 @@ type UnitImagesMap = {
 
 // ── Styled ────────────────────────────────────────────────────────
 
-const Customsection = styled("section")<CustomSectionProps>(
+const Customsection = styled("div")<CustomSectionProps>(
   ({ background }) => ({
     backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${background})`,
     backgroundRepeat: "no-repeat",
@@ -185,7 +178,7 @@ const Property: FC<PropertyPropType> = ({
   }, [searchParams]);
 
   return (
-    <div>
+    <section>
       <Customsection background={bannerUrl}>
         <div className="container p-4 md:p-0">
           <div className="text-white slide-bottom">
@@ -779,7 +772,7 @@ const Property: FC<PropertyPropType> = ({
           />
         </Box>
       </Drawer>
-    </div>
+    </section>
   );
 };
 

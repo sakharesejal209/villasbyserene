@@ -249,6 +249,7 @@ const BookingPage: FC = () => {
     if (user) {
       if (user.full_name) setFormValue("name", user.full_name);
       if (user.email) setFormValue("email", user.email);
+      if (user.email) setFormValue("phone", user.phone);
     }
   }, [user, setFormValue]);
 
@@ -394,7 +395,7 @@ const BookingPage: FC = () => {
   // ── Render ────────────────────────────────────────────────────
   return (
     <section>
-      <div className="container mt-6">
+      <div className="container mt-4">
         {/* Back */}
         <Button
           startIcon={<ArrowBackOutlined />}
@@ -508,7 +509,6 @@ const BookingPage: FC = () => {
                       color="text.secondary"
                       sx={{
                         textTransform: "uppercase",
-                        letterSpacing: 0.8,
                         display: "block",
                         mb: 0.25,
                       }}
@@ -540,7 +540,6 @@ const BookingPage: FC = () => {
                       color="text.secondary"
                       sx={{
                         textTransform: "uppercase",
-                        letterSpacing: 0.8,
                         display: "block",
                         mb: 0.25,
                       }}
@@ -987,7 +986,6 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
               </Typography>
               <Button
                 variant="outlined"
-                size="small"
                 startIcon={<WhatsApp sx={{ color: "#25D366" }} />}
                 onClick={() =>
                   window.open(
@@ -1162,7 +1160,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                             </Box>
                           ))}
                         <Divider sx={{ my: 0.5 }} />
-                        {/* <Box
+                        <Box
                           sx={{
                             display: "flex",
                             justifyContent: "space-between",
@@ -1178,7 +1176,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                           >
                             {formatINR(totalPayable)}
                           </Typography>
-                        </Box> */}
+                        </Box>
                       </Box>
                     </Collapse>
 
@@ -1248,8 +1246,8 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                   <Box
                     sx={{
                       display: "flex",
-                      flexDirection: { xs: "column", sm: "row" },
-                      gap: 1,
+                      flexDirection: { xs: "column", },
+                      gap: 2,
                     }}
                   >
                     <Controller

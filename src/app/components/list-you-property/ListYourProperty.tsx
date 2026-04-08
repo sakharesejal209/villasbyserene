@@ -41,7 +41,7 @@ const services = [
     icon: Users,
     title: "Staff Hiring & Training",
     description:
-      "From housekeeping to service staff—we hire, train, and supervise so your guests get a 5-star experience.",
+      "From housekeeping to service staff, we hire, train, and supervise so your guests get a 5-star experience.",
   },
   {
     icon: Camera,
@@ -53,7 +53,7 @@ const services = [
     icon: Calendar,
     title: "Guest Bookings & Payments",
     description:
-      "We handle inquiries, reservations, calendar blocking, and secure payments—no stress, no confusion.",
+      "We handle inquiries, reservations, calendar blocking, and secure payments! No stress, no confusion.",
   },
   {
     icon: Heart,
@@ -81,7 +81,7 @@ const steps = [
     number: "02",
     title: "We Set It Up",
     description:
-      "Professional photoshoot, staff training, and listing creation—we prepare your villa for success.",
+      "Professional photoshoot, staff training, and listing creation, we prepare your villa for success.",
     icon: Settings,
   },
   {
@@ -121,10 +121,10 @@ const ListYourProperty = () => {
   }));
 
   return (
-    <div>
-      <section
+    <section className="p-0!">
+      <div
         ref={heroRef}
-        className="relative min-h-[100vh] flex items-center justify-center overflow-hidden"
+        className="relative min-h-screen flex items-center justify-center overflow-hidden"
       >
         <motion.div className="absolute inset-0" style={{ y: heroY }}>
           <Image
@@ -145,7 +145,7 @@ const ListYourProperty = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Typography variant="h3" className="!mb-2">
+            <Typography variant="h3" className="mb-2!">
               List Your Home With Us
             </Typography>
           </motion.div>
@@ -155,55 +155,38 @@ const ListYourProperty = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Typography className="!text-lg">
-              Turn Your Villa Into a Hassle-Free Income Source
+            <Typography className="md:text-lg! my-4!">
+              Turn Your Villa Into a Hassle-Free Income Source!
             </Typography>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            style={{ width: "70%", textAlign: "center" }}
-          >
-            <Typography className="!text-lg">
+          <div className="text-center md:w-[70%]">
+            <Typography className="md:text-lg! my-4!">
               Owning a beautiful property shouldn&apos;t feel like a full-time
               job. We take care of the day-to-day operations, marketing, and
               guest management so you can enjoy steady returns without the
               stress.
             </Typography>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="mb-8"
-          >
-            <div className="bg-white/10 backdrop-blur-sm border border-white/20 mt-4 p-4 inline-block">
-              <Typography variant="subtitle1">You earn. We manage.</Typography>
-            </div>
-          </motion.div>
+          <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-4 inline-block my-4">
+            <Typography variant="subtitle1">You earn. We manage.</Typography>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+          <Button
+            // className="my-4!"
+            variant="contained"
+            size="large"
+            onClick={() => router.push("/contact")}
           >
-            <Button
-              variant="contained"
-              size="large"
-              onClick={() => router.push("/contact")}
-            >
-              Get Started Today
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-          </motion.div>
+            Get Started Today
+            <ArrowRight className="w-5 h-5 ml-2" />
+          </Button>
         </motion.div>
-      </section>
+      </div>
 
       {/* Why Partner Section */}
-      <section>
+      <div className="my-14">
         <div className="container mx-auto md:!px-16">
           <FadeInSection>
             <div className="flex flex-col items-center justify-center mb-6 text-center">
@@ -219,11 +202,11 @@ const ListYourProperty = () => {
             <div className="relative grid md:grid-cols-2 md:gap-12 items-center">
               {/* <FadeInSection> */}
               <div className="md:p-10 order-2 md:order-1 ">
-                <Typography variant="h5">
+                <Typography className="mt-4! md:mt-0! md:text-lg!">
                   We specialize in end-to-end property management for owners who
                   don&apos;t have the time to handle everything themselves.
                 </Typography>
-                <Typography className="!text-lg !mt-2">
+                <Typography className="mt-2! md:text-lg!">
                   With us, your property is always guest-ready and performing at
                   its best.
                 </Typography>
@@ -256,10 +239,10 @@ const ListYourProperty = () => {
             </div>
           </FadeInSection>
         </div>
-      </section>
+      </div>
 
       {/* Services Section */}
-      <section>
+      <div className="my-14">
         <div className="container mx-auto px-4">
           <FadeInSection>
             <div className="text-center mb-8">
@@ -299,10 +282,10 @@ const ListYourProperty = () => {
             </div>
           </FadeInSection>
         </div>
-      </section>
+      </div>
 
       {/* 3 steps */}
-      <section>
+      <div className="my-14">
         <div className="container mx-auto px-4">
           <FadeInSection>
             <div className="text-center mb-10 md:mb-12">
@@ -368,10 +351,10 @@ const ListYourProperty = () => {
             </div>
           </FadeInSection>
         </div>
-      </section>
+      </div>
 
       {/* Success priority */}
-      <section>
+      <div className="my-14">
         <div className="container">
           <FadeInSection>
             <div className="grid md:grid-cols-2 lg:px-[150px]">
@@ -408,10 +391,11 @@ const ListYourProperty = () => {
             </div>
           </FadeInSection>
         </div>
-      </section>
+      </div>
 
       {/* CTA Section */}
-      <section
+      <div
+        className="my-14"
         className={`text-white p-6
         ${
           theme.palette.mode == "light"
@@ -454,8 +438,8 @@ const ListYourProperty = () => {
             </div>
           </FadeInSection>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 };
 

@@ -1,3 +1,4 @@
+import { UserBookingDTO } from "@/app/@types/user";
 import httpService from "../http-service";
 
 export interface CreateBookingPayload {
@@ -66,6 +67,14 @@ class BookingService {
     return httpService<{ available: boolean }>().get(
       `/booking/check-availability/${unitId}?checkIn=${checkIn}&checkOut=${checkOut}`,
     );
+  };
+
+  getUserBookings = () => {
+    return httpService<UserBookingDTO[]>().get("/booking/my-bookings");
+  };
+
+  cancelBooking = (cancelTargetId: string) => {
+    return httpService().put(`/booking/${cancelTargetId}/cancel`);
   };
 }
 
