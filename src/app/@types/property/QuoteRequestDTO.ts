@@ -5,4 +5,5 @@ export default interface QuoteRequestDTO {
   adults: number;
   children: number;
   hasPet: boolean;
+  rooms?: number;
 }

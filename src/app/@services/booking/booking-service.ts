@@ -12,6 +12,7 @@ export interface CreateBookingPayload {
   adultCount: number;
   kidsCount: number;
   petCount: number;
+  rooms: number;
 }
 
 export interface CreateBookingResponse {
@@ -45,27 +46,27 @@ export interface VerifyPaymentResponse {
 // ── Service ───────────────────────────────────────────────────────
 
 class BookingService {
-  async createBooking(
-    payload: CreateBookingPayload,
-    idempotencyKey: string,
-  ): Promise<CreateBookingResponse> {
+  createBooking(payload: CreateBookingPayload, idempotencyKey: string) {
     return httpService<CreateBookingResponse>().post("/booking", payload, {
       headers: { "idempotency-key": idempotencyKey },
     });
   }
 
-  async verifyPayment(
-    payload: VerifyPaymentPayload,
-  ): Promise<VerifyPaymentResponse> {
+  verifyPayment(payload: VerifyPaymentPayload) {
     return httpService<VerifyPaymentResponse>().post(
       "/payment/verify",
       payload,
     );
   }
 
-  checkAvailability = (unitId: string, checkIn: string, checkOut: string) => {
+  checkAvailability = (
+    unitId: string,
+    checkIn: string,
+    checkOut: string,
+    userParam: string,
+  ) => {
     return httpService<{ available: boolean }>().get(
-      `/booking/check-availability/${unitId}?checkIn=${checkIn}&checkOut=${checkOut}`,
+      `/booking/check-availability/${unitId}?checkIn=${checkIn}&checkOut=${checkOut}${userParam}`,
     );
   };
 

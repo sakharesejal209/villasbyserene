@@ -36,14 +36,15 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { useRazorpay } from "@/hooks/useRazorpay";
 import { formatINR } from "@/app/components/property/BookingWidget";
-import { decryptCheckout } from "@/lib/crypto/checkout-crypto";
-import { PropertyDetailDTO } from "@/app/@types";
-import { BookingQuoteDTO } from "@/app/@types/booking/BookingQuoteDTO";
+import type { BookingQuoteDTO, PropertyDetailDTO } from "@/app/@types";
 import {
   bookingService,
   httpService,
   propertiesService,
 } from "@/app/@services";
+import { decryptCheckout } from "@/lib/crypto/checkout-crypto";
+
+// ── Types ─────────────────────────────────────────────────────────
 
 interface GuestForm {
   name: string;
@@ -65,7 +66,7 @@ const Section: FC<{
   return (
     <Box
       sx={{
-        borderRadius: 0.5,
+        borderRadius: 2,
         border: "1px solid",
         borderColor: "divider",
         overflow: "hidden",
@@ -178,6 +179,7 @@ const BookingPage: FC = () => {
   const [availability, setAvailability] =
     useState<AvailabilityStatus>("checking");
   const [paying, setPaying] = useState(false);
+  const [verifying, setVerifying] = useState(false); // between Razorpay close → confirmation
   const [payError, setPayError] = useState<string | null>(null);
   const [breakdownOpen, setBreakdownOpen] = useState(false);
   const [houseRulesOpen, setHouseRulesOpen] = useState(false);
@@ -216,6 +218,7 @@ const BookingPage: FC = () => {
         adults,
         children,
         hasPet: false,
+        rooms: units, // pass rooms so extra guest charge is calculated correctly
       }),
     ])
       .then(([prop, q]) => {
@@ -249,7 +252,6 @@ const BookingPage: FC = () => {
     if (user) {
       if (user.full_name) setFormValue("name", user.full_name);
       if (user.email) setFormValue("email", user.email);
-      if (user.email) setFormValue("phone", user.phone);
     }
   }, [user, setFormValue]);
 
@@ -285,6 +287,7 @@ const BookingPage: FC = () => {
           adultCount: adults,
           kidsCount: children,
           petCount: 0,
+          rooms: units, // number of rooms for resort bookings
         },
         idempotencyKey,
       );
@@ -314,6 +317,8 @@ const BookingPage: FC = () => {
         },
         theme: { color: "#1B4332" },
         handler: async (response) => {
+          // Show full-screen loader immediately — user paid, don't leave them hanging
+          setVerifying(true);
           try {
             await bookingService.verifyPayment({
               razorpay_order_id: response.razorpay_order_id,
@@ -330,8 +335,9 @@ const BookingPage: FC = () => {
             });
             router.push(`/booking/confirmed/${booking.bookingId}`);
           } catch {
-            setPayError("Payment verification failed. Please contact support.");
+            setVerifying(false);
             setPaying(false);
+            setPayError("Payment verification failed. Please contact support.");
           }
         },
         modal: {
@@ -376,7 +382,7 @@ const BookingPage: FC = () => {
 
   const foodMenu = property?.food_menus?.[0];
   const houseRules = property?.house_rules ?? [];
-  const totalPayable = quote ? quote.total * units : 0;
+  const totalPayable = quote?.total ?? 0; // backend already multiplies by rooms
 
   // Selected unit details
   const selectedUnitGroup = property?.unit_groups?.find(
@@ -392,6 +398,34 @@ const BookingPage: FC = () => {
     selectedUnitGroup?.type_label ??
     "";
 
+  // ── Full screen verifying overlay ────────────────────────────
+  if (verifying)
+    return (
+      <Box
+        sx={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 9999,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          bgcolor: "background.default",
+          gap: 3,
+        }}
+      >
+        <CircularProgress size={56} thickness={4} />
+        <Box sx={{ textAlign: "center" }}>
+          <Typography variant="h6" fontWeight={700} sx={{ mb: 0.5 }}>
+            Confirming your booking...
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            Please don&apos;t close this tab. This may take a few seconds.
+          </Typography>
+        </Box>
+      </Box>
+    );
+
   // ── Render ────────────────────────────────────────────────────
   return (
     <section>
@@ -400,7 +434,7 @@ const BookingPage: FC = () => {
         <Button
           startIcon={<ArrowBackOutlined />}
           onClick={() => router.back()}
-          sx={{ mb: 2, color: "text.secondary", fontWeight: 600 }}
+          sx={{ mb: 2.5, color: "text.secondary", fontWeight: 600 }}
         >
           Back to property
         </Button>
@@ -425,6 +459,17 @@ const BookingPage: FC = () => {
             different dates.
           </Alert>
         )}
+        {availability === "available" && (
+          <Alert
+            severity="success"
+            icon={<CheckCircleOutlined />}
+            sx={{ mb: 2 }}
+          >
+            Dates available — availability is confirmed again just before
+            payment.
+          </Alert>
+        )}
+
         <Box
           sx={{
             display: "grid",
@@ -440,7 +485,7 @@ const BookingPage: FC = () => {
               elevation={0}
               sx={{
                 mb: 2,
-                borderRadius: 0.5,
+                borderRadius: 2,
                 border: "1px solid",
                 borderColor: "divider",
                 overflow: "hidden",
@@ -509,6 +554,7 @@ const BookingPage: FC = () => {
                       color="text.secondary"
                       sx={{
                         textTransform: "uppercase",
+                        letterSpacing: 0.8,
                         display: "block",
                         mb: 0.25,
                       }}
@@ -540,6 +586,7 @@ const BookingPage: FC = () => {
                       color="text.secondary"
                       sx={{
                         textTransform: "uppercase",
+                        letterSpacing: 0.8,
                         display: "block",
                         mb: 0.25,
                       }}
@@ -595,7 +642,7 @@ const BookingPage: FC = () => {
                 sx={{
                   mb: 2,
                   p: 2.5,
-                  borderRadius: 0.5,
+                  borderRadius: 2,
                   border: "1px solid",
                   borderColor: "divider",
                 }}
@@ -682,22 +729,22 @@ const BookingPage: FC = () => {
                 >
                   {foodMenu.breakfast_time && (
                     <Typography variant="body2" color="text.secondary">
-                      Breakfast · {foodMenu.breakfast_time}
+                      🍳 Breakfast · {foodMenu.breakfast_time}
                     </Typography>
                   )}
                   {foodMenu.lunch_time && (
                     <Typography variant="body2" color="text.secondary">
-                      Lunch · {foodMenu.lunch_time}
+                      🍽 Lunch · {foodMenu.lunch_time}
                     </Typography>
                   )}
                   {foodMenu.hightea_time && (
                     <Typography variant="body2" color="text.secondary">
-                      High Tea · {foodMenu.hightea_time}
+                      ☕ High Tea · {foodMenu.hightea_time}
                     </Typography>
                   )}
                   {foodMenu.dinner_time && (
                     <Typography variant="body2" color="text.secondary">
-                      Dinner · {foodMenu.dinner_time}
+                      🌙 Dinner · {foodMenu.dinner_time}
                     </Typography>
                   )}
                 </Box>
@@ -772,7 +819,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                   sx={{
                     mb: 2,
                     p: 2.5,
-                    borderRadius: 0.5,
+                    borderRadius: 2,
                     border: "1px solid",
                     borderColor: "divider",
                   }}
@@ -868,7 +915,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                       sx={{
                         mr: 1.5,
                         mb: 1.5,
-                        borderRadius: 0.5,
+                        borderRadius: 2,
                         fontWeight: 600,
                       }}
                     >
@@ -934,7 +981,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
               maxWidth="sm"
               fullWidth
               slotProps={{
-                paper: { sx: { borderRadius: 0.5, backgroundImage: "none" } },
+                paper: { sx: { borderRadius: 2, backgroundImage: "none" } },
               }}
             >
               <DialogTitle sx={{ pb: 1 }}>
@@ -957,11 +1004,27 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                 </Box>
               </DialogTitle>
               <DialogContent>
-                <ul className="list-disc ml-5">
+                <Box
+                  component="ul"
+                  sx={{
+                    m: 0,
+                    pl: 2.5,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 1,
+                  }}
+                >
                   {houseRules.map((rule) => (
-                    <li key={rule.rule_id}>{rule.description}</li>
+                    <Typography
+                      component="li"
+                      variant="body2"
+                      color="text.secondary"
+                      key={rule.rule_id}
+                    >
+                      {rule.description}
+                    </Typography>
                   ))}
-                </ul>
+                </Box>
               </DialogContent>
             </Dialog>
 
@@ -971,7 +1034,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
               sx={{
                 mb: 2,
                 p: 2,
-                borderRadius: 0.5,
+                borderRadius: 2,
                 border: "1px solid",
                 borderColor: "divider",
                 display: "flex",
@@ -986,6 +1049,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
               </Typography>
               <Button
                 variant="outlined"
+                size="small"
                 startIcon={<WhatsApp sx={{ color: "#25D366" }} />}
                 onClick={() =>
                   window.open(
@@ -994,7 +1058,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                   )
                 }
                 sx={{
-                  borderRadius: 0.5,
+                  borderRadius: 2,
                   fontWeight: 600,
                   flexShrink: 0,
                   alignSelf: { xs: "stretch", sm: "auto" },
@@ -1016,7 +1080,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
             <Paper
               elevation={0}
               sx={{
-                borderRadius: 0.5,
+                borderRadius: 2,
                 border: "1px solid",
                 borderColor: "divider",
                 overflow: "hidden",
@@ -1042,30 +1106,31 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                   <Box
                     sx={{ display: "flex", flexDirection: "column", gap: 0.75 }}
                   >
+                    {/* Summary rows — backend already multiplies by rooms */}
                     <PriceRow
                       label="Stay charges"
-                      amount={quote.total_base * units}
+                      amount={quote.stay_charges}
                     />
                     {quote.commission_amount > 0 && (
                       <PriceRow
                         label="Property charges"
-                        amount={quote.commission_amount * units}
+                        amount={quote.commission_amount}
                       />
                     )}
                     {quote.commission_gst > 0 && (
                       <PriceRow
                         label="GST on property charges"
-                        amount={quote.commission_gst * units}
+                        amount={quote.commission_gst}
                       />
                     )}
                     {quote.cleaning_fee > 0 && (
                       <PriceRow
                         label="Convenience fee"
-                        amount={quote.cleaning_fee * units}
+                        amount={quote.cleaning_fee}
                       />
                     )}
 
-                    {/* Breakdown toggle — same style as GuestDetailsModal */}
+                    {/* Breakdown toggle */}
                     <Button
                       size="small"
                       endIcon={
@@ -1104,10 +1169,12 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                         <Typography variant="caption" fontWeight={600}>
                           Rental cost for {nights} night
                           {nights === 1 ? "" : "s"}
+                          {units > 1 && ` · ${units} units`}
                         </Typography>
                         {[
                           {
-                            label: `Upto ${quote.min_occupancy} Guest${quote.min_occupancy === 1 ? "" : "s"}`,
+                            // subtotal from backend is for 1 unit — multiply for display
+                            label: `Nightly rate${units > 1 ? ` × ${units} units` : ""}`,
                             amount: quote.subtotal * units,
                             show: true,
                           },
@@ -1123,17 +1190,17 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                           },
                           {
                             label: "Property charges",
-                            amount: quote.commission_amount * units,
+                            amount: quote.commission_amount,
                             show: quote.commission_amount > 0,
                           },
                           {
                             label: "GST on property charges",
-                            amount: quote.commission_gst * units,
+                            amount: quote.commission_gst,
                             show: quote.commission_gst > 0,
                           },
                           {
                             label: "Convenience fee",
-                            amount: quote.cleaning_fee * units,
+                            amount: quote.cleaning_fee,
                             show: quote.cleaning_fee > 0,
                           },
                         ]
@@ -1149,7 +1216,6 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                             >
                               <Typography
                                 variant="caption"
-                                fontWeight={400}
                                 color="text.primary"
                               >
                                 {row.label}
@@ -1174,32 +1240,41 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                             fontWeight={700}
                             color="primary"
                           >
-                            {formatINR(totalPayable)}
+                            {formatINR(quote.total)}
                           </Typography>
                         </Box>
+                        {quote.security_deposit > 0 && (
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              mt: 0.25,
+                            }}
+                          >
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                            >
+                              Security deposit (refundable)
+                            </Typography>
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                            >
+                              {formatINR(quote.security_deposit)} · at property
+                            </Typography>
+                          </Box>
+                        )}
                       </Box>
                     </Collapse>
 
-                    {/* <Divider sx={{ my: 0.5 }} /> */}
+                    <Divider sx={{ my: 0.5 }} />
                     <PriceRow
                       label="Total payable now"
-                      amount={totalPayable}
+                      amount={quote.total}
                       bold
                       large
                     />
-                    {quote.security_deposit > 0 && (
-                      <Typography
-                        variant="caption"
-                        color="textSecondary"
-                        sx={{ textAlign: "center" }}
-                      >
-                        💡 Security deposit ₹
-                        {Number(quote.security_deposit).toLocaleString(
-                          "en-IN",
-                        )}{" "}
-                        payable at property · fully refundable
-                      </Typography>
-                    )}
                   </Box>
                 ) : (
                   <Box
@@ -1246,8 +1321,8 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                   <Box
                     sx={{
                       display: "flex",
-                      flexDirection: { xs: "column", },
-                      gap: 2,
+                      flexDirection: { xs: "column", sm: "row" },
+                      gap: 1,
                     }}
                   >
                     <Controller
@@ -1346,7 +1421,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                           />
                         }
                         sx={{
-                          borderRadius: 0.5,
+                          borderRadius: 2,
                           fontWeight: 700,
                           py: 1.25,
                           bgcolor: "background.paper",
@@ -1375,7 +1450,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                         )
                       }
                       sx={{
-                        borderRadius: 0.5,
+                        borderRadius: 2,
                         fontWeight: 700,
                         py: 1.5,
                         mt: 0.5,

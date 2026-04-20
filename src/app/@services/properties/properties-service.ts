@@ -1,33 +1,3 @@
-// import httpService from "../http-service";
-// import {
-//   PropertyFiltersDTO,
-//   PropertyListItemDTO,
-//   QuoteRequestDTO,
-// } from "@/app/@types/property/property.type";
-
-// class PropertiesService {
-//   getProperties = (filters: PropertyFiltersDTO = {}) => {
-//     return httpService<PropertyListItemDTO[]>().get("/properties", {
-//       params: filters,
-//     });
-//   };
-
-//   getProperty = (propertyId: string, checkIn?: string, checkOut?: string) => {
-//     return httpService().get(`/properties/${propertyId}`, {
-//       params: { checkIn, checkOut },
-//     });
-//   };
-
-//   getBookingQuote = (data: QuoteRequestDTO) => {
-//     return httpService().post("/pricing/quote", data);
-//   };
-// }
-
-// const propertiesService = new PropertiesService();
-// export default propertiesService;
-
-// src/services/properties.service.ts
-
 import {
   BookingQuoteDTO,
   PropertyDetailDTO,
@@ -58,10 +28,10 @@ function buildQueryString(filters: PropertyFiltersDTO): string {
 }
 
 class PropertiesService {
-  getProperties = (filters: PropertyFiltersDTO = {}) => {
+  async getProperties(filters: PropertyFiltersDTO = {}) {
     const qs = buildQueryString(filters);
     return httpService<PropertyListItemDTO[]>().get(`/properties${qs}`);
-  };
+  }
 
   async getProperty(propertyId: string, checkIn?: string, checkOut?: string) {
     const params = new URLSearchParams();

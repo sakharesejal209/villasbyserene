@@ -2,12 +2,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./globals.css";
 import { Montserrat, EB_Garamond } from "next/font/google";
-import Navbar from "./components/home/navbar";
-import Footer from "./components/home/footer";
-import { fetchAllData } from "@/scripts/getProperties";
 import ClientProviders from "./components/client-providers/ClientProviders";
 import { Metadata } from "next";
 import { propertiesService } from "./@services";
+import NavbarFooterWrapper from "./components/home/Navbarfooterwrapper";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.villasbyserene.com"),
@@ -119,15 +117,13 @@ export default async function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-const propertiesData = await propertiesService.getProperties();
+  const propertiesData = await propertiesService.getProperties();
 
   return (
     <html lang="en" className={roboto.className + " " + ibmPlex.className}>
       <body className="flex flex-col min-h-screen">
         <ClientProviders propertiesData={propertiesData}>
-          <Navbar />
-          <main className="min-h-screen">{children}</main>
-          <Footer />
+          <NavbarFooterWrapper>{children}</NavbarFooterWrapper>
         </ClientProviders>
       </body>
     </html>

@@ -3,6 +3,7 @@
 import React from "react";
 import {
   AppBar,
+  Button,
   IconButton,
   Menu,
   MenuItem,
@@ -14,6 +15,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import { FiUser } from "react-icons/fi";
 
 import { useThemeContext } from "@/context/ThemeContext";
 import Image from "next/image";
@@ -22,6 +24,7 @@ import logoDark from "../../../../public/assets/villasbyserene-light.png";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Instagram } from "@mui/icons-material";
+import { useAuth } from "@/hooks/useAuth";
 
 const Navbar = () => {
   const { mode, toggleTheme } = useThemeContext();
@@ -31,16 +34,22 @@ const Navbar = () => {
   const router = useRouter();
 
   const handleOpenNavMenu = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => setAnchorElNav(event.currentTarget);
   const handleCloseNavMenu = () => setAnchorElNav(null);
 
   const trigger = useScrollTrigger();
   const theme = useTheme();
+    const { user, loading: authLoading, login } = useAuth();
+  
 
   return (
     <Slide appear={false} direction="down" in={!trigger}>
-      <AppBar sx={{background: theme.palette.mode == 'light' ? '#fff' : '#1A1A1A'}} color="default" component="header">
+      <AppBar
+        sx={{ background: theme.palette.mode == "light" ? "#fff" : "#1A1A1A" }}
+        color="default"
+        component="header"
+      >
         <div className="container px-2">
           <div className="p-2 flex justify-between items-center w-full">
             {/* Brand (desktop) */}
@@ -54,14 +63,6 @@ const Navbar = () => {
 
             {/* Desktop */}
             <div className="flex items-center justify-between gap-6">
-              {/* <Box sx={{ display: "flex", alignItems: "center" }}>
-              <IconButton component="a" href="tel:+919876543210">
-                <Phone />
-              </IconButton>
-              <Link href="tel:+919876543210" className="hover:underline">
-                <Typography>{process.env.NEXT_PUBLIC_PHONE_NUMBER}</Typography>
-              </Link>
-            </Box> */}
               <div className="hidden md:flex justify-end items-center gap-4">
                 <button onClick={() => router.push("/list")}>
                   <Typography
@@ -82,6 +83,15 @@ const Navbar = () => {
                     </Typography>
                   </Link>
                 </button>
+                <Button
+                  onClick={() =>
+                    login(globalThis.location.pathname + globalThis.location.search)
+                  }
+                  startIcon={<FiUser />}
+                  variant="contained"
+                >
+                  Login
+                </Button>
                 <IconButton onClick={toggleTheme}>
                   {mode === "light" ? (
                     <DarkModeOutlinedIcon />

@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import dayjs, { Dayjs } from "dayjs";
 import {
@@ -19,16 +19,16 @@ import {
 import { DatePicker } from "@mui/x-date-pickers";
 import {
   AddOutlined,
-  CheckCircleOutlined,
   PeopleAltOutlined,
   RemoveOutlined,
   WhatsApp,
 } from "@mui/icons-material";
-import { propertiesService } from "@/app/@services/";
+import { propertiesService, calendarService } from "@/app/@services/";
 import { useRouter } from "next/navigation";
 import { BookingType, UnitGroupDTO } from "@/app/@types";
 import { encryptCheckout } from "@/lib/crypto/checkout-crypto";
 import { BookingQuoteDTO } from "@/app/@types/booking/BookingQuoteDTO";
+
 interface FormValues {
   checkIn: Dayjs | null;
   checkOut: Dayjs | null;
@@ -96,7 +96,7 @@ function getCheckinRate(checkIn: Dayjs, group: UnitGroupDTO) {
 }
 
 // ─────────────────────────────────────────────────────────────────
-// GuestRow — stable sub-component, no closure bugs
+// GuestRow
 // ─────────────────────────────────────────────────────────────────
 
 const GuestRow: FC<{
@@ -179,22 +179,31 @@ const BookingWidget: FC<BookingWidgetProps> = ({
   const router = useRouter();
   const isDirect = bookingType === BookingType.DIRECT;
 
-  // unit
+  // unit selection
   const [selectedIdx, setSelectedIdx] = useState(0);
   const group = unitGroups[selectedIdx];
   const hasPricing = isDirect && !!group?.pricing;
   const isVilla = group?.unit_type === "VILLA";
   const maxRooms = group?.available_count ?? 1;
-  const maxCapacity = group?.display_unit.max_capacity ?? 99;
 
-  // room count (non-villa)
+  // room count (non-villa / resort)
   const [roomCount, setRoomCount] = useState(1);
   const units = isVilla ? 1 : roomCount;
+
+  const baseCapacity = group?.display_unit.max_capacity ?? 99;
+  // Total capacity scales with rooms — 2 rooms × 3 guests = 6 max total
+  const maxCapacity = isVilla ? baseCapacity : baseCapacity * roomCount;
 
   // quote
   const [quote, setQuote] = useState<BookingQuoteDTO | null>(null);
   const [quoteLoading, setQuoteLoading] = useState(false);
   const [quoteError, setQuoteError] = useState<string | null>(null);
+
+  // blocked dates
+  const [blockedRanges, setBlockedRanges] = useState<
+    { start: string; end: string }[]
+  >([]);
+  const [blockedLoading, setBlockedLoading] = useState(false);
 
   // ui
   const [guestAnchor, setGuestAnchor] = useState<HTMLElement | null>(null);
@@ -226,15 +235,14 @@ const BookingWidget: FC<BookingWidgetProps> = ({
   const checkinRate =
     checkIn && group && hasPricing ? getCheckinRate(checkIn, group) : null;
 
-  // ── Auto-fetch quote on any input change (500ms debounce) ───
+  // ── Quote fetching ────────────────────────────────────────────
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // fetchQuote reads adults/children from ref to avoid stale closure
-  // without making them part of the debounce dependency
   const adultsRef = useRef(adults);
   const childrenRef = useRef(children);
+  const unitsRef = useRef(units);
   adultsRef.current = adults;
   childrenRef.current = children;
+  unitsRef.current = units;
 
   const fetchQuote = useCallback(async () => {
     if (
@@ -250,6 +258,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
     setQuoteLoading(true);
     setQuoteError(null);
     try {
+      // Send total guests + rooms — backend calculates per-unit extra charges
       const result = await propertiesService.getBookingQuote({
         unitId: group.display_unit.unit_id,
         checkIn: checkIn.format("YYYY-MM-DD"),
@@ -257,6 +266,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
         adults: adultsRef.current,
         children: childrenRef.current,
         hasPet: false,
+        rooms: unitsRef.current,
       });
       setQuote(result);
     } catch {
@@ -265,9 +275,9 @@ const BookingWidget: FC<BookingWidgetProps> = ({
     } finally {
       setQuoteLoading(false);
     }
-  }, [group, checkIn, checkOut, nights, hasPricing]); // adults/children excluded — read via ref
+    // units/adultsRef/childrenRef excluded from deps — read via ref to avoid stale closure
+  }, [group, checkIn, checkOut, nights, hasPricing]);
 
-  // Debounced fetch on date change only
   useEffect(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(fetchQuote, 500);
@@ -276,6 +286,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
     };
   }, [fetchQuote]);
 
+  // ── Notify parent (mobile bottom bar) ────────────────────────
   useEffect(() => {
     onStateChange?.({
       checkIn: checkIn ? checkIn.format("YYYY-MM-DD") : null,
@@ -284,11 +295,42 @@ const BookingWidget: FC<BookingWidgetProps> = ({
       children,
       infants,
       nights,
-      totalPrice: quote ? quote.total * units : null,
+      totalPrice: quote?.total ?? null, // backend already multiplies by rooms
     });
   }, [checkIn, checkOut, adults, children, infants, nights, quote, units]);
 
-  // reset on unit change
+  // ── Fetch blocked dates when unit or roomCount changes ────────
+  useEffect(() => {
+    const unitId = group?.display_unit?.unit_id;
+    if (!unitId) return;
+    setBlockedLoading(true);
+    calendarService
+      .getBlockedDates(unitId)
+      .then((ranges) => setBlockedRanges(Array.isArray(ranges) ? ranges : []))
+      .catch(() => setBlockedRanges([]))
+      .finally(() => setBlockedLoading(false));
+  }, [group?.display_unit?.unit_id, roomCount]);
+
+  // Memoize parsed blocked ranges to avoid re-parsing on every render
+  const parsedBlockedRanges = useMemo(
+    () =>
+      blockedRanges.map((r) => ({
+        start: dayjs(r.start),
+        end: dayjs(r.end).subtract(1, "day"),
+      })),
+    [blockedRanges],
+  );
+
+  // Stable isDateBlocked — uses memoized ranges
+  const isDateBlocked = useCallback(
+    (date: Dayjs): boolean =>
+      parsedBlockedRanges.some(
+        (r) => !date.isBefore(r.start, "day") && !date.isAfter(r.end, "day"),
+      ),
+    [parsedBlockedRanges],
+  );
+
+  // ── Unit change resets ────────────────────────────────────────
   const handleSelectUnit = (idx: number) => {
     setSelectedIdx(idx);
     setQuote(null);
@@ -296,7 +338,23 @@ const BookingWidget: FC<BookingWidgetProps> = ({
     setRoomCount(1);
   };
 
-  // whatsapp enquiry
+  // ── Room count change: re-clamp guests if needed ─────────────
+  const handleRoomCountChange = (newCount: number) => {
+    setRoomCount(newCount);
+    // Re-clamp adults/children to new capacity
+    const newMax = baseCapacity * newCount;
+    const curAdults = adultsRef.current;
+    const curChildren = childrenRef.current;
+    if (curAdults + curChildren > newMax) {
+      setValue("adults", Math.min(curAdults, newMax));
+      setValue("children", Math.max(0, newMax - Math.min(curAdults, newMax)));
+    }
+    // Trigger re-quote since guests-per-unit changes when roomCount changes
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(fetchQuote, 300);
+  };
+
+  // ── WhatsApp enquiry ──────────────────────────────────────────
   const handleWhatsApp = () => {
     const unit = group?.display_unit.title ?? group?.type_label ?? "";
     const rooms = !isVilla && roomCount > 1 ? ` (${roomCount} units)` : "";
@@ -311,7 +369,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
     );
   };
 
-  // navigate to checkout — state encrypted in URL (shareable)
+  // ── Proceed to checkout ───────────────────────────────────────
   const handleProceedToBook = () => {
     if (!quote || nights < 1 || !group) return;
     const token = encryptCheckout({
@@ -329,6 +387,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
 
   return (
     <div className="md:p-5">
+      {/* ── Unit selection ───────────────────────────────────── */}
       <Box sx={{ mb: 2.5 }}>
         <Typography variant="subtitle2" sx={{ mb: 1 }}>
           Select accommodation
@@ -408,7 +467,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                         ? `${g.available_count} available`
                         : "Sold out"}
                     </Typography>
-                    {selected && rateLabel && rateLabel.type === "seasonal" && (
+                    {selected && rateLabel?.type === "seasonal" && (
                       <Chip
                         label={rateLabel.label}
                         size="small"
@@ -416,7 +475,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                         sx={{ height: 14, fontSize: 9 }}
                       />
                     )}
-                    {selected && rateLabel && rateLabel.type === "weekend" && (
+                    {selected && rateLabel?.type === "weekend" && (
                       <Typography
                         variant="caption"
                         color="text.secondary"
@@ -454,7 +513,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
         </Box>
       </Box>
 
-      {/* ── ENQUIRY notice ──────────────────────────────────── */}
+      {/* ── Enquiry notice ───────────────────────────────────── */}
       {!isDirect && (
         <Box
           sx={{
@@ -474,7 +533,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
         </Box>
       )}
 
-      {/* ── 2. Inputs ───────────────────────────────────────── */}
+      {/* ── Inputs ───────────────────────────────────────────── */}
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
         {/* Dates */}
         <Box sx={{ display: "flex", gap: 1 }}>
@@ -487,13 +546,26 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                 value={field.value}
                 format="DD/MM/YYYY"
                 disablePast
+                shouldDisableDate={(date) => isDateBlocked(date)}
                 onChange={(val) => {
                   field.onChange(val);
                   const co = getValues("checkOut");
                   if (val && co && !val.isBefore(co))
                     setValue("checkOut", val.add(1, "day"));
                 }}
-                slotProps={{ textField: { fullWidth: true, size: "small" } }}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    size: "small",
+                    InputProps: blockedLoading
+                      ? {
+                          endAdornment: (
+                            <CircularProgress size={14} sx={{ mr: 1 }} />
+                          ),
+                        }
+                      : undefined,
+                  },
+                }}
               />
             )}
           />
@@ -509,6 +581,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                 minDate={
                   checkIn ? checkIn.add(1, "day") : dayjs().add(1, "day")
                 }
+                shouldDisableDate={(date) => isDateBlocked(date)}
                 onChange={(val) => field.onChange(val)}
                 slotProps={{ textField: { fullWidth: true, size: "small" } }}
               />
@@ -516,7 +589,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
           />
         </Box>
 
-        {/* Guest trigger */}
+        {/* Guests */}
         <TextField
           size="small"
           fullWidth
@@ -536,7 +609,6 @@ const BookingWidget: FC<BookingWidgetProps> = ({
           }}
         />
 
-        {/* Guest popover */}
         <Popover
           open={Boolean(guestAnchor)}
           anchorEl={guestAnchor}
@@ -576,7 +648,10 @@ const BookingWidget: FC<BookingWidgetProps> = ({
             color="text.secondary"
             sx={{ display: "block", mt: 1 }}
           >
-            Max {maxCapacity} guests (adults + children)
+            Max {maxCapacity} guests total
+            {!isVilla &&
+              units > 1 &&
+              ` (${units} units × ${baseCapacity} per unit)`}
           </Typography>
           <Button
             fullWidth
@@ -584,7 +659,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
             size="small"
             onClick={() => {
               setGuestAnchor(null);
-              fetchQuote(); // fetch with latest guest counts
+              fetchQuote();
             }}
             sx={{ mt: 1.5, borderRadius: 0.2 }}
           >
@@ -592,7 +667,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
           </Button>
         </Popover>
 
-        {/* Room count — non-villa only */}
+        {/* Room count — resort only */}
         {!isVilla && (
           <Box
             sx={{
@@ -610,14 +685,15 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                 No. of {group?.type_label ?? "Room"}s
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                {maxRooms} available
+                {maxRooms} available · {baseCapacity} guest
+                {baseCapacity !== 1 ? "s" : ""} per unit
               </Typography>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <IconButton
                 size="small"
                 disabled={roomCount <= 1}
-                onClick={() => setRoomCount((c) => c - 1)}
+                onClick={() => handleRoomCountChange(roomCount - 1)}
                 sx={{
                   border: "1px solid",
                   borderColor: "divider",
@@ -637,7 +713,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
               <IconButton
                 size="small"
                 disabled={roomCount >= maxRooms}
-                onClick={() => setRoomCount((c) => c + 1)}
+                onClick={() => handleRoomCountChange(roomCount + 1)}
                 sx={{
                   border: "1px solid",
                   borderColor:
@@ -660,7 +736,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
           </Box>
         )}
 
-        {/* ── 3. Billing summary ───────────────────────────── */}
+        {/* Billing summary */}
         {hasPricing && (
           <Box
             sx={{
@@ -700,7 +776,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                 </Typography>
               ) : quote && nights > 0 ? (
                 <>
-                  {/* Stay charges (subtotal = nightly + min guest, all baked in) */}
+                  {/* Stay charges = nightly×rooms + extra guests */}
                   <Box
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
@@ -708,31 +784,11 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                       Stay charges
                     </Typography>
                     <Typography variant="body2" fontWeight={600}>
-                      {formatINR(
-                        (quote.subtotal +
-                          quote.extra_guest_charge +
-                          quote.child_charge) *
-                          units,
-                      )}
+                      {formatINR(quote.stay_charges)}
                     </Typography>
                   </Box>
 
-                  {/* Convenience fee */}
-                  {quote.cleaning_fee > 0 && (
-                    <Box
-                      sx={{ display: "flex", justifyContent: "space-between" }}
-                    >
-                      <Typography variant="body2" color="text.secondary">
-                        Convenience fee
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {formatINR(quote.cleaning_fee * units)}
-                      </Typography>
-                    </Box>
-                  )}
-
-                  {/* GST */}
-                  {/* Property charges (commission) */}
+                  {/* Property charges */}
                   {quote.commission_amount > 0 && (
                     <Box
                       sx={{ display: "flex", justifyContent: "space-between" }}
@@ -741,7 +797,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                         Property charges
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        {formatINR(quote.commission_amount * units)}
+                        {formatINR(quote.commission_amount)}
                       </Typography>
                     </Box>
                   )}
@@ -755,14 +811,14 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                         GST on property charges
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        {formatINR(quote.commission_gst * units)}
+                        {formatINR(quote.commission_gst)}
                       </Typography>
                     </Box>
                   )}
 
                   <Divider sx={{ my: 0.25 }} />
 
-                  {/* Total */}
+                  {/* Total = stay + property charges + GST */}
                   <Box
                     sx={{
                       display: "flex",
@@ -778,7 +834,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                       fontWeight={800}
                       color="primary"
                     >
-                      {formatINR(quote.total * units)}
+                      {formatINR(quote.total)}
                     </Typography>
                   </Box>
                 </>
@@ -789,7 +845,8 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                   </Typography>
                   {group?.pricing && (
                     <Typography variant="caption" color="text.secondary">
-                      From {formatINR(group.pricing.weekday_price)}/night
+                      From {formatINR(group.pricing.weekday_price)}/night per
+                      unit{!isVilla && units > 1 ? ` × ${units} units` : ""}
                     </Typography>
                   )}
                 </Box>
@@ -798,7 +855,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
           </Box>
         )}
 
-        {/* Security deposit note */}
+        {/* Security deposit */}
         {hasPricing && group?.pricing && (
           <Typography variant="caption" sx={{ textAlign: "center" }}>
             💡 Security deposit ₹

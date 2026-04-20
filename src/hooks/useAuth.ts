@@ -6,13 +6,14 @@ export interface AuthUser {
   full_name: string;
   email: string;
   profile_image: string | null;
-  phone: string
+  phone: string;
+  is_admin: boolean; // ← from JWT payload, never from DB
 }
 
 interface UseAuthReturn {
   user: AuthUser | null;
   loading: boolean;
-  login: (returnUrl?: string) => void; // redirect to Google OAuth
+  login: (returnUrl?: string) => void;
 }
 
 const API_BASE_URL =
@@ -25,11 +26,7 @@ export function useAuth(): UseAuthReturn {
   useEffect(() => {
     userService
       .getCurrentUser()
-      .then((data: any) => {
-        console.log("login user:", data);
-
-        setUser(data ?? null);
-      })
+      .then((data: any) => setUser(data ?? null))
       .catch(() => setUser(null))
       .finally(() => setLoading(false));
   }, []);
