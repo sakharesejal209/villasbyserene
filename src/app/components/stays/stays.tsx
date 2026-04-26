@@ -168,7 +168,6 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
             const isDirect = item.booking_type === BookingType.DIRECT;
             const priceResult = getCardPrice(item, checkIn);
             const url = buildUrl(item);
-            console.log("priceResult:", priceResult);
 
             return (
               <Card

@@ -12,4 +12,5 @@ export default interface PropertyDetailDTO extends PropertyListItemDTO {
   house_rules: HouseRuleDTO[];
   nearby_attractions: NearByAttractionDTO[];
   food_menus: FoodMenuDTO[];
+  google_maps_url: string;
 }

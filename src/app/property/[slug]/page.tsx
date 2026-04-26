@@ -48,10 +48,7 @@ export default async function Page({ params, searchParams }: PageProps) {
     );
   } catch {
     notFound();
-  }
-
-  console.log('property:', property);
-  
+  }  
 
   return (
     <Property

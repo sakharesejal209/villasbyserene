@@ -62,21 +62,19 @@ type UnitImagesMap = {
 
 // ── Styled ────────────────────────────────────────────────────────
 
-const Customsection = styled("div")<CustomSectionProps>(
-  ({ background }) => ({
-    backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${background})`,
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-    width: "100%",
-    height: "80vh",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
-    "@media (min-width:768px)": { height: "80vh" },
-  }),
-);
+const Customsection = styled("div")<CustomSectionProps>(({ background }) => ({
+  backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${background})`,
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center",
+  backgroundSize: "cover",
+  width: "100%",
+  height: "80vh",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  position: "relative",
+  "@media (min-width:768px)": { height: "80vh" },
+}));
 
 export const SlideTopSection = ({
   children,
@@ -111,6 +109,8 @@ const Property: FC<PropertyPropType> = ({
   checkOut,
 }) => {
   const searchParams = useSearchParams();
+
+  console.log("propertyDetails:", propertyDetails);
 
   const [openGallery, setOpenGallery] = useState(false);
   const [openUnitGallery, setOpenUnitGallery] = useState(false);
@@ -389,7 +389,7 @@ const Property: FC<PropertyPropType> = ({
                       maxLength={200}
                     />
                     <div className="flex gap-6 my-6">
-                      {foodMenu.is_veg && (
+                      {foodMenu.isVeg && (
                         <div className="flex items-center gap-3">
                           <svg
                             width="24"
@@ -418,7 +418,7 @@ const Property: FC<PropertyPropType> = ({
                           Veg
                         </div>
                       )}
-                      {foodMenu.is_non_veg && (
+                      {foodMenu.isNonVeg && (
                         <div className="flex items-center gap-3">
                           <svg
                             width="24"
@@ -450,16 +450,16 @@ const Property: FC<PropertyPropType> = ({
                     </div>
                     <div className="mb-4">
                       <Typography className="my-2!">
-                        Breakfast: {foodMenu.breakfast_time}
+                        Breakfast: {foodMenu.breakfastTime}
                       </Typography>
                       <Typography className="my-2!">
-                        Lunch: {foodMenu.lunch_time}
+                        Lunch: {foodMenu.lunchTime}
                       </Typography>
                       <Typography className="my-2!">
-                        High Tea: {foodMenu.hightea_time}
+                        High Tea: {foodMenu.highteaTime}
                       </Typography>
                       <Typography className="my-2!">
-                        Dinner: {foodMenu.dinner_time}
+                        Dinner: {foodMenu.dinnerTime}
                       </Typography>
                     </div>
                     <Button
@@ -467,7 +467,7 @@ const Property: FC<PropertyPropType> = ({
                       color={
                         theme.palette.mode === "light" ? "primary" : "secondary"
                       }
-                      onClick={() => window.open(foodMenu.menu_url)}
+                      onClick={() => window.open(foodMenu.menuUrl)}
                     >
                       View Menu
                     </Button>
@@ -754,7 +754,7 @@ const Property: FC<PropertyPropType> = ({
               display: "flex",
               alignItems: "center",
               gap: "20px",
-              marginBottom: "12px"
+              marginBottom: "12px",
             }}
             variant="h5"
           >

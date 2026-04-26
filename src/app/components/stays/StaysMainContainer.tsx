@@ -33,8 +33,6 @@ const PRICE_MAX = 50000;
 const StaysClientPage: FC = () => {
   const { properties } = usePropertyStore();
 
-  console.log("propertiesData:", properties);
-
   const params = useParams<{ slug: string }>();
   const searchParams = useSearchParams();
   const trigger = useScrollTrigger();

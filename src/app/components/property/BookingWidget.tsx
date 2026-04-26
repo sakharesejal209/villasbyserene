@@ -23,11 +23,11 @@ import {
   RemoveOutlined,
   WhatsApp,
 } from "@mui/icons-material";
+import { PiConfetti } from "react-icons/pi";
 import { propertiesService, calendarService } from "@/app/@services/";
 import { useRouter } from "next/navigation";
-import { BookingType, UnitGroupDTO } from "@/app/@types";
+import { BookingQuoteDTO, BookingType, UnitGroupDTO } from "@/app/@types";
 import { encryptCheckout } from "@/lib/crypto/checkout-crypto";
-import { BookingQuoteDTO } from "@/app/@types/booking/BookingQuoteDTO";
 
 interface FormValues {
   checkIn: Dayjs | null;
@@ -57,10 +57,6 @@ interface BookingWidgetProps {
   defaultCheckOut?: string;
   onStateChange?: (state: WidgetState) => void;
 }
-
-// ─────────────────────────────────────────────────────────────────
-// Helpers
-// ─────────────────────────────────────────────────────────────────
 
 export const formatINR = (n: number) =>
   new Intl.NumberFormat("en-IN", {
@@ -94,10 +90,6 @@ function getCheckinRate(checkIn: Dayjs, group: UnitGroupDTO) {
         type: "weekday" as const,
       };
 }
-
-// ─────────────────────────────────────────────────────────────────
-// GuestRow
-// ─────────────────────────────────────────────────────────────────
 
 const GuestRow: FC<{
   label: string;
@@ -162,10 +154,6 @@ const GuestRow: FC<{
   </Box>
 );
 
-// ─────────────────────────────────────────────────────────────────
-// BookingWidget
-// ─────────────────────────────────────────────────────────────────
-
 const BookingWidget: FC<BookingWidgetProps> = ({
   propertyId,
   propertyName,
@@ -179,36 +167,29 @@ const BookingWidget: FC<BookingWidgetProps> = ({
   const router = useRouter();
   const isDirect = bookingType === BookingType.DIRECT;
 
-  // unit selection
   const [selectedIdx, setSelectedIdx] = useState(0);
   const group = unitGroups[selectedIdx];
   const hasPricing = isDirect && !!group?.pricing;
   const isVilla = group?.unit_type === "VILLA";
   const maxRooms = group?.available_count ?? 1;
 
-  // room count (non-villa / resort)
   const [roomCount, setRoomCount] = useState(1);
   const units = isVilla ? 1 : roomCount;
 
   const baseCapacity = group?.display_unit.max_capacity ?? 99;
-  // Total capacity scales with rooms — 2 rooms × 3 guests = 6 max total
   const maxCapacity = isVilla ? baseCapacity : baseCapacity * roomCount;
 
-  // quote
   const [quote, setQuote] = useState<BookingQuoteDTO | null>(null);
   const [quoteLoading, setQuoteLoading] = useState(false);
   const [quoteError, setQuoteError] = useState<string | null>(null);
 
-  // blocked dates
   const [blockedRanges, setBlockedRanges] = useState<
     { start: string; end: string }[]
   >([]);
   const [blockedLoading, setBlockedLoading] = useState(false);
 
-  // ui
   const [guestAnchor, setGuestAnchor] = useState<HTMLElement | null>(null);
 
-  // form
   const { control, setValue, getValues } = useForm<FormValues>({
     defaultValues: {
       checkIn: defaultCheckIn ? dayjs(defaultCheckIn) : null,
@@ -235,7 +216,6 @@ const BookingWidget: FC<BookingWidgetProps> = ({
   const checkinRate =
     checkIn && group && hasPricing ? getCheckinRate(checkIn, group) : null;
 
-  // ── Quote fetching ────────────────────────────────────────────
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const adultsRef = useRef(adults);
   const childrenRef = useRef(children);
@@ -258,7 +238,6 @@ const BookingWidget: FC<BookingWidgetProps> = ({
     setQuoteLoading(true);
     setQuoteError(null);
     try {
-      // Send total guests + rooms — backend calculates per-unit extra charges
       const result = await propertiesService.getBookingQuote({
         unitId: group.display_unit.unit_id,
         checkIn: checkIn.format("YYYY-MM-DD"),
@@ -275,7 +254,6 @@ const BookingWidget: FC<BookingWidgetProps> = ({
     } finally {
       setQuoteLoading(false);
     }
-    // units/adultsRef/childrenRef excluded from deps — read via ref to avoid stale closure
   }, [group, checkIn, checkOut, nights, hasPricing]);
 
   useEffect(() => {
@@ -286,7 +264,6 @@ const BookingWidget: FC<BookingWidgetProps> = ({
     };
   }, [fetchQuote]);
 
-  // ── Notify parent (mobile bottom bar) ────────────────────────
   useEffect(() => {
     onStateChange?.({
       checkIn: checkIn ? checkIn.format("YYYY-MM-DD") : null,
@@ -299,7 +276,6 @@ const BookingWidget: FC<BookingWidgetProps> = ({
     });
   }, [checkIn, checkOut, adults, children, infants, nights, quote, units]);
 
-  // ── Fetch blocked dates when unit or roomCount changes ────────
   useEffect(() => {
     const unitId = group?.display_unit?.unit_id;
     if (!unitId) return;
@@ -330,7 +306,6 @@ const BookingWidget: FC<BookingWidgetProps> = ({
     [parsedBlockedRanges],
   );
 
-  // ── Unit change resets ────────────────────────────────────────
   const handleSelectUnit = (idx: number) => {
     setSelectedIdx(idx);
     setQuote(null);
@@ -338,10 +313,8 @@ const BookingWidget: FC<BookingWidgetProps> = ({
     setRoomCount(1);
   };
 
-  // ── Room count change: re-clamp guests if needed ─────────────
   const handleRoomCountChange = (newCount: number) => {
     setRoomCount(newCount);
-    // Re-clamp adults/children to new capacity
     const newMax = baseCapacity * newCount;
     const curAdults = adultsRef.current;
     const curChildren = childrenRef.current;
@@ -349,7 +322,6 @@ const BookingWidget: FC<BookingWidgetProps> = ({
       setValue("adults", Math.min(curAdults, newMax));
       setValue("children", Math.max(0, newMax - Math.min(curAdults, newMax)));
     }
-    // Trigger re-quote since guests-per-unit changes when roomCount changes
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(fetchQuote, 300);
   };
@@ -369,7 +341,6 @@ const BookingWidget: FC<BookingWidgetProps> = ({
     );
   };
 
-  // ── Proceed to checkout ───────────────────────────────────────
   const handleProceedToBook = () => {
     if (!quote || nights < 1 || !group) return;
     const token = encryptCheckout({
@@ -387,7 +358,6 @@ const BookingWidget: FC<BookingWidgetProps> = ({
 
   return (
     <div className="md:p-5">
-      {/* ── Unit selection ───────────────────────────────────── */}
       <Box sx={{ mb: 2.5 }}>
         <Typography variant="subtitle2" sx={{ mb: 1 }}>
           Select accommodation
@@ -513,7 +483,6 @@ const BookingWidget: FC<BookingWidgetProps> = ({
         </Box>
       </Box>
 
-      {/* ── Enquiry notice ───────────────────────────────────── */}
       {!isDirect && (
         <Box
           sx={{
@@ -533,9 +502,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
         </Box>
       )}
 
-      {/* ── Inputs ───────────────────────────────────────────── */}
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
-        {/* Dates */}
         <Box sx={{ display: "flex", gap: 1 }}>
           <Controller
             name="checkIn"
@@ -589,7 +556,6 @@ const BookingWidget: FC<BookingWidgetProps> = ({
           />
         </Box>
 
-        {/* Guests */}
         <TextField
           size="small"
           fullWidth
@@ -686,7 +652,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
               </Typography>
               <Typography variant="caption" color="text.secondary">
                 {maxRooms} available · {baseCapacity} guest
-                {baseCapacity !== 1 ? "s" : ""} per unit
+                {baseCapacity === 1 ? "" : "s"} per unit
               </Typography>
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -736,7 +702,6 @@ const BookingWidget: FC<BookingWidgetProps> = ({
           </Box>
         )}
 
-        {/* Billing summary */}
         {hasPricing && (
           <Box
             sx={{
@@ -776,20 +741,19 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                 </Typography>
               ) : quote && nights > 0 ? (
                 <>
-                  {/* Stay charges = nightly×rooms + extra guests */}
                   <Box
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <Typography variant="body2" color="text.secondary">
-                      Stay charges
+                    <Typography variant="body2">
+                      Stay charges + Property charges
                     </Typography>
                     <Typography variant="body2" fontWeight={600}>
-                      {formatINR(quote.stay_charges)}
+                      {formatINR(quote.stay_charges + quote.commission_amount)}
                     </Typography>
                   </Box>
 
                   {/* Property charges */}
-                  {quote.commission_amount > 0 && (
+                  {/* {quote.commission_amount > 0 && (
                     <Box
                       sx={{ display: "flex", justifyContent: "space-between" }}
                     >
@@ -800,20 +764,37 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                         {formatINR(quote.commission_amount)}
                       </Typography>
                     </Box>
-                  )}
+                  )} */}
 
                   {/* GST on property charges */}
                   {quote.commission_gst > 0 && (
                     <Box
                       sx={{ display: "flex", justifyContent: "space-between" }}
                     >
-                      <Typography variant="body2" color="text.secondary">
+                      <Typography variant="body2">
                         GST on property charges
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
+                      <Typography variant="body2">
                         {formatINR(quote.commission_gst)}
                       </Typography>
                     </Box>
+                  )}
+
+                  {quote.cleaning_fee > 0 ? (
+                    <Box
+                      sx={{ display: "flex", justifyContent: "space-between" }}
+                    >
+                      <Typography variant="body2">
+                        GST on property charges
+                      </Typography>
+                      <Typography variant="body2">
+                        {formatINR(quote.cleaning_fee)}
+                      </Typography>
+                    </Box>
+                  ) : (
+                    <Typography variant="body2" color="success" className="flex gap-1 items-center">
+                      <PiConfetti size={12} /> Zero convenience fees on your booking!
+                    </Typography>
                   )}
 
                   <Divider sx={{ my: 0.25 }} />

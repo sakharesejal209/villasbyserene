@@ -22,4 +22,5 @@ export default interface UnitDTO {
   created_at: string;
   images: UnitImageDTO[];
   pricing: UnitPricingDTO | null;
+  vbs_commission: number;
 }

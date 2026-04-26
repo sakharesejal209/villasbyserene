@@ -1,8 +1,8 @@
 export default interface BlockedRangeDTO {
-  start: string;
-  end: string;
-  type: "booking" | "manual" | "external";
+  id?:    string;   // only for manual blocks — used for deletion
+  start:  string;
+  end:    string;
+  type:   'booking' | 'manual' | 'external';
   source: string;
   label?: string;
-  id: string;
 }

@@ -266,7 +266,7 @@ const BookingPage: FC = () => {
       const available = await checkAvailability(user?.id);
       if (!available) {
         setPayError(
-          "Sorry — these dates are no longer available. Please go back and select new dates.",
+          "Sorry, these dates are no longer available. Please go back and select new dates.",
         );
         setPaying(false);
         return;
@@ -465,8 +465,7 @@ const BookingPage: FC = () => {
             icon={<CheckCircleOutlined />}
             sx={{ mb: 2 }}
           >
-            Dates available — availability is confirmed again just before
-            payment.
+            Dates available, book before it&apos;s gone!
           </Alert>
         )}
 
@@ -1108,15 +1107,15 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                   >
                     {/* Summary rows — backend already multiplies by rooms */}
                     <PriceRow
-                      label="Stay charges"
-                      amount={quote.stay_charges}
+                      label="Stay charges + Property charges"
+                      amount={quote.stay_charges + quote.commission_amount}
                     />
-                    {quote.commission_amount > 0 && (
+                    {/* {quote.commission_amount > 0 && (
                       <PriceRow
                         label="Property charges"
                         amount={quote.commission_amount}
                       />
-                    )}
+                    )} */}
                     {quote.commission_gst > 0 && (
                       <PriceRow
                         label="GST on property charges"
@@ -1174,8 +1173,8 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                         {[
                           {
                             // subtotal from backend is for 1 unit — multiply for display
-                            label: `Nightly rate${units > 1 ? ` × ${units} units` : ""}`,
-                            amount: quote.subtotal * units,
+                            label: `Nightly rate${units > 1 ? ` × ${units} units + property charges` : ""}`,
+                            amount: quote.subtotal * units + quote.commission_amount,
                             show: true,
                           },
                           {
@@ -1188,11 +1187,11 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                             amount: quote.child_charge,
                             show: quote.child_charge > 0,
                           },
-                          {
-                            label: "Property charges",
-                            amount: quote.commission_amount,
-                            show: quote.commission_amount > 0,
-                          },
+                          // {
+                          //   label: "Property charges",
+                          //   amount: quote.commission_amount,
+                          //   show: quote.commission_amount > 0,
+                          // },
                           {
                             label: "GST on property charges",
                             amount: quote.commission_gst,
@@ -1201,7 +1200,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                           {
                             label: "Convenience fee",
                             amount: quote.cleaning_fee,
-                            show: quote.cleaning_fee > 0,
+                            show: true,
                           },
                         ]
                           .filter((r) => r.show)

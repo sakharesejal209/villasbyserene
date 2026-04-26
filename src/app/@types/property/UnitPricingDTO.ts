@@ -5,4 +5,5 @@ export default interface UnitPricingDTO {
   security_deposit: number;
   tax_percent: number;
   min_nights: number;
+  is_active: boolean;
 }

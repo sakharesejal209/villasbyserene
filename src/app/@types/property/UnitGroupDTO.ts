@@ -1,4 +1,4 @@
-import SeasonalRateDTO from "./SeasonalRateDTO";
+import SeasonalRateDTO from "./SeasonalPricingDTO";
 import UnitDTO from "./UnitDTO";
 import UnitPricingDTO from "./UnitPricingDTO";
 import { UnitType } from "./enums/UnitType";

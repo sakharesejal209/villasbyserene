@@ -126,8 +126,6 @@ export function getCardPrice(
   const baseWeekday = firstPricing?.weekday_price ?? null;
   const baseWeekend = firstPricing?.weekend_price ?? null;
   const basePrice   = property.starting_price || baseWeekday;
-
-  console.log("single property:", property);
   
   if (!basePrice) return null;
 

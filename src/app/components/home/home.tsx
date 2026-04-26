@@ -41,15 +41,8 @@ import SearchBox from "./searchBox";
 import { getAccomodation } from "../stays/stays";
 import testimonials from "./data/testimonials.json";
 import topLocations from "./data/topLocations.json";
-
-// import type PropertyDTO from "@/types/property-list-item-dto";
-// import type ThemesDTO from "@/types/themes-dto";
 import userService from "@/app/@services/user/user-service";
-import {
-  PropertyDetailDTO,
-  PropertyListItemDTO,
-  ThemeDTO,
-} from "@/app/@types/property/PropertyFiltersDTO";
+import { PropertyListItemDTO, ThemeDTO } from "@/app/@types";
 
 export const FadeInSection = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -83,9 +76,6 @@ const Home = () => {
       .then((data) => {
         setUser(data ?? null);
       })
-      .catch((err) => {
-        console.log("err:", err);
-      });
   }, []);
 
   useEffect(() => {
