@@ -48,8 +48,8 @@ const navItems = [
     path: "/admin/calendar",
   },
   { label: "iCal Sync", icon: <LinkOutlined />, path: "/admin/ical" },
-  { label: "Pricing", icon: <CurrencyRupeeOutlined />, path: "/admin/pricing" },
   { label: "Properties", icon: <HouseOutlined />, path: "/admin/properties" },
+  { label: "Quotation", icon: <CurrencyRupeeOutlined />, path: "/admin/quotation" },
 ];
 
 export default function AdminLayout({

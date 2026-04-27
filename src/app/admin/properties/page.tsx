@@ -2914,7 +2914,7 @@ export default function AdminPropertiesPage() {
                 setNewProp((p) => ({ ...p, description: e.target.value }))
               }
               multiline
-              rows={2}
+              rows={4}
               fullWidth
             />
             <Box
