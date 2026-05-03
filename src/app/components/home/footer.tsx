@@ -140,8 +140,8 @@ const Footer = () => {
               onClick={handleWhatsAppContact}
               className="w-full mt-4"
             >
+              <WhatsApp className="mr-2" />
               WhatsApp Us
-              <WhatsApp className="ml-1" />
             </Button>
           </div>
         </div>

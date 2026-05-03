@@ -28,7 +28,7 @@ function buildQueryString(filters: PropertyFiltersDTO): string {
 }
 
 class PropertiesService {
-  async getProperties(filters: PropertyFiltersDTO = {}) {
+   getProperties = (filters: PropertyFiltersDTO = {}) => {
     const qs = buildQueryString(filters);
     return httpService<PropertyListItemDTO[]>().get(`/properties${qs}`);
   }

@@ -162,7 +162,7 @@ const SaveBtn = ({
     }
     onClick={onClick}
     disabled={loading}
-    sx={{ borderRadius: 1, fontWeight: 700 }}
+    sx={{ borderRadius: 0.2, fontWeight: 700 }}
   >
     {loading ? "Saving..." : "Save Changes"}
   </Button>
@@ -490,7 +490,7 @@ const UnitsTab = ({
           variant="contained"
           startIcon={<AddOutlined />}
           onClick={() => setAddOpen(true)}
-          sx={{ borderRadius: 1 }}
+          sx={{ borderRadius: 0.2 }}
         >
           Add Unit
         </Button>
@@ -512,7 +512,7 @@ const UnitsTab = ({
         maxWidth="sm"
         fullWidth
         slotProps={{
-          paper: { sx: { borderRadius: 2, backgroundImage: "none" } },
+          paper: { sx: { borderRadius: 0.2, backgroundImage: "none" } },
         }}
       >
         <DialogTitle>
@@ -644,13 +644,13 @@ const UnitsTab = ({
           </Box>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2.5, gap: 1 }}>
-          <Button onClick={() => setAddOpen(false)} sx={{ borderRadius: 1 }}>
+          <Button onClick={() => setAddOpen(false)} sx={{ borderRadius: 0.2 }}>
             Cancel
           </Button>
           <Button
             variant="contained"
             onClick={createUnit}
-            sx={{ borderRadius: 1, fontWeight: 700 }}
+            sx={{ borderRadius: 0.2, fontWeight: 700 }}
           >
             Create Unit
           </Button>
@@ -915,7 +915,7 @@ const UnitEditor = ({
               startIcon={<SaveOutlined />}
               onClick={() => onSaveUnit(uForm)}
               disabled={saving === unit.unit_id}
-              sx={{ borderRadius: 1 }}
+              sx={{ borderRadius: 0.2 }}
             >
               Save Unit
             </Button>
@@ -997,7 +997,7 @@ const UnitEditor = ({
               startIcon={<SaveOutlined />}
               onClick={() => onSavePricing(unit.unit_id, pForm)}
               disabled={saving === `pricing-${unit.unit_id}`}
-              sx={{ borderRadius: 1 }}
+              sx={{ borderRadius: 0.2 }}
             >
               Save Pricing
             </Button>
@@ -1079,7 +1079,7 @@ const UnitEditor = ({
             maxWidth="xs"
             fullWidth
             slotProps={{
-              paper: { sx: { borderRadius: 2, backgroundImage: "none" } },
+              paper: { sx: { borderRadius: 0.2, backgroundImage: "none" } },
             }}
           >
             <DialogTitle>
@@ -1145,7 +1145,7 @@ const UnitEditor = ({
                   addSeasonal();
                   setSOpen(false);
                 }}
-                sx={{ borderRadius: 1, fontWeight: 700 }}
+                sx={{ borderRadius: 0.2, fontWeight: 700 }}
               >
                 Add
               </Button>
@@ -1403,7 +1403,7 @@ const ImagesTab = ({
             p: 2,
             border: "1px solid",
             borderColor: "divider",
-            borderRadius: 1,
+            borderRadius: 0.2,
           }}
         >
           <Box
@@ -1465,7 +1465,7 @@ const ImagesTab = ({
               }
               onClick={addToPool}
               disabled={!newImg.image_url || !newImg.image_alt || adding}
-              sx={{ borderRadius: 1 }}
+              sx={{ borderRadius: 0.2 }}
             >
               {adding ? "Adding..." : "Add to Pool"}
             </Button>
@@ -1494,7 +1494,7 @@ const ImagesTab = ({
             variant="outlined"
             onClick={searchPool}
             disabled={searching}
-            sx={{ borderRadius: 1, minWidth: 100 }}
+            sx={{ borderRadius: 0.2, minWidth: 100 }}
           >
             {searching ? <CircularProgress size={18} /> : "Search"}
           </Button>
@@ -1585,7 +1585,7 @@ const ImagesTab = ({
                         : isSelected
                           ? "primary.main"
                           : "divider",
-                      borderRadius: 1,
+                      borderRadius: 0.2,
                       overflow: "hidden",
                       position: "relative",
                       cursor: alreadyAssigned ? "default" : "pointer",
@@ -1747,7 +1747,7 @@ const ImagesTab = ({
                           sx={{
                             fontSize: 10,
                             minHeight: 24,
-                            borderRadius: 0.5,
+                            borderRadius: 0.2,
                             mt: 0.5,
                           }}
                         >
@@ -1775,7 +1775,7 @@ const ImagesTab = ({
                   justifyContent: "space-between",
                   border: "1px solid",
                   borderColor: "primary.main",
-                  borderRadius: 1,
+                  borderRadius: 0.2,
                   position: "sticky",
                   bottom: 16,
                   zIndex: 10,
@@ -1794,7 +1794,7 @@ const ImagesTab = ({
                   <Button
                     size="small"
                     onClick={() => setSelections(new Map())}
-                    sx={{ borderRadius: 1 }}
+                    sx={{ borderRadius: 0.2 }}
                   >
                     Clear
                   </Button>
@@ -1810,7 +1810,7 @@ const ImagesTab = ({
                         <CircularProgress size={14} color="inherit" />
                       ) : undefined
                     }
-                    sx={{ borderRadius: 1, fontWeight: 700 }}
+                    sx={{ borderRadius: 0.2, fontWeight: 700 }}
                   >
                     {submitting ? "Assigning..." : "Assign All"}
                   </Button>
@@ -1848,7 +1848,7 @@ const ImagesTab = ({
                       width: 120,
                       height: 80,
                       objectFit: "cover",
-                      borderRadius: 1,
+                      borderRadius: 0.2,
                     }}
                   />
                   <Box
@@ -1958,7 +1958,7 @@ const ImagesTab = ({
                           width: 120,
                           height: 80,
                           objectFit: "cover",
-                          borderRadius: 1,
+                          borderRadius: 0.2,
                         }}
                       />
                       {ui.is_banner_image === "true" && (
@@ -2114,7 +2114,7 @@ const AmenitiesTab = ({
               p: 2,
               border: "1px solid",
               borderColor: "divider",
-              borderRadius: 1,
+              borderRadius: 0.2,
             }}
           >
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
@@ -2366,7 +2366,7 @@ const AttractionsTab = ({
             p: 2,
             border: "1px solid",
             borderColor: "divider",
-            borderRadius: 1,
+            borderRadius: 0.2,
           }}
         >
           <Box
@@ -2421,7 +2421,7 @@ const AttractionsTab = ({
           p: 2,
           border: "1px dashed",
           borderColor: "divider",
-          borderRadius: 1,
+          borderRadius: 0.2,
         }}
       >
         <Typography
@@ -2479,7 +2479,7 @@ const AttractionsTab = ({
             startIcon={<AddOutlined />}
             onClick={add}
             disabled={!newA.title}
-            sx={{ borderRadius: 1 }}
+            sx={{ borderRadius: 0.2 }}
           >
             Add
           </Button>
@@ -2491,7 +2491,7 @@ const AttractionsTab = ({
         maxWidth="sm"
         fullWidth
         slotProps={{
-          paper: { sx: { borderRadius: 2, backgroundImage: "none" } },
+          paper: { sx: { borderRadius: 0.2, backgroundImage: "none" } },
         }}
       >
         <DialogTitle>
@@ -2548,7 +2548,7 @@ const AttractionsTab = ({
           <Button
             variant="contained"
             onClick={update}
-            sx={{ borderRadius: 1, fontWeight: 700 }}
+            sx={{ borderRadius: 0.2, fontWeight: 700 }}
           >
             Save
           </Button>
@@ -2781,7 +2781,7 @@ export default function AdminPropertiesPage() {
           variant="contained"
           startIcon={<AddOutlined />}
           onClick={() => setCreateOpen(true)}
-          sx={{ borderRadius: 1, fontWeight: 700 }}
+          sx={{ borderRadius: 0.2, fontWeight: 700 }}
         >
           Add Property
         </Button>
@@ -2814,7 +2814,7 @@ export default function AdminPropertiesPage() {
               sx={{
                 border: "1px solid",
                 borderColor: "divider",
-                borderRadius: 2,
+                borderRadius: 0.2,
                 overflow: "hidden",
                 cursor: "pointer",
                 transition: "all 0.15s",
@@ -2887,7 +2887,7 @@ export default function AdminPropertiesPage() {
         maxWidth="sm"
         fullWidth
         slotProps={{
-          paper: { sx: { borderRadius: 2, backgroundImage: "none" } },
+          paper: { sx: { borderRadius: 0.2, backgroundImage: "none" } },
         }}
       >
         <DialogTitle>
@@ -3031,7 +3031,7 @@ export default function AdminPropertiesPage() {
                 <AddOutlined />
               )
             }
-            sx={{ borderRadius: 1, fontWeight: 700 }}
+            sx={{ borderRadius: 0.2, fontWeight: 700 }}
           >
             {creating ? "Creating..." : "Create Property"}
           </Button>

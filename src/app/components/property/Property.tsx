@@ -95,8 +95,8 @@ function getLatLngFromEmbed(
   src: string | null,
 ): { lat: string; lng: string } | null {
   if (!src) return null;
-  const latMatch = RegExp(/!3d([-.\d]+)/).exec(src);
-  const lngMatch = RegExp(/!2d([-.\d]+)/).exec(src);
+  const latMatch = new RegExp(/!3d([-.\d]+)/).exec(src);
+  const lngMatch = new RegExp(/!2d([-.\d]+)/).exec(src);
   if (latMatch && lngMatch) return { lat: latMatch[1], lng: lngMatch[1] };
   return null;
 }
@@ -171,9 +171,9 @@ const Property: FC<PropertyPropType> = ({
     if (searchParams.get("bookingIntent") === "true") {
       setOpenForm(true);
       // Clean URL without reload
-      const url = new URL(window.location.href);
+      const url = new URL(globalThis.location.href);
       url.searchParams.delete("bookingIntent");
-      window.history.replaceState({}, "", url.toString());
+      globalThis.history.replaceState({}, "", url.toString());
     }
   }, [searchParams]);
 
@@ -688,7 +688,7 @@ const Property: FC<PropertyPropType> = ({
         slotProps={{
           paper: {
             sx: {
-              width: { xs: "90vw", md: "90vw" },
+              width: { xs: "80vw", md: "80vw" },
               maxHeight: "90vh",
               borderRadius: 1,
               backgroundImage: "none",
@@ -697,15 +697,15 @@ const Property: FC<PropertyPropType> = ({
         }}
       >
         <DialogTitle
-          sx={{ py: "8px", px: "12px" }}
+          sx={{ py: "16px", px: "16px" }}
           className="flex justify-between items-center"
         >
-          Photos{" "}
+          <Typography variant="h5">Gallery</Typography>
           <IconButton onClick={() => setOpenGallery(false)}>
             <CloseRoundedIcon />
           </IconButton>
         </DialogTitle>
-        <DialogContent sx={{ width: "100%", p: "12px", pr: 0 }}>
+        <DialogContent sx={{ p: "16px" }}>
           {galleryImages && <ImageGallery images={galleryImages} />}
         </DialogContent>
       </Dialog>

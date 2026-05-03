@@ -332,6 +332,7 @@ const BookingPage: FC = () => {
               unitName,
               adults,
               children,
+              specialRequests: formData.specialRequests, // ← add this
             });
             router.push(`/booking/confirmed/${booking.bookingId}`);
           } catch {
@@ -1174,7 +1175,8 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                           {
                             // subtotal from backend is for 1 unit — multiply for display
                             label: `Nightly rate${units > 1 ? ` × ${units} units + property charges` : ""}`,
-                            amount: quote.subtotal * units + quote.commission_amount,
+                            amount:
+                              quote.subtotal * units + quote.commission_amount,
                             show: true,
                           },
                           {

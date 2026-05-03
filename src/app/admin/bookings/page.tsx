@@ -318,6 +318,13 @@ export default function AdminBookingsPage() {
                         <Typography variant="caption" color="text.secondary">
                           {b.guest?.email}
                         </Typography>
+                        <Typography
+                          className="block"
+                          variant="caption"
+                          color="text.secondary"
+                        >
+                          {b.guest?.phone}
+                        </Typography>
                       </TableCell>
                       <TableCell sx={{ whiteSpace: "nowrap" }}>
                         {dayjs(b.checkInDate).format("DD MMM YYYY")}

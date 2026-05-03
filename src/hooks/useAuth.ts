@@ -14,6 +14,7 @@ interface UseAuthReturn {
   user: AuthUser | null;
   loading: boolean;
   login: (returnUrl?: string) => void;
+  logout: () => Promise<void>;
 }
 
 const API_BASE_URL =
@@ -26,7 +27,7 @@ export function useAuth(): UseAuthReturn {
   useEffect(() => {
     userService
       .getCurrentUser()
-      .then((data: any) => setUser(data ?? null))
+      .then((data: AuthUser) => setUser(data ?? null))
       .catch(() => setUser(null))
       .finally(() => setLoading(false));
   }, []);
@@ -35,8 +36,16 @@ export function useAuth(): UseAuthReturn {
     const url = returnUrl
       ? `${API_BASE_URL}/auth/google?returnUrl=${encodeURIComponent(returnUrl)}`
       : `${API_BASE_URL}/auth/google`;
-    window.location.href = url;
+    globalThis.location.href = url;
   };
 
-  return { user, loading, login };
+  const logout = async () => {
+    await fetch(`${API_BASE_URL}/auth/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
+    setUser(null);
+  };
+
+  return { user, loading, login, logout };
 }

@@ -44,21 +44,27 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
   };
 
   return (
-    <div>
+    <div className="flex justify-center">
       <Masonry
-        columns={{ xs: 2, md: 3 }}
-        spacing={{ xs: 0.5, md: 1.5}}
+        sx={{ width: "95%" }}
+        columns={{ xs: 1, md: 1 }}
+        spacing={{ xs: 0.5, md: 2.5 }}
       >
         {images.map((item, index) => (
           <button
             key={index}
             onClick={() => handleOpen(index)}
-            className="relative"
+            className="relative w-[90vw] h-[90vh]"
           >
-            <img
+            <Image
               src={item.src}
               alt={item.alt}
-              className={`cursor-pointer object-cover w-full h-auto`}
+              className={`cursor-pointer`}
+              fill
+              style={{
+                objectFit: fits?.[index],
+                objectPosition: "top center",
+              }}
             />
           </button>
         ))}
@@ -112,7 +118,7 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
           >
             {images.map((e, idx) => (
               <SwiperSlide key={idx}>
-                <div className="relative w-full aspect-[4/3] md:aspect-[16/9] overflow-hidden">
+                <div className="relative w-full aspect-4/3 md:aspect-video overflow-hidden">
                   <Image
                     src={e.src}
                     alt={e.alt}

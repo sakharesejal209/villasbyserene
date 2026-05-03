@@ -29,6 +29,7 @@ import {
   CheckCircleOutlined,
   HouseOutlined,
   LockOutlined,
+  LogoutOutlined,
   NightShelterOutlined,
 } from "@mui/icons-material";
 import { useAuth } from "@/hooks/useAuth";
@@ -57,16 +58,14 @@ const StatusChip: FC<{ status: string }> = ({ status }) => {
 };
 
 // ── Booking card ──────────────────────────────────────────────────
-
 const BookingCard: FC<{
   booking: UserBookingDTO;
-  onCancel: (booking: UserBookingDTO) => void;
+  onCancel: (b: UserBookingDTO) => void;
 }> = ({ booking, onCancel }) => {
   const nights = dayjs(booking.checkOutDate).diff(
     dayjs(booking.checkInDate),
     "day",
   );
-
   return (
     <Paper
       elevation={0}
@@ -77,7 +76,6 @@ const BookingCard: FC<{
         overflow: "hidden",
       }}
     >
-      {/* Header */}
       <Box
         sx={{
           px: 2.5,
@@ -100,9 +98,7 @@ const BookingCard: FC<{
         </Box>
         <StatusChip status={booking.status} />
       </Box>
-
       <Box sx={{ p: 2.5 }}>
-        {/* Dates grid */}
         <Box
           sx={{
             display: "grid",
@@ -111,59 +107,34 @@ const BookingCard: FC<{
             mb: 2,
           }}
         >
-          <Box>
-            <Typography
-              variant="caption"
-              color="text.secondary"
-              sx={{
-                textTransform: "uppercase",
-                display: "block",
-                mb: 0.25,
-              }}
-            >
-              Check-in
-            </Typography>
-            <Typography variant="body2" fontWeight={700}>
-              {dayjs(booking.checkInDate).format("ddd, DD MMM YYYY")}
-            </Typography>
-          </Box>
-          <Box>
-            <Typography
-              variant="caption"
-              color="text.secondary"
-              sx={{
-                textTransform: "uppercase",
-                display: "block",
-                mb: 0.25,
-              }}
-            >
-              Check-out
-            </Typography>
-            <Typography variant="body2" fontWeight={700}>
-              {dayjs(booking.checkOutDate).format("ddd, DD MMM YYYY")}
-            </Typography>
-          </Box>
-          <Box>
-            <Typography
-              variant="caption"
-              color="text.secondary"
-              sx={{
-                textTransform: "uppercase",
-                display: "block",
-                mb: 0.25,
-              }}
-            >
-              Duration
-            </Typography>
-            <Typography variant="body2" fontWeight={700}>
-              {nights} night{nights !== 1 ? "s" : ""}
-            </Typography>
-          </Box>
+          {(
+            [
+              [
+                "Check-in",
+                dayjs(booking.checkInDate).format("ddd, DD MMM YYYY"),
+              ],
+              [
+                "Check-out",
+                dayjs(booking.checkOutDate).format("ddd, DD MMM YYYY"),
+              ],
+              ["Duration", `${nights} night${nights !== 1 ? "s" : ""}`],
+            ] as [string, string][]
+          ).map(([label, val]) => (
+            <Box key={label}>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                sx={{ textTransform: "uppercase", display: "block", mb: 0.25 }}
+              >
+                {label}
+              </Typography>
+              <Typography variant="body2" fontWeight={700}>
+                {val}
+              </Typography>
+            </Box>
+          ))}
         </Box>
-
         <Divider sx={{ mb: 2 }} />
-
-        {/* Amount + unit + cancel */}
         <Box
           sx={{
             display: "flex",
@@ -190,7 +161,6 @@ const BookingCard: FC<{
               Total paid · Booking #{booking.id.slice(0, 8).toUpperCase()}
             </Typography>
           </Box>
-
           {booking.cancellation.canCancel && booking.status !== "CANCELLED" && (
             <Button
               variant="outlined"
@@ -204,8 +174,6 @@ const BookingCard: FC<{
             </Button>
           )}
         </Box>
-
-        {/* Refund preview for upcoming confirmed */}
         {booking.status === "CONFIRMED" &&
           booking.cancellation.daysToCheckin > 0 && (
             <Alert
@@ -224,11 +192,12 @@ const BookingCard: FC<{
   );
 };
 
-// ── Main ──────────────────────────────────────────────────────────
-
+// ════════════════════════════════════════════════════════════════════
+// MAIN
+// ════════════════════════════════════════════════════════════════════
 const ProfilePage: FC = () => {
   const router = useRouter();
-  const { user, loading: authLoading, login } = useAuth();
+  const { user, loading: authLoading, login, logout } = useAuth();
   const [tab, setTab] = useState(0);
   const [bookings, setBookings] = useState<UserBookingDTO[]>([]);
   const [loadingTrips, setLoadingTrips] = useState(true);
@@ -239,26 +208,26 @@ const ProfilePage: FC = () => {
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [logoutLoading, setLogoutLoading] = useState(false);
 
   const {
     control,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ProfileFormDTO>({ defaultValues: { full_name: "", phone: "" } });
+  } = useForm<ProfileFormDTO>({
+    defaultValues: { full_name: "", phone: "" },
+  });
 
-  // Redirect if not logged in
   useEffect(() => {
     if (!authLoading && !user) login(globalThis.location.pathname);
   }, [authLoading, login, user]);
 
-  // Pre-fill form
   useEffect(() => {
     if (user)
       reset({ full_name: user.full_name ?? "", phone: user.phone ?? "" });
   }, [user, reset]);
 
-  // Fetch bookings
   useEffect(() => {
     if (!user) return;
     setLoadingTrips(true);
@@ -269,14 +238,12 @@ const ProfilePage: FC = () => {
       .finally(() => setLoadingTrips(false));
   }, [user]);
 
-  // Cancel booking
   const handleConfirmCancel = async () => {
     if (!cancelTarget) return;
     setCancelling(true);
     try {
       const res = await bookingService.cancelBooking(cancelTarget.id);
       setCancelResult(res.message);
-      // Update local state
       setBookings((prev) =>
         prev.map((b) =>
           b.id === cancelTarget.id ? { ...b, status: "CANCELLED" } : b,
@@ -293,19 +260,27 @@ const ProfilePage: FC = () => {
     }
   };
 
-  // Save profile
   const handleSaveProfile = async (data: ProfileFormDTO) => {
     setSaving(true);
     setSaveSuccess(false);
     setSaveError(null);
     try {
-      await userSevice.updateUser(data).then(() => {
-        setSaveSuccess(true);
-      });
+      await userSevice.updateUser(data);
+      setSaveSuccess(true);
     } catch {
       setSaveError("Failed to save. Please try again.");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    setLogoutLoading(true);
+    try {
+      await logout();
+      router.push("/");
+    } catch {
+      setLogoutLoading(false);
     }
   };
 
@@ -333,33 +308,44 @@ const ProfilePage: FC = () => {
   return (
     <section>
       <div className="container">
-        {/* Profile header */}
+        {/* ── Profile header ── */}
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
             gap: 2,
             mb: 3,
             marginY: "50px",
           }}
         >
-          <Avatar
-            src={user.profile_image ?? undefined}
-            sx={{ width: 64, height: 64, fontSize: 28 }}
-          >
-            {user.full_name?.[0] ?? "?"}
-          </Avatar>
-          <Box>
-            <Typography variant="h5" fontWeight={800}>
-              {user.full_name}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {user.email}
-            </Typography>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Avatar
+              src={user.profile_image ?? undefined}
+              sx={{
+                width: 64,
+                height: 64,
+                fontSize: 28,
+                bgcolor: "primary.main",
+              }}
+            >
+              {/* fallback initials if no Google picture */}
+              {!user.profile_image &&
+                (user.full_name?.[0]?.toUpperCase() ?? "?")}
+            </Avatar>
+            <Box>
+              <Typography variant="h5" fontWeight={800}>
+                {user.full_name}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {user.email}
+              </Typography>
+            </Box>
           </Box>
         </Box>
 
-        {/* Tabs */}
+        {/* ── Tabs ── */}
         <Tabs
           value={tab}
           onChange={(_, v) => setTab(v)}
@@ -367,159 +353,33 @@ const ProfilePage: FC = () => {
             mb: 3,
             borderBottom: "1px solid",
             borderColor: "divider",
-            "& .MuiTabs-indicator": {
-              backgroundColor: "primary.main",
-            },
+            "& .MuiTabs-indicator": { backgroundColor: "primary.main" },
           }}
         >
-          <Tab
-            label="My Trips"
-            icon={<NightShelterOutlined sx={{ fontSize: 18 }} />}
-            iconPosition="start"
-            sx={{ fontWeight: 600, minHeight: 48 }}
-          />
           <Tab
             label="Account"
             icon={<AccountCircleOutlined sx={{ fontSize: 18 }} />}
             iconPosition="start"
             sx={{ fontWeight: 600, minHeight: 48 }}
           />
+          <Tab
+            label="My Trips"
+            icon={<NightShelterOutlined sx={{ fontSize: 18 }} />}
+            iconPosition="start"
+            sx={{ fontWeight: 600, minHeight: 48 }}
+          />
         </Tabs>
-
-        {/* ── My Trips ── */}
-        {tab === 0 && (
-          <Box>
-            {cancelResult && (
-              <Alert
-                severity="success"
-                sx={{ mb: 2 }}
-                onClose={() => setCancelResult(null)}
-              >
-                {cancelResult}
-              </Alert>
-            )}
-
-            {loadingTrips ? (
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                {[1, 2].map((i) => (
-                  <Skeleton key={i} variant="rounded" height={160} />
-                ))}
-              </Box>
-            ) : tripsError ? (
-              <Alert severity="error">{tripsError}</Alert>
-            ) : bookings.length === 0 ? (
-              <Box sx={{ textAlign: "center", py: 6 }}>
-                <HouseOutlined
-                  sx={{ fontSize: 48, color: "text.disabled", mb: 1 }}
-                />
-                <Typography variant="h6" color="text.secondary">
-                  No trips yet
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ mb: 2 }}
-                >
-                  Your bookings will appear here
-                </Typography>
-                <Button
-                  variant="contained"
-                  onClick={() => router.push("/stays/all")}
-                >
-                  Explore Properties
-                </Button>
-              </Box>
-            ) : (
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                {/* Upcoming */}
-                {upcoming.length > 0 && (
-                  <>
-                    <Typography
-                      variant="subtitle2"
-                      color="text.secondary"
-                      sx={{
-                        textTransform: "uppercase",
-                        mt: 1,
-                      }}
-                    >
-                      Upcoming ({upcoming.length})
-                    </Typography>
-                    {upcoming.map((b) => (
-                      <BookingCard
-                        key={b.id}
-                        booking={b}
-                        onCancel={setCancelTarget}
-                      />
-                    ))}
-                  </>
-                )}
-
-                {/* Past */}
-                {pastBookings.length > 0 && (
-                  <>
-                    <Typography
-                      variant="subtitle2"
-                      color="text.secondary"
-                      sx={{
-                        textTransform: "uppercase",
-                        mt: 1,
-                      }}
-                    >
-                      Past stays ({pastBookings.length})
-                    </Typography>
-                    {pastBookings.map((b) => (
-                      <BookingCard
-                        key={b.id}
-                        booking={b}
-                        onCancel={setCancelTarget}
-                      />
-                    ))}
-                  </>
-                )}
-
-                {/* Cancelled */}
-                {cancelledBookings.length > 0 && (
-                  <>
-                    <Typography
-                      variant="subtitle2"
-                      color="text.secondary"
-                      sx={{
-                        textTransform: "uppercase",
-                        mt: 1,
-                      }}
-                    >
-                      Cancelled ({cancelledBookings.length})
-                    </Typography>
-                    {cancelledBookings.map((b) => (
-                      <BookingCard
-                        key={b.id}
-                        booking={b}
-                        onCancel={setCancelTarget}
-                      />
-                    ))}
-                  </>
-                )}
-              </Box>
-            )}
-          </Box>
-        )}
 
         {/* ── Account ── */}
         {tab === 1 && (
           <Box
             component="form"
             onSubmit={handleSubmit(handleSaveProfile)}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 2.5,
-              // maxWidth: 480,
-            }}
+            sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}
           >
             <Typography variant="subtitle1" fontWeight={700}>
               Personal Details
             </Typography>
-
             <div className="grid grid-cols-2 gap-4">
               <Controller
                 name="full_name"
@@ -535,7 +395,6 @@ const ProfilePage: FC = () => {
                   />
                 )}
               />
-
               <TextField
                 label="Email"
                 value={user.email ?? ""}
@@ -543,7 +402,6 @@ const ProfilePage: FC = () => {
                 disabled
                 helperText="Email cannot be changed"
               />
-
               <Controller
                 name="phone"
                 control={control}
@@ -586,37 +444,156 @@ const ProfilePage: FC = () => {
                   <LockOutlined />
                 )
               }
-              sx={{
-                alignSelf: "flex-end",
-                px: 4,
-              }}
+              sx={{ alignSelf: "flex-end", px: 4 }}
             >
               {saving ? "Saving..." : "Save Changes"}
             </Button>
 
             <Divider sx={{ my: 1 }} />
 
-            <Box>
-              <Typography
-                variant="subtitle2"
-                color="text.secondary"
-                sx={{ mb: 1 }}
-              >
-                Signed in with Google
-              </Typography>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                <Box
-                  component="img"
-                  src="https://www.google.com/favicon.ico"
-                  sx={{ width: 16, height: 16 }}
-                />
-                <Typography variant="body2">{user.email}</Typography>
+            <div className="flex justify-between items-center">
+              <Box>
+                <Typography
+                  variant="subtitle2"
+                  color="text.secondary"
+                  sx={{ mb: 1 }}
+                >
+                  Signed in with Google
+                </Typography>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+                  <Box
+                    component="img"
+                    src="https://www.google.com/favicon.ico"
+                    sx={{ width: 16, height: 16 }}
+                  />
+                  <Typography variant="body2">{user.email}</Typography>
+                </Box>
               </Box>
-            </Box>
+              {/* Logout button */}
+              <Button
+                variant="outlined"
+                color="error"
+                size="small"
+                startIcon={
+                  logoutLoading ? (
+                    <CircularProgress size={14} color="inherit" />
+                  ) : (
+                    <LogoutOutlined />
+                  )
+                }
+                onClick={handleLogout}
+                disabled={logoutLoading}
+              >
+                {logoutLoading ? "Signing out..." : "Sign Out"}
+              </Button>
+            </div>
           </Box>
         )}
 
-        {/* ── Cancel confirmation dialog ── */}
+        {/* ── My Trips ── */}
+        {tab === 0 && (
+          <Box>
+            {cancelResult && (
+              <Alert
+                severity="success"
+                sx={{ mb: 2 }}
+                onClose={() => setCancelResult(null)}
+              >
+                {cancelResult}
+              </Alert>
+            )}
+            {loadingTrips ? (
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                {[1, 2].map((i) => (
+                  <Skeleton key={i} variant="rounded" height={160} />
+                ))}
+              </Box>
+            ) : tripsError ? (
+              <Alert severity="error">{tripsError}</Alert>
+            ) : bookings.length === 0 ? (
+              <Box sx={{ textAlign: "center", py: 6 }}>
+                <HouseOutlined
+                  sx={{ fontSize: 48, color: "text.disabled", mb: 1 }}
+                />
+                <Typography variant="h6" color="text.secondary">
+                  No trips yet
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mb: 2 }}
+                >
+                  Your bookings will appear here
+                </Typography>
+                <Button
+                  variant="contained"
+                  onClick={() => router.push("/stays/all")}
+                >
+                  Explore Properties
+                </Button>
+              </Box>
+            ) : (
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                {upcoming.length > 0 && (
+                  <>
+                    <Typography
+                      variant="subtitle2"
+                      color="text.secondary"
+                      sx={{ textTransform: "uppercase", mt: 1 }}
+                    >
+                      Upcoming ({upcoming.length})
+                    </Typography>
+                    {upcoming.map((b) => (
+                      <BookingCard
+                        key={b.id}
+                        booking={b}
+                        onCancel={setCancelTarget}
+                      />
+                    ))}
+                  </>
+                )}
+                {pastBookings.length > 0 && (
+                  <>
+                    <Typography
+                      variant="subtitle2"
+                      color="text.secondary"
+                      sx={{ textTransform: "uppercase", mt: 1 }}
+                    >
+                      Past stays ({pastBookings.length})
+                    </Typography>
+                    {pastBookings.map((b) => (
+                      <BookingCard
+                        key={b.id}
+                        booking={b}
+                        onCancel={setCancelTarget}
+                      />
+                    ))}
+                  </>
+                )}
+                {cancelledBookings.length > 0 && (
+                  <>
+                    <Typography
+                      variant="subtitle2"
+                      color="text.secondary"
+                      sx={{ textTransform: "uppercase", mt: 1 }}
+                    >
+                      Cancelled ({cancelledBookings.length})
+                    </Typography>
+                    {cancelledBookings.map((b) => (
+                      <BookingCard
+                        key={b.id}
+                        booking={b}
+                        onCancel={setCancelTarget}
+                      />
+                    ))}
+                  </>
+                )}
+              </Box>
+            )}
+          </Box>
+        )}
+
+        {/* ── Cancel dialog ── */}
         <Dialog
           open={Boolean(cancelTarget)}
           onClose={() => !cancelling && setCancelTarget(null)}
@@ -638,39 +615,38 @@ const ProfilePage: FC = () => {
                   Are you sure you want to cancel your stay at{" "}
                   <strong>{cancelTarget.property?.name}</strong>?
                 </Typography>
-
                 <Paper
                   elevation={0}
                   sx={{ p: 2, borderRadius: 2, bgcolor: "action.hover", mb: 2 }}
                 >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      mb: 1,
-                    }}
-                  >
-                    <Typography variant="body2" color="text.secondary">
-                      Check-in
-                    </Typography>
-                    <Typography variant="body2" fontWeight={600}>
-                      {dayjs(cancelTarget.checkInDate).format("DD MMM YYYY")}
-                    </Typography>
-                  </Box>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      mb: 1,
-                    }}
-                  >
-                    <Typography variant="body2" color="text.secondary">
-                      Amount paid
-                    </Typography>
-                    <Typography variant="body2" fontWeight={600}>
-                      ₹{cancelTarget.amount.toLocaleString("en-IN")}
-                    </Typography>
-                  </Box>
+                  {(
+                    [
+                      [
+                        "Check-in",
+                        dayjs(cancelTarget.checkInDate).format("DD MMM YYYY"),
+                      ],
+                      [
+                        "Amount paid",
+                        `₹${cancelTarget.amount.toLocaleString("en-IN")}`,
+                      ],
+                    ] as [string, string][]
+                  ).map(([label, val]) => (
+                    <Box
+                      key={label}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        mb: 1,
+                      }}
+                    >
+                      <Typography variant="body2" color="text.secondary">
+                        {label}
+                      </Typography>
+                      <Typography variant="body2" fontWeight={600}>
+                        {val}
+                      </Typography>
+                    </Box>
+                  ))}
                   <Divider sx={{ my: 1 }} />
                   <Box
                     sx={{ display: "flex", justifyContent: "space-between" }}
@@ -691,16 +667,14 @@ const ProfilePage: FC = () => {
                     </Typography>
                   </Box>
                 </Paper>
-
                 {cancelTarget.cancellation.refundPercent === 0 && (
                   <Alert severity="warning" sx={{ mb: 1 }}>
                     No refund applicable, cancellation is within 14 days of
                     check-in.
                   </Alert>
                 )}
-
                 <Typography variant="caption" color="text.secondary">
-                  Refunds are processed within 5–7 business days to your
+                  Refunds are processed within 5-7 business days to your
                   original payment method.
                 </Typography>
               </Box>

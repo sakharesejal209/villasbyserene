@@ -447,7 +447,7 @@ const buildPrintHTML = (
 <title>${customerName ? `Quotation_${customerName.trim().replace(/\s+/g, "_")}` : `Quotation_${propertyName.trim().replace(/\s+/g, "_")}`}</title>
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1a1a1a;padding:44px;font-size:13px;background:#fff}
+  body{font-family: Montserrat;color:#1a1a1a;padding:44px;font-size:13px;background:#fff}
 
   /* Header */
   .hdr{display:flex;justify-content:space-between;align-items:flex-start;
@@ -456,7 +456,7 @@ const buildPrintHTML = (
   .logo{height:44px;object-fit:contain;display:block}
   .brand-sub{font-size:10px;color:#7C7670;letter-spacing:0.8px;text-transform:uppercase}
   .hdr-right{text-align:right}
-  .quote-label{font-family:Georgia,'Times New Roman',serif;font-size:24px;color:#044231;font-weight:normal}
+  .quote-label{font-family:EB Garamond;font-size:24px;color:#044231;font-weight:normal}
   .contact{font-size:13px;color:#333;margin-top:4px;font-weight:600}
   .gen-date{font-size:10px;color:#aaa;margin-top:3px}
 

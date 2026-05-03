@@ -35,6 +35,7 @@ export interface VerifyPaymentPayload {
   unitName: string;
   adults: number;
   children: number;
+  specialRequests?: string; // ← add this
 }
 
 export interface VerifyPaymentResponse {
