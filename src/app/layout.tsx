@@ -4,8 +4,9 @@ import "./globals.css";
 import { Montserrat, EB_Garamond } from "next/font/google";
 import ClientProviders from "./components/client-providers/ClientProviders";
 import { Metadata } from "next";
-import { propertiesService } from "./@services";
-import NavbarFooterWrapper from "./components/home/Navbarfooterwrapper";
+import { usePathname } from "next/navigation";
+import Navbar from "./components/home/navbar";
+import Footer from "./components/home/footer";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.villasbyserene.com"),
@@ -112,12 +113,15 @@ const ibmPlex = EB_Garamond({
   variable: "--font-ibmPlex",
 });
 
-export default async function Layout({
+const HIDE_PATHS = ["/checkout", "/booking/confirmed", "/maintenance"];
+
+export default function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const propertiesData = await propertiesService.getProperties();
+  const pathname = usePathname();
+  const hide = HIDE_PATHS.some((p) => pathname.startsWith(p));
 
   return (
     <html lang="en" className={roboto.className + " " + ibmPlex.className}>
