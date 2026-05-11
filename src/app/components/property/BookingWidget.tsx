@@ -371,11 +371,16 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                 : (g.pricing?.weekday_price ?? null);
             const rateLabel =
               isDirect && selected && checkinRate ? checkinRate : null;
+            const datesBlocked =
+              selected && checkIn && checkOut
+                ? isDateBlocked(checkIn) || isDateBlocked(checkOut)
+                : false;
+            const isSoldOut = g.available_count === 0 || datesBlocked;
 
             return (
               <Box
                 key={g.unit_type}
-                onClick={() => g.available_count > 0 && handleSelectUnit(idx)}
+                onClick={() => !isSoldOut && handleSelectUnit(idx)}
                 sx={{
                   display: "flex",
                   alignItems: "center",
@@ -389,16 +394,13 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                       ? "primary.900"
                       : "primary.50"
                     : "background.paper",
-                  cursor: g.available_count === 0 ? "not-allowed" : "pointer",
-                  opacity: g.available_count === 0 ? 0.5 : 1,
+                  cursor: isSoldOut ? "not-allowed" : "pointer", // ← use isSoldOut
+                  opacity: 1,
                   transition: "all 0.15s",
                   boxShadow: selected
                     ? `0 0 0 3px ${theme.palette.primary.main}22`
                     : "none",
-                  "&:hover":
-                    g.available_count > 0
-                      ? { borderColor: "primary.main" }
-                      : {},
+                  "&:hover": isSoldOut ? {} : { borderColor: "primary.main" },
                 }}
               >
                 {g.display_unit.images[0]?.image?.image_url && (
@@ -429,13 +431,13 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                   >
                     <Typography
                       variant="caption"
-                      color={
-                        g.available_count > 0 ? "success.main" : "error.main"
-                      }
+                      color={isSoldOut ? "error.main" : "success.main"}
                     >
-                      {g.available_count > 0
-                        ? `${g.available_count} available`
-                        : "Sold out"}
+                      {g.available_count === 0
+                        ? "Sold out"
+                        : datesBlocked
+                          ? "Unavailable for selected dates" // ← new message
+                          : `${g.available_count} available`}
                     </Typography>
                     {selected && rateLabel?.type === "seasonal" && (
                       <Chip
@@ -457,7 +459,15 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                   </Box>
                 </Box>
                 <Box sx={{ textAlign: "right", flexShrink: 0 }}>
-                  {isDirect && rate !== null ? (
+                  {isSoldOut ? (
+                    <Chip
+                      label="Sold out"
+                      size="small"
+                      color="error"
+                      variant="outlined"
+                      sx={{ fontSize: 10 }}
+                    />
+                  ) : isDirect && rate !== null ? (
                     <>
                       <Typography
                         variant="body1"
@@ -792,8 +802,13 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                       </Typography>
                     </Box>
                   ) : (
-                    <Typography variant="body2" color="success" className="flex gap-1 items-center">
-                      <PiConfetti size={12} /> Zero convenience fees on your booking!
+                    <Typography
+                      variant="body2"
+                      color="success"
+                      className="flex gap-1 items-center"
+                    >
+                      <PiConfetti size={12} /> Zero convenience fees on your
+                      booking!
                     </Typography>
                   )}
 

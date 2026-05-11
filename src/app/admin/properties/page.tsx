@@ -303,7 +303,7 @@ const BasicInfoTab = ({
         value={form.description || ""}
         onChange={set("description")}
         multiline
-        rows={4}
+        rows={5}
         fullWidth
         size="small"
       />
@@ -809,8 +809,8 @@ const UnitEditor = ({
               label="VBS Commission %"
               type="number"
               size="small"
-              disabled
-              // value={uForm.vbs_commission || ""}
+              // disabled
+              value={uForm.vbs_commission || ""}
               onChange={setU("vbs_commission")}
             />
             <TextField
@@ -876,7 +876,7 @@ const UnitEditor = ({
             value={uForm.description || ""}
             onChange={setU("description")}
             multiline
-            rows={2}
+            rows={5}
             fullWidth
           />
           <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
@@ -930,60 +930,60 @@ const UnitEditor = ({
             Pricing
           </Typography>
           {/* {Object.keys(pForm).length > 0 ? ( */}
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: { xs: "1fr", md: "1fr 1fr 1fr" },
-                gap: 1.5,
-              }}
-            >
-              <TextField
-                label="Weekday Price ₹"
-                type="number"
-                size="small"
-                value={pForm.weekdayPrice || ""}
-                onChange={setP("weekdayPrice")}
-              />
-              <TextField
-                label="Weekend Price ₹"
-                type="number"
-                size="small"
-                value={pForm.weekendPrice || ""}
-                onChange={setP("weekendPrice")}
-              />
-              <TextField
-                label="Cleaning Fee ₹"
-                type="number"
-                size="small"
-                value={pForm.cleaningFee || ""}
-                onChange={setP("cleaningFee")}
-              />
-              <TextField
-                label="Security Deposit ₹"
-                type="number"
-                size="small"
-                value={pForm.securityDeposit || ""}
-                onChange={setP("securityDeposit")}
-              />
-              <TextField
-                label="Min Nights"
-                type="number"
-                size="small"
-                value={pForm.minNights || ""}
-                onChange={setP("minNights")}
-              />
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={!!pForm.isActive}
-                    onChange={(e) =>
-                      setPForm((f) => ({ ...f, isActive: e.target.checked }))
-                    }
-                  />
-                }
-                label="Active"
-              />
-            </Box>
+          <Box
+            sx={{
+              display: "grid",
+              gridTemplateColumns: { xs: "1fr", md: "1fr 1fr 1fr" },
+              gap: 1.5,
+            }}
+          >
+            <TextField
+              label="Weekday Price ₹"
+              type="number"
+              size="small"
+              value={pForm.weekdayPrice || ""}
+              onChange={setP("weekdayPrice")}
+            />
+            <TextField
+              label="Weekend Price ₹"
+              type="number"
+              size="small"
+              value={pForm.weekendPrice || ""}
+              onChange={setP("weekendPrice")}
+            />
+            <TextField
+              label="Cleaning Fee ₹"
+              type="number"
+              size="small"
+              value={pForm.cleaningFee || ""}
+              onChange={setP("cleaningFee")}
+            />
+            <TextField
+              label="Security Deposit ₹"
+              type="number"
+              size="small"
+              value={pForm.securityDeposit || ""}
+              onChange={setP("securityDeposit")}
+            />
+            <TextField
+              label="Min Nights"
+              type="number"
+              size="small"
+              value={pForm.minNights || ""}
+              onChange={setP("minNights")}
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={!!pForm.isActive}
+                  onChange={(e) =>
+                    setPForm((f) => ({ ...f, isActive: e.target.checked }))
+                  }
+                />
+              }
+              label="Active"
+            />
+          </Box>
           {/* )
            : (
             <Typography variant="body2" color="text.secondary">
@@ -1049,9 +1049,7 @@ const UnitEditor = ({
                     <TableCell>
                       {dayjs(s.endDate).format("DD MMM YYYY")}
                     </TableCell>
-                    <TableCell>
-                      ₹{Number(s.pricePerNight)}
-                    </TableCell>
+                    <TableCell>₹{Number(s.pricePerNight)}</TableCell>
                     <TableCell>
                       <Chip
                         label={s.isActive ? "Active" : "Off"}
@@ -1836,7 +1834,7 @@ const ImagesTab = ({
                   key={pi.image_id}
                   sx={{
                     position: "relative",
-                    width: 120,
+                    width: 200,
                     opacity: removing === pi.image_id ? 0.4 : 1,
                     transition: "opacity 0.15s",
                   }}
@@ -1845,8 +1843,8 @@ const ImagesTab = ({
                     component="img"
                     src={pi.image.image_url}
                     sx={{
-                      width: 120,
-                      height: 80,
+                      width: 200,
+                      height: 100,
                       objectFit: "cover",
                       borderRadius: 0.2,
                     }}
@@ -2211,10 +2209,7 @@ const FoodMenuTab = ({
         />
         <FormControlLabel
           control={
-            <Switch
-              checked={!!form.isNonVeg}
-              onChange={setCheck("isNonVeg")}
-            />
+            <Switch checked={!!form.isNonVeg} onChange={setCheck("isNonVeg")} />
           }
           label="Non-Vegetarian"
         />
@@ -2230,7 +2225,7 @@ const FoodMenuTab = ({
         value={form.description || ""}
         onChange={set("description")}
         multiline
-        rows={3}
+        rows={5}
         fullWidth
         size="small"
       />
@@ -2452,6 +2447,8 @@ const AttractionsTab = ({
               setNewA((n) => ({ ...n, distance: e.target.value }))
             }
             placeholder="5 mins"
+            multiline
+            rows={5}
           />
           <TextField
             label="Description"
@@ -2530,7 +2527,7 @@ const AttractionsTab = ({
               }
               fullWidth
               multiline
-              rows={2}
+              rows={5}
             />
             <TextField
               label="Image URL"
@@ -2914,7 +2911,7 @@ export default function AdminPropertiesPage() {
                 setNewProp((p) => ({ ...p, description: e.target.value }))
               }
               multiline
-              rows={4}
+              rows={5}
               fullWidth
             />
             <Box
