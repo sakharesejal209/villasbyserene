@@ -136,7 +136,7 @@ const ListYourProperty = () => {
               objectPosition: "center center",
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/55 to-black/55"></div>
+          <div className="absolute inset-0 bg-linear-to-b from-black/55 via-black/55 to-black/55"></div>
         </motion.div>
 
         <motion.div className="relative text-center px-4 text-white flex justify-center flex-col items-center">
@@ -187,13 +187,13 @@ const ListYourProperty = () => {
 
       {/* Why Partner Section */}
       <div className="my-14">
-        <div className="container mx-auto md:!px-16">
+        <div className="container mx-auto md:px-16!">
           <FadeInSection>
             <div className="flex flex-col items-center justify-center mb-6 text-center">
-              <Typography variant="h4" className="!mb-2">
+              <Typography variant="h4" className="mb-2!">
                 Managing a villa can be overwhelming
               </Typography>
-              <Typography className="w-full block md:w-[75%] !text-lg text-center">
+              <Typography className="w-full block md:w-[75%] text-lg! text-center">
                 Staffing, guest communication, marketing, upkeep… the list never
                 ends. That&apos;s where we step in.
               </Typography>
@@ -212,10 +212,10 @@ const ListYourProperty = () => {
                 </Typography>
                 <StyledKPI className="flex items-center rounded-sm gap-2 md:gap-4 p-2 md:p-6 mt-4">
                   <StyledKPICircle className="w-8 md:w-12 md:h-12 h-8 rounded-full flex items-center justify-center">
-                    <CheckCircle className="md:w-6 w-3 md:h-6 h-3 !text-white" />
+                    <CheckCircle className="md:w-6 w-3 md:h-6 h-3 text-white!" />
                   </StyledKPICircle>
                   <div>
-                    <Typography className="!font-medium">
+                    <Typography className="font-medium!">
                       Property always guest-ready
                     </Typography>
                     <Typography variant="body2">
@@ -225,7 +225,7 @@ const ListYourProperty = () => {
                 </StyledKPI>
               </div>
               {/* </FadeInSection> */}
-              <div className="relative w-full h-[350px]">
+              <div className="relative w-full h-87.5">
                 <Image
                   src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/skapa-alibaug%2Fskapa-alibaug-livingroom.webp?alt=media&token=82832501-11c9-44af-a9fd-1e0b5e518ea4"
                   alt="Professional property management"
@@ -246,7 +246,7 @@ const ListYourProperty = () => {
         <div className="container mx-auto px-4">
           <FadeInSection>
             <div className="text-center mb-8">
-              <Typography variant="h4" className="!mb-2">
+              <Typography variant="h4" className="mb-2!">
                 Complete Property Management
               </Typography>
               <Typography>
@@ -270,7 +270,7 @@ const ListYourProperty = () => {
                         >
                           <IconComponent color="primary" />
                         </Box>
-                        <Typography variant="h5" className="!mb-4">
+                        <Typography variant="h5" className="mb-4!">
                           {service.title}
                         </Typography>
                         <Typography>{service.description}</Typography>
@@ -289,10 +289,10 @@ const ListYourProperty = () => {
         <div className="container mx-auto px-4">
           <FadeInSection>
             <div className="text-center mb-10 md:mb-12">
-              <Typography variant="h4" className="!mb-2">
+              <Typography variant="h4" className="mb-2!">
                 Simple 3-Step Process
               </Typography>
-              <Typography className="!text-lg text-center block">
+              <Typography className="text-lg! text-center block">
                 Getting started is easy. We&apos;ll handle the complex stuff so
                 you can focus on earning.
               </Typography>
@@ -357,11 +357,11 @@ const ListYourProperty = () => {
       <div className="my-14">
         <div className="container">
           <FadeInSection>
-            <div className="grid md:grid-cols-2 lg:px-[150px]">
+            <div className="grid md:grid-cols-2 lg:px-37.5">
               <div className="flex justify-center items-left flex-col">
                 <Typography
                   variant="h4"
-                  className="md:!mb-6 text-center md:text-left"
+                  className="md:mb-6! text-center md:text-left"
                 >
                   Your Success Is Our Priority
                 </Typography>
@@ -395,12 +395,11 @@ const ListYourProperty = () => {
 
       {/* CTA Section */}
       <div
-        className="my-14"
-        className={`text-white p-6
+        className={`text-white p-6 my-14
         ${
           theme.palette.mode == "light"
-            ? "bg-gradient-to-r from-[color:var(--cta-light)] to-[color:color-mix(in_oklab,var(--cta-light)_80%,transparent)]"
-            : "bg-gradient-to-r from-[color:var(--cta-dark)] to-[color:color-mix(in_oklab,var(--cta-dark)_80%,transparent)]"
+            ? "bg-linear-to-r from-(--cta-light) to-[color-mix(in_oklab,var(--cta-light)_80%,transparent)]"
+            : "bg-linear-to-r from-(--cta-dark) to-[color-mix(in_oklab,var(--cta-dark)_80%,transparent)]"
         }
         `}
       >

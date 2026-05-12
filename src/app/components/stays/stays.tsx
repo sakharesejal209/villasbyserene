@@ -35,7 +35,7 @@ import dayjs from "dayjs";
 
 type StaysPropType = {
   location: string;
-  propertiesData: PropertyDetailDTO[];
+  propertiesData: PropertyListItemDTO[];
 };
 
 export const getAccomodation = (type: string) => {
@@ -150,7 +150,7 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
             />
             <Typography variant="body2" fontWeight={600}>
               {dateLabel}
-              {nights && ` · ${nights} night${nights !== 1 ? "s" : ""}`}
+              {nights && ` · ${nights} night${nights === 1 ? "" : "s"}`}
             </Typography>
           </Box>
         )}
@@ -166,7 +166,7 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
         >
           {propertiesData.map((item) => {
             const isDirect = item.booking_type === BookingType.DIRECT;
-            const priceResult = getCardPrice(item, checkIn);
+            const priceResult = getCardPrice(item as PropertyDetailDTO, checkIn);
             const url = buildUrl(item);
 
             return (

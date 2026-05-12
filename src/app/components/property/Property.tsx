@@ -389,7 +389,7 @@ const Property: FC<PropertyPropType> = ({
                       maxLength={200}
                     />
                     <div className="flex gap-6 my-6">
-                      {foodMenu.isVeg && (
+                      {foodMenu.is_veg && (
                         <div className="flex items-center gap-3">
                           <svg
                             width="24"
@@ -418,7 +418,7 @@ const Property: FC<PropertyPropType> = ({
                           Veg
                         </div>
                       )}
-                      {foodMenu.isNonVeg && (
+                      {foodMenu.is_non_veg && (
                         <div className="flex items-center gap-3">
                           <svg
                             width="24"
@@ -450,16 +450,16 @@ const Property: FC<PropertyPropType> = ({
                     </div>
                     <div className="mb-4">
                       <Typography className="my-2!">
-                        Breakfast: {foodMenu.breakfastTime}
+                        Breakfast: {foodMenu.breakfast_time}
                       </Typography>
                       <Typography className="my-2!">
-                        Lunch: {foodMenu.lunchTime}
+                        Lunch: {foodMenu.lunch_time}
                       </Typography>
                       <Typography className="my-2!">
-                        High Tea: {foodMenu.highteaTime}
+                        High Tea: {foodMenu.hightea_time}
                       </Typography>
                       <Typography className="my-2!">
-                        Dinner: {foodMenu.dinnerTime}
+                        Dinner: {foodMenu.dinner_time}
                       </Typography>
                     </div>
                     <Button
@@ -467,7 +467,7 @@ const Property: FC<PropertyPropType> = ({
                       color={
                         theme.palette.mode === "light" ? "primary" : "secondary"
                       }
-                      onClick={() => window.open(foodMenu.menuUrl)}
+                      onClick={() => window.open(foodMenu.menu_url)}
                     >
                       View Menu
                     </Button>

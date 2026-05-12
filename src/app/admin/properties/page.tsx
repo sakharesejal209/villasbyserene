@@ -1044,12 +1044,12 @@ const UnitEditor = ({
                   <TableRow key={s.id}>
                     <TableCell>{s.label}</TableCell>
                     <TableCell>
-                      {dayjs(s.startDate).format("DD MMM YYYY")}
+                      {dayjs(s.start_date).format("DD MMM YYYY")}
                     </TableCell>
                     <TableCell>
-                      {dayjs(s.endDate).format("DD MMM YYYY")}
+                      {dayjs(s.end_date).format("DD MMM YYYY")}
                     </TableCell>
-                    <TableCell>₹{Number(s.pricePerNight)}</TableCell>
+                    <TableCell>₹{Number(s.price_per_night)}</TableCell>
                     <TableCell>
                       <Chip
                         label={s.isActive ? "Active" : "Off"}
@@ -2159,14 +2159,14 @@ const FoodMenuTab = ({
   const existing = (detail.foodMenus?.[0] as Partial<FoodMenuDTO>) ?? {};
   const [form, setForm] = useState<Partial<FoodMenuDTO>>({
     description: "",
-    isVeg: true,
-    isNonVeg: false,
+    is_veg: true,
+    is_non_veg: false,
     isJain: false,
-    menuUrl: "",
-    breakfastTime: "08:00 AM - 09:30 AM",
-    lunchTime: "01:00 PM - 02:30 PM",
-    dinnerTime: "08:00 PM - 09:30 PM",
-    highteaTime: "04:30 PM - 05:30 PM",
+    menu_url: "",
+    breakfast_time: "08:00 AM - 09:30 AM",
+    lunch_time: "01:00 PM - 02:30 PM",
+    dinner_time: "08:00 PM - 09:30 PM",
+    hightea_time: "04:30 PM - 05:30 PM",
     ...existing,
   });
   const [saving, setSaving] = useState(false);
@@ -2203,13 +2203,13 @@ const FoodMenuTab = ({
       <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
         <FormControlLabel
           control={
-            <Switch checked={!!form.isVeg} onChange={setCheck("isVeg")} />
+            <Switch checked={!!form.is_veg} onChange={setCheck("is_veg")} />
           }
           label="Vegetarian"
         />
         <FormControlLabel
           control={
-            <Switch checked={!!form.isNonVeg} onChange={setCheck("isNonVeg")} />
+            <Switch checked={!!form.is_non_veg} onChange={setCheck("is_non_veg")} />
           }
           label="Non-Vegetarian"
         />
@@ -2231,8 +2231,8 @@ const FoodMenuTab = ({
       />
       <TextField
         label="Menu URL (PDF/image)"
-        value={form.menuUrl || ""}
-        onChange={set("menuUrl")}
+        value={form.menu_url || ""}
+        onChange={set("menu_url")}
         fullWidth
         size="small"
       />
@@ -2249,29 +2249,29 @@ const FoodMenuTab = ({
       >
         <TextField
           label="Breakfast"
-          value={form.breakfastTime || ""}
-          onChange={set("breakfastTime")}
+          value={form.breakfast_time || ""}
+          onChange={set("breakfast_time")}
           fullWidth
           size="small"
         />
         <TextField
           label="Lunch"
-          value={form.lunchTime || ""}
-          onChange={set("lunchTime")}
+          value={form.lunch_time || ""}
+          onChange={set("lunch_time")}
           fullWidth
           size="small"
         />
         <TextField
           label="High Tea"
-          value={form.highteaTime || ""}
-          onChange={set("highteaTime")}
+          value={form.hightea_time || ""}
+          onChange={set("hightea_time")}
           fullWidth
           size="small"
         />
         <TextField
           label="Dinner"
-          value={form.dinnerTime || ""}
-          onChange={set("dinnerTime")}
+          value={form.dinner_time || ""}
+          onChange={set("dinner_time")}
           fullWidth
           size="small"
         />

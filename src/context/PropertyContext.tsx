@@ -1,6 +1,6 @@
 "use client";
 
-import { PropertyListItemDTO } from "@/app/@types/property/PropertyFiltersDTO";
+import { PropertyListItemDTO } from "@/app/@types";
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
 type PropertyContextType = {

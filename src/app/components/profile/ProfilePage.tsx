@@ -35,6 +35,7 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import { ProfileFormDTO, UserBookingDTO } from "@/app/@types/user";
 import { bookingService, userSevice } from "@/app/@services";
+import { BookingStatusType } from "@/app/@types";
 
 const StatusChip: FC<{ status: string }> = ({ status }) => {
   const map: Record<
@@ -246,7 +247,7 @@ const ProfilePage: FC = () => {
       setCancelResult(res.message);
       setBookings((prev) =>
         prev.map((b) =>
-          b.id === cancelTarget.id ? { ...b, status: "CANCELLED" } : b,
+          b.id === cancelTarget.id ? { ...b, status: "CANCELLED" as BookingStatusType } : b,
         ),
       );
     } catch (err: any) {

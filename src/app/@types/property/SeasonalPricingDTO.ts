@@ -1,8 +1,8 @@
 export default interface SeasonalPricingDTO {
   label: string;
-  pricePerNight: number;
-  startDate: string;
-  endDate: string;
+  price_per_night: number;
+  start_date: string;
+  end_date: string;
   isActive: boolean;
   id: string;
 }
