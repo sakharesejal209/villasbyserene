@@ -110,8 +110,6 @@ const Property: FC<PropertyPropType> = ({
 }) => {
   const searchParams = useSearchParams();
 
-  console.log("propertyDetails:", propertyDetails);
-
   const [openGallery, setOpenGallery] = useState(false);
   const [openUnitGallery, setOpenUnitGallery] = useState(false);
   const [selectedUnit, setSelectedUnit] = useState<string>();

@@ -64,7 +64,6 @@ export function useRazorpay() {
   const openCheckout = useCallback(
     (options: RazorpayOptions) => {
       if (!loaded || !window.Razorpay) {
-        console.error("Razorpay not loaded");
         return;
       }
       const rzp = new window.Razorpay(options);
