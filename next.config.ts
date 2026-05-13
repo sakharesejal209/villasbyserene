@@ -5,14 +5,6 @@ const nextConfig: NextConfig = {
   images: {
     domains: ["firebasestorage.googleapis.com", "lh3.googleusercontent.com"],
   },
-  async rewrites() {
-    return [
-      {
-        source: "/api/:path*",
-        destination: "https://vbs-be.onrender.com/:path*",
-      },
-    ];
-  },
   webpack: (config) => {
     config.watchOptions = {
       ...config.watchOptions,
