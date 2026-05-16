@@ -92,8 +92,8 @@ const Navbar = () => {
         color="default"
         component="header"
       >
-        <div className="container px-2">
-          <div className="p-2 flex justify-between items-center w-full">
+        <div className="container px-1 md:px-2">
+          <div className="p-1 md:p-2 flex justify-between items-center w-full">
             {/* Brand */}
             <Link href="/">
               <Image

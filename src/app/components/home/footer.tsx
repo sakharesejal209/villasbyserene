@@ -41,8 +41,8 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center mb-1">
               <Image
-                className="sm:w-[90px] xl:w-[120px] 2xl:w-[150px]"
-                width={100}
+                className="sm:w-22.5 xl:w-30 2xl:w-37.5"
+                width={150}
                 alt="VillasBySerene: Your boutique getaway!"
                 src={logoLight}
               />

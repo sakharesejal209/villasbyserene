@@ -199,7 +199,7 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
                     overflow: "hidden",
                   }}
                 >
-                  <Carousel slidesPerView={1}>
+                  <Carousel slidesPerView={1} variant="dark" hideArrows arrowVisibility="hover">
                     <>
                       {item.carousel_images.map((e, idx) => (
                         <SwiperSlide key={idx}>

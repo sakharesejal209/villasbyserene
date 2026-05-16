@@ -71,11 +71,9 @@ const Home = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    userService
-      .getCurrentUser()
-      .then((data) => {
-        setUser(data ?? null);
-      })
+    userService.getCurrentUser().then((data) => {
+      setUser(data ?? null);
+    });
   }, []);
 
   useEffect(() => {
@@ -158,7 +156,7 @@ const Home = () => {
         ref={heroRef}
         className="flex justify-center items-center w-screen h-screen"
       >
-        <motion.div className="absolute inset-0" style={{ y: heroY }}>
+        <div className="absolute inset-0">
           <video
             autoPlay
             loop
@@ -178,14 +176,9 @@ const Home = () => {
           >
             <source src="/assets/herovideo.webm" type="video/webm" />
           </video>
-        </motion.div>
+        </div>
 
-        <motion.div
-          style={{ opacity: heroOpacity }}
-          initial={{ opacity: 0, y: 100 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: "easeIn" }}
-        >
+        <div>
           <div className="p-4 md:p-0 slide-bottom w-full md:w-[70%] mx-auto">
             <div className="text-white">
               <Typography variant="h2">PLAN YOUR</Typography>
@@ -193,7 +186,7 @@ const Home = () => {
             </div>
             <SearchBox />
           </div>
-        </motion.div>
+        </div>
       </section>
 
       {/* top locations */}
@@ -204,24 +197,27 @@ const Home = () => {
               <Typography variant="h4" className="mb-2!">
                 Discover Our Top Locations
               </Typography>
-              <Typography className="text-lg! text-center block">
+              <Typography className="text-center block">
                 From serene beaches to mountain retreats, explore our handpicked
                 destinations
               </Typography>
             </div>
             <Carousel
               autoplay={{
-                delay: 3200,
+                delay: 3000,
                 disableOnInteraction: false,
               }}
               breakpoints={{
-                320: { slidesPerView: 2, spaceBetween: 4 },
+                320: { slidesPerView: 2, spaceBetween: 8 },
                 480: { slidesPerView: 3, spaceBetween: 8 },
                 900: { slidesPerView: 4 },
               }}
               slidesPerView={3}
               spaceBetween={20}
               showDots={false}
+              arrowVisibility="hover"
+              variant="light"
+              arrowPosition="outside"
               // inverseControlsColor
             >
               <>
@@ -230,9 +226,9 @@ const Home = () => {
                     <div className="relative group overflow-hidden shadow-premium hover:shadow-premium-lg transition-all duration-250 cursor-pointer">
                       <div
                         onClick={() => {
-                          router.push(`/stays/${item.locationId}?guests=1`);
+                          router.push(`/stays/${item.locationId}?guests=2`);
                         }}
-                        className="relative aspect-[4/5] overflow-hidden"
+                        className="relative aspect-4/5 overflow-hidden"
                       >
                         <Image
                           src={item.locationImg}
@@ -278,27 +274,28 @@ const Home = () => {
         <div className="container">
           <FadeInSection>
             <div className="text-center mb-10 md:mb-12">
-              <Typography variant="h4" className="!mb-2">
+              <Typography variant="h4" className="mb-2!">
                 Select your sanctuary of comfort and calm
               </Typography>
-              <Typography className="text-lg! text-center block">
+              <Typography className="text-center block">
                 Explore handpicked homes for every kind of getaway.
               </Typography>
             </div>
             <Carousel
               autoplay={{
-                delay: 3200,
+                delay: 3000,
                 disableOnInteraction: false,
               }}
               breakpoints={{
-                320: { slidesPerView: 2, spaceBetween: 0 },
+                240: { slidesPerView: 2, spaceBetween: 0 },
                 480: { slidesPerView: 3, spaceBetween: 0 },
-                900: { slidesPerView: 4, spaceBetween: 0 },
+                900: { slidesPerView: 5, spaceBetween: 0 },
               }}
-              slidesPerView={4}
+              slidesPerView={5}
               spaceBetween={0}
               showDots={false}
-              inverseControlsColor
+              arrowVisibility="hover"
+              // inverseControlsColor
             >
               <>
                 {propertythemes.map((proptheme) => (
@@ -308,7 +305,7 @@ const Home = () => {
                       className="w-full flex flex-col items-center justify-center gap-3 relative hover:cursor-pointer"
                     >
                       <Box
-                        className="w-15 md:w-22 h-15 md:h-22"
+                        className="w-13 md:w-20 h-13 md:h-20"
                         sx={{
                           backgroundColor: theme.palette.grey[600],
                           padding: "1.5rem",
@@ -340,21 +337,21 @@ const Home = () => {
       </ThemeSection>
 
       {/* why choose vbs */}
-      <section className="!pb-0 ">
+      <section className="pb-0! ">
         <Paper
           className={`py-10 ${
             theme.palette.mode == "light"
-              ? "!bg-[#F2F1ED]"
+              ? "bg-[#F2F1ED]!"
               : theme.palette.primary.light
-          }  !rounded-none !shadow-none`}
+          }  rounded-none! shadow-none!`}
         >
           <div className="container">
             <FadeInSection>
               <div className="flex flex-col items-center justify-center mb-8">
-                <Typography variant="h4" className="!mb-2 block text-center">
+                <Typography variant="h4" className="mb-2! block text-center">
                   Why Choose Villas By Serene?
                 </Typography>
-                <Typography className="w-full md:w-[75%] !text-lg text-center">
+                <Typography className="w-full md:w-[75%] text-center">
                   We provide exceptional vacation rental experiences with
                   personalized service and premium properties because your
                   holiday deserves more than just a stay
@@ -384,7 +381,7 @@ const Home = () => {
                   </Box>
                   <Typography
                     variant="h6"
-                    className="text-xl font-semibold mb-3"
+                    className=" font-semibold mb-3"
                   >
                     Premium Properties
                   </Typography>
@@ -416,7 +413,7 @@ const Home = () => {
                   </Box>
                   <Typography
                     variant="h6"
-                    className="text-xl font-semibold mb-3"
+                    className="font-semibold mb-3"
                   >
                     Trusted & Secure
                   </Typography>
@@ -448,7 +445,7 @@ const Home = () => {
                   </Box>
                   <Typography
                     variant="h6"
-                    className="text-xl font-semibold mb-3"
+                    className="font-semibold mb-3"
                   >
                     24/7 Support
                   </Typography>
@@ -471,7 +468,7 @@ const Home = () => {
               <Typography className="text-center block mb-2!" variant="h4">
                 What Our Guests Say
               </Typography>
-              <Typography className="text-center w-full md:w-[65%] block mx-auto text-lg! mb-8!">
+              <Typography className="text-center w-full md:w-[65%] block mx-auto mb-8!">
                 Hospitality that goes beyond expectations. Discover what makes
                 each stay a truly refined experience through the words of our
                 delighted guests.
@@ -488,14 +485,15 @@ const Home = () => {
                 }}
                 showDots={false}
                 autoplay={{
-                  delay: 3200,
+                  delay: 3000,
                   disableOnInteraction: true,
                 }}
+                hideArrows
               >
                 {testimonials.map((t) => (
                   <SwiperSlide key={t.id}>
                     <div className="flex flex-col items-center">
-                      <div className="relative w-full aspect-[1/1] md:aspect-[1/1] overflow-hidden shadow-lg">
+                      <div className="relative w-full aspect-square md:aspect-square overflow-hidden shadow-lg">
                         {t.mediaType == "video" ? (
                           <video
                             src={t.src}
@@ -519,10 +517,10 @@ const Home = () => {
                         )}
                       </div>
 
-                      <Typography className="!mt-3" variant="h6">
+                      <Typography className="mt-1!" variant="caption">
                         {t.name}
                       </Typography>
-                      <Typography variant="subtitle1">{t.property}</Typography>
+                      <Typography variant="h6">{t.property}</Typography>
                     </div>
                   </SwiperSlide>
                 ))}
@@ -537,7 +535,7 @@ const Home = () => {
         <div className="container">
           <FadeInSection>
             <div className="grid lg:grid-cols-2 gap-8 items-center">
-              <div className="relative md:aspect-[4/3] aspect-[16/9]">
+              <div className="relative md:aspect-4/3 aspect-video">
                 <Image
                   src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fswimmingpool9.webp?alt=media&token=4d4e883c-4172-44e3-986d-471816051039"
                   alt="Villa management services"
@@ -552,7 +550,7 @@ const Home = () => {
               </div>
               <div>
                 <div className="my-4">
-                  <Typography variant="h4" className="!mb-2">
+                  <Typography variant="h4" className="mb-2!">
                     Unlock The True Potential of Your Property
                   </Typography>
                   <Typography>
@@ -560,7 +558,7 @@ const Home = () => {
                     It&apos;s staff training, marketing, guest communication,
                     upkeep, and a hundred little details.
                   </Typography>
-                  <Typography className="!my-4">
+                  <Typography className="my-4!">
                     That&apos;s where we come in!
                   </Typography>
                 </div>
@@ -570,9 +568,8 @@ const Home = () => {
                       <TaskAltOutlined className="w-5 h-5" />
                     </div>
                     <Typography>
-                      <span>Complete Management: </span>
-                      From bookings, payments, and toiletries to property visits
-                      and staff management
+                      Complete Management: From bookings, payments, and
+                      toiletries to property visits and staff management
                     </Typography>
                   </div>
                   <div className="flex items-start gap-3 mb-3">
@@ -580,9 +577,9 @@ const Home = () => {
                       <TrendingUpOutlined className="w-5 h-5" />
                     </div>
                     <Typography>
-                      <span>Revenue Optimization: </span>
-                      We suggest trendy upgrades and handle marketing to
-                      maximize your property&apos;s profitability
+                      Revenue Optimization: We suggest trendy upgrades and
+                      handle marketing to maximize your property&apos;s
+                      profitability
                     </Typography>
                   </div>
                   <div className="flex items-start gap-3 mb-3">
@@ -590,20 +587,20 @@ const Home = () => {
                       <SettingsOutlined className="w-5 h-5" />
                     </div>
                     <Typography>
-                      <span>Always Guest-Ready: </span>
-                      Your villa stays in perfect condition with our
-                      comprehensive maintenance and preparation services
+                      Always Guest-Ready: Your villa stays in perfect condition
+                      with our comprehensive maintenance and preparation
+                      services
                     </Typography>
                   </div>
                 </div>
-                <div className="!mt-6 text-center md:text-left">
+                <div className="mt-6! text-center md:text-left">
                   <Typography variant="h6">
                     You relax. We manage. You earn.
                   </Typography>
                   <Button
                     size="large"
                     variant="contained"
-                    className="!mt-2 flex items-center gap-2"
+                    className="mt-2! flex items-center gap-2"
                     onClick={() => router.push("/list")}
                   >
                     <HomeOutlined />
@@ -622,10 +619,10 @@ const Home = () => {
         bg-[#3b3a3b]`}
       >
         <div className="container px-4 text-center">
-          <Typography variant="h5" className="!mb-1">
+          <Typography variant="h5" className="mb-1!">
             Ready to Book Your Dream Vacation?
           </Typography>
-          <Typography className="!text-lg !mb-8 opacity-90">
+          <Typography className="mb-8! opacity-90">
             Contact us directly via WhatsApp for personalized assistance and
             instant booking
           </Typography>
@@ -633,7 +630,7 @@ const Home = () => {
             <Button
               size="large"
               variant="contained"
-              className="text-lg px-8 py-3"
+              className="px-8 py-3"
               onClick={() => handleWhatsAppContact()}
             >
               Contact on WhatsApp <WhatsApp className="ml-1" />
@@ -642,7 +639,7 @@ const Home = () => {
               size="large"
               variant="outlined"
               color="secondary"
-              className="text-lg px-8 py-3 border-white text-white hover:bg-white hover:text-primary"
+              className="px-8 py-3 border-white text-white hover:bg-white hover:text-primary"
               onClick={() => {
                 router.push("/stays/all");
               }}

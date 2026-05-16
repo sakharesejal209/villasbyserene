@@ -75,7 +75,7 @@ const SearchBox = () => {
       <div className="mt-3 relative">
         <Box className="mt-1 p-2 rounded-sm w-full flex flex-col justify-center">
           <form onSubmit={handleSubmit}>
-            <div className="grid grid-cols-2 md:grid-cols-12 gap-2">
+            <div className="grid grid-cols-2 md:grid-cols-12 gap-3 md:gap-2">
               <Autocomplete
                 className="col-span-2 mb-0! md:col-span-4 "
                 options={locations}
