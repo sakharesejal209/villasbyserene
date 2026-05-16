@@ -176,7 +176,7 @@ const Home = () => {
               zIndex: -1,
             }}
           >
-            <source src="/assets/herovideo-new.mp4" type="video/mp4" />
+            <source src="/assets/herovideo.webm" type="video/webm" />
           </video>
         </motion.div>
 

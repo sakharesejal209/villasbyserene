@@ -1834,7 +1834,7 @@ const ImagesTab = ({
                   key={pi.image_id}
                   sx={{
                     position: "relative",
-                    width: 200,
+                    width: 400,
                     opacity: removing === pi.image_id ? 0.4 : 1,
                     transition: "opacity 0.15s",
                   }}
@@ -1843,7 +1843,7 @@ const ImagesTab = ({
                     component="img"
                     src={pi.image.image_url}
                     sx={{
-                      width: 200,
+                      width: 400,
                       height: 100,
                       objectFit: "cover",
                       borderRadius: 0.2,
