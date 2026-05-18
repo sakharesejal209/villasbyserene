@@ -19,6 +19,7 @@ export interface CheckoutState {
   children: number;
   infants: number;
   rooms: number;
+  petCount: number;
 }
 
 export function encryptCheckout(state: CheckoutState): string {

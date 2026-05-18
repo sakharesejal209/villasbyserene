@@ -78,6 +78,7 @@ interface NewUnitForm {
   is_display_unit: boolean;
   extraGuestCharge: number;
   petCharge: number;
+  maxPets: number;
   childCharge: number;
   childAgeFree: number;
   vbs_commission: number;
@@ -418,11 +419,14 @@ const UnitsTab = ({
     is_display_unit: false,
     extraGuestCharge: 0,
     petCharge: 0,
+    maxPets: 0,
     childCharge: 0,
     childAgeFree: 5,
     vbs_commission: 13,
   });
 
+  console.log('detail:', detail);
+  
   const saveUnit = async (unit: AdminUnitDTO) => {
     setSaving(unit.unit_id);
     setError(null);
@@ -610,6 +614,18 @@ const UnitsTab = ({
                   }))
                 }
               />
+              <TextField
+                label="Max Pets Allowed (0 = no pets)"
+                type="number"
+                size="small"
+                value={newUnit.maxPets}
+                onChange={(e) =>
+                  setNewUnit((u) => ({
+                    ...u,
+                    maxPets: parseInt(e.target.value),
+                  }))
+                }
+              />
             </Box>
             <Box sx={{ display: "flex", gap: 2 }}>
               <FormControlLabel
@@ -682,6 +698,8 @@ const UnitEditor = ({
   onDelete,
 }: UnitEditorProps) => {
   const [uForm, setUForm] = useState<AdminUnitDTO>({ ...unit });
+  console.log('unit maxPets:', unit.maxPets, 'uForm maxPets:', uForm.maxPets);
+
   const [pForm, setPForm] = useState<Partial<AdminUnitPricingDTO>>(
     unit.pricing ? { ...unit.pricing } : {},
   );
@@ -868,6 +886,16 @@ const UnitEditor = ({
               size="small"
               value={uForm.petCharge || ""}
               onChange={setU("petCharge")}
+            />
+            <TextField
+              label="Max Pets Allowed (0 = no pets)"
+              type="number"
+              size="small"
+              value={uForm.maxPets || 0}
+              onChange={(e) =>
+                setUForm((f) => ({ ...f, maxPets: +e.target.value }))
+              }
+              helperText="0 = pets not allowed"
             />
           </Box>
           <TextField
@@ -2209,7 +2237,10 @@ const FoodMenuTab = ({
         />
         <FormControlLabel
           control={
-            <Switch checked={!!form.is_non_veg} onChange={setCheck("is_non_veg")} />
+            <Switch
+              checked={!!form.is_non_veg}
+              onChange={setCheck("is_non_veg")}
+            />
           }
           label="Non-Vegetarian"
         />

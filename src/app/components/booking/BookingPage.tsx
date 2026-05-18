@@ -168,6 +168,7 @@ const BookingPage: FC = () => {
   const children = Number(stored?.children ?? 0);
   const infants = Number(stored?.infants ?? 0);
   const rooms = Number(stored?.rooms ?? 1);
+  const petCount = Number(stored?.petCount ?? 0);
   const nights = dayjs(checkOut).diff(dayjs(checkIn), "day");
   const units = rooms;
   const totalPax = adults + children;
@@ -217,7 +218,7 @@ const BookingPage: FC = () => {
         checkOut,
         adults,
         children,
-        hasPet: false,
+        petCount,
         rooms: units, // pass rooms so extra guest charge is calculated correctly
       }),
     ])
@@ -286,7 +287,7 @@ const BookingPage: FC = () => {
           currency: "INR",
           adultCount: adults,
           kidsCount: children,
-          petCount: 0,
+          petCount,
           rooms: units, // number of rooms for resort bookings
         },
         idempotencyKey,
@@ -332,6 +333,7 @@ const BookingPage: FC = () => {
               unitName,
               adults,
               children,
+              pets: petCount,
               specialRequests: formData.specialRequests, // ← add this
             });
             router.push(`/booking/confirmed/${booking.bookingId}`);
@@ -1188,6 +1190,11 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                             label: `${quote.extra_child_count} Extra Child${quote.extra_child_count === 1 ? "" : "ren"}`,
                             amount: quote.child_charge,
                             show: quote.child_charge > 0,
+                          },
+                          {
+                            label: `${quote.pet_count ?? 0} Pet${(quote.pet_count ?? 0) !== 1 ? "s" : ""}`,
+                            amount: quote.pet_charge,
+                            show: (quote.pet_charge ?? 0) > 0,
                           },
                           // {
                           //   label: "Property charges",

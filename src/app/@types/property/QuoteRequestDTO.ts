@@ -4,6 +4,6 @@ export default interface QuoteRequestDTO {
   checkOut: string;
   adults: number;
   children: number;
-  hasPet: boolean;
   rooms?: number;
+  petCount: number;
 }

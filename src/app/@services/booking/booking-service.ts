@@ -36,6 +36,7 @@ export interface VerifyPaymentPayload {
   adults: number;
   children: number;
   specialRequests?: string; // ← add this
+  pets: number;
 }
 
 export interface VerifyPaymentResponse {

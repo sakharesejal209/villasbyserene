@@ -6,6 +6,8 @@ export default interface BookingQuoteDTO {
   checkOut: string;
   nights: number;
   nightly_breakdown: NightlyBreakdownDTO[];
+  pet_count: number;
+  max_pets: number;
 
   // Charges
   subtotal: number; // nightly total for 1 unit

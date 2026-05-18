@@ -35,6 +35,7 @@ interface FormValues {
   adults: number;
   children: number;
   infants: number;
+  petCount: number;
 }
 
 export interface WidgetState {
@@ -201,6 +202,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
       adults: 2,
       children: 0,
       infants: 0,
+      petCount: 0,
     },
   });
 
@@ -224,6 +226,14 @@ const BookingWidget: FC<BookingWidgetProps> = ({
   childrenRef.current = children;
   unitsRef.current = units;
 
+  const petCount = useWatch({ control, name: "petCount" });
+  const petCountRef = useRef(petCount);
+  petCountRef.current = petCount;
+
+  // Derived pet values — uses quote.max_pets once loaded, else unit data
+  const maxPets = quote?.max_pets ?? 0;
+  const isPetFriendly = maxPets > 0;
+
   const fetchQuote = useCallback(async () => {
     if (
       !group?.display_unit ||
@@ -244,7 +254,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
         checkOut: checkOut.format("YYYY-MM-DD"),
         adults: adultsRef.current,
         children: childrenRef.current,
-        hasPet: false,
+        petCount: petCountRef.current,
         rooms: unitsRef.current,
       });
       setQuote(result);
@@ -352,6 +362,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
       children,
       infants,
       rooms: units,
+      petCount,
     });
     router.push(`/checkout?b=${token}`);
   };
@@ -619,6 +630,19 @@ const BookingWidget: FC<BookingWidgetProps> = ({
             max={maxCapacity}
             onChange={(v) => setValue("infants", v)}
           />
+          {isPetFriendly && (
+            <>
+              <Divider />
+              <GuestRow
+                label="Pets"
+                sub={`₹${Number((group?.display_unit as any)?.petCharge ?? 0).toLocaleString("en-IN")} per pet · max ${maxPets}`}
+                value={petCount}
+                min={0}
+                max={maxPets}
+                onChange={(v) => setValue("petCount", v)}
+              />
+            </>
+          )}
           <Typography
             variant="caption"
             color="text.secondary"
