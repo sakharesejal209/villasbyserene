@@ -1,12 +1,12 @@
 export default interface FoodMenuDTO {
-  menu_id: string;
+  menuId: string;
   description: string;
-  is_veg: boolean;
-  is_non_veg: boolean;
+  isVeg: boolean;
+  isNonVeg: boolean;
   isJain: boolean;
-  menu_url: string;
-  breakfast_time: string;
-  lunch_time: string;
-  dinner_time: string;
-  hightea_time: string;
+  menuUrl: string;
+  breakfastTime: string;
+  lunchTime: string;
+  dinnerTime: string;
+  highteaTime: string;
 }
