@@ -1,10 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 const axiosInstance: AxiosInstance = axios.create({
-   baseURL:
-    typeof window === 'undefined'
-      ? process.env.API_BASE_URL || 'https://vbs-be.onrender.com'
-      : process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:4000',
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000",
   timeout: 30000,
   withCredentials: true, // ← sends httpOnly cookies with every request
 });

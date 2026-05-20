@@ -2186,15 +2186,15 @@ const FoodMenuTab = ({
 }) => {
   const existing = (detail.foodMenus?.[0] as Partial<FoodMenuDTO>) ?? {};
   const [form, setForm] = useState<Partial<FoodMenuDTO>>({
-    description: "",
-    is_veg: true,
-    is_non_veg: false,
-    isJain: false,
-    menu_url: "",
-    breakfast_time: "08:00 AM - 09:30 AM",
-    lunch_time: "01:00 PM - 02:30 PM",
-    dinner_time: "08:00 PM - 09:30 PM",
-    hightea_time: "04:30 PM - 05:30 PM",
+    description: existing.description ?? "",
+    is_veg: existing.is_veg ?? true,
+    is_non_veg: existing.is_non_veg ?? false,
+    isJain: existing.isJain ?? false,
+    menu_url: existing.menu_url ?? "",
+    breakfast_time:existing.breakfast_time ?? "08:00 AM - 09:30 AM",
+    lunch_time: existing.lunch_time ?? "01:00 PM - 02:30 PM",
+    dinner_time: existing.dinner_time ?? "08:00 PM - 09:30 PM",
+    hightea_time: existing.hightea_time ?? "04:30 PM - 05:30 PM",
     ...existing,
   });
   const [saving, setSaving] = useState(false);
@@ -2231,7 +2231,7 @@ const FoodMenuTab = ({
       <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap" }}>
         <FormControlLabel
           control={
-            <Switch checked={!!form.is_veg} onChange={setCheck("is_veg")} />
+            <Switch checked={form.is_veg} onChange={setCheck("is_veg")} />
           }
           label="Vegetarian"
         />
@@ -2246,7 +2246,7 @@ const FoodMenuTab = ({
         />
         <FormControlLabel
           control={
-            <Switch checked={!!form.isJain} onChange={setCheck("isJain")} />
+            <Switch checked={form.isJain} onChange={setCheck("isJain")} />
           }
           label="Jain"
         />
