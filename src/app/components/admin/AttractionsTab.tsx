@@ -16,7 +16,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { AddOutlined, DeleteOutlined, EditOutlined } from "@mui/icons-material";
+
+import { IoAdd as AddIcon } from "react-icons/io5";
+import {
+  MdDeleteOutline as DeleteIcon,
+  MdOutlineEdit as EditIcon,
+} from "react-icons/md";
 import { httpService } from "@/app/@services";
 import {
   AdminPropertyDetailDTO,
@@ -149,14 +154,14 @@ export const AttractionsTab = ({ detail, propertyId, onSaved }: Props) => {
             </Box>
             <Box sx={{ display: "flex", gap: 0.5 }}>
               <IconButton size="small" onClick={() => openEdit(a)}>
-                <EditOutlined sx={{ fontSize: 16 }} />
+                <EditIcon fontSize={16} />
               </IconButton>
               <IconButton
                 size="small"
                 color="error"
                 onClick={() => del(a.attraction_id)}
               >
-                <DeleteOutlined sx={{ fontSize: 16 }} />
+                <DeleteIcon fontSize={16}  />
               </IconButton>
             </Box>
           </Box>
@@ -244,7 +249,7 @@ export const AttractionsTab = ({ detail, propertyId, onSaved }: Props) => {
               type="submit"
               variant="contained"
               size="small"
-              startIcon={<AddOutlined />}
+              startIcon={<AddIcon />}
               sx={{ borderRadius: 0.2 }}
             >
               Add

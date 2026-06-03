@@ -19,11 +19,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
+import { IoAdd as AddIcon } from "react-icons/io5";
 import {
-  AddOutlined,
-  DeleteOutlined,
-  DeleteSweepOutlined,
-} from "@mui/icons-material";
+  MdDeleteOutline as DeleteIcon,
+  MdOutlineEdit as EditIcon,
+  MdOutlineDeleteSweep as DeleteSweepIcon,
+} from "react-icons/md";
+
 import { httpService } from "@/app/@services";
 import {
   AdminPropertyDetailDTO,
@@ -400,6 +403,7 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
             />
             <TextField
               label="Alt text (e.g. air-eco-pool-01)"
+              defaultValue="cliffview-"
               size="small"
               value={newImg.image_alt}
               onChange={(e) =>
@@ -436,7 +440,7 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
                 adding ? (
                   <CircularProgress size={14} color="inherit" />
                 ) : (
-                  <AddOutlined />
+                  <AddIcon />
                 )
               }
               onClick={addToPool}
@@ -547,7 +551,7 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
                 size="small"
                 variant={deleteMode ? "contained" : "outlined"}
                 color="error"
-                startIcon={<DeleteSweepOutlined />}
+                startIcon={<DeleteSweepIcon />}
                 onClick={() => setDeleteMode((v) => !v)}
                 sx={{ borderRadius: 0.2, ml: deleteMode ? "auto" : 0 }}
               >
@@ -659,7 +663,7 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
                         {removing === img.image_id ? (
                           <CircularProgress size={10} color="inherit" />
                         ) : (
-                          <DeleteOutlined sx={{ fontSize: 12 }} />
+                          <DeleteIcon fontSize={12} />
                         )}
                       </IconButton>
                     )}
@@ -829,7 +833,7 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
                         bulkDeleting ? (
                           <CircularProgress size={14} color="inherit" />
                         ) : (
-                          <DeleteSweepOutlined />
+                          <DeleteSweepIcon />
                         )
                       }
                       sx={{ borderRadius: 0.2, fontWeight: 700 }}
@@ -882,7 +886,7 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
               size="small"
               variant={propUnassignMode ? "contained" : "outlined"}
               color="error"
-              startIcon={<DeleteSweepOutlined />}
+              startIcon={<DeleteSweepIcon />}
               onClick={() => {
                 setPropUnassignMode((v) => !v);
                 setPropUnassignSel(new Set());
@@ -996,7 +1000,7 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
                       {removing === pi.image_id ? (
                         <CircularProgress size={10} color="inherit" />
                       ) : (
-                        <DeleteOutlined sx={{ fontSize: 11 }} />
+                        <DeleteIcon fontSize={11} />
                       )}
                     </IconButton>
                   )}
@@ -1059,7 +1063,7 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
                   bulkUnassigningProp ? (
                     <CircularProgress size={14} color="inherit" />
                   ) : (
-                    <DeleteSweepOutlined />
+                    <DeleteSweepIcon />
                   )
                 }
                 sx={{ borderRadius: 0.2, fontWeight: 700 }}
@@ -1089,7 +1093,7 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
                 size="small"
                 variant={unitUnassignMode ? "contained" : "outlined"}
                 color="error"
-                startIcon={<DeleteSweepOutlined />}
+                startIcon={<DeleteSweepIcon />}
                 onClick={() => {
                   setUnitUnassignMode((v) => !v);
                   setUnitUnassignSel(new Set());
@@ -1217,7 +1221,7 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
                             {removing === ui.image_id ? (
                               <CircularProgress size={10} color="inherit" />
                             ) : (
-                              <DeleteOutlined sx={{ fontSize: 11 }} />
+                              <DeleteIcon fontSize={11} />
                             )}
                           </IconButton>
                         )}
@@ -1266,7 +1270,7 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
                       bulkUnassigningUnit ? (
                         <CircularProgress size={14} color="inherit" />
                       ) : (
-                        <DeleteSweepOutlined />
+                        <DeleteSweepIcon />
                       )
                     }
                     sx={{ borderRadius: 0.2, fontWeight: 700 }}

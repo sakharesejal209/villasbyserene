@@ -22,12 +22,15 @@ import {
   Tabs,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
+
 import {
-  AddOutlined,
-  ArrowBackOutlined,
-  HouseOutlined,
-} from "@mui/icons-material";
+  IoAddOutline as AddIcon,
+  IoArrowBack as BackIcon,
+  IoHomeOutline as HomeIcon,
+} from "react-icons/io5";
+
 import { httpService } from "@/app/@services";
 import {
   AdminPropertyDetailDTO,
@@ -57,6 +60,7 @@ const PropertyEditor = ({
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState(0);
   const [saved, setSaved] = useState(false);
+  const theme = useTheme();
 
   const load = useCallback(() => {
     setLoading(true);
@@ -98,7 +102,7 @@ const PropertyEditor = ({
     <Box>
       <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
         <IconButton onClick={onBack}>
-          <ArrowBackOutlined />
+          <BackIcon />
         </IconButton>
         <Box>
           <Typography variant="h6" fontWeight={800}>
@@ -186,6 +190,7 @@ export default function AdminPropertiesPage() {
   const [error, setError] = useState<string | null>(null);
   const [createOpen, setCreateOpen] = useState(false);
   const [creating, setCreating] = useState(false);
+  const theme = useTheme();
 
   const { control, handleSubmit, reset } = useForm<PropertyForm>({
     defaultValues: {
@@ -267,7 +272,7 @@ export default function AdminPropertiesPage() {
         </Box>
         <Button
           variant="contained"
-          startIcon={<AddOutlined />}
+          startIcon={<AddIcon />}
           onClick={() => setCreateOpen(true)}
           sx={{ borderRadius: 0.2, fontWeight: 700 }}
         >
@@ -334,8 +339,9 @@ export default function AdminPropertiesPage() {
                       height: "100%",
                     }}
                   >
-                    <HouseOutlined
-                      sx={{ fontSize: 40, color: "text.disabled" }}
+                    <HomeIcon
+                      fontSize={40}
+                      color={theme.palette.text.disabled}
                     />
                   </Box>
                 )}
@@ -547,7 +553,7 @@ export default function AdminPropertiesPage() {
               creating ? (
                 <CircularProgress size={16} color="inherit" />
               ) : (
-                <AddOutlined />
+                <AddIcon />
               )
             }
             sx={{ borderRadius: 0.2, fontWeight: 700 }}

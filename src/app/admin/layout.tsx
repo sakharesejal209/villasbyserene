@@ -10,7 +10,6 @@ import {
   List,
   ListItem,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
   Toolbar,
   Typography,
@@ -21,16 +20,13 @@ import {
   useMediaQuery,
   IconButton,
 } from "@mui/material";
+
 import {
-  BookOnlineOutlined,
-  CalendarMonthOutlined,
-  CurrencyRupeeOutlined,
-  HouseOutlined,
-  LinkOutlined,
-  MenuOutlined,
-  DarkModeOutlined,
-  LightModeOutlined,
-} from "@mui/icons-material";
+  IoMenu as MenuIcon,
+  IoMoonOutline as MoonIcon,
+  IoSunnyOutline as SunIcon,
+} from "react-icons/io5";
+
 import { useAuth } from "@/hooks/useAuth";
 import Link from "next/link";
 import Image from "next/image";
@@ -41,15 +37,15 @@ import { useThemeContext } from "@/context/ThemeContext";
 const DRAWER_WIDTH = 240;
 
 const navItems = [
-  { label: "Bookings", icon: <BookOnlineOutlined />, path: "/admin/bookings" },
+  { label: "Bookings", path: "/admin/bookings" },
   {
     label: "Calendar",
-    icon: <CalendarMonthOutlined />,
+
     path: "/admin/calendar",
   },
-  { label: "iCal Sync", icon: <LinkOutlined />, path: "/admin/ical" },
-  { label: "Properties", icon: <HouseOutlined />, path: "/admin/properties" },
-  { label: "Quotation", icon: <CurrencyRupeeOutlined />, path: "/admin/quotation" },
+  // { label: "iCal Sync", path: "/admin/ical" },
+  { label: "Properties", path: "/admin/properties" },
+  { label: "Quotation", path: "/admin/quotation" },
 ];
 
 export default function AdminLayout({
@@ -120,9 +116,9 @@ export default function AdminLayout({
             </Typography>
             <IconButton size="small" onClick={toggleTheme}>
               {mode === "dark" ? (
-                <LightModeOutlined sx={{ fontSize: 18 }} />
+                <SunIcon fontSize={18} />
               ) : (
-                <DarkModeOutlined sx={{ fontSize: 18 }} />
+                <MoonIcon fontSize={18} />
               )}
             </IconButton>
           </div>
@@ -153,14 +149,6 @@ export default function AdminLayout({
                   },
                 }}
               >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 36,
-                    color: active ? "#fff" : "text.secondary",
-                  }}
-                >
-                  {item.icon}
-                </ListItemIcon>
                 <ListItemText
                   primary={item.label}
                   slotProps={{
@@ -224,7 +212,7 @@ export default function AdminLayout({
               onClick={() => setMobileOpen(true)}
               sx={{ mr: 1 }}
             >
-              <MenuOutlined />
+              <MenuIcon />
             </IconButton>
             <div>
               <Typography variant="subtitle1" fontWeight={800} color="primary">
@@ -233,9 +221,9 @@ export default function AdminLayout({
               {/* Theme toggle in mobile appbar */}
               <IconButton onClick={toggleTheme} sx={{ ml: "auto" }}>
                 {mode === "dark" ? (
-                  <LightModeOutlined sx={{ fontSize: 20 }} />
+                  <SunIcon fontSize={20} />
                 ) : (
-                  <DarkModeOutlined sx={{ fontSize: 20 }} />
+                  <MoonIcon fontSize={20} />
                 )}
               </IconButton>
             </div>

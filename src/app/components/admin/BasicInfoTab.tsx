@@ -17,7 +17,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { SaveOutlined } from "@mui/icons-material";
+import { IoSaveOutline  as SaveIcon } from "react-icons/io5";
+
+
 import { httpService } from "@/app/@services";
 import { AdminPropertyDetailDTO, AdminPropertyEntityDTO } from "@/app/@types";
 
@@ -316,7 +318,7 @@ export const BasicInfoTab = ({ detail, onSaved }: Props) => {
             saving ? (
               <CircularProgress size={16} color="inherit" />
             ) : (
-              <SaveOutlined />
+              <SaveIcon />
             )
           }
           disabled={saving}

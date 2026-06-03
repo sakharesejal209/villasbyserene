@@ -32,12 +32,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import {
-  AddOutlined,
-  DeleteOutlined,
-  ExpandMoreOutlined,
-  SaveOutlined,
-} from "@mui/icons-material";
+
+import { IoAdd as AddIcon, IoChevronDownOutline  as ChevronDown, IoSaveOutline  as SaveIcon } from "react-icons/io5";
+import { MdDeleteOutline as DeleteIcon } from "react-icons/md";
+
 import dayjs from "dayjs";
 import { httpService } from "@/app/@services";
 import {
@@ -159,7 +157,7 @@ const UnitEditor = ({
         "&:before": { display: "none" },
       }}
     >
-      <AccordionSummary expandIcon={<ExpandMoreOutlined />}>
+      <AccordionSummary expandIcon={<ChevronDown />}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, flex: 1 }}>
           <Chip label={unit.unit_type} size="small" />
           <Typography fontWeight={700}>{unit.title || "Untitled"}</Typography>
@@ -175,7 +173,7 @@ const UnitEditor = ({
                 onDelete(unit.unit_id);
               }}
             >
-              <DeleteOutlined sx={{ fontSize: 16 }} />
+              <DeleteIcon fontSize={16} />
             </IconButton>
           </Box>
         </Box>
@@ -456,7 +454,7 @@ const UnitEditor = ({
                   saving === unit.unit_id ? (
                     <CircularProgress size={14} color="inherit" />
                   ) : (
-                    <SaveOutlined />
+                    <SaveIcon />
                   )
                 }
                 disabled={saving === unit.unit_id}
@@ -577,7 +575,7 @@ const UnitEditor = ({
                   saving === `pricing-${unit.unit_id}` ? (
                     <CircularProgress size={14} color="inherit" />
                   ) : (
-                    <SaveOutlined />
+                    <SaveIcon />
                   )
                 }
                 disabled={saving === `pricing-${unit.unit_id}`}
@@ -608,7 +606,7 @@ const UnitEditor = ({
             </Typography>
             <Button
               size="small"
-              startIcon={<AddOutlined />}
+              startIcon={<AddIcon />}
               onClick={() => setSOpen(true)}
             >
               Add Season
@@ -652,7 +650,7 @@ const UnitEditor = ({
                         color="error"
                         onClick={() => deleteSeasonal(s.id)}
                       >
-                        <DeleteOutlined sx={{ fontSize: 14 }} />
+                        <DeleteIcon fontSize={14} />
                       </IconButton>
                     </TableCell>
                   </TableRow>
@@ -859,7 +857,7 @@ export const UnitsTab = ({ detail, propertyId, onSaved }: UnitsTabProps) => {
       <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
         <Button
           variant="contained"
-          startIcon={<AddOutlined />}
+          startIcon={<AddIcon />}
           onClick={() => setAddOpen(true)}
           sx={{ borderRadius: 0.2 }}
         >
