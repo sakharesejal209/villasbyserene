@@ -1,7 +1,8 @@
 import { FC, useState } from "react";
 import { Masonry } from "@mui/lab";
 import { Dialog, DialogContent, IconButton } from "@mui/material";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import { IoClose as CloseIcon } from "react-icons/io5";
+
 import { Carousel } from "@/application/default";
 import { SwiperSlide } from "swiper/react";
 import Image from "next/image";
@@ -44,17 +45,17 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
   };
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-center overflow-hidden">
       <Masonry
-        sx={{ width: "95%" }}
+        sx={{ width: "100%", height: "110%" }}
         columns={{ xs: 1, md: 1 }}
-        spacing={{ xs: 0.5, md: 2.5 }}
+        spacing={{ xs: 1, md: 2.5 }}
       >
         {images.map((item, index) => (
           <button
             key={index}
             onClick={() => handleOpen(index)}
-            className="relative w-[90vw] h-[90vh]"
+            className="relative aspect-4/3 md:aspect-video overflow-hidden"
           >
             <Image
               src={item.src}
@@ -101,7 +102,7 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
             zIndex: 1000,
           }}
         >
-          <CloseRoundedIcon />
+          <CloseIcon />
         </IconButton>
         <DialogContent
           sx={{
@@ -135,10 +136,7 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
 
                 {"category" in e && e.hasOwnProperty("category") && (
                   <div className="absolute bottom-5 md:bottom-14 left-5 bg-black/70 text-white text-md px-2 py-1 rounded-sm">
-                    {
-                      (e as { src: string; alt: string; category: string })
-                        .category
-                    }
+                    {e.category}
                   </div>
                 )}
               </SwiperSlide>

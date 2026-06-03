@@ -46,6 +46,7 @@ const StatusChip: FC<{ status: string }> = ({ status }) => {
     PENDING: { label: "Pending", color: "warning" },
     CANCELLED: { label: "Cancelled", color: "error" },
     FAILED: { label: "Failed", color: "error" },
+    COMPLETED: {label: "Completed", color: "default"}
   };
   const cfg = map[status] ?? { label: status, color: "default" };
   return (
@@ -67,6 +68,18 @@ const BookingCard: FC<{
     dayjs(booking.checkInDate),
     "day",
   );
+
+  const getDerivedStatus = (booking: UserBookingDTO) => {
+    if (
+      booking.status === "CONFIRMED" &&
+      booking.checkOutDate &&
+      dayjs(booking.checkOutDate).isBefore(dayjs(), "day")
+    ) {
+      return "COMPLETED";
+    }
+    return booking.status;
+  };
+
   return (
     <Paper
       elevation={0}
@@ -97,7 +110,7 @@ const BookingCard: FC<{
             {booking.property?.area}, {booking.property?.state}
           </Typography>
         </Box>
-        <StatusChip status={booking.status} />
+        <StatusChip status={getDerivedStatus(booking)} />
       </Box>
       <Box sx={{ p: 2.5 }}>
         <Box
@@ -247,7 +260,9 @@ const ProfilePage: FC = () => {
       setCancelResult(res.message);
       setBookings((prev) =>
         prev.map((b) =>
-          b.id === cancelTarget.id ? { ...b, status: "CANCELLED" as BookingStatusType } : b,
+          b.id === cancelTarget.id
+            ? { ...b, status: "CANCELLED" as BookingStatusType }
+            : b,
         ),
       );
     } catch (err: any) {
@@ -358,18 +373,121 @@ const ProfilePage: FC = () => {
           }}
         >
           <Tab
-            label="Account"
-            icon={<AccountCircleOutlined sx={{ fontSize: 18 }} />}
-            iconPosition="start"
-            sx={{ fontWeight: 600, minHeight: 48 }}
-          />
-          <Tab
             label="My Trips"
             icon={<NightShelterOutlined sx={{ fontSize: 18 }} />}
             iconPosition="start"
             sx={{ fontWeight: 600, minHeight: 48 }}
           />
+          <Tab
+            label="Account"
+            icon={<AccountCircleOutlined sx={{ fontSize: 18 }} />}
+            iconPosition="start"
+            sx={{ fontWeight: 600, minHeight: 48 }}
+          />
         </Tabs>
+
+        {/* ── My Trips ── */}
+        {tab === 0 && (
+          <Box>
+            {cancelResult && (
+              <Alert
+                severity="success"
+                sx={{ mb: 2 }}
+                onClose={() => setCancelResult(null)}
+              >
+                {cancelResult}
+              </Alert>
+            )}
+            {loadingTrips ? (
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                {[1, 2].map((i) => (
+                  <Skeleton key={i} variant="rounded" height={160} />
+                ))}
+              </Box>
+            ) : tripsError ? (
+              <Alert severity="error">{tripsError}</Alert>
+            ) : bookings.length === 0 ? (
+              <Box sx={{ textAlign: "center", py: 6 }}>
+                <HouseOutlined
+                  sx={{ fontSize: 48, color: "text.disabled", mb: 1 }}
+                />
+                <Typography variant="h6" color="text.secondary">
+                  No trips yet
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mb: 2 }}
+                >
+                  Your bookings will appear here
+                </Typography>
+                <Button
+                  variant="contained"
+                  onClick={() => router.push("/stays/all")}
+                >
+                  Explore Properties
+                </Button>
+              </Box>
+            ) : (
+              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                {upcoming.length > 0 && (
+                  <>
+                    <Typography
+                      variant="subtitle2"
+                      color="text.secondary"
+                      sx={{ textTransform: "uppercase", mt: 1 }}
+                    >
+                      Upcoming ({upcoming.length})
+                    </Typography>
+                    {upcoming.map((b) => (
+                      <BookingCard
+                        key={b.id}
+                        booking={b}
+                        onCancel={setCancelTarget}
+                      />
+                    ))}
+                  </>
+                )}
+                {pastBookings.length > 0 && (
+                  <>
+                    <Typography
+                      variant="subtitle2"
+                      color="text.secondary"
+                      sx={{ textTransform: "uppercase", mt: 1 }}
+                    >
+                      Past stays ({pastBookings.length})
+                    </Typography>
+                    {pastBookings.map((b) => (
+                      <BookingCard
+                        key={b.id}
+                        booking={b}
+                        onCancel={setCancelTarget}
+                      />
+                    ))}
+                  </>
+                )}
+                {cancelledBookings.length > 0 && (
+                  <>
+                    <Typography
+                      variant="subtitle2"
+                      color="text.secondary"
+                      sx={{ textTransform: "uppercase", mt: 1 }}
+                    >
+                      Cancelled ({cancelledBookings.length})
+                    </Typography>
+                    {cancelledBookings.map((b) => (
+                      <BookingCard
+                        key={b.id}
+                        booking={b}
+                        onCancel={setCancelTarget}
+                      />
+                    ))}
+                  </>
+                )}
+              </Box>
+            )}
+          </Box>
+        )}
 
         {/* ── Account ── */}
         {tab === 1 && (
@@ -488,109 +606,6 @@ const ProfilePage: FC = () => {
                 {logoutLoading ? "Signing out..." : "Sign Out"}
               </Button>
             </div>
-          </Box>
-        )}
-
-        {/* ── My Trips ── */}
-        {tab === 0 && (
-          <Box>
-            {cancelResult && (
-              <Alert
-                severity="success"
-                sx={{ mb: 2 }}
-                onClose={() => setCancelResult(null)}
-              >
-                {cancelResult}
-              </Alert>
-            )}
-            {loadingTrips ? (
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                {[1, 2].map((i) => (
-                  <Skeleton key={i} variant="rounded" height={160} />
-                ))}
-              </Box>
-            ) : tripsError ? (
-              <Alert severity="error">{tripsError}</Alert>
-            ) : bookings.length === 0 ? (
-              <Box sx={{ textAlign: "center", py: 6 }}>
-                <HouseOutlined
-                  sx={{ fontSize: 48, color: "text.disabled", mb: 1 }}
-                />
-                <Typography variant="h6" color="text.secondary">
-                  No trips yet
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ mb: 2 }}
-                >
-                  Your bookings will appear here
-                </Typography>
-                <Button
-                  variant="contained"
-                  onClick={() => router.push("/stays/all")}
-                >
-                  Explore Properties
-                </Button>
-              </Box>
-            ) : (
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                {upcoming.length > 0 && (
-                  <>
-                    <Typography
-                      variant="subtitle2"
-                      color="text.secondary"
-                      sx={{ textTransform: "uppercase", mt: 1 }}
-                    >
-                      Upcoming ({upcoming.length})
-                    </Typography>
-                    {upcoming.map((b) => (
-                      <BookingCard
-                        key={b.id}
-                        booking={b}
-                        onCancel={setCancelTarget}
-                      />
-                    ))}
-                  </>
-                )}
-                {pastBookings.length > 0 && (
-                  <>
-                    <Typography
-                      variant="subtitle2"
-                      color="text.secondary"
-                      sx={{ textTransform: "uppercase", mt: 1 }}
-                    >
-                      Past stays ({pastBookings.length})
-                    </Typography>
-                    {pastBookings.map((b) => (
-                      <BookingCard
-                        key={b.id}
-                        booking={b}
-                        onCancel={setCancelTarget}
-                      />
-                    ))}
-                  </>
-                )}
-                {cancelledBookings.length > 0 && (
-                  <>
-                    <Typography
-                      variant="subtitle2"
-                      color="text.secondary"
-                      sx={{ textTransform: "uppercase", mt: 1 }}
-                    >
-                      Cancelled ({cancelledBookings.length})
-                    </Typography>
-                    {cancelledBookings.map((b) => (
-                      <BookingCard
-                        key={b.id}
-                        booking={b}
-                        onCancel={setCancelTarget}
-                      />
-                    ))}
-                  </>
-                )}
-              </Box>
-            )}
           </Box>
         )}
 

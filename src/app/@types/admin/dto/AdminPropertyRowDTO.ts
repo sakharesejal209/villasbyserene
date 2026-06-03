@@ -1,4 +1,4 @@
-import { BookingType } from "./enums/BookingType";
+import { BookingType } from "../../property";
 
 export default interface AdminPropertyRowDTO {
   property_id:  string;

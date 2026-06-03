@@ -1,5 +1,3 @@
-// src/app/admin/properties/tabs/ImagesTab.tsx
-// ── Unchanged from original — all functions kept as-is ────────────
 "use client";
 
 import { useEffect, useState } from "react";
@@ -21,7 +19,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { AddOutlined, DeleteOutlined } from "@mui/icons-material";
+import {
+  AddOutlined,
+  DeleteOutlined,
+  DeleteSweepOutlined,
+} from "@mui/icons-material";
 import { httpService } from "@/app/@services";
 import {
   AdminPropertyDetailDTO,
@@ -59,6 +61,21 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
   const [removing, setRemoving] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  // bulk delete from pool
+  const [deleteMode, setDeleteMode] = useState(false);
+  const [bulkDeleting, setBulkDeleting] = useState(false);
+  // bulk unassign — property images (Step 3)
+  const [propUnassignMode, setPropUnassignMode] = useState(false);
+  const [propUnassignSel, setPropUnassignSel] = useState<Set<string>>(
+    new Set(),
+  );
+  const [bulkUnassigningProp, setBulkUnassigningProp] = useState(false);
+  // bulk unassign — unit images (Step 3)
+  const [unitUnassignMode, setUnitUnassignMode] = useState(false);
+  const [unitUnassignSel, setUnitUnassignSel] = useState<Set<string>>(
+    new Set(),
+  );
+  const [bulkUnassigningUnit, setBulkUnassigningUnit] = useState(false);
 
   const assignedPropIds = new Set(
     detail.images.map((pi: AdminPropertyImageDTO) => pi.image_id),
@@ -77,9 +94,10 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
       .catch(() => {});
   }, []);
 
+  // Clear selections when mode or unit changes
   useEffect(() => {
     setSelections(new Map());
-  }, [assignMode, selectedUnit]);
+  }, [assignMode, selectedUnit, deleteMode]);
 
   const searchPool = async () => {
     if (!prefix.trim()) return;
@@ -142,6 +160,101 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
     } finally {
       setRemoving(null);
     }
+  };
+
+  // NEW: bulk delete selected images from pool
+  const bulkDeleteFromPool = async () => {
+    if (selections.size === 0) return;
+    if (
+      !confirm(
+        `Delete ${selections.size} image${selections.size > 1 ? "s" : ""} from pool? This also removes all their assignments.`,
+      )
+    )
+      return;
+    setBulkDeleting(true);
+    const ids = Array.from(selections.keys());
+    const results = await Promise.allSettled(
+      ids.map((id) =>
+        httpService().delete(`/admin/properties/images/pool/${id}`),
+      ),
+    );
+    const failed = results.filter((r) => r.status === "rejected").length;
+    const succeeded = ids.filter((_, i) => results[i].status === "fulfilled");
+    setPoolImages((prev) =>
+      prev.filter((img) => !succeeded.includes(img.image_id)),
+    );
+    setSelections(new Map());
+    if (failed > 0) {
+      setError(`${failed} image${failed > 1 ? "s" : ""} failed to delete`);
+    } else {
+      setSuccess(
+        `${succeeded.length} image${succeeded.length > 1 ? "s" : ""} deleted from pool`,
+      );
+    }
+    onSaved();
+    setBulkDeleting(false);
+  };
+
+  // bulk unassign property images
+  const bulkUnassignProp = async () => {
+    if (propUnassignSel.size === 0) return;
+    if (
+      !confirm(
+        `Remove ${propUnassignSel.size} image${propUnassignSel.size > 1 ? "s" : ""} from this property?`,
+      )
+    )
+      return;
+    setBulkUnassigningProp(true);
+    const ids = Array.from(propUnassignSel);
+    const results = await Promise.allSettled(
+      ids.map((id) =>
+        httpService().delete(
+          `/admin/properties/${propertyId}/images/unassign/${id}`,
+        ),
+      ),
+    );
+    const failed = results.filter((r) => r.status === "rejected").length;
+    setPropUnassignSel(new Set());
+    if (failed > 0) {
+      setError(`${failed} image${failed > 1 ? "s" : ""} failed to unassign`);
+    } else {
+      setSuccess(
+        `${ids.length - failed} image${ids.length - failed > 1 ? "s" : ""} removed from property`,
+      );
+    }
+    onSaved();
+    setBulkUnassigningProp(false);
+  };
+
+  // bulk unassign unit images
+  const bulkUnassignUnit = async () => {
+    if (!selectedUnit || unitUnassignSel.size === 0) return;
+    if (
+      !confirm(
+        `Remove ${unitUnassignSel.size} image${unitUnassignSel.size > 1 ? "s" : ""} from this unit?`,
+      )
+    )
+      return;
+    setBulkUnassigningUnit(true);
+    const ids = Array.from(unitUnassignSel);
+    const results = await Promise.allSettled(
+      ids.map((id) =>
+        httpService().delete(
+          `/admin/properties/${propertyId}/units/${selectedUnit}/images/unassign/${id}`,
+        ),
+      ),
+    );
+    const failed = results.filter((r) => r.status === "rejected").length;
+    setUnitUnassignSel(new Set());
+    if (failed > 0) {
+      setError(`${failed} image${failed > 1 ? "s" : ""} failed to unassign`);
+    } else {
+      setSuccess(
+        `${ids.length - failed} image${ids.length - failed > 1 ? "s" : ""} removed from unit`,
+      );
+    }
+    onSaved();
+    setBulkUnassigningUnit(false);
   };
 
   const toggleSelect = (img: PoolImage) => {
@@ -364,6 +477,7 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
 
         {poolImages.length > 0 && (
           <>
+            {/* Mode bar — assign controls on left, Bulk Delete toggle on right */}
             <Box
               sx={{
                 display: "flex",
@@ -373,53 +487,80 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
                 alignItems: "center",
               }}
             >
-              <Typography
-                variant="caption"
-                color="text.secondary"
-                fontWeight={600}
-              >
-                Assign to:
-              </Typography>
-              <Chip
-                label="Property"
-                clickable
-                size="small"
-                onClick={() => setAssignMode("property")}
-                color={assignMode === "property" ? "primary" : "default"}
-                variant={assignMode === "property" ? "filled" : "outlined"}
-              />
-              <Chip
-                label="Unit"
-                clickable
-                size="small"
-                onClick={() => setAssignMode("unit")}
-                color={assignMode === "unit" ? "primary" : "default"}
-                variant={assignMode === "unit" ? "filled" : "outlined"}
-              />
-              {assignMode === "unit" && (
-                <FormControl size="small" sx={{ minWidth: 180 }}>
-                  <InputLabel>Select Unit</InputLabel>
-                  <Select
-                    value={selectedUnit}
-                    label="Select Unit"
-                    onChange={(e) => setSelectedUnit(e.target.value)}
+              {/* Assign-mode controls — hidden in delete mode */}
+              {!deleteMode && (
+                <>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    fontWeight={600}
                   >
-                    {detail.units.map((u: AdminUnitDTO) => (
-                      <MenuItem key={u.unit_id} value={u.unit_id}>
-                        {u.title || u.unit_type}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                    Assign to:
+                  </Typography>
+                  <Chip
+                    label="Property"
+                    clickable
+                    size="small"
+                    onClick={() => setAssignMode("property")}
+                    color={assignMode === "property" ? "primary" : "default"}
+                    variant={assignMode === "property" ? "filled" : "outlined"}
+                  />
+                  <Chip
+                    label="Unit"
+                    clickable
+                    size="small"
+                    onClick={() => setAssignMode("unit")}
+                    color={assignMode === "unit" ? "primary" : "default"}
+                    variant={assignMode === "unit" ? "filled" : "outlined"}
+                  />
+                  {assignMode === "unit" && (
+                    <FormControl size="small" sx={{ minWidth: 180 }}>
+                      <InputLabel>Select Unit</InputLabel>
+                      <Select
+                        value={selectedUnit}
+                        label="Select Unit"
+                        onChange={(e) => setSelectedUnit(e.target.value)}
+                      >
+                        {detail.units.map((u: AdminUnitDTO) => (
+                          <MenuItem key={u.unit_id} value={u.unit_id}>
+                            {u.title || u.unit_type}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  )}
+                </>
               )}
+
               <Typography
                 variant="caption"
                 color="text.secondary"
-                sx={{ ml: "auto" }}
+                sx={{ ml: deleteMode ? 0 : "auto" }}
               >
-                Click image to select · {selections.size} selected
+                {deleteMode
+                  ? `Select images to delete · ${selections.size} selected`
+                  : `Click image to select · ${selections.size} selected`}
               </Typography>
+
+              {/* Bulk Delete toggle */}
+              <Button
+                size="small"
+                variant={deleteMode ? "contained" : "outlined"}
+                color="error"
+                startIcon={<DeleteSweepOutlined />}
+                onClick={() => setDeleteMode((v) => !v)}
+                sx={{ borderRadius: 0.2, ml: deleteMode ? "auto" : 0 }}
+              >
+                {deleteMode ? "Cancel Delete" : "Bulk Delete"}
+              </Button>
             </Box>
+
+            {deleteMode && (
+              <Alert severity="warning" sx={{ mb: 1.5, borderRadius: 0.2 }}>
+                Bulk delete mode — selecting an image will delete it from the
+                pool and remove all its assignments.
+              </Alert>
+            )}
 
             <Box
               sx={{
@@ -433,25 +574,31 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
                 const alreadyAssigned = isCurrentlyAssigned(img.image_id);
                 const sel = selections.get(img.image_id);
                 const isSelected = !!sel;
+
+                // In delete mode every image is clickable; in assign mode skip already-assigned
+                const isClickable = deleteMode || !alreadyAssigned;
+
                 return (
                   <Paper
                     key={img.image_id}
                     elevation={0}
                     sx={{
                       border: "2px solid",
-                      borderColor: alreadyAssigned
-                        ? "success.main"
-                        : isSelected
-                          ? "primary.main"
+                      borderColor: isSelected
+                        ? deleteMode
+                          ? "error.main"
+                          : "primary.main"
+                        : alreadyAssigned && !deleteMode
+                          ? "success.main"
                           : "divider",
                       borderRadius: 0.2,
                       overflow: "hidden",
                       position: "relative",
-                      cursor: alreadyAssigned ? "default" : "pointer",
+                      cursor: isClickable ? "pointer" : "default",
                       opacity: removing === img.image_id ? 0.4 : 1,
                       transition: "border-color 0.15s, opacity 0.15s",
                     }}
-                    onClick={() => !alreadyAssigned && toggleSelect(img)}
+                    onClick={() => isClickable && toggleSelect(img)}
                   >
                     <Box
                       component="img"
@@ -464,15 +611,15 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
                       }}
                     />
                     <Box sx={{ position: "absolute", top: 4, left: 4 }}>
-                      {alreadyAssigned && (
+                      {isSelected && deleteMode && (
                         <Chip
-                          label="Assigned"
+                          label="✕ Delete"
                           size="small"
-                          color="success"
+                          color="error"
                           sx={{ fontSize: 9, height: 16 }}
                         />
                       )}
-                      {isSelected && !alreadyAssigned && (
+                      {isSelected && !deleteMode && (
                         <Chip
                           label="✓ Selected"
                           size="small"
@@ -480,30 +627,43 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
                           sx={{ fontSize: 9, height: 16 }}
                         />
                       )}
-                    </Box>
-                    <IconButton
-                      size="small"
-                      color="error"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        deleteFromPool(img.image_id);
-                      }}
-                      sx={{
-                        position: "absolute",
-                        top: 4,
-                        right: 4,
-                        bgcolor: "rgba(0,0,0,0.5)",
-                        color: "#fff",
-                        width: 20,
-                        height: 20,
-                      }}
-                    >
-                      {removing === img.image_id ? (
-                        <CircularProgress size={10} color="inherit" />
-                      ) : (
-                        <DeleteOutlined sx={{ fontSize: 12 }} />
+                      {alreadyAssigned && !isSelected && !deleteMode && (
+                        <Chip
+                          label="Assigned"
+                          size="small"
+                          color="success"
+                          sx={{ fontSize: 9, height: 16 }}
+                        />
                       )}
-                    </IconButton>
+                    </Box>
+
+                    {/* Single-image delete button — hidden in bulk delete mode */}
+                    {!deleteMode && (
+                      <IconButton
+                        size="small"
+                        color="error"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deleteFromPool(img.image_id);
+                        }}
+                        sx={{
+                          position: "absolute",
+                          top: 4,
+                          right: 4,
+                          bgcolor: "rgba(0,0,0,0.5)",
+                          color: "#fff",
+                          width: 20,
+                          height: 20,
+                        }}
+                      >
+                        {removing === img.image_id ? (
+                          <CircularProgress size={10} color="inherit" />
+                        ) : (
+                          <DeleteOutlined sx={{ fontSize: 12 }} />
+                        )}
+                      </IconButton>
+                    )}
+
                     <Box sx={{ p: 0.75 }}>
                       <Typography
                         variant="caption"
@@ -514,7 +674,9 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
                       >
                         {img.image_alt}
                       </Typography>
-                      {isSelected && sel && (
+
+                      {/* Assign options — only in assign mode */}
+                      {isSelected && sel && !deleteMode && (
                         <Box
                           onClick={(e) => e.stopPropagation()}
                           sx={{
@@ -584,7 +746,9 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
                           />
                         </Box>
                       )}
-                      {alreadyAssigned && (
+
+                      {/* Unassign button — only in assign mode */}
+                      {alreadyAssigned && !deleteMode && (
                         <Button
                           size="small"
                           color="error"
@@ -616,6 +780,7 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
               })}
             </Box>
 
+            {/* Sticky action bar */}
             {selections.size > 0 && (
               <Paper
                 elevation={2}
@@ -625,7 +790,7 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
                   alignItems: "center",
                   justifyContent: "space-between",
                   border: "1px solid",
-                  borderColor: "primary.main",
+                  borderColor: deleteMode ? "error.main" : "primary.main",
                   borderRadius: 0.2,
                   position: "sticky",
                   bottom: 16,
@@ -635,11 +800,15 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
                 <Typography variant="body2" fontWeight={700}>
                   {selections.size} image{selections.size > 1 ? "s" : ""}{" "}
                   selected
-                  {" → "}
-                  {assignMode === "unit" && selectedUnit
-                    ? detail.units.find((u) => u.unit_id === selectedUnit)
-                        ?.title || "Unit"
-                    : "Property"}
+                  {!deleteMode && (
+                    <>
+                      {" → "}
+                      {assignMode === "unit" && selectedUnit
+                        ? detail.units.find((u) => u.unit_id === selectedUnit)
+                            ?.title || "Unit"
+                        : "Property"}
+                    </>
+                  )}
                 </Typography>
                 <Box sx={{ display: "flex", gap: 1 }}>
                   <Button
@@ -649,22 +818,42 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
                   >
                     Clear
                   </Button>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    onClick={submitAssignments}
-                    disabled={
-                      submitting || (assignMode === "unit" && !selectedUnit)
-                    }
-                    startIcon={
-                      submitting ? (
-                        <CircularProgress size={14} color="inherit" />
-                      ) : undefined
-                    }
-                    sx={{ borderRadius: 0.2, fontWeight: 700 }}
-                  >
-                    {submitting ? "Assigning..." : "Assign All"}
-                  </Button>
+                  {deleteMode ? (
+                    <Button
+                      variant="contained"
+                      size="small"
+                      color="error"
+                      onClick={bulkDeleteFromPool}
+                      disabled={bulkDeleting}
+                      startIcon={
+                        bulkDeleting ? (
+                          <CircularProgress size={14} color="inherit" />
+                        ) : (
+                          <DeleteSweepOutlined />
+                        )
+                      }
+                      sx={{ borderRadius: 0.2, fontWeight: 700 }}
+                    >
+                      {bulkDeleting ? "Deleting..." : "Delete All"}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      size="small"
+                      onClick={submitAssignments}
+                      disabled={
+                        submitting || (assignMode === "unit" && !selectedUnit)
+                      }
+                      startIcon={
+                        submitting ? (
+                          <CircularProgress size={14} color="inherit" />
+                        ) : undefined
+                      }
+                      sx={{ borderRadius: 0.2, fontWeight: 700 }}
+                    >
+                      {submitting ? "Assigning..." : "Assign All"}
+                    </Button>
+                  )}
                 </Box>
               </Paper>
             )}
@@ -676,20 +865,68 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
 
       {/* Step 3 — Current assignments */}
       <Box>
-        <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 1.5 }}>
-          Current Property Images
-        </Typography>
+        {/* ── Property images ── */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            mb: 1.5,
+          }}
+        >
+          <Typography variant="subtitle2" fontWeight={700}>
+            Current Property Images
+          </Typography>
+          {detail.images.length > 0 && (
+            <Button
+              size="small"
+              variant={propUnassignMode ? "contained" : "outlined"}
+              color="error"
+              startIcon={<DeleteSweepOutlined />}
+              onClick={() => {
+                setPropUnassignMode((v) => !v);
+                setPropUnassignSel(new Set());
+              }}
+              sx={{ borderRadius: 0.2 }}
+            >
+              {propUnassignMode ? "Cancel" : "Bulk Remove"}
+            </Button>
+          )}
+        </Box>
+
+        {propUnassignMode && (
+          <Alert severity="warning" sx={{ mb: 1.5, borderRadius: 0.2 }}>
+            Bulk remove mode — click images to select, then confirm removal.
+          </Alert>
+        )}
+
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1.5, mb: 2 }}>
           {detail.images.map(
             (pi: AdminPropertyImageDTO) =>
               pi.image && (
                 <Box
                   key={pi.image_id}
+                  onClick={() => {
+                    if (!propUnassignMode) return;
+                    setPropUnassignSel((prev) => {
+                      const n = new Set(prev);
+                      n.has(pi.image_id)
+                        ? n.delete(pi.image_id)
+                        : n.add(pi.image_id);
+                      return n;
+                    });
+                  }}
                   sx={{
                     position: "relative",
                     width: 400,
+                    cursor: propUnassignMode ? "pointer" : "default",
                     opacity: removing === pi.image_id ? 0.4 : 1,
-                    transition: "opacity 0.15s",
+                    outline: propUnassignSel.has(pi.image_id)
+                      ? "2px solid"
+                      : "none",
+                    outlineColor: "error.main",
+                    borderRadius: 0.2,
+                    transition: "opacity 0.15s, outline 0.1s",
                   }}
                 >
                   <Box
@@ -712,44 +949,57 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
                       gap: 0.25,
                     }}
                   >
-                    {pi.is_banner_image === "true" && (
+                    {propUnassignSel.has(pi.image_id) && (
                       <Chip
-                        label="Banner"
+                        label="✕ Remove"
                         size="small"
-                        color="primary"
+                        color="error"
                         sx={{ fontSize: 8, height: 14 }}
                       />
                     )}
-                    {pi.is_carousel_image === "true" && (
-                      <Chip
-                        label="Carousel"
-                        size="small"
-                        color="secondary"
-                        sx={{ fontSize: 8, height: 14 }}
-                      />
-                    )}
+                    {!propUnassignSel.has(pi.image_id) &&
+                      pi.is_banner_image === "true" && (
+                        <Chip
+                          label="Banner"
+                          size="small"
+                          color="primary"
+                          sx={{ fontSize: 8, height: 14 }}
+                        />
+                      )}
+                    {!propUnassignSel.has(pi.image_id) &&
+                      pi.is_carousel_image === "true" && (
+                        <Chip
+                          label="Carousel"
+                          size="small"
+                          color="secondary"
+                          sx={{ fontSize: 8, height: 14 }}
+                        />
+                      )}
                   </Box>
-                  <IconButton
-                    size="small"
-                    color="error"
-                    disabled={removing === pi.image_id}
-                    onClick={() => unassignProp(pi.image_id)}
-                    sx={{
-                      position: "absolute",
-                      bottom: 2,
-                      right: 2,
-                      bgcolor: "rgba(0,0,0,0.6)",
-                      color: "#fff",
-                      width: 18,
-                      height: 18,
-                    }}
-                  >
-                    {removing === pi.image_id ? (
-                      <CircularProgress size={10} color="inherit" />
-                    ) : (
-                      <DeleteOutlined sx={{ fontSize: 11 }} />
-                    )}
-                  </IconButton>
+                  {/* Single remove button — hidden in bulk mode */}
+                  {!propUnassignMode && (
+                    <IconButton
+                      size="small"
+                      color="error"
+                      disabled={removing === pi.image_id}
+                      onClick={() => unassignProp(pi.image_id)}
+                      sx={{
+                        position: "absolute",
+                        bottom: 2,
+                        right: 2,
+                        bgcolor: "rgba(0,0,0,0.6)",
+                        color: "#fff",
+                        width: 18,
+                        height: 18,
+                      }}
+                    >
+                      {removing === pi.image_id ? (
+                        <CircularProgress size={10} color="inherit" />
+                      ) : (
+                        <DeleteOutlined sx={{ fontSize: 11 }} />
+                      )}
+                    </IconButton>
+                  )}
                   <Typography
                     variant="caption"
                     color="text.secondary"
@@ -769,15 +1019,104 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
           )}
         </Box>
 
-        <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 1 }}>
-          Current Unit Images
-        </Typography>
+        {/* Sticky bar — property bulk remove */}
+        {propUnassignMode && propUnassignSel.size > 0 && (
+          <Paper
+            elevation={2}
+            sx={{
+              p: 1.5,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              border: "1px solid",
+              borderColor: "error.main",
+              borderRadius: 0.2,
+              position: "sticky",
+              bottom: 16,
+              zIndex: 10,
+              mb: 2,
+            }}
+          >
+            <Typography variant="body2" fontWeight={700}>
+              {propUnassignSel.size} image{propUnassignSel.size > 1 ? "s" : ""}{" "}
+              selected
+            </Typography>
+            <Box sx={{ display: "flex", gap: 1 }}>
+              <Button
+                size="small"
+                onClick={() => setPropUnassignSel(new Set())}
+                sx={{ borderRadius: 0.2 }}
+              >
+                Clear
+              </Button>
+              <Button
+                variant="contained"
+                size="small"
+                color="error"
+                onClick={bulkUnassignProp}
+                disabled={bulkUnassigningProp}
+                startIcon={
+                  bulkUnassigningProp ? (
+                    <CircularProgress size={14} color="inherit" />
+                  ) : (
+                    <DeleteSweepOutlined />
+                  )
+                }
+                sx={{ borderRadius: 0.2, fontWeight: 700 }}
+              >
+                {bulkUnassigningProp ? "Removing..." : "Remove All"}
+              </Button>
+            </Box>
+          </Paper>
+        )}
+
+        {/* ── Unit images ── */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            mb: 1,
+          }}
+        >
+          <Typography variant="subtitle2" fontWeight={700}>
+            Current Unit Images
+          </Typography>
+          {selectedUnit &&
+            (detail.units.find((u) => u.unit_id === selectedUnit)?.images
+              ?.length ?? 0) > 0 && (
+              <Button
+                size="small"
+                variant={unitUnassignMode ? "contained" : "outlined"}
+                color="error"
+                startIcon={<DeleteSweepOutlined />}
+                onClick={() => {
+                  setUnitUnassignMode((v) => !v);
+                  setUnitUnassignSel(new Set());
+                }}
+                sx={{ borderRadius: 0.2 }}
+              >
+                {unitUnassignMode ? "Cancel" : "Bulk Remove"}
+              </Button>
+            )}
+        </Box>
+
+        {unitUnassignMode && (
+          <Alert severity="warning" sx={{ mb: 1.5, borderRadius: 0.2 }}>
+            Bulk remove mode — click images to select, then confirm removal.
+          </Alert>
+        )}
+
         <FormControl size="small" sx={{ mb: 1.5, minWidth: 200 }}>
           <InputLabel>View unit</InputLabel>
           <Select
             value={selectedUnit}
             label="View unit"
-            onChange={(e) => setSelectedUnit(e.target.value)}
+            onChange={(e) => {
+              setSelectedUnit(e.target.value);
+              setUnitUnassignMode(false);
+              setUnitUnassignSel(new Set());
+            }}
           >
             {detail.units.map((u: AdminUnitDTO) => (
               <MenuItem key={u.unit_id} value={u.unit_id}>
@@ -786,71 +1125,158 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
             ))}
           </Select>
         </FormControl>
+
         {selectedUnit && (
-          <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1.5 }}>
-            {detail.units
-              .find((u: AdminUnitDTO) => u.unit_id === selectedUnit)
-              ?.images?.map(
-                (ui: AdminUnitImageDTO) =>
-                  ui.image && (
-                    <Box
-                      key={ui.image_id}
-                      sx={{
-                        position: "relative",
-                        width: 120,
-                        opacity: removing === ui.image_id ? 0.4 : 1,
-                        transition: "opacity 0.15s",
-                      }}
-                    >
+          <>
+            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1.5 }}>
+              {detail.units
+                .find((u: AdminUnitDTO) => u.unit_id === selectedUnit)
+                ?.images?.map(
+                  (ui: AdminUnitImageDTO) =>
+                    ui.image && (
                       <Box
-                        component="img"
-                        src={ui.image.image_url}
-                        sx={{
-                          width: 120,
-                          height: 80,
-                          objectFit: "cover",
-                          borderRadius: 0.2,
+                        key={ui.image_id}
+                        onClick={() => {
+                          if (!unitUnassignMode) return;
+                          setUnitUnassignSel((prev) => {
+                            const n = new Set(prev);
+                            n.has(ui.image_id)
+                              ? n.delete(ui.image_id)
+                              : n.add(ui.image_id);
+                            return n;
+                          });
                         }}
-                      />
-                      {ui.is_banner_image === "true" && (
-                        <Chip
-                          label="Banner"
-                          size="small"
-                          color="primary"
+                        sx={{
+                          position: "relative",
+                          width: 120,
+                          cursor: unitUnassignMode ? "pointer" : "default",
+                          opacity: removing === ui.image_id ? 0.4 : 1,
+                          outline: unitUnassignSel.has(ui.image_id)
+                            ? "2px solid"
+                            : "none",
+                          outlineColor: "error.main",
+                          borderRadius: 0.2,
+                          transition: "opacity 0.15s, outline 0.1s",
+                        }}
+                      >
+                        <Box
+                          component="img"
+                          src={ui.image.image_url}
+                          sx={{
+                            width: 120,
+                            height: 80,
+                            objectFit: "cover",
+                            borderRadius: 0.2,
+                          }}
+                        />
+                        <Box
                           sx={{
                             position: "absolute",
                             top: 2,
                             left: 2,
-                            fontSize: 8,
-                            height: 14,
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 0.25,
                           }}
-                        />
-                      )}
-                      <IconButton
-                        size="small"
-                        color="error"
-                        disabled={removing === ui.image_id}
-                        onClick={() => unassignUnit(ui.image_id)}
-                        sx={{
-                          position: "absolute",
-                          bottom: 2,
-                          right: 2,
-                          bgcolor: "rgba(0,0,0,0.6)",
-                          color: "#fff",
-                          width: 18,
-                          height: 18,
-                        }}
-                      >
-                        {removing === ui.image_id ? (
-                          <CircularProgress size={10} color="inherit" />
-                        ) : (
-                          <DeleteOutlined sx={{ fontSize: 11 }} />
+                        >
+                          {unitUnassignSel.has(ui.image_id) && (
+                            <Chip
+                              label="✕"
+                              size="small"
+                              color="error"
+                              sx={{ fontSize: 8, height: 14 }}
+                            />
+                          )}
+                          {!unitUnassignSel.has(ui.image_id) &&
+                            ui.is_banner_image === "true" && (
+                              <Chip
+                                label="Banner"
+                                size="small"
+                                color="primary"
+                                sx={{ fontSize: 8, height: 14 }}
+                              />
+                            )}
+                        </Box>
+                        {/* Single remove button — hidden in bulk mode */}
+                        {!unitUnassignMode && (
+                          <IconButton
+                            size="small"
+                            color="error"
+                            disabled={removing === ui.image_id}
+                            onClick={() => unassignUnit(ui.image_id)}
+                            sx={{
+                              position: "absolute",
+                              bottom: 2,
+                              right: 2,
+                              bgcolor: "rgba(0,0,0,0.6)",
+                              color: "#fff",
+                              width: 18,
+                              height: 18,
+                            }}
+                          >
+                            {removing === ui.image_id ? (
+                              <CircularProgress size={10} color="inherit" />
+                            ) : (
+                              <DeleteOutlined sx={{ fontSize: 11 }} />
+                            )}
+                          </IconButton>
                         )}
-                      </IconButton>
-                    </Box>
-                  ),
-              )}
-          </Box>
+                      </Box>
+                    ),
+                )}
+            </Box>
+
+            {/* Sticky bar — unit bulk remove */}
+            {unitUnassignMode && unitUnassignSel.size > 0 && (
+              <Paper
+                elevation={2}
+                sx={{
+                  p: 1.5,
+                  mt: 2,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  border: "1px solid",
+                  borderColor: "error.main",
+                  borderRadius: 0.2,
+                  position: "sticky",
+                  bottom: 16,
+                  zIndex: 10,
+                }}
+              >
+                <Typography variant="body2" fontWeight={700}>
+                  {unitUnassignSel.size} image
+                  {unitUnassignSel.size > 1 ? "s" : ""} selected
+                </Typography>
+                <Box sx={{ display: "flex", gap: 1 }}>
+                  <Button
+                    size="small"
+                    onClick={() => setUnitUnassignSel(new Set())}
+                    sx={{ borderRadius: 0.2 }}
+                  >
+                    Clear
+                  </Button>
+                  <Button
+                    variant="contained"
+                    size="small"
+                    color="error"
+                    onClick={bulkUnassignUnit}
+                    disabled={bulkUnassigningUnit}
+                    startIcon={
+                      bulkUnassigningUnit ? (
+                        <CircularProgress size={14} color="inherit" />
+                      ) : (
+                        <DeleteSweepOutlined />
+                      )
+                    }
+                    sx={{ borderRadius: 0.2, fontWeight: 700 }}
+                  >
+                    {bulkUnassigningUnit ? "Removing..." : "Remove All"}
+                  </Button>
+                </Box>
+              </Paper>
+            )}
+          </>
         )}
       </Box>
     </Box>

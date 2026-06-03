@@ -2,7 +2,7 @@
 
 import { FC, useEffect, useMemo, useState } from "react";
 
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import { IoCloseOutline as CloseIcon } from "react-icons/io5";
 import {
   Accordion,
   AccordionDetails,
@@ -20,17 +20,22 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+
 import {
-  PeopleAltOutlined as PeopleIcon,
-  BedOutlined as BedIcon,
-  HouseOutlined as HouseIcon,
-  RestaurantOutlined as MealsIcon,
-  BathtubOutlined as ShowerIcon,
-  PoolOutlined as PoolIcon,
-  ArrowRightOutlined as ArrowRight,
-  ExpandMoreOutlined as ExpandMoreIcon,
-} from "@mui/icons-material";
-import { SlLocationPin } from "react-icons/sl";
+  IoPeopleOutline as PeopleIcon,
+  IoBedOutline as BedIcon,
+  IoHomeOutline as HouseIcon,
+  IoRestaurantOutline as MealsIcon,
+  IoArrowForwardOutline as ArrowRight,
+  IoLocationOutline as PinIcon,
+} from "react-icons/io5";
+import {
+  PiBathtub as ShowerIcon,
+  PiSwimmingPool as PoolIcon,
+} from "react-icons/pi";
+
+import { IoIosArrowUp as ExpandMoreIcon } from "react-icons/io";
+
 import { motion } from "motion/react";
 import Image from "next/image";
 import { SwiperSlide } from "swiper/react";
@@ -182,9 +187,10 @@ const Property: FC<PropertyPropType> = ({
           <div className="text-white slide-bottom">
             <Typography variant="h3">{propertyDetails.name}</Typography>
             <div className="flex items-center gap-1">
-              <SlLocationPin className="inline-block mt-0" size={22} />
+              <PinIcon className="inline-block mt-0" size={22} />
               <Typography className="mt-4 text-2xl!" variant="h5">
-                {propertyDetails.area}, {propertyDetails.state}
+                {propertyDetails.area}, {propertyDetails.city},{" "}
+                {propertyDetails.state}
               </Typography>
             </div>
           </div>
@@ -308,7 +314,8 @@ const Property: FC<PropertyPropType> = ({
                       <div className="grid max-sm:grid-cols-1 min-[370px]:grid-cols-2 max-md:grid-cols-3 items-center gap-3 mt-3">
                         {group.display_unit.no_of_bedrooms !== null && (
                           <Typography>
-                            <BedIcon /> {group.display_unit.no_of_bedrooms} bed
+                            <BedIcon /> {group.display_unit.no_of_bedrooms}{" "}
+                            bedroom
                             {group.display_unit.no_of_bedrooms === 1 ? "" : "s"}
                           </Typography>
                         )}
@@ -387,7 +394,7 @@ const Property: FC<PropertyPropType> = ({
                       maxLength={200}
                     />
                     <div className="flex gap-6 my-6">
-                      {foodMenu.is_veg && (
+                      {foodMenu.isVeg && (
                         <div className="flex items-center gap-3">
                           <svg
                             width="24"
@@ -416,7 +423,7 @@ const Property: FC<PropertyPropType> = ({
                           Veg
                         </div>
                       )}
-                      {foodMenu.is_non_veg && (
+                      {foodMenu.isNonVeg && (
                         <div className="flex items-center gap-3">
                           <svg
                             width="24"
@@ -448,16 +455,16 @@ const Property: FC<PropertyPropType> = ({
                     </div>
                     <div className="mb-4">
                       <Typography className="my-2!">
-                        Breakfast: {foodMenu.breakfast_time}
+                        Breakfast: {foodMenu.breakfastTime}
                       </Typography>
                       <Typography className="my-2!">
-                        Lunch: {foodMenu.lunch_time}
+                        Lunch: {foodMenu.lunchTime}
                       </Typography>
                       <Typography className="my-2!">
-                        High Tea: {foodMenu.hightea_time}
+                        High Tea: {foodMenu.highteaTime}
                       </Typography>
                       <Typography className="my-2!">
-                        Dinner: {foodMenu.dinner_time}
+                        Dinner: {foodMenu.dinnerTime}
                       </Typography>
                     </div>
                     <Button
@@ -465,7 +472,7 @@ const Property: FC<PropertyPropType> = ({
                       color={
                         theme.palette.mode === "light" ? "primary" : "secondary"
                       }
-                      onClick={() => window.open(foodMenu.menu_url)}
+                      onClick={() => window.open(foodMenu.menuUrl)}
                     >
                       View Menu
                     </Button>
@@ -695,15 +702,17 @@ const Property: FC<PropertyPropType> = ({
         }}
       >
         <DialogTitle
-          sx={{ py: "16px", px: "16px" }}
-          className="flex justify-between items-center"
+          // sx={{ py: "16px", px: "16px" }}
+          className="flex justify-between items-center p-2! md:p-4!"
         >
-          <Typography variant="h5">Gallery</Typography>
+          <Typography variant="h5" fontWeight={700}>
+            Gallery
+          </Typography>
           <IconButton onClick={() => setOpenGallery(false)}>
-            <CloseRoundedIcon />
+            <CloseIcon />
           </IconButton>
         </DialogTitle>
-        <DialogContent sx={{ p: "16px" }}>
+        <DialogContent className="p-1! md:p-4!">
           {galleryImages && <ImageGallery images={galleryImages} />}
         </DialogContent>
       </Dialog>
@@ -729,7 +738,7 @@ const Property: FC<PropertyPropType> = ({
         >
           Photos{" "}
           <IconButton onClick={() => setOpenUnitGallery(false)}>
-            <CloseRoundedIcon />
+            <CloseIcon />
           </IconButton>
         </DialogTitle>
         <DialogContent sx={{ width: "100%", p: "12px", pr: 0 }}>

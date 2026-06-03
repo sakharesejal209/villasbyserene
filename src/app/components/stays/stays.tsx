@@ -10,13 +10,15 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
+
 import {
-  PeopleAltOutlined as PeopleIcon,
-  BedOutlined as BedIcon,
-  ArrowForwardIosRounded,
-  CalendarMonthOutlined,
-  WhatsApp,
-} from "@mui/icons-material";
+  IoPeopleOutline as PeopleIcon,
+  IoBedOutline as BedIcon,
+  IoCalendarOutline as CalendarIcon,
+  IoLogoWhatsapp as WhatsApp,
+} from "react-icons/io5";
+import { IoIosArrowForward as ArrowForward } from "react-icons/io";
+
 import { startCase, camelCase } from "lodash";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
@@ -102,7 +104,7 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
         <Typography variant="body2" color="text.secondary">
           <Link href="/">Home</Link>
         </Typography>
-        <ArrowForwardIosRounded sx={{ fontSize: 10, color: "text.disabled" }} />
+        <ArrowForward fontSize={10} color={theme.palette.text.disabled} />
         <Typography variant="body2" color="text.secondary">
           {location === "all"
             ? "All Properties"
@@ -145,9 +147,7 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
               bgcolor: "action.hover",
             }}
           >
-            <CalendarMonthOutlined
-              sx={{ fontSize: 15, color: "primary.main" }}
-            />
+            <CalendarIcon fontSize={15} color={theme.palette.primary.main} />
             <Typography variant="body2" fontWeight={600}>
               {dateLabel}
               {nights && ` · ${nights} night${nights === 1 ? "" : "s"}`}
@@ -166,7 +166,10 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
         >
           {propertiesData.map((item) => {
             const isDirect = item.booking_type === BookingType.DIRECT;
-            const priceResult = getCardPrice(item as PropertyDetailDTO, checkIn);
+            const priceResult = getCardPrice(
+              item as PropertyDetailDTO,
+              checkIn,
+            );
             const url = buildUrl(item);
 
             return (
@@ -184,11 +187,6 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
                   overflow: "hidden",
                   cursor: "pointer",
                   transition: "all 0.2s ease",
-                  // "&:hover": {
-                  //   borderColor: "primary.main",
-                  //   boxShadow: `0 8px 32px ${theme.palette.primary.main}22`,
-                  //   transform: "scale(0.95)",
-                  // },
                 }}
               >
                 {/* Image */}
@@ -199,7 +197,12 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
                     overflow: "hidden",
                   }}
                 >
-                  <Carousel slidesPerView={1} variant="dark" hideArrows arrowVisibility="hover">
+                  <Carousel
+                    slidesPerView={1}
+                    variant="dark"
+                    hideArrows
+                    arrowVisibility="hover"
+                  >
                     <>
                       {item.carousel_images.map((e, idx) => (
                         <SwiperSlide key={idx}>
@@ -271,7 +274,8 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
                       sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
                     >
                       <PeopleIcon
-                        sx={{ fontSize: 15, color: "text.secondary" }}
+                        fontSize={15}
+                        color={theme.palette.text.secondary}
                       />
                       <Typography variant="body2" color="text.secondary">
                         {item.max_capacity} guests
@@ -280,7 +284,10 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
                     <Box
                       sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
                     >
-                      <BedIcon sx={{ fontSize: 15, color: "text.secondary" }} />
+                      <BedIcon
+                        fontSize={15}
+                        color={theme.palette.text.secondary}
+                      />
                       <Typography variant="body2" color="text.secondary">
                         {item.bedroom_count} bedroom
                         {item.bedroom_count === 1 ? "" : "s"}
@@ -381,9 +388,7 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
                         router.push(url);
                       }}
                       startIcon={
-                        isDirect ? undefined : (
-                          <WhatsApp sx={{ fontSize: "14px !important" }} />
-                        )
+                        isDirect ? undefined : <WhatsApp fontSize={14} />
                       }
                     >
                       {isDirect ? "Book Now" : "Enquire Now"}

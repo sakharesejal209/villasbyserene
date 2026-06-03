@@ -3,14 +3,17 @@
 import React from "react";
 
 import { Button, Divider, IconButton, Typography } from "@mui/material";
+
 import {
-  PhoneOutlined as Phone,
-  Facebook,
-  Instagram,
-  EmailOutlined as Mail,
-  LocationOnOutlined as MapPin,
-  WhatsApp,
-} from "@mui/icons-material";
+  MdOutlineLocalPhone as Phone,
+  MdOutlineMail as Mail,
+} from "react-icons/md";
+import { FaFacebook as Facebook } from "react-icons/fa6";
+import {
+  IoLogoInstagram as Instagram,
+  IoLocationOutline as MapPin,
+  IoLogoWhatsapp as WhatsApp,
+} from "react-icons/io5";
 
 import logoLight from "../../../../public/assets/villasbyserene-light.png";
 
@@ -24,7 +27,7 @@ const Footer = () => {
     const message =
       "Hi! I'd like to learn more about your holiday rental properties.";
     const whatsappUrl = `https://wa.me/9594377736?text=${encodeURIComponent(
-      message
+      message,
     )}`;
     window.open(whatsappUrl, "_blank");
   };
@@ -128,7 +131,7 @@ const Footer = () => {
               <div className="flex items-start space-x-3 text-gray-300">
                 <MapPin className="w-4 h-4 text-primary mt-1" />
                 <span>
-                  B-104, Yashonarayan CHS., Takka Rd, Panvel 
+                  B-104, Yashonarayan CHS., Takka Rd, Panvel
                   <br />
                   Raigad, Maharashtra 410206
                 </span>

@@ -1,6 +1,6 @@
+import { SeasonalPricingDTO } from "../../property";
 import AdminUnitImageDTO from "./AdminUnitImageDTO";
 import AdminUnitPricingDTO from "./AdminUnitPricingDTO";
-import SeasonalPricingDTO from "./SeasonalPricingDTO";
 
 export default interface AdminUnitDTO {
   unit_id: string;

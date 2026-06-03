@@ -121,6 +121,19 @@ export default async function Layout({
 
   return (
     <html lang="en" className={roboto.className + " " + ibmPlex.className}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+    try {
+      var m = localStorage.getItem('theme-mode');
+      if (!m) m = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.classList.add(m);
+    } catch(e) {}
+  `,
+          }}
+        />
+      </head>
       <body className="flex flex-col min-h-screen">
         <ClientProviders propertiesData={propertiesData}>
           <NavbarFooterWrapper>{children}</NavbarFooterWrapper>

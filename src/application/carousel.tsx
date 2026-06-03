@@ -4,7 +4,11 @@ import React, { useRef, useState } from "react";
 import { Swiper } from "swiper/react";
 import { Autoplay, Keyboard, Navigation, Pagination } from "swiper/modules";
 import { Box, IconButton, useTheme } from "@mui/material";
-import { ChevronLeft, ChevronRight } from "@mui/icons-material";
+import {
+  HiOutlineChevronLeft as ChevronLeft,
+  HiOutlineChevronRight as ChevronRight,
+} from "react-icons/hi";
+
 import { SwiperOptions } from "swiper/types";
 
 import "swiper/css";
@@ -16,10 +20,6 @@ import "swiper/css/navigation";
 // "dark"   → white arrows (use on dark/image backgrounds)
 export type CarouselVariant = "light" | "dark";
 
-// ── Arrow visibility modes ────────────────────────────────────────
-// "always" → always visible
-// "hover"  → fade in on container hover
-// "hidden" → never show arrows
 export type ArrowVisibility = "always" | "hover" | "hidden";
 
 type CarouselPropType = {
@@ -31,19 +31,10 @@ type CarouselPropType = {
   breakpoints?: SwiperOptions["breakpoints"];
   autoplay?: { delay: number; disableOnInteraction: boolean } | false;
   spaceBetween?: number;
-
-  // ── New props ──────────────────────────────────────────────────
-  variant?: CarouselVariant; // "light" | "dark"
-  arrowVisibility?: ArrowVisibility; // "always" | "hover" | "hidden"
-
-  // ── Arrow position ────────────────────────────────────────────
-  // "inside"  → arrows overlap the slides (default)
-  // "outside" → arrows sit outside left/right of the slides
+  variant?: CarouselVariant;
+  arrowVisibility?: ArrowVisibility;
   arrowPosition?: "inside" | "outside";
-
-  // ── Legacy props (still supported) ────────────────────────────
-  inverseControlsColor?: boolean; // legacy → maps to variant="dark"
-  hideArrows?: boolean; // legacy → maps to arrowVisibility="hidden"
+  hideArrows?: boolean;
 };
 
 const Carousel: React.FC<CarouselPropType> = ({
@@ -59,7 +50,6 @@ const Carousel: React.FC<CarouselPropType> = ({
   arrowVisibility,
   arrowPosition = "inside",
   // legacy
-  inverseControlsColor = false,
   hideArrows = false,
 }) => {
   const theme = useTheme();
@@ -69,7 +59,7 @@ const Carousel: React.FC<CarouselPropType> = ({
 
   // ── Resolve legacy props to new system ───────────────────────
   const resolvedVariant: CarouselVariant =
-    variant ?? (inverseControlsColor ? "dark" : "light");
+    (variant ?? theme.palette.mode === "dark") ? "dark" : "light";
 
   const resolvedArrowVisibility: ArrowVisibility =
     arrowVisibility ?? (hideArrows ? "hidden" : "always");
@@ -92,6 +82,12 @@ const Carousel: React.FC<CarouselPropType> = ({
         : true;
 
   const isOutside = arrowPosition === "outside";
+
+  // ── Stop arrow clicks from bubbling to card onClick ──────────
+  const handleArrowClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+  };
 
   return (
     <Box
@@ -159,6 +155,8 @@ const Carousel: React.FC<CarouselPropType> = ({
         <IconButton
           ref={prevRef}
           size="small"
+          onClick={handleArrowClick}
+          onPointerDown={(e) => e.stopPropagation()}
           sx={{
             position: "absolute",
             left: isOutside ? { xs: 0, md: 2 } : { xs: 4, md: 8 },
@@ -191,6 +189,8 @@ const Carousel: React.FC<CarouselPropType> = ({
         <IconButton
           ref={nextRef}
           size="small"
+          onClick={handleArrowClick}
+          onPointerDown={(e) => e.stopPropagation()}
           sx={{
             position: "absolute",
             right: isOutside ? { xs: 0, md: 2 } : { xs: 4, md: 8 },

@@ -23,16 +23,25 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+// import {
+//   ArrowBackOutlined,
+//   CheckCircleOutlined,
+//   CloseOutlined,
+//   ExpandMoreOutlined,
+//   LockOutlined,
+//   WarningAmberOutlined,
+//   WhatsApp,
+// } from "@mui/icons-material";
 import {
-  AccessTimeOutlined,
-  ArrowBackOutlined,
-  CheckCircleOutlined,
-  CloseOutlined,
-  ExpandMoreOutlined,
-  LockOutlined,
-  WarningAmberOutlined,
-  WhatsApp,
-} from "@mui/icons-material";
+  IoArrowBackOutline as ArrowBack,
+  IoCheckmarkCircleOutline as CheckCircleIcon,
+  IoClose as CloseIcon,
+  IoArrowDownOutline as ArrowDownIcon,
+  IoLockClosedOutline as LockIcon,
+  IoWarningOutline as WarningIcon,
+  IoLogoWhatsapp as WhatsApp,
+} from "react-icons/io5";
+
 import { useAuth } from "@/hooks/useAuth";
 import { useRazorpay } from "@/hooks/useRazorpay";
 import { formatINR } from "@/app/components/property/BookingWidget";
@@ -66,7 +75,7 @@ const Section: FC<{
   return (
     <Box
       sx={{
-        borderRadius: 2,
+        borderRadius: 0.2,
         border: "1px solid",
         borderColor: "divider",
         overflow: "hidden",
@@ -88,14 +97,17 @@ const Section: FC<{
         <Typography variant="subtitle1" fontWeight={700}>
           {title}
         </Typography>
-        <ExpandMoreOutlined
+        <Box
           sx={{
             fontSize: 20,
             color: "text.secondary",
             transition: "transform 0.2s",
             transform: open ? "rotate(180deg)" : "none",
           }}
-        />
+        >
+          <ArrowDownIcon />
+        </Box>
+        {/* <ArrowIcon /> */}
       </Box>
       <Collapse in={open}>
         <Box
@@ -429,13 +441,12 @@ const BookingPage: FC = () => {
       </Box>
     );
 
-  // ── Render ────────────────────────────────────────────────────
   return (
     <section>
       <div className="container mt-4">
         {/* Back */}
         <Button
-          startIcon={<ArrowBackOutlined />}
+          startIcon={<ArrowBack />}
           onClick={() => router.back()}
           sx={{ mb: 2.5, color: "text.secondary", fontWeight: 600 }}
         >
@@ -447,7 +458,7 @@ const BookingPage: FC = () => {
           <Alert
             severity="info"
             icon={<CircularProgress size={16} />}
-            sx={{ mb: 2 }}
+            sx={{ mb: 2, borderRadius: 0.2 }}
           >
             Checking availability...
           </Alert>
@@ -455,8 +466,8 @@ const BookingPage: FC = () => {
         {availability === "unavailable" && (
           <Alert
             severity="error"
-            icon={<WarningAmberOutlined />}
-            sx={{ mb: 2 }}
+            icon={<WarningIcon />}
+            sx={{ mb: 2, borderRadius: 0.2 }}
           >
             These dates are no longer available. Please go back and select
             different dates.
@@ -465,8 +476,8 @@ const BookingPage: FC = () => {
         {availability === "available" && (
           <Alert
             severity="success"
-            icon={<CheckCircleOutlined />}
-            sx={{ mb: 2 }}
+            icon={<CheckCircleIcon />}
+            sx={{ mb: 2, borderRadius: 0.2 }}
           >
             Dates available, book before it&apos;s gone!
           </Alert>
@@ -487,7 +498,7 @@ const BookingPage: FC = () => {
               elevation={0}
               sx={{
                 mb: 2,
-                borderRadius: 2,
+                borderRadius: 0.2,
                 border: "1px solid",
                 borderColor: "divider",
                 overflow: "hidden",
@@ -551,25 +562,13 @@ const BookingPage: FC = () => {
                   }}
                 >
                   <Box>
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                      sx={{
-                        textTransform: "uppercase",
-                        letterSpacing: 0.8,
-                        display: "block",
-                        mb: 0.25,
-                      }}
-                    >
-                      Check-in
-                    </Typography>
-                    <Typography variant="body1" fontWeight={700}>
+                    <Typography variant="body2">Check-in</Typography>
+                    <Typography variant="body1" fontWeight={600}>
                       {dayjs(checkIn).format("ddd, DD MMM YYYY")}
                     </Typography>
                     {property?.checkin_time && (
                       <Typography
                         variant="caption"
-                        color="text.secondary"
                         sx={{
                           display: "flex",
                           alignItems: "center",
@@ -577,31 +576,19 @@ const BookingPage: FC = () => {
                           mt: 0.25,
                         }}
                       >
-                        <AccessTimeOutlined sx={{ fontSize: 13 }} />
-                        From {property.checkin_time}
+                        {/* <AccessTimeOutlined sx={{ fontSize: 13 }} /> */}
+                        {`(From ${property.checkin_time})`}
                       </Typography>
                     )}
                   </Box>
                   <Box>
-                    <Typography
-                      variant="caption"
-                      color="text.secondary"
-                      sx={{
-                        textTransform: "uppercase",
-                        letterSpacing: 0.8,
-                        display: "block",
-                        mb: 0.25,
-                      }}
-                    >
-                      Check-out
-                    </Typography>
-                    <Typography variant="body1" fontWeight={700}>
+                    <Typography variant="caption">Check-out</Typography>
+                    <Typography variant="body1" fontWeight={600}>
                       {dayjs(checkOut).format("ddd, DD MMM YYYY")}
                     </Typography>
                     {property?.checkout_time && (
                       <Typography
                         variant="caption"
-                        color="text.secondary"
                         sx={{
                           display: "flex",
                           alignItems: "center",
@@ -609,8 +596,7 @@ const BookingPage: FC = () => {
                           mt: 0.25,
                         }}
                       >
-                        <AccessTimeOutlined sx={{ fontSize: 13 }} />
-                        By {property.checkout_time}
+                        {`(By ${property.checkout_time})`}
                       </Typography>
                     )}
                   </Box>
@@ -644,7 +630,7 @@ const BookingPage: FC = () => {
                 sx={{
                   mb: 2,
                   p: 2.5,
-                  borderRadius: 2,
+                  borderRadius: 0.2,
                   border: "1px solid",
                   borderColor: "divider",
                 }}
@@ -666,7 +652,7 @@ const BookingPage: FC = () => {
                   </Typography>
                 )}
                 <Box sx={{ display: "flex", gap: 2, mb: 1.5 }}>
-                  {foodMenu.is_veg && (
+                  {foodMenu.isVeg && (
                     <Box
                       sx={{ display: "flex", alignItems: "center", gap: 0.75 }}
                     >
@@ -675,7 +661,7 @@ const BookingPage: FC = () => {
                           width: 20,
                           height: 20,
                           border: "1.5px solid #11BF0E",
-                          borderRadius: 0.5,
+                          borderRadius: 0.2,
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -693,7 +679,7 @@ const BookingPage: FC = () => {
                       <Typography variant="body2">Veg</Typography>
                     </Box>
                   )}
-                  {foodMenu.is_non_veg && (
+                  {foodMenu.isNonVeg && (
                     <Box
                       sx={{ display: "flex", alignItems: "center", gap: 0.75 }}
                     >
@@ -702,7 +688,7 @@ const BookingPage: FC = () => {
                           width: 20,
                           height: 20,
                           border: "1.5px solid #FA4B4B",
-                          borderRadius: 0.5,
+                          borderRadius: 0.2,
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -729,32 +715,32 @@ const BookingPage: FC = () => {
                     mb: 1.5,
                   }}
                 >
-                  {foodMenu.breakfast_time && (
-                    <Typography variant="body2" color="text.secondary">
-                      🍳 Breakfast · {foodMenu.breakfast_time}
+                  {foodMenu.breakfastTime && (
+                    <Typography variant="body2">
+                      Breakfast · {foodMenu.breakfastTime}
                     </Typography>
                   )}
-                  {foodMenu.lunch_time && (
-                    <Typography variant="body2" color="text.secondary">
-                      🍽 Lunch · {foodMenu.lunch_time}
+                  {foodMenu.lunchTime && (
+                    <Typography variant="body2">
+                      Lunch · {foodMenu.lunchTime}
                     </Typography>
                   )}
-                  {foodMenu.hightea_time && (
-                    <Typography variant="body2" color="text.secondary">
-                      ☕ High Tea · {foodMenu.hightea_time}
+                  {foodMenu.highteaTime && (
+                    <Typography variant="body2">
+                      High Tea · {foodMenu.highteaTime}
                     </Typography>
                   )}
-                  {foodMenu.dinner_time && (
-                    <Typography variant="body2" color="text.secondary">
-                      🌙 Dinner · {foodMenu.dinner_time}
+                  {foodMenu.dinnerTime && (
+                    <Typography variant="body2">
+                      Dinner · {foodMenu.dinnerTime}
                     </Typography>
                   )}
                 </Box>
-                {foodMenu.menu_url && (
+                {foodMenu.menuUrl && (
                   <Button
                     variant="outlined"
                     size="small"
-                    onClick={() => window.open(foodMenu.menu_url)}
+                    onClick={() => window.open(foodMenu.menuUrl)}
                   >
                     View Full Menu
                   </Button>
@@ -762,7 +748,6 @@ const BookingPage: FC = () => {
               </Paper>
             )}
 
-            {/* Cancellation Policy — with actual dates */}
             {(() => {
               const today = dayjs();
               const ci = dayjs(checkIn);
@@ -770,13 +755,13 @@ const BookingPage: FC = () => {
               const halfRefundBy = ci.subtract(14, "day");
               const showFull = today.isBefore(fullRefundBy);
               const showHalf = today.isBefore(halfRefundBy);
+              const isNonRefundable = !showFull && !showHalf;
 
-              // Build only the dots still relevant
               const dots = [
                 showFull && {
                   color: "#1B4332",
                   icon: (
-                    <CheckCircleOutlined sx={{ fontSize: 18, color: "#fff" }} />
+                    <CheckCircleIcon fontSize={18} className="text-white" />
                   ),
                   label: "100% Refund",
                   labelColor: "success.main",
@@ -797,11 +782,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                 },
                 {
                   color: "#d32f2f",
-                  icon: (
-                    <WarningAmberOutlined
-                      sx={{ fontSize: 18, color: "#fff" }}
-                    />
-                  ),
+                  icon: <WarningIcon fontSize={18} className="text-white" />,
                   label: "No Refund",
                   labelColor: "error.main",
                   sub: `Cancel after
@@ -821,7 +802,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                   sx={{
                     mb: 2,
                     p: 2.5,
-                    borderRadius: 2,
+                    borderRadius: 0.2,
                     border: "1px solid",
                     borderColor: "divider",
                   }}
@@ -835,123 +816,139 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                   </Typography>
 
                   {/* Visual timeline — only shows dots still applicable */}
-                  <Box sx={{ position: "relative", mb: 2.5 }}>
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        top: 16,
-                        left: "10%",
-                        right: "10%",
-                        height: 3,
-                        background:
-                          dots.length === 1
-                            ? "#d32f2f"
-                            : dots.length === 2
-                              ? "linear-gradient(to right, #ed6c02 50%, #d32f2f 50%)"
-                              : "linear-gradient(to right, #1B4332 40%, #ed6c02 40% 70%, #d32f2f 70%)",
-                        zIndex: 0,
-                      }}
-                    />
+                  {isNonRefundable ? (
                     <Box
                       sx={{
                         display: "flex",
-                        justifyContent: "space-between",
-                        position: "relative",
-                        zIndex: 1,
-                        px: { xs: 0, sm: 2 },
+                        alignItems: "flex-start",
+                        gap: 1.5,
+                        p: 2,
+                        mb: 2,
+                        borderRadius: 0.2,
+                        bgcolor: "rgba(211,47,47,0.06)",
+                        border: "1px solid",
+                        borderColor: "error.light",
                       }}
                     >
-                      {dots.map((dot) => (
-                        <Box
-                          key={dot.label}
-                          sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                            gap: 0.75,
-                            maxWidth: 110,
-                          }}
+                      <WarningIcon
+                        fontSize={22}
+                        color={theme.palette.error.main}
+                        className="shrink-0 mt-[0.8px]"
+                      />
+                      <Box>
+                        <Typography
+                          variant="body2"
+                          fontWeight={700}
+                          color="error.main"
                         >
+                          Non-refundable booking
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          Check-in is within 14 days. This booking cannot be
+                          cancelled for a refund.
+                        </Typography>
+                      </Box>
+                    </Box>
+                  ) : (
+                    <Box sx={{ position: "relative", mb: 2.5 }}>
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          top: 16,
+                          left: "10%",
+                          right: "10%",
+                          height: 3,
+                          background:
+                            dots.length === 1
+                              ? "#d32f2f"
+                              : dots.length === 2
+                                ? "linear-gradient(to right, #ed6c02 50%, #d32f2f 50%)"
+                                : "linear-gradient(to right, #1B4332 40%, #ed6c02 40% 70%, #d32f2f 70%)",
+                          zIndex: 0,
+                        }}
+                      />
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          position: "relative",
+                          zIndex: 1,
+                          px: { xs: 0, sm: 2 },
+                        }}
+                      >
+                        {dots.map((dot) => (
                           <Box
+                            key={dot.label}
                             sx={{
-                              width: 32,
-                              height: 32,
-                              borderRadius: "50%",
-                              bgcolor: dot.color,
                               display: "flex",
+                              flexDirection: "column",
                               alignItems: "center",
-                              justifyContent: "center",
+                              gap: 0.75,
+                              maxWidth: 110,
                             }}
                           >
-                            {dot.icon}
+                            <Box
+                              sx={{
+                                width: 32,
+                                height: 32,
+                                borderRadius: "50%",
+                                bgcolor: dot.color,
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                              }}
+                            >
+                              {dot.icon}
+                            </Box>
+                            <Typography
+                              variant="caption"
+                              fontWeight={700}
+                              color={dot.labelColor}
+                              textAlign="center"
+                            >
+                              {dot.label}
+                            </Typography>
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                              textAlign="center"
+                              sx={{ fontSize: 10, whiteSpace: "pre-line" }}
+                            >
+                              {dot.sub}
+                            </Typography>
                           </Box>
-                          <Typography
-                            variant="caption"
-                            fontWeight={700}
-                            color={dot.labelColor}
-                            textAlign="center"
-                          >
-                            {dot.label}
-                          </Typography>
-                          <Typography
-                            variant="caption"
-                            color="text.secondary"
-                            textAlign="center"
-                            sx={{ fontSize: 10, whiteSpace: "pre-line" }}
-                          >
-                            {dot.sub}
-                          </Typography>
-                        </Box>
-                      ))}
+                        ))}
+                      </Box>
                     </Box>
-                  </Box>
+                  )}
 
                   <Divider sx={{ mb: 1.5 }} />
 
-                  {/* House rules button */}
-                  {houseRules.length > 0 && (
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      onClick={() => setHouseRulesOpen(true)}
-                      sx={{
-                        mr: 1.5,
-                        mb: 1.5,
-                        borderRadius: 2,
-                        fontWeight: 600,
-                      }}
-                    >
-                      House Rules & Policy
-                    </Button>
-                  )}
-
                   <Typography
                     variant="caption"
-                    color="text.secondary"
                     sx={{ display: "block", mb: 0.5 }}
                   >
                     • Check-in:{" "}
-                    <strong>{property?.checkin_time ?? "2:00 PM"}</strong> ·
-                    Check-out:{" "}
+                    <span className="font-bold">
+                      {property?.checkin_time ?? "2:00 PM"}
+                    </span>
+                    • Check-out:{" "}
                     <strong>{property?.checkout_time ?? "11:00 AM"}</strong>
                   </Typography>
                   <Typography
                     variant="caption"
-                    color="text.secondary"
                     sx={{ display: "block", mb: 0.5 }}
                   >
                     • Cancellations 21+ days before check-in: 100% refund
                   </Typography>
                   <Typography
                     variant="caption"
-                    color="text.secondary"
                     sx={{ display: "block", mb: 0.5 }}
                   >
-                    • Cancellations 14–21 days before check-in: 50% refund
+                    • Cancellations 14-21 days before check-in: 50% refund
                   </Typography>
                   <Typography
                     variant="caption"
-                    color="text.secondary"
                     sx={{ display: "block", mb: 0.5 }}
                   >
                     • Cancellations within 14 days of check-in: No refund · No
@@ -959,19 +956,27 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                   </Typography>
                   <Typography
                     variant="caption"
-                    color="text.secondary"
                     sx={{ display: "block", mb: 0.5 }}
                   >
                     • Early check-in and late check-out subject to availability
                     at additional charge.
                   </Typography>
-                  <Typography
-                    variant="caption"
-                    color="text.secondary"
-                    sx={{ display: "block" }}
-                  >
+                  <Typography variant="caption" sx={{ display: "block" }}>
                     • No Partial Payments are eligible for refund.
                   </Typography>
+
+                  {/* House rules button */}
+                  {houseRules.length > 0 && (
+                    <div className="mt-2">
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={() => setHouseRulesOpen(true)}
+                      >
+                        House Rules & Policy
+                      </Button>
+                    </div>
+                  )}
                 </Paper>
               );
             })()}
@@ -983,7 +988,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
               maxWidth="sm"
               fullWidth
               slotProps={{
-                paper: { sx: { borderRadius: 2, backgroundImage: "none" } },
+                paper: { sx: { borderRadius: 0.4, backgroundImage: "none" } },
               }}
             >
               <DialogTitle sx={{ pb: 1 }}>
@@ -1001,7 +1006,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                     size="small"
                     onClick={() => setHouseRulesOpen(false)}
                   >
-                    <CloseOutlined fontSize="small" />
+                    <CloseIcon fontSize="small" />
                   </IconButton>
                 </Box>
               </DialogTitle>
@@ -1020,10 +1025,9 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                     <Typography
                       component="li"
                       variant="body2"
-                      color="text.secondary"
                       key={rule.rule_id}
                     >
-                      {rule.description}
+                      • {rule.description}
                     </Typography>
                   ))}
                 </Box>
@@ -1036,7 +1040,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
               sx={{
                 mb: 2,
                 p: 2,
-                borderRadius: 2,
+                borderRadius: 0.2,
                 border: "1px solid",
                 borderColor: "divider",
                 display: "flex",
@@ -1046,8 +1050,8 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                 gap: 1.5,
               }}
             >
-              <Typography variant="body2" fontWeight={600}>
-                Any issue to complete your booking?
+              <Typography fontWeight={600}>
+                Facing any issue while completing your booking?
               </Typography>
               <Button
                 variant="outlined"
@@ -1061,9 +1065,6 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                 }
                 sx={{
                   borderRadius: 2,
-                  fontWeight: 600,
-                  flexShrink: 0,
-                  alignSelf: { xs: "stretch", sm: "auto" },
                 }}
               >
                 Chat with us
@@ -1082,7 +1083,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
             <Paper
               elevation={0}
               sx={{
-                borderRadius: 2,
+                borderRadius: 0.2,
                 border: "1px solid",
                 borderColor: "divider",
                 overflow: "hidden",
@@ -1091,12 +1092,8 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
               {/* Price summary */}
               <Box sx={{ p: 2.5, bgcolor: "action.hover" }}>
                 <Typography
-                  variant="caption"
-                  color="text.secondary"
                   fontWeight={600}
                   sx={{
-                    textTransform: "uppercase",
-                    letterSpacing: 0.8,
                     display: "block",
                     mb: 1.5,
                   }}
@@ -1108,7 +1105,6 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                   <Box
                     sx={{ display: "flex", flexDirection: "column", gap: 0.75 }}
                   >
-                    {/* Summary rows — backend already multiplies by rooms */}
                     <PriceRow
                       label="Stay charges + Property charges"
                       amount={quote.stay_charges + quote.commission_amount}
@@ -1134,26 +1130,18 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
 
                     {/* Breakdown toggle */}
                     <Button
+                      variant="text"
                       size="small"
                       endIcon={
-                        <ExpandMoreOutlined
-                          sx={{
-                            fontSize: 16,
-                            transition: "transform 0.2s",
-                            transform: breakdownOpen
-                              ? "rotate(180deg)"
-                              : "none",
-                          }}
+                        <ArrowDownIcon
+                          className={`text-[16px] transition-transform duration-200 ${
+                            breakdownOpen ? "rotate-180" : "rotate-0"
+                          }`}
                         />
                       }
                       onClick={() => setBreakdownOpen((v) => !v)}
                       sx={{
-                        mt: 0.5,
-                        px: 0,
                         color: "text.secondary",
-                        fontSize: 12,
-                        textTransform: "none",
-                        minWidth: "auto",
                       }}
                     >
                       {breakdownOpen ? "Hide" : "View"} price breakdown
@@ -1429,7 +1417,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                           />
                         }
                         sx={{
-                          borderRadius: 2,
+                          borderRadius: 0.2,
                           fontWeight: 700,
                           py: 1.25,
                           bgcolor: "background.paper",
@@ -1454,15 +1442,9 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                         paying ? (
                           <CircularProgress size={18} color="inherit" />
                         ) : (
-                          <LockOutlined />
+                          <LockIcon />
                         )
                       }
-                      sx={{
-                        borderRadius: 2,
-                        fontWeight: 700,
-                        py: 1.5,
-                        mt: 0.5,
-                      }}
                     >
                       {paying
                         ? "Processing..."

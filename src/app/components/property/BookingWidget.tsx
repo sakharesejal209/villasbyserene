@@ -17,12 +17,14 @@ import {
   useTheme,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
+
 import {
-  AddOutlined,
-  PeopleAltOutlined,
-  RemoveOutlined,
-  WhatsApp,
-} from "@mui/icons-material";
+  IoAdd as AddIcon,
+  IoPeopleOutline as PeopleIcon,
+  IoRemove as RemoveIcon,
+  IoLogoWhatsapp as WhatsApp,
+} from "react-icons/io5";
+
 import { PiConfetti } from "react-icons/pi";
 import { propertiesService, calendarService } from "@/app/@services/";
 import { useRouter } from "next/navigation";
@@ -129,7 +131,7 @@ const GuestRow: FC<{
           height: 28,
         }}
       >
-        <RemoveOutlined sx={{ fontSize: 14 }} />
+        <RemoveIcon fontSize={14} />
       </IconButton>
       <Typography fontWeight={700} sx={{ minWidth: 20, textAlign: "center" }}>
         {value}
@@ -149,7 +151,7 @@ const GuestRow: FC<{
           "&:hover": { bgcolor: value < max ? "primary.dark" : "transparent" },
         }}
       >
-        <AddOutlined sx={{ fontSize: 14 }} />
+        <AddIcon fontSize={14} />
       </IconButton>
     </Box>
   </Box>
@@ -316,6 +318,12 @@ const BookingWidget: FC<BookingWidgetProps> = ({
     [parsedBlockedRanges],
   );
 
+  const isSelectedUnitSoldOut =
+    group?.available_count === 0 ||
+    (!!checkIn &&
+      !!checkOut &&
+      (isDateBlocked(checkIn) || isDateBlocked(checkOut)));
+
   const handleSelectUnit = (idx: number) => {
     setSelectedIdx(idx);
     setQuote(null);
@@ -447,7 +455,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                       {g.available_count === 0
                         ? "Sold out"
                         : datesBlocked
-                          ? "Unavailable for selected dates" // ← new message
+                          ? "Unavailable for selected dates"
                           : `${g.available_count} available`}
                     </Typography>
                     {selected && rateLabel?.type === "seasonal" && (
@@ -588,8 +596,10 @@ const BookingWidget: FC<BookingWidgetProps> = ({
               readOnly: true,
               style: { cursor: "pointer" },
               startAdornment: (
-                <PeopleAltOutlined
-                  sx={{ mr: 0.5, color: "text.secondary", fontSize: 16 }}
+                <PeopleIcon
+                  fontSize={16}
+                  color="text.secondary"
+                  className={`mr-0.5 text-[${theme.palette.text.secondary}]`}
                 />
               ),
             },
@@ -702,7 +712,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                   height: 28,
                 }}
               >
-                <RemoveOutlined sx={{ fontSize: 14 }} />
+                <RemoveIcon fontSize={14} />
               </IconButton>
               <Typography
                 fontWeight={700}
@@ -730,7 +740,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                   },
                 }}
               >
-                <AddOutlined sx={{ fontSize: 14 }} />
+                <AddIcon fontSize={14} />
               </IconButton>
             </Box>
           </Box>
@@ -891,11 +901,15 @@ const BookingWidget: FC<BookingWidgetProps> = ({
             fullWidth
             size="large"
             onClick={handleProceedToBook}
-            disabled={!quote || nights < 1 || quoteLoading}
+            disabled={
+              !quote || nights < 1 || quoteLoading || isSelectedUnitSoldOut
+            }
             sx={{ borderRadius: 0.2, fontWeight: 700, py: 1.25 }}
           >
             {quoteLoading ? (
               <CircularProgress size={20} color="inherit" />
+            ) : isSelectedUnitSoldOut ? (
+              "Unavailable for Selected Dates"
             ) : nights > 0 ? (
               "Proceed to Book"
             ) : (
