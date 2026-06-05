@@ -22,6 +22,7 @@ import {
   Tabs,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 
 import { PiUserCircleLight as AccountCircleOutlined } from "react-icons/pi";
@@ -32,6 +33,7 @@ import {
   IoLogOutOutline as LogoutOutlined,
   IoCheckmarkCircleOutline as CheckCircleIcon,
   IoHomeOutline as LockOutlined,
+  IoHomeOutline as HomeIcon,
 } from "react-icons/io5";
 
 import { useAuth } from "@/hooks/useAuth";
@@ -225,6 +227,7 @@ const ProfilePage: FC = () => {
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [logoutLoading, setLogoutLoading] = useState(false);
+  const theme = useTheme();
 
   const {
     control,
@@ -376,13 +379,13 @@ const ProfilePage: FC = () => {
         >
           <Tab
             label="My Trips"
-            icon={<NightShelterOutlined sx={{ fontSize: 18 }} />}
+            icon={<NightShelterOutlined fontSize={18} />}
             iconPosition="start"
             sx={{ fontWeight: 600, minHeight: 48 }}
           />
           <Tab
             label="Account"
-            icon={<AccountCircleOutlined sx={{ fontSize: 18 }} />}
+            icon={<AccountCircleOutlined fontSize={18} />}
             iconPosition="start"
             sx={{ fontWeight: 600, minHeight: 48 }}
           />
@@ -410,8 +413,10 @@ const ProfilePage: FC = () => {
               <Alert severity="error">{tripsError}</Alert>
             ) : bookings.length === 0 ? (
               <Box sx={{ textAlign: "center", py: 6 }}>
-                <HouseOutlined
-                  sx={{ fontSize: 48, color: "text.disabled", mb: 1 }}
+                <HomeIcon
+                  fontSize={48}
+                  color={theme.palette.text.disabled}
+                  className="mb-1"
                 />
                 <Typography variant="h6" color="text.secondary">
                   No trips yet

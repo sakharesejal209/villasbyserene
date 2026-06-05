@@ -25,9 +25,13 @@ import {
   Tabs,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
 // import { FileDownloadOutlined, SearchOutlined } from "@mui/icons-material";
-import { IoDownloadOutline as FileDownload, IoSearchOutline  as SearchIcon } from "react-icons/io5";
+import {
+  IoDownloadOutline as FileDownload,
+  IoSearchOutline as SearchIcon,
+} from "react-icons/io5";
 
 import { AdminBookingDTO } from "@/app/@types";
 import adminService from "@/app/@services/admin/admin-service";
@@ -51,6 +55,7 @@ export default function AdminBookingsPage() {
   const [tab, setTab] = useState(0);
   const [search, setSearch] = useState("");
   const [propFilter, setPropFilter] = useState("ALL");
+  const theme = useTheme();
 
   useEffect(() => {
     adminService
@@ -175,7 +180,8 @@ export default function AdminBookingsPage() {
               startAdornment: (
                 <InputAdornment position="start">
                   <SearchIcon
-                    sx={{ fontSize: 18, color: "text.secondary" }}
+                    fontSize={18}
+                    color={theme.palette.text.secondary}
                   />
                 </InputAdornment>
               ),

@@ -672,7 +672,7 @@ const AdminCalendarPage = () => {
                         color="error"
                         onClick={() => b.id && handleDeleteBlock(b.id)}
                       >
-                        <DeleteOutlined sx={{ fontSize: 16 }} />
+                        <DeleteOutlined fontSize={16} />
                       </IconButton>
                     </Box>
                   ))}
@@ -847,7 +847,7 @@ const AdminCalendarPage = () => {
                       color="error"
                       onClick={() => handleDeleteSource(s.id)}
                     >
-                      <DeleteOutlined sx={{ fontSize: 16 }} />
+                      <DeleteOutlined fontSize={16} />
                     </IconButton>
                   </Box>
                 ))}

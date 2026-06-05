@@ -1056,7 +1056,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
               <Button
                 variant="outlined"
                 size="small"
-                startIcon={<WhatsApp sx={{ color: "#25D366" }} />}
+                startIcon={<WhatsApp color={"#25D366"} />}
                 onClick={() =>
                   window.open(
                     `https://wa.me/919594377736?text=${encodeURIComponent("Hi! I need help completing my booking.")}`,
