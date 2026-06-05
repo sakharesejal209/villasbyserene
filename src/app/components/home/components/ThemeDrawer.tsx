@@ -1,8 +1,13 @@
-// src/app/home/components/ThemeDrawer.tsx
 "use client";
 
-import { Box, Drawer, IconButton, Typography, useMediaQuery, useTheme } from "@mui/material";
-import { CloseOutlined as CloseIcon } from "@mui/icons-material";
+import {
+  Box,
+  Drawer,
+  IconButton,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import { SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import { useCallback, useState } from "react";
@@ -10,11 +15,14 @@ import { useRouter } from "next/navigation";
 import { Carousel, EmptyState } from "@/application/default";
 import { PropertyListItemDTO } from "@/app/@types";
 import propertyThemeMap from "@/lib/property-theme-config/propertyThemeConfig";
+
 import {
-  PeopleAltOutlined as PeopleIcon,
-  BedOutlined as BedIcon,
-  HouseOutlined as HouseIcon,
-} from "@mui/icons-material";
+  IoCloseOutline as CloseIcon,
+  IoPeopleOutline as PeopleIcon,
+  IoBedOutline as BedIcon,
+  IoHomeOutline as HouseIcon,
+} from "react-icons/io5";
+
 import { getAccomodation } from "../../stays/stays";
 
 interface Props {
@@ -73,9 +81,7 @@ export const ThemeDrawer = ({
       >
         <Typography variant="h6" fontWeight={700}>
           Curated Just for You:{" "}
-          {selectedPropTheme
-            ? propertyThemeMap[selectedPropTheme]?.label
-            : ""}
+          {selectedPropTheme ? propertyThemeMap[selectedPropTheme]?.label : ""}
         </Typography>
         <IconButton onClick={onClose}>
           <CloseIcon />

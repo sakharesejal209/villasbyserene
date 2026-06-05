@@ -59,7 +59,7 @@ const Footer = () => {
                 size="small"
                 sx={{ color: "#fff" }}
               >
-                <Facebook className="w-4 h-4" />
+                <Facebook className="w-5 h-5" />
               </IconButton>
               <IconButton
                 href="https://www.instagram.com/villasbyserene"
@@ -68,7 +68,7 @@ const Footer = () => {
                 size="small"
                 sx={{ color: "#fff" }}
               >
-                <Instagram className="w-4 h-4" />
+                <Instagram className="w-5 h-5" />
               </IconButton>
             </div>
           </div>
@@ -121,15 +121,15 @@ const Footer = () => {
             </Typography>
             <div className="flex flex-col gap-1.5 my-3">
               <div className="flex items-center space-x-3 text-gray-300">
-                <Phone className="w-4 h-4 text-primary" />
+                <Phone className="w-5 h-5 text-primary" />
                 <span>+91 95943 77736</span>
               </div>
               <div className="flex items-center space-x-3 text-gray-300">
-                <Mail className="w-4 h-4 text-primary" />
+                <Mail className="w-5 h-5 text-primary" />
                 <span>villasbyserene@gmail.com</span>
               </div>
               <div className="flex items-start space-x-3 text-gray-300">
-                <MapPin className="w-4 h-4 text-primary mt-1" />
+                <MapPin className="w-5 h-5 text-primary mt-1" />
                 <span>
                   B-104, Yashonarayan CHS., Takka Rd, Panvel
                   <br />
@@ -143,7 +143,7 @@ const Footer = () => {
               onClick={handleWhatsAppContact}
               className="w-full mt-4"
             >
-              <WhatsApp className="mr-2" />
+              <WhatsApp className="mr-2 w-5 h-5" />
               WhatsApp Us
             </Button>
           </div>

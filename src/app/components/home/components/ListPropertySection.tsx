@@ -2,12 +2,12 @@
 "use client";
 
 import { Box, Button, Typography, useTheme } from "@mui/material";
-import {
-  TaskAltOutlined,
-  TrendingUpOutlined,
-  SettingsOutlined,
-  HomeOutlined,
-} from "@mui/icons-material";
+
+
+import { LuCircleCheckBig as CheckCircleIcon } from "react-icons/lu";
+import { IoTrendingUpOutline as LineUpIcon, IoSettingsOutline  as SettingsIcon, IoHomeOutline as HomeIcon } from "react-icons/io5";
+
+
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
@@ -15,15 +15,15 @@ import { FadeInSection } from "../home";
 
 const FEATURES = [
   {
-    icon: TaskAltOutlined,
+    icon: CheckCircleIcon,
     text: "Complete Management: From bookings, payments, and toiletries to property visits and staff management",
   },
   {
-    icon: TrendingUpOutlined,
+    icon: LineUpIcon,
     text: "Revenue Optimization: We suggest trendy upgrades and handle marketing to maximize your property's profitability",
   },
   {
-    icon: SettingsOutlined,
+    icon: SettingsIcon,
     text: "Always Guest-Ready: Your villa stays in perfect condition with our comprehensive maintenance and preparation services",
   },
 ];
@@ -53,7 +53,7 @@ export const ListPropertySection = () => {
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 style={{ objectFit: "cover", objectPosition: "center" }}
-                priority
+                loading="lazy"
               />
             </motion.div>
 
@@ -95,6 +95,7 @@ export const ListPropertySection = () => {
                         color: isDark ? "secondary.main" : "primary.main",
                         mt: 0.25,
                         flexShrink: 0,
+                        fontSize: 20
                       }}
                     >
                       <item.icon />
@@ -112,7 +113,7 @@ export const ListPropertySection = () => {
               <Button
                 variant="contained"
                 size="large"
-                startIcon={<HomeOutlined />}
+                startIcon={<HomeIcon />}
                 onClick={() => router.push("/list")}
               >
                 List Your Home Today

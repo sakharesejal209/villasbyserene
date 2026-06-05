@@ -2,13 +2,15 @@
 
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
+
 import {
-  FavoriteBorderOutlined as Heart,
-  HomeOutlined as Home,
-  PublicOutlined as Globe,
-  GroupOutlined as Users,
-  LocationOnOutlined as MapPin,
-} from "@mui/icons-material";
+  IoHeartOutline as Heart,
+  IoHomeOutline as Home,
+  IoGlobeOutline as Globe,
+  IoLocationOutline as MapPin,
+} from "react-icons/io5";
+import { MdOutlineGroups as Users } from "react-icons/md";
+
 import Image from "next/image";
 import { Box, Button, Card, Paper, Typography, useTheme } from "@mui/material";
 import { animate, useMotionValue, useTransform, motion } from "motion/react";

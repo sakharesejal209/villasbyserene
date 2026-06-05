@@ -23,15 +23,17 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+
+import { PiUserCircleLight as AccountCircleOutlined } from "react-icons/pi";
+import { MdOutlineNightShelter as NightShelterOutlined } from "react-icons/md";
+
 import {
-  AccountCircleOutlined,
-  CancelOutlined,
-  CheckCircleOutlined,
-  HouseOutlined,
-  LockOutlined,
-  LogoutOutlined,
-  NightShelterOutlined,
-} from "@mui/icons-material";
+  IoCloseCircleOutline as CancelOutlined,
+  IoLogOutOutline as LogoutOutlined,
+  IoCheckmarkCircleOutline as CheckCircleIcon,
+  IoHomeOutline as LockOutlined,
+} from "react-icons/io5";
+
 import { useAuth } from "@/hooks/useAuth";
 import { ProfileFormDTO, UserBookingDTO } from "@/app/@types/user";
 import { bookingService, userSevice } from "@/app/@services";
@@ -46,7 +48,7 @@ const StatusChip: FC<{ status: string }> = ({ status }) => {
     PENDING: { label: "Pending", color: "warning" },
     CANCELLED: { label: "Cancelled", color: "error" },
     FAILED: { label: "Failed", color: "error" },
-    COMPLETED: {label: "Completed", color: "default"}
+    COMPLETED: { label: "Completed", color: "default" },
   };
   const cfg = map[status] ?? { label: status, color: "default" };
   return (
@@ -545,7 +547,7 @@ const ProfilePage: FC = () => {
             </div>
 
             {saveSuccess && (
-              <Alert severity="success" icon={<CheckCircleOutlined />}>
+              <Alert severity="success" icon={<CheckCircleIcon />}>
                 Profile updated successfully
               </Alert>
             )}

@@ -1,14 +1,16 @@
 // src/app/home/components/TrustSection.tsx
-"use client";
+// "use client";
 
 import { useRef } from "react";
 import { alpha, Box, Paper, Typography, useTheme } from "@mui/material";
+
 import {
-  StarBorderRounded as Star,
-  GppGoodOutlined as Shield,
-  QueryBuilderOutlined as Clock,
-  FlashOnOutlined as Flash,
-} from "@mui/icons-material";
+  IoStarOutline as Star,
+  IoShieldCheckmarkOutline as Shield,
+  IoFlashOutline as Flash,
+} from "react-icons/io5";
+import { AiOutlineClockCircle as Clock } from "react-icons/ai";
+
 import { motion, useInView } from "motion/react";
 import { FadeInSection } from "../home";
 
@@ -91,24 +93,22 @@ const TrustCard = ({
             justifyContent: "center",
             mx: "auto",
             mb: 2,
+            fontSize: 24,
             bgcolor: isDark
               ? alpha(theme.palette.secondary.main, 0.1)
               : alpha(theme.palette.primary.main, 0.09),
           }}
         >
-          <Icon
-            sx={{
-              fontSize: 26,
-              color: isDark
-                ? theme.palette.secondary.main
-                : theme.palette.primary.main,
-            }}
-          />
+          <Icon />
         </Box>
         <Typography variant="h6" fontWeight={600} sx={{ mb: 1 }}>
           {title}
         </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ lineHeight: 1.7 }}
+        >
           {description}
         </Typography>
       </Box>

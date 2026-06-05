@@ -19,15 +19,19 @@ import {
   Skeleton,
   TextField,
   Typography,
+  useTheme,
 } from "@mui/material";
+
 import {
-  AddOutlined,
-  DeleteOutlined,
-  DownloadOutlined,
-  PeopleAltOutlined,
-  RemoveOutlined,
-  SearchOutlined,
-} from "@mui/icons-material";
+  IoAddOutline as AddOutlined,
+  IoDownloadOutline as DownloadOutlined,
+  IoPeopleOutline as PeopleAltOutlined,
+  IoRemove as RemoveOutlined,
+  IoSearchOutline as SearchOutlined,
+} from "react-icons/io5";
+
+import { MdDeleteOutline as DeleteOutlined } from "react-icons/md";
+
 import dayjs from "dayjs";
 import { httpService } from "@/app/@services";
 import {
@@ -105,7 +109,7 @@ const GuestRow = ({
           height: 28,
         }}
       >
-        <RemoveOutlined sx={{ fontSize: 14 }} />
+        <RemoveOutlined fontSize={14} />
       </IconButton>
       <Typography fontWeight={700} sx={{ minWidth: 20, textAlign: "center" }}>
         {value}
@@ -125,7 +129,7 @@ const GuestRow = ({
           "&:hover": { bgcolor: value < max ? "primary.dark" : "transparent" },
         }}
       >
-        <AddOutlined sx={{ fontSize: 14 }} />
+        <AddOutlined fontSize={14} />
       </IconButton>
     </Box>
   </Box>
@@ -545,9 +549,6 @@ ${safeNote ? `<div class="note-box"><div class="note-label">Note</div><div class
 </body></html>`;
 };
 
-// ════════════════════════════════════════════════════════════════════
-// MAIN PAGE
-// ════════════════════════════════════════════════════════════════════
 export default function AdminPricingPage() {
   const [properties, setProperties] = useState<AdminPropertyRowDTO[]>([]);
   const [units, setUnits] = useState<AdminUnitDTO[]>([]);
@@ -580,6 +581,7 @@ export default function AdminPricingPage() {
   const printRef = useRef<HTMLIFrameElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [logoBase64, setLogoBase64] = useState("");
+  const theme = useTheme();
 
   // Derived from selected unit
   const selectedUnit = units.find((u) => u.unit_id === form.unitId);
@@ -624,10 +626,9 @@ export default function AdminPricingPage() {
           }),
       )
       .then(setLogoBase64)
-      .catch(() => {}); // silently fail — onerror on img hides it
+      .catch(() => {});
   }, []);
 
-  // Load units when property changes
   useEffect(() => {
     if (!form.propertyId) {
       setUnits([]);
@@ -643,7 +644,6 @@ export default function AdminPricingPage() {
       .finally(() => setLoadingUnits(false));
   }, [form.propertyId]);
 
-  // Reset rooms to 1 when villa selected; fix guest capacity
   useEffect(() => {
     if (!selectedUnit) return;
     setForm((f) => {
@@ -659,7 +659,6 @@ export default function AdminPricingPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [form.unitId]);
 
-  // Keep form in a ref so getQuote never goes stale without being recreated
   const formRef = useRef(form);
   useEffect(() => {
     formRef.current = form;
@@ -691,13 +690,12 @@ export default function AdminPricingPage() {
     } finally {
       setQuoteLoading(false);
     }
-  }, []); // stable — reads from formRef
+  }, []);
 
-  // Stable debounced fetch — only fires if quote already exists (auto-refresh on guest/room change)
   const debouncedFetch = useCallback(() => {
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(getQuote, 500);
-  }, [getQuote]); // getQuote is now stable
+  }, [getQuote]);
 
   const prevParamsRef = useRef({
     adults: 0,
@@ -747,8 +745,6 @@ export default function AdminPricingPage() {
   const removeExtra = (id: string) =>
     setExtras((p) => p.filter((e) => e.id !== id));
 
-  // Pre-build HTML into iframe as soon as quote/extras/customerName change
-  // so Download PDF is instant — no rebuild on click
   const printHtmlRef = useRef<string>("");
   useEffect(() => {
     if (!quote) return;
@@ -784,7 +780,6 @@ export default function AdminPricingPage() {
   const downloadQuote = useCallback(() => {
     const iframe = printRef.current;
     if (!iframe || !printHtmlRef.current) return;
-    // If srcdoc already loaded, print immediately; otherwise wait for onload
     const tryPrint = () => {
       iframe.contentWindow?.focus();
       iframe.contentWindow?.print();
@@ -1032,7 +1027,9 @@ export default function AdminPricingPage() {
                   style: { cursor: "pointer" },
                   startAdornment: (
                     <PeopleAltOutlined
-                      sx={{ mr: 0.5, color: "text.secondary", fontSize: 16 }}
+                      color={theme.palette.secondary.main}
+                      fontSize={16}
+                      className="mr-0.5"
                     />
                   ),
                 },
@@ -1135,7 +1132,7 @@ export default function AdminPricingPage() {
                       height: 28,
                     }}
                   >
-                    <RemoveOutlined sx={{ fontSize: 14 }} />
+                    <RemoveOutlined fontSize={14} />
                   </IconButton>
                   <Typography
                     fontWeight={700}
@@ -1159,7 +1156,7 @@ export default function AdminPricingPage() {
                       "&:hover": { bgcolor: "primary.dark" },
                     }}
                   >
-                    <AddOutlined sx={{ fontSize: 14 }} />
+                    <AddOutlined fontSize={14} />
                   </IconButton>
                 </Box>
               </Box>
@@ -1282,7 +1279,7 @@ export default function AdminPricingPage() {
                 color="error"
                 onClick={() => removeExtra(e.id)}
               >
-                <DeleteOutlined sx={{ fontSize: 16 }} />
+                <DeleteOutlined fontSize={16} />
               </IconButton>
             </Box>
           ))}

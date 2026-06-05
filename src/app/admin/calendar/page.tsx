@@ -24,15 +24,19 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+
 import {
-  AddOutlined,
-  ChevronLeftOutlined,
-  ChevronRightOutlined,
-  DeleteOutlined,
-  LinkOutlined,
-  RefreshOutlined,
-  SyncOutlined,
-} from "@mui/icons-material";
+  IoAddOutline as AddOutlined,
+  IoLinkOutline as LinkOutlined,
+  IoRefresh as RefreshOutlined,
+  IoSync as SyncOutlined,
+} from "react-icons/io5";
+import {
+  HiOutlineChevronLeft as ChevronLeftOutlined,
+  HiOutlineChevronRight as ChevronRightOutlined,
+} from "react-icons/hi";
+import { MdDeleteOutline as DeleteOutlined } from "react-icons/md";
+
 import { calendarService, propertiesService } from "@/app/@services";
 import {
   BlockedRangeDTO,

@@ -10,7 +10,7 @@ import {
   useScrollTrigger,
 } from "@mui/material";
 import { useParams, useSearchParams } from "next/navigation";
-import { TuneOutlined } from "@mui/icons-material";
+import { IoFunnelOutline as TuneOutlined } from "react-icons/io5";
 
 import StaysSearchBox from "@/app/components/stays/staysSearchBox";
 import { usePropertyStore } from "@/context/PropertyContext";
@@ -126,6 +126,7 @@ const StaysClientPage: FC = () => {
               onClick={() => setopenFilters(true)}
               startIcon={<TuneOutlined color="secondary" />}
               className="w-full"
+              color="secondary"
             >
               <Typography
                 color="secondary"

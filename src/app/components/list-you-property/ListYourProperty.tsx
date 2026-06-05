@@ -3,18 +3,22 @@
 import React, { useRef } from "react";
 
 import {
-  SettingsOutlined as Settings,
-  CameraOutlined as Camera,
-  CalendarMonthOutlined as Calendar,
-  FavoriteBorderOutlined as Heart,
-  TrendingUpOutlined as TrendingUp,
-  HomeOutlined as Home,
-  FlagCircleOutlined as Target,
-  ArrowRightAltOutlined as ArrowRight,
-  CheckCircleOutlineOutlined as CheckCircle,
-  PeopleAltOutlined as Users,
-  PhoneOutlined as Phone,
-} from "@mui/icons-material";
+  IoSettingsOutline as Settings,
+  IoCameraOutline as Camera,
+  IoCalendarOutline as Calendar,
+  IoHeartOutline as Heart,
+  IoTrendingUpOutline as TrendingUp,
+  IoHomeOutline as Home,
+  IoArrowForwardOutline as ArrowRight,
+  IoCheckmarkCircleOutline as CheckCircle,
+} from "react-icons/io5";
+
+import { PiTargetLight as Target } from "react-icons/pi";
+import {
+  MdOutlinePhone as Phone,
+  MdOutlineGroups as Users,
+} from "react-icons/md";
+
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 

@@ -21,7 +21,9 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import { CloseOutlined } from "@mui/icons-material";
+
+import { IoClose as CloseOutlined } from "react-icons/io5";
+
 import { locations } from "../home/searchBox";
 import allAmenities from "./data.json";
 import { StayFilters } from "./StaysMainContainer";

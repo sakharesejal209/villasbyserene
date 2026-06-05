@@ -1,5 +1,5 @@
 // src/app/home/components/TestimonialsSection.tsx
-"use client";
+// "use client";
 
 import { Typography } from "@mui/material";
 import { SwiperSlide } from "swiper/react";
@@ -18,7 +18,7 @@ export const TestimonialsSection = () => (
             What Our Guests Say
           </Typography>
           <Typography color="text.secondary" sx={{ maxWidth: 500, mx: "auto" }}>
-            Hospitality that goes beyond expectations — through the words of our
+            Hospitality that goes beyond expectations - through the words of our
             delighted guests.
           </Typography>
         </div>
@@ -63,7 +63,7 @@ export const TestimonialsSection = () => (
                 <Typography variant="caption" sx={{ mt: 1, opacity: 0.65 }}>
                   {t.name}
                 </Typography>
-                <Typography variant="body2" fontWeight={600}>
+                <Typography variant="h6" >
                   {t.property}
                 </Typography>
               </motion.div>

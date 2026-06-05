@@ -26,7 +26,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { FileDownloadOutlined, SearchOutlined } from "@mui/icons-material";
+// import { FileDownloadOutlined, SearchOutlined } from "@mui/icons-material";
+import { IoDownloadOutline as FileDownload, IoSearchOutline  as SearchIcon } from "react-icons/io5";
+
 import { AdminBookingDTO } from "@/app/@types";
 import adminService from "@/app/@services/admin/admin-service";
 
@@ -151,7 +153,7 @@ export default function AdminBookingsPage() {
         </Box>
         <Button
           variant="outlined"
-          startIcon={<FileDownloadOutlined />}
+          startIcon={<FileDownload />}
           onClick={exportCSV}
           size="small"
           sx={{ borderRadius: 0.2 }}
@@ -172,7 +174,7 @@ export default function AdminBookingsPage() {
             input: {
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchOutlined
+                  <SearchIcon
                     sx={{ fontSize: 18, color: "text.secondary" }}
                   />
                 </InputAdornment>

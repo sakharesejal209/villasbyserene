@@ -130,9 +130,9 @@ const Navbar = () => {
                 <Link href="https://www.instagram.com/villasbyserene/">
                   <Typography
                     color="textPrimary"
-                    className="hover:underline cursor-pointer flex gap-1"
+                    className="hover:underline cursor-pointer flex items-center gap-1"
                   >
-                    <Instagram />
+                    <Instagram fontSize={18} />
                     <span>villasbyserene</span>
                   </Typography>
                 </Link>
@@ -154,9 +154,13 @@ const Navbar = () => {
           <div className="flex md:hidden justify-end items-center">
             <IconButton
               onClick={toggleTheme}
-              sx={{ color: trigger ? "text.primary" : "#ffffff" }}
+              // sx={{ color: trigger ? "text.primary" : "#ffffff" }}
             >
-              {mode === "light" ? <MoonIcon /> : <SunIcon />}
+              {mode === "light" ? (
+                <MoonIcon color={trigger ? "action" : "inherit"} />
+              ) : (
+                <SunIcon color={trigger ? "action" : "inherit"} />
+              )}
             </IconButton>
 
             <IconButton
@@ -165,7 +169,6 @@ const Navbar = () => {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              sx={{ color: trigger ? "text.primary" : "#ffffff" }}
             >
               <MenuIcon />
             </IconButton>
@@ -189,8 +192,8 @@ const Navbar = () => {
               </MenuItem>
               <MenuItem onClick={handleCloseNavMenu}>
                 <Link href="https://www.instagram.com/villasbyserene/">
-                  <Typography className="hover:underline cursor-pointer flex gap-1">
-                    <Instagram />
+                  <Typography className="hover:underline cursor-pointer flex items-center gap-1">
+                    <Instagram fontSize={18} />
                     <span>villasbyserene</span>
                   </Typography>
                 </Link>

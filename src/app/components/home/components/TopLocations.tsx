@@ -1,5 +1,5 @@
 // src/app/home/components/TopLocations.tsx
-"use client";
+// "use client";
 
 import { Button, Typography, useTheme } from "@mui/material";
 import { SwiperSlide } from "swiper/react";

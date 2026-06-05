@@ -1,8 +1,9 @@
 // src/app/home/components/CtaSection.tsx
-"use client";
+// "use client";
 
 import { Box, Button, Typography } from "@mui/material";
-import { WhatsApp, ArrowForwardOutlined } from "@mui/icons-material";
+import { IoLogoWhatsapp as WhatsApp, IoArrowForward  as ArrowForwardIcon } from "react-icons/io5";
+
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { FadeInSection } from "../home";
@@ -18,7 +19,7 @@ export const CtaSection = ({ onWhatsApp }: Props) => {
     <section style={{ padding: 0 }}>
       <Box
         sx={{
-          py: { xs: 8, md: 12 },
+          py: { xs: 8, md: 10 },
           px: 2,
           background: "linear-gradient(135deg, #044231 0%, #066048 100%)",
           textAlign: "center",
@@ -117,7 +118,7 @@ export const CtaSection = ({ onWhatsApp }: Props) => {
               <Button
                 variant="contained"
                 size="large"
-                startIcon={<ArrowForwardOutlined />}
+                startIcon={<ArrowForwardIcon />}
                 onClick={() => router.push("/stays/all")}
                 sx={{
                   bgcolor: "#fff",

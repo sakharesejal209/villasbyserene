@@ -4,19 +4,15 @@
 "use client";
 
 import { useCallback } from "react";
+import { Box, Button, Chip, Typography, useTheme } from "@mui/material";
+
 import {
-  Box,
-  Button,
-  Chip,
-  Typography,
-  useTheme,
-} from "@mui/material";
-import {
-  BedOutlined,
-  PeopleAltOutlined,
-  ArrowForwardOutlined,
-  PoolOutlined,
-} from "@mui/icons-material";
+  IoBedOutline as BedIcon,
+  IoPeopleOutline as PeopleIcon,
+  IoArrowForwardOutline as ArrowForwardIcon,
+} from "react-icons/io5";
+import { PiSwimmingPoolLight as PoolIcon } from "react-icons/pi";
+
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
@@ -69,7 +65,7 @@ export const FeaturedVillas = () => {
             </Box>
             <Button
               variant="outlined"
-              endIcon={<ArrowForwardOutlined />}
+              endIcon={<ArrowForwardIcon />}
               onClick={() => router.push("/stays/all")}
               sx={{ flexShrink: 0 }}
             >
@@ -97,25 +93,15 @@ export const FeaturedVillas = () => {
             const weekdayPrice = property.starting_price ?? null;
 
             return (
-              <motion.div
-                key={property.property_id}
-                initial={{ opacity: 0, y: 32 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{
-                  duration: 0.55,
-                  ease: [0.22, 1, 0.36, 1],
-                  delay: idx * 0.08,
-                }}
-                whileHover={{ y: -6 }}
-                style={{ cursor: "pointer" }}
+              <button
+              key={property.property_id}
                 onClick={() =>
                   handleNavigate(property.name, property.property_id)
                 }
               >
                 <Box
                   sx={{
-                    borderRadius: 2,
+                    borderRadius: 0.2,
                     border: "1px solid",
                     borderColor: "divider",
                     overflow: "hidden",
@@ -160,8 +146,9 @@ export const FeaturedVillas = () => {
                           justifyContent: "center",
                         }}
                       >
-                        <PoolOutlined
-                          sx={{ fontSize: 40, color: "text.disabled" }}
+                        <PoolIcon
+                          fontSize={14}
+                          color={theme.palette.text.disabled}
                         />
                       </Box>
                     )}
@@ -173,7 +160,7 @@ export const FeaturedVillas = () => {
                           position: "absolute",
                           top: 10,
                           left: 10,
-                          bgcolor: "primary.main",
+                          bgcolor: "primary.light",
                           color: "#fff",
                           fontSize: 10,
                           fontWeight: 700,
@@ -210,20 +197,18 @@ export const FeaturedVillas = () => {
                     </Typography>
 
                     {/* Chips */}
-                    <Box
-                      sx={{ display: "flex", gap: 0.75, flexWrap: "wrap" }}
-                    >
-                      {property.max_capacity && (
+                    <Box sx={{ display: "flex", gap: 0.75, flexWrap: "wrap" }}>
+                      {!!property.max_capacity && (
                         <Chip
-                          icon={<PeopleAltOutlined sx={{ fontSize: 12 }} />}
+                          icon={<PeopleIcon fontSize={10} />}
                           label={`${property.max_capacity} guests`}
                           size="small"
                           sx={{ fontSize: 11, height: 22 }}
                         />
                       )}
-                      {property.bedroom_count && (
+                      {!!property.bedroom_count && (
                         <Chip
-                          icon={<BedOutlined sx={{ fontSize: 12 }} />}
+                          icon={<BedIcon fontSize={10} />}
                           label={`${property.bedroom_count} BHK`}
                           size="small"
                           sx={{ fontSize: 11, height: 22 }}
@@ -279,12 +264,6 @@ export const FeaturedVillas = () => {
                       <Button
                         variant="contained"
                         size="small"
-                        sx={{
-                          borderRadius: 1,
-                          fontWeight: 700,
-                          fontSize: 12,
-                          px: 1.5,
-                        }}
                         onClick={(e) => {
                           e.stopPropagation();
                           handleNavigate(property.name, property.property_id);
@@ -297,7 +276,7 @@ export const FeaturedVillas = () => {
                     </Box>
                   </Box>
                 </Box>
-              </motion.div>
+              </button>
             );
           })}
         </Box>

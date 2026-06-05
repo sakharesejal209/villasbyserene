@@ -6,11 +6,11 @@ class AdminService {
     return httpService<AdminBookingDTO[]>().get("/admin/bookings");
   };
 
-  bulkDeleteFromPool = (deleteSelections) => {
-    return httpService().post("/admin/properties/images/pool/bulk-delete", {
-      imageIds: Array.from(deleteSelections),
-    });
-  };
+  // bulkDeleteFromPool = (deleteSelections) => {
+  //   return httpService().post("/admin/properties/images/pool/bulk-delete", {
+  //     imageIds: Array.from(deleteSelections),
+  //   });
+  // };
 }
 
 const adminService = new AdminService();
