@@ -218,42 +218,44 @@ const Property: FC<PropertyPropType> = ({
             />
 
             <div className="hidden md:grid grid-cols-4 items-center gap-4 my-6">
-              <Card className="p-2 rounded-sm!">
-                <HouseIcon />{" "}
+              <Card className="p-2 rounded-sm! flex items-center gap-2">
+                <HouseIcon fontSize={18} />{" "}
                 {getAccomodation(propertyDetails.accommodation_type)}
               </Card>
-              <Card className="p-2 rounded-sm!">
-                <PeopleIcon /> {propertyDetails.max_capacity} Guests
+              <Card className="p-2 rounded-sm! flex items-center gap-2">
+                <PeopleIcon fontSize={18} /> {propertyDetails.max_capacity}{" "}
+                Guests
               </Card>
-              <Card className="p-2 rounded-sm!">
-                <BedIcon /> {propertyDetails.bedroom_count} Bedrooms
+              <Card className="p-2 rounded-sm! flex items-center gap-2">
+                <BedIcon fontSize={18} /> {propertyDetails.bedroom_count}{" "}
+                Bedrooms
               </Card>
               {propertyDetails.meals_available && (
-                <Card className="p-2 rounded-sm!">
-                  <MealsIcon /> Meals Available
+                <Card className="p-2 rounded-sm! flex items-center gap-2">
+                  <MealsIcon fontSize={18} /> Meals Available
                 </Card>
               )}
             </div>
 
             <div className="grid max-sm:grid-cols-1 min-[370px]:grid-cols-2 max-md:grid-cols-2 md:hidden items-start gap-3">
-              <Card className="p-2 rounded-sm!">
+              <Card className="p-2 rounded-sm! flex items-center gap-2">
                 <HouseIcon />{" "}
                 {getAccomodation(propertyDetails.accommodation_type)}
               </Card>
-              <Card className="p-2 rounded-sm!">
+              <Card className="p-2 rounded-sm! flex items-center gap-2">
                 <PeopleIcon /> {propertyDetails.max_capacity} Guests
               </Card>
-              <Card className="p-2 rounded-sm!">
+              <Card className="p-2 rounded-sm! flex items-center gap-2">
                 <BedIcon /> {propertyDetails.bedroom_count} Bedrooms
               </Card>
               {propertyDetails.meals_available && (
-                <Card className="p-2 rounded-sm!">
+                <Card className="p-2 rounded-sm! flex items-center gap-2">
                   <MealsIcon /> Meals Available
                 </Card>
               )}
             </div>
 
-            <div className="my-6">
+            <div className="my-8">
               <Typography variant="h5" className="font-bold!">
                 Accommodation
               </Typography>
@@ -313,14 +315,14 @@ const Property: FC<PropertyPropType> = ({
                       />
                       <div className="grid max-sm:grid-cols-1 min-[370px]:grid-cols-2 max-md:grid-cols-3 items-center gap-3 mt-3">
                         {group.display_unit.no_of_bedrooms !== null && (
-                          <Typography>
+                          <Typography className="flex items-center gap-1">
                             <BedIcon /> {group.display_unit.no_of_bedrooms}{" "}
                             bedroom
                             {group.display_unit.no_of_bedrooms === 1 ? "" : "s"}
                           </Typography>
                         )}
                         {group.display_unit.no_of_restrooms !== null && (
-                          <Typography>
+                          <Typography className="flex items-center gap-1">
                             <ShowerIcon /> {group.display_unit.no_of_restrooms}{" "}
                             bathroom
                             {group.display_unit.no_of_restrooms === 1
@@ -329,7 +331,7 @@ const Property: FC<PropertyPropType> = ({
                           </Typography>
                         )}
                         {group.display_unit.is_pool_available && (
-                          <Typography>
+                          <Typography className="flex items-center gap-1">
                             <PoolIcon /> Swimming Pool
                           </Typography>
                         )}
@@ -340,7 +342,7 @@ const Property: FC<PropertyPropType> = ({
               ))}
             </div>
 
-            <div className="my-6">
+            <div className="my-8">
               <Accordion defaultExpanded className="mb-3">
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                   <Typography
@@ -368,7 +370,7 @@ const Property: FC<PropertyPropType> = ({
                             alignItems="center"
                             gap={1}
                           >
-                            {Icon && <Icon size={20} />}
+                            {Icon && <Icon size={18} />}
                             <Typography>{item.name}</Typography>
                           </Box>
                         );
@@ -593,8 +595,9 @@ const Property: FC<PropertyPropType> = ({
                     color={
                       theme.palette.mode === "light" ? "primary" : "secondary"
                     }
+                    endIcon={<ArrowRight />}
                   >
-                    Get Directions <ArrowRight />
+                    Get Directions
                   </Button>
                 )}
               </div>

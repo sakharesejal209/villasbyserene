@@ -122,13 +122,13 @@ export const AmenitiesTab = ({ detail, propertyId, onSaved }: Props) => {
           <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 1 }}>
             {label}
           </Typography>
-          <Paper
-            elevation={0}
+          <Box
             sx={{
               p: 2,
               border: "1px solid",
               borderColor: "divider",
               borderRadius: 0.2,
+              maxWidth: '74%'
             }}
           >
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
@@ -150,7 +150,7 @@ export const AmenitiesTab = ({ detail, propertyId, onSaved }: Props) => {
                 );
               })}
             </Box>
-          </Paper>
+          </Box>
         </Box>
       ))}
 

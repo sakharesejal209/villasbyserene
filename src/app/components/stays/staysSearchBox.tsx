@@ -53,7 +53,6 @@ const StaysSearchBox: FC<StaysSearchBoxProps> = ({
 }) => {
   const router = useRouter();
   const urlParams = useParams<{ slug: string }>();
-  const searchParams = useSearchParams();
   const isDesktop = useMediaQuery("(min-width:768px)");
   const slug = decodeURIComponent(urlParams.slug || "all");
 
@@ -139,8 +138,8 @@ const StaysSearchBox: FC<StaysSearchBoxProps> = ({
     (filters.checkIn ? dayjs(filters.checkIn) : dayjs());
 
   return (
-    <div className="block md:col-span-3 sticky top-0 md:h-fit px-4">
-      <Card className="p-3">
+    <div className="block md:col-span-3 sticky top-0 md:h-fit p-2">
+      <Card className="p-2">
         {/* Header */}
         <div className="md:hidden flex justify-between items-center">
           <Typography variant="h5">Filters</Typography>
@@ -152,7 +151,7 @@ const StaysSearchBox: FC<StaysSearchBoxProps> = ({
           Filters
         </Typography>
 
-        <div className="w-full h-full md:min-h-screen flex flex-col p-2 gap-4 mt-4">
+        <div className="w-full h-full md:min-h-screen flex flex-col p-2 gap-4 mt-2">
           <div className="w-full">
             <Typography variant="subtitle2">Location</Typography>
             <Controller

@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useState, type ReactNode } from "react";
+import { FC, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import dayjs from "dayjs";
@@ -36,7 +36,7 @@ import {
   IoArrowBackOutline as ArrowBack,
   IoCheckmarkCircleOutline as CheckCircleIcon,
   IoClose as CloseIcon,
-  IoArrowDownOutline as ArrowDownIcon,
+  IoChevronDownOutline as ArrowDownIcon,
   IoLockClosedOutline as LockIcon,
   IoWarningOutline as WarningIcon,
   IoLogoWhatsapp as WhatsApp,
@@ -52,6 +52,7 @@ import {
   propertiesService,
 } from "@/app/@services";
 import { decryptCheckout } from "@/lib/crypto/checkout-crypto";
+import Link from "next/link";
 
 // ── Types ─────────────────────────────────────────────────────────
 
@@ -318,7 +319,7 @@ const BookingPage: FC = () => {
         order_id: booking.orderId,
         name: "Villas by Serene",
         description: `${property?.name ?? ""} — ${unitName}`,
-        image: "/logo.png",
+        image: "https://www.villasbyserene.com/logo.png",
         prefill: {
           name: formData.name,
           email: formData.email,
@@ -972,6 +973,24 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                         variant="outlined"
                         size="small"
                         onClick={() => setHouseRulesOpen(true)}
+                        sx={{
+                          position: "relative",
+                          mt: 2,
+                          "&::after": {
+                            content: '""',
+                            position: "absolute",
+                            inset: -5,
+                            borderRadius: "8px",
+                            border: "1.5px solid #044231",
+                            opacity: 0,
+                            animation: "pulseRing 1s ease-out infinite",
+                          },
+                          "@keyframes pulseRing": {
+                            "0%": { transform: "scale(1)", opacity: 0.8 },
+                            "70%": { transform: "scale(1.06)", opacity: 0 },
+                            "100%": { transform: "scale(1.08)", opacity: 0 },
+                          },
+                        }}
                       >
                         House Rules & Policy
                       </Button>
@@ -1134,7 +1153,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                       size="small"
                       endIcon={
                         <ArrowDownIcon
-                          className={`text-[16px] transition-transform duration-200 ${
+                          className={` transition-transform duration-200 ${
                             breakdownOpen ? "rotate-180" : "rotate-0"
                           }`}
                         />
@@ -1458,6 +1477,16 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                     sx={{ textAlign: "center" }}
                   >
                     100% secure · powered by Razorpay
+                  </Typography>
+                  <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    sx={{ textAlign: "center" }}
+                  >
+                    By paying you agree to our{" "}
+                    <Link href="/terms" target="_blank">
+                      Terms & Conditions
+                    </Link>
                   </Typography>
                 </Box>
               </Box>

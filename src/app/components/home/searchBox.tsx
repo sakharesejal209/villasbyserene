@@ -80,6 +80,7 @@ const SearchBox = () => {
                 options={locations}
                 value={location}
                 onChange={(e, val) => setLocation(val || "")}
+                disableClearable
                 renderInput={(params) => (
                   <TextField
                     {...params}

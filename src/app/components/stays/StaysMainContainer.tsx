@@ -8,6 +8,7 @@ import {
   Slide,
   Typography,
   useScrollTrigger,
+  useTheme,
 } from "@mui/material";
 import { useParams, useSearchParams } from "next/navigation";
 import { IoFunnelOutline as TuneOutlined } from "react-icons/io5";
@@ -36,6 +37,7 @@ const StaysClientPage: FC = () => {
   const params = useParams<{ slug: string }>();
   const searchParams = useSearchParams();
   const trigger = useScrollTrigger();
+  const theme = useTheme();
   const slug = decodeURIComponent(params.slug || "all");
 
   const [openFilters, setopenFilters] = useState(false);
@@ -124,12 +126,12 @@ const StaysClientPage: FC = () => {
             <Button
               size="small"
               onClick={() => setopenFilters(true)}
-              startIcon={<TuneOutlined color="secondary" />}
+              startIcon={<TuneOutlined />}
               className="w-full"
-              color="secondary"
+              color={theme.palette.mode == 'light' ? 'primary' : 'secondary'}
             >
               <Typography
-                color="secondary"
+                color={theme.palette.mode == 'light' ? 'primary' : 'secondary'}
                 className="mb-0.5!"
                 variant="subtitle1"
               >

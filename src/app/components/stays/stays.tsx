@@ -274,7 +274,7 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
                       sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
                     >
                       <PeopleIcon
-                        fontSize={15}
+                        fontSize={18}
                         color={theme.palette.text.secondary}
                       />
                       <Typography variant="body2" color="text.secondary">
@@ -285,7 +285,7 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
                       sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
                     >
                       <BedIcon
-                        fontSize={15}
+                        fontSize={18}
                         color={theme.palette.text.secondary}
                       />
                       <Typography variant="body2" color="text.secondary">
@@ -387,9 +387,6 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
                         e.stopPropagation();
                         router.push(url);
                       }}
-                      startIcon={
-                        isDirect ? undefined : <WhatsApp fontSize={14} />
-                      }
                     >
                       {isDirect ? "Book Now" : "Enquire Now"}
                     </Button>

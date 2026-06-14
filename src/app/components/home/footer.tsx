@@ -19,6 +19,7 @@ import logoLight from "../../../../public/assets/villasbyserene-light.png";
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 const Footer = () => {
   const router = useRouter();
@@ -160,16 +161,13 @@ const Footer = () => {
           </div>
           <div className="flex gap-4 md:gap-6 text-sm text-gray-400">
             <div className="hover:text-white transition-colors duration-200 cursor-pointer">
-              Privacy Policy
+              <Link href="/privacy">Privacy Policy</Link>
             </div>
             <div className="hover:text-white transition-colors duration-200 cursor-pointer">
-              Terms of Service
+              <Link href="/terms">Terms & Conditions</Link>
             </div>
             <div className="hover:text-white transition-colors duration-200 cursor-pointer">
-              Cookie Policy
-            </div>
-            <div className="hover:text-white transition-colors duration-200 cursor-pointer">
-              Cancellation Policy
+              <Link href="/cancellation">Cancellation Policy</Link>
             </div>
           </div>
         </div>

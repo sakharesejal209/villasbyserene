@@ -153,24 +153,13 @@ const Navbar = () => {
           {/* Mobile */}
           <div className="flex md:hidden justify-end items-center">
             <IconButton
-              onClick={toggleTheme}
-              // sx={{ color: trigger ? "text.primary" : "#ffffff" }}
-            >
-              {mode === "light" ? (
-                <MoonIcon color={trigger ? "action" : "inherit"} />
-              ) : (
-                <SunIcon color={trigger ? "action" : "inherit"} />
-              )}
-            </IconButton>
-
-            <IconButton
-              size="large"
+            
               aria-label="open navigation"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
             >
-              <MenuIcon />
+              <MenuIcon fontSize={18} />
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -209,6 +198,14 @@ const Navbar = () => {
                 </MenuItem>
               )}
             </Menu>
+
+            <IconButton  onClick={toggleTheme}>
+              {mode === "light" ? (
+                <MoonIcon fontSize={18} color={trigger ? "action" : "inherit"} />
+              ) : (
+                <SunIcon fontSize={18} color={trigger ? "action" : "inherit"} />
+              )}
+            </IconButton>
 
             {/* Mobile auth — avatar or login icon */}
             {!authLoading &&
