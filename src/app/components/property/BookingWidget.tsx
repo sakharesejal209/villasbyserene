@@ -309,8 +309,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
     [blockedRanges],
   );
 
-  // Stable isDateBlocked — uses memoized ranges
-  const isDateBlocked = useCallback(
+  const isCheckinBlocked = useCallback(
     (date: Dayjs): boolean =>
       parsedBlockedRanges.some(
         (r) => !date.isBefore(r.start, "day") && !date.isAfter(r.end, "day"),
@@ -318,11 +317,28 @@ const BookingWidget: FC<BookingWidgetProps> = ({
     [parsedBlockedRanges],
   );
 
+  // Checkout can land ON the first day of a blocked range (guest is leaving)
+  // but cannot land inside one or after check-in on a blocked night
+  const isCheckoutBlocked = useCallback(
+    (date: Dayjs): boolean =>
+      parsedBlockedRanges.some(
+        (r) => date.isAfter(r.start, "day") && !date.isAfter(r.end, "day"),
+      ),
+    [parsedBlockedRanges],
+  );
+
+  // Detects if any blocked night exists between check-in and check-out
+  const hasBlockedNightBetween = useCallback(
+    (ci: Dayjs, co: Dayjs): boolean =>
+      parsedBlockedRanges.some(
+        (r) => ci.isBefore(r.end, "day") && co.isAfter(r.start, "day"),
+      ),
+    [parsedBlockedRanges],
+  );
   const isSelectedUnitSoldOut =
     group?.available_count === 0 ||
-    (!!checkIn &&
-      !!checkOut &&
-      (isDateBlocked(checkIn) || isDateBlocked(checkOut)));
+    (!!checkIn && isCheckinBlocked(checkIn)) ||
+    (!!checkIn && !!checkOut && hasBlockedNightBetween(checkIn, checkOut));
 
   const handleSelectUnit = (idx: number) => {
     setSelectedIdx(idx);
@@ -392,7 +408,8 @@ const BookingWidget: FC<BookingWidgetProps> = ({
               isDirect && selected && checkinRate ? checkinRate : null;
             const datesBlocked =
               selected && checkIn && checkOut
-                ? isDateBlocked(checkIn) || isDateBlocked(checkOut)
+                ? isCheckinBlocked(checkIn) ||
+                  hasBlockedNightBetween(checkIn, checkOut)
                 : false;
             const isSoldOut = g.available_count === 0 || datesBlocked;
 
@@ -542,7 +559,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                 value={field.value}
                 format="DD/MM/YYYY"
                 disablePast
-                shouldDisableDate={(date) => isDateBlocked(date)}
+                shouldDisableDate={(date) => isCheckinBlocked(date)}
                 onChange={(val) => {
                   field.onChange(val);
                   const co = getValues("checkOut");
@@ -577,7 +594,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                 minDate={
                   checkIn ? checkIn.add(1, "day") : dayjs().add(1, "day")
                 }
-                shouldDisableDate={(date) => isDateBlocked(date)}
+                shouldDisableDate={(date) => isCheckoutBlocked(date)}
                 onChange={(val) => field.onChange(val)}
                 slotProps={{ textField: { fullWidth: true, size: "small" } }}
               />
