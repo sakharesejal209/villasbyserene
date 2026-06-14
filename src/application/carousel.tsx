@@ -99,7 +99,7 @@ const Carousel: React.FC<CarouselPropType> = ({
         // When outside, add horizontal padding to make room for arrows
         px:
           isOutside && navigation && resolvedArrowVisibility !== "hidden"
-            ? { xs: "8px", md: "48px" }
+            ? { xs: "8px", md: "44px" }
             : 0,
 
         // ── Dots ────────────────────────────────────────────────
@@ -166,8 +166,8 @@ const Carousel: React.FC<CarouselPropType> = ({
             bgcolor: arrowBg,
             backdropFilter: "blur(6px)",
             color: arrowIconColor,
-            width: { xs: 32, md: 36 },
-            height: { xs: 32, md: 36 },
+            width: { xs: 26, md: 30 },
+            height: { xs: 26, md: 30 },
             opacity: arrowsVisible ? 1 : 0,
             transition:
               "opacity 0.25s ease, background-color 0.2s ease, transform 0.2s ease",
@@ -176,7 +176,7 @@ const Carousel: React.FC<CarouselPropType> = ({
               transform: "translateY(-50%) scale(1.08)",
             },
             "& svg": {
-              fontSize: { xs: 20, md: 24 },
+              fontSize: { xs: 12, md: 16 },
             },
           }}
         >
@@ -200,8 +200,8 @@ const Carousel: React.FC<CarouselPropType> = ({
             bgcolor: arrowBg,
             backdropFilter: "blur(6px)",
             color: arrowIconColor,
-            width: { xs: 32, md: 36 },
-            height: { xs: 32, md: 36 },
+            width: { xs: 26, md: 30 },
+            height: { xs: 26, md: 30 },
             opacity: arrowsVisible ? 1 : 0,
             transition:
               "opacity 0.25s ease, background-color 0.2s ease, transform 0.2s ease",
@@ -210,7 +210,7 @@ const Carousel: React.FC<CarouselPropType> = ({
               transform: "translateY(-50%) scale(1.08)",
             },
             "& svg": {
-              fontSize: { xs: 20, md: 24 },
+              fontSize: { xs: 12, md: 16 },
             },
           }}
         >

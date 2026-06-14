@@ -47,11 +47,11 @@ const Footer = () => {
               <Image
                 className="sm:w-22.5 xl:w-30 2xl:w-37.5"
                 width={150}
-                alt="VillasBySerene: Your boutique getaway!"
+                alt="VillasBySerene: Curated villas. Effortless stays!"
                 src={logoLight}
               />
             </div>
-            <Typography>Your boutique getaway!</Typography>
+            <Typography>Curated villas. Effortless stays!</Typography>
             <div className="flex gap-1 mt-3">
               <IconButton
                 href="https://www.facebook.com/profile.php?id=61576583374198"

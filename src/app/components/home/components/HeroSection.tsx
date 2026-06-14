@@ -199,7 +199,6 @@ export const HeroSection = () => {
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    gap: "6px",
                     background: "rgba(255,255,255,0.12)",
                     backdropFilter: "blur(8px)",
                     border: "1px solid rgba(255,255,255,0.2)",

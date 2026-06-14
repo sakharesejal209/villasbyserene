@@ -530,6 +530,8 @@ const Property: FC<PropertyPropType> = ({
                     900: { slidesPerView: 3 },
                   }}
                   showDots={false}
+                  arrowPosition="outside"
+                  arrowVisibility="hover"
                 >
                   <>
                     {nearby.map((item) => (

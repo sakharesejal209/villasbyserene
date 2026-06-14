@@ -33,7 +33,7 @@ export const FeaturedVillas = () => {
 
   // Fallback to any properties if none are direct
   const display = featured.length > 0 ? featured : properties.slice(0, 4);
-
+  
   function toPropertySlug(name: string, id: string): string {
     return `${name
       .toLowerCase()
@@ -245,6 +245,7 @@ export const FeaturedVillas = () => {
                       <Box
                         sx={{
                           display: "flex",
+                          flexDirection: 'column',
                           alignItems: "center",
                           justifyContent: "space-between",
                           mt: "auto",
@@ -253,9 +254,9 @@ export const FeaturedVillas = () => {
                           borderColor: "divider",
                         }}
                       >
-                        <Box>
-                          {weekdayPrice ? (
-                            <>
+                        <Box sx={{width: '100%'}}>
+                          {weekdayPrice && (
+                            <div className="">
                               <Typography
                                 variant="body2"
                                 color="text.secondary"
@@ -279,12 +280,14 @@ export const FeaturedVillas = () => {
                                   /night
                                 </Typography>
                               </Typography>
-                            </>
-                          ) : (
-                            <Typography variant="body2" color="text.secondary">
-                              Contact for pricing
-                            </Typography>
+                            </div>
                           )}
+                          
+                          {/* // : (
+                          //   <Typography variant="body2" color="text.secondary">
+                          //     Contact for pricing
+                          //   </Typography>
+                          // )} */}
                         </Box>
                         <Button
                           variant="contained"
@@ -293,6 +296,7 @@ export const FeaturedVillas = () => {
                             e.stopPropagation();
                             handleNavigate(property.name, property.property_id);
                           }}
+                          sx={{width: '100%', mt: '4px'}}
                         >
                           {property.booking_type === "DIRECT"
                             ? "Book Now"

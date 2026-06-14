@@ -18,6 +18,7 @@ import {
   MenuItem,
   Paper,
   Select,
+  Switch,
   Tab,
   Tabs,
   TextField,
@@ -60,7 +61,6 @@ const PropertyEditor = ({
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState(0);
   const [saved, setSaved] = useState(false);
-  const theme = useTheme();
 
   const load = useCallback(() => {
     setLoading(true);
@@ -224,6 +224,16 @@ export default function AdminPropertiesPage() {
     load();
   }, []);
 
+  const handleToggle = async (e: React.MouseEvent, propertyId: string) => {
+    e.stopPropagation(); // prevent opening the editor
+    try {
+      await httpService().put(`${API}/${propertyId}/toggle`, {});
+      load();
+    } catch {
+      setError("Failed to toggle property");
+    }
+  };
+
   const createProperty = async (data: PropertyForm) => {
     setCreating(true);
     try {
@@ -359,18 +369,43 @@ export default function AdminPropertiesPage() {
                 />
               </Box>
               <Box sx={{ p: 2 }}>
-                <Typography variant="subtitle2" fontWeight={700} noWrap>
-                  {p.name}
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  {p.area}, {p.city}, {p.state}
-                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <Box sx={{ minWidth: 0, flex: 1 }}>
+                    <Typography variant="subtitle2" fontWeight={700} noWrap>
+                      {p.name}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {p.area}, {p.city}, {p.state}
+                    </Typography>
+                  </Box>
+                  <Switch
+                    size="small"
+                    checked={p.isEnabled ?? true}
+                    onClick={(e) => handleToggle(e, p.property_id)}
+                    color="primary"
+                    sx={{ ml: 1, flexShrink: 0 }}
+                  />
+                </Box>
                 <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
                   <Chip
                     label={`${p.unit_count} units`}
                     size="small"
                     variant="outlined"
                   />
+                  {!(p.isEnabled ?? true) && (
+                    <Chip
+                      label="Disabled"
+                      size="small"
+                      color="error"
+                      variant="outlined"
+                    />
+                  )}
                 </Box>
               </Box>
             </Paper>

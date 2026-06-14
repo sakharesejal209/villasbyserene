@@ -1,7 +1,7 @@
 // src/app/admin/properties/tabs/UnitsTab.tsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import {
   Accordion,
@@ -33,7 +33,11 @@ import {
   Typography,
 } from "@mui/material";
 
-import { IoAdd as AddIcon, IoChevronDownOutline  as ChevronDown, IoSaveOutline  as SaveIcon } from "react-icons/io5";
+import {
+  IoAdd as AddIcon,
+  IoChevronDownOutline as ChevronDown,
+  IoSaveOutline as SaveIcon,
+} from "react-icons/io5";
 import { MdDeleteOutline as DeleteIcon } from "react-icons/md";
 
 import dayjs from "dayjs";
@@ -77,6 +81,9 @@ const UnitEditor = ({
     unit.seasonal || [],
   );
 
+  useEffect(() => {
+    console.log("seasonal:", seasonal);
+  }, [seasonal]);
   // ── Unit form ─────────────────────────────────────────────────
   const { control: uControl, handleSubmit: uSubmit } = useForm<AdminUnitDTO>({
     defaultValues: {
@@ -631,12 +638,12 @@ const UnitEditor = ({
                   <TableRow key={s.id}>
                     <TableCell>{s.label}</TableCell>
                     <TableCell>
-                      {dayjs(s.start_date).format("DD MMM YYYY")}
+                      {dayjs(s.startDate).format("DD MMM YYYY")}
                     </TableCell>
                     <TableCell>
-                      {dayjs(s.end_date).format("DD MMM YYYY")}
+                      {dayjs(s.endDate).format("DD MMM YYYY")}
                     </TableCell>
-                    <TableCell>₹{Number(s.price_per_night)}</TableCell>
+                    <TableCell>₹{Number(s.pricePerNight)}</TableCell>
                     <TableCell>
                       <Chip
                         label={s.isActive ? "Active" : "Off"}
