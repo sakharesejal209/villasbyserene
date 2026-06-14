@@ -180,6 +180,9 @@ const Property: FC<PropertyPropType> = ({
     }
   }, [searchParams]);
 
+  console.log('nearby.length < 3:', nearby.length < 3);
+  
+
   return (
     <section>
       <Customsection background={bannerUrl}>
@@ -531,7 +534,7 @@ const Property: FC<PropertyPropType> = ({
                   }}
                   showDots={false}
                   arrowPosition="outside"
-                  arrowVisibility="hover"
+                  arrowVisibility={nearby.length < 4 ? 'hidden' : 'hover'}
                 >
                   <>
                     {nearby.map((item) => (

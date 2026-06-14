@@ -500,7 +500,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                       variant="outlined"
                       sx={{ fontSize: 10 }}
                     />
-                  ) : quote ? (
+                  ) : isDirect && selected && quote ? (
                     <>
                       <Typography
                         variant="body1"
