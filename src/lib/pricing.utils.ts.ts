@@ -19,14 +19,14 @@ export function getPriceForDate(
   if (!group.pricing) return null;
 
   if (group.seasonal_rate) {
-    const start = dayjs(group.seasonal_rate.start_date);
-    const end   = dayjs(group.seasonal_rate.end_date);
+    const start = dayjs(group.seasonal_rate.startDate);
+    const end   = dayjs(group.seasonal_rate.endDate);
     if (
       (date.isAfter(start) || date.isSame(start, "day")) &&
       (date.isBefore(end)  || date.isSame(end, "day"))
     ) {
       return {
-        price: group.seasonal_rate.price_per_night,
+        price: group.seasonal_rate.pricePerNight,
         label: group.seasonal_rate.label,
         type:  "seasonal",
       };
@@ -70,14 +70,14 @@ export function getCardPrice(
 
   // Check seasonal rate on first unit group
   if (firstGroup?.seasonal_rate) {
-    const start = dayjs(firstGroup.seasonal_rate.start_date);
-    const end   = dayjs(firstGroup.seasonal_rate.end_date);
+    const start = dayjs(firstGroup.seasonal_rate.startDate);
+    const end   = dayjs(firstGroup.seasonal_rate.endDate);
     if (
       (date.isAfter(start) || date.isSame(start, "day")) &&
       (date.isBefore(end)  || date.isSame(end, "day"))
     ) {
       return {
-        price: firstGroup.seasonal_rate.price_per_night,
+        price: firstGroup.seasonal_rate.pricePerNight,
         label: firstGroup.seasonal_rate.label,
         type:  "seasonal",
       };
