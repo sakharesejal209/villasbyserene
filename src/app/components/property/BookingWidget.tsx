@@ -286,7 +286,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
       nights,
       totalPrice: quote?.total ?? null, // backend already multiplies by rooms
     });
-  }, [checkIn, checkOut, adults, children, infants, nights, quote, units]);
+  }, [checkIn, checkOut, adults, children, infants, nights, quote, units, onStateChange]);
 
   useEffect(() => {
     const unitId = group?.display_unit?.unit_id;
@@ -400,10 +400,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           {unitGroups.map((g, idx) => {
             const selected = idx === selectedIdx;
-            const rate =
-             selected && checkinRate
-                ? checkinRate.price
-                : (g.pricing?.weekday_price ?? null);
+            
             const rateLabel =
               isDirect && selected && checkinRate ? checkinRate : null;
             const datesBlocked =
@@ -503,7 +500,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                       variant="outlined"
                       sx={{ fontSize: 10 }}
                     />
-                  ) : rate !== null ? (
+                  ) : quote ? (
                     <>
                       <Typography
                         variant="body1"
@@ -511,7 +508,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                         color="primary"
                         lineHeight={1.2}
                       >
-                        {formatINR(rate)}
+                        {formatINR(quote.stay_charges + quote.commission_amount)}
                       </Typography>
                       <Typography variant="caption" color="text.secondary">
                         /night
