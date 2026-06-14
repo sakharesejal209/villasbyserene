@@ -43,9 +43,18 @@ export const ThemeDrawer = ({
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [fits, setFits] = useState<Record<number, "cover" | "contain">>({});
 
+  function toPropertySlug(name: string, id: string): string {
+    return `${name
+      .toLowerCase()
+      .replaceAll(/[^a-z0-9\s]/g, "")
+      .replaceAll(/\s+/g, "-")
+      .replaceAll(/-+/g, "-")
+      .trim()}-${id.slice(0, 8)}`;
+  }
+
   const handleSelect = useCallback(
-    (name: string, propertyId: string) =>
-      router.push(`/property/${name}-${propertyId}`),
+    (name: string, id: string) =>
+      router.push(`/property/${toPropertySlug(name, id)}`),
     [router],
   );
 
@@ -65,7 +74,7 @@ export const ThemeDrawer = ({
       anchor={isSmallScreen ? "bottom" : "left"}
       sx={{
         "& .MuiDrawer-paper": {
-          width: isSmallScreen ? "100vw" : "80vw",
+          width: isSmallScreen ? "100vw" : "55vw",
           height: isSmallScreen ? "85vh" : "100vh",
         },
       }}

@@ -42,6 +42,7 @@ export const FeaturedVillas = () => {
       .replaceAll(/-+/g, "-")
       .trim()}-${id.slice(0, 8)}`;
   }
+  
   const handleNavigate = useCallback(
     
     (name: string, id: string) => router.push(`/property/${toPropertySlug(name, id)}`),

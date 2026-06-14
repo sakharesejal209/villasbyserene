@@ -3,10 +3,12 @@
 
 import { Box, Button, Typography, useTheme } from "@mui/material";
 
-
 import { LuCircleCheckBig as CheckCircleIcon } from "react-icons/lu";
-import { IoTrendingUpOutline as LineUpIcon, IoSettingsOutline  as SettingsIcon, IoHomeOutline as HomeIcon } from "react-icons/io5";
-
+import {
+  IoTrendingUpOutline as LineUpIcon,
+  IoSettingsOutline as SettingsIcon,
+  IoHomeOutline as HomeIcon,
+} from "react-icons/io5";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -38,7 +40,6 @@ export const ListPropertySection = () => {
       <div className="container">
         <FadeInSection>
           <div className="grid lg:grid-cols-2 gap-10 md:gap-16 items-center">
-
             {/* Image — slides in from left */}
             <motion.div
               initial={{ opacity: 0, x: -32 }}
@@ -48,7 +49,7 @@ export const ListPropertySection = () => {
               className="relative aspect-video md:aspect-4/3 overflow-hidden rounded-sm"
             >
               <Image
-                src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Fswimmingpool9.webp?alt=media&token=4d4e883c-4172-44e3-986d-471816051039"
+                src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/ocean-breeze%2Focean-pearl-exterior7.webp?alt=media&token=63e8e74e-3ef3-4426-b7c8-e4f0348e8166"
                 alt="Villa management services"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -80,7 +81,9 @@ export const ListPropertySection = () => {
                 That&apos;s where we come in!
               </Typography>
 
-              <Box sx={{ display: "flex", flexDirection: "column", gap: 2, mb: 4 }}>
+              <Box
+                sx={{ display: "flex", flexDirection: "column", gap: 2, mb: 4 }}
+              >
                 {FEATURES.map((item, idx) => (
                   <motion.div
                     key={idx}
@@ -88,14 +91,18 @@ export const ListPropertySection = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.45, delay: 0.2 + idx * 0.1 }}
-                    style={{ display: "flex", alignItems: "flex-start", gap: 12 }}
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: 12,
+                    }}
                   >
                     <Box
                       sx={{
                         color: isDark ? "secondary.main" : "primary.main",
                         mt: 0.25,
                         flexShrink: 0,
-                        fontSize: 20
+                        fontSize: 20,
                       }}
                     >
                       <item.icon />

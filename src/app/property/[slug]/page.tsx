@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Property from "@/app/components/property/Property";
 import { propertiesService } from "@/app/@services";
+import PropertyContainer from "@/app/components/property/PropertyContainer";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -51,10 +52,13 @@ export default async function Page({ params, searchParams }: PageProps) {
   }  
 
   return (
-    <Property
-      propertyDetails={property}
-      checkIn={checkIn}
-      checkOut={checkOut}
-    />
+    // <Property
+    //   propertyDetails={property}
+    //   checkIn={checkIn}
+    //   checkOut={checkOut}
+    // />
+
+
+    <PropertyContainer slug={slug} checkIn={checkIn} checkOut={checkOut} />
   );
 }

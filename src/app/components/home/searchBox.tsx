@@ -17,7 +17,6 @@ import dayjs from "dayjs";
 export const locations = [
   "All",
   "Lonavala",
-  "Panvel",
   "Karjat",
   "Alibaug",
   "Navi Mumbai",
