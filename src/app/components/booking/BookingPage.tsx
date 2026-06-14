@@ -319,7 +319,7 @@ const BookingPage: FC = () => {
         order_id: booking.orderId,
         name: "Villas by Serene",
         description: `${property?.name ?? ""} — ${unitName}`,
-        image: "https://www.villasbyserene.com/logo.png",
+        image: "https://www.villasbyserene.com/VBS-logo.png",
         prefill: {
           name: formData.name,
           email: formData.email,
