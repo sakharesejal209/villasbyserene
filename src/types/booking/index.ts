@@ -1,0 +1,1 @@
+export type { default as CreateBookingDTO } from "./create-booking-dto";

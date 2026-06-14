@@ -11,12 +11,14 @@ import {
   useTheme,
 } from "@mui/material";
 import {
-  ChatOutlined as Message,
-  PhoneOutlined as Phone,
-  EmailOutlined as Mail,
-  LocationOnOutlined as MapPin,
-  CloseOutlined as CloseIcon,
-} from "@mui/icons-material";
+  IoChatboxEllipsesOutline as Message,
+  IoMailOutline as Mail,
+  IoLocationOutline as MapPin,
+  IoCloseOutline as CloseIcon,
+} from "react-icons/io5";
+
+import { MdOutlinePhone as Phone } from "react-icons/md";
+
 import { DatePicker } from "@mui/x-date-pickers";
 import React, { useState } from "react";
 import { PickerValue } from "@mui/x-date-pickers/internals";

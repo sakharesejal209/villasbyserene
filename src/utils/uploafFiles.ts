@@ -12,7 +12,6 @@ export const uploadMedia = async (file: File): Promise<string> => {
       (snapshot) => {
         // Optional: monitor upload progress
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log(`Upload is ${progress}% done`);
       },
       (error) => {
         reject(error);

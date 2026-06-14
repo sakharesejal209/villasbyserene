@@ -3,19 +3,23 @@
 import React from "react";
 
 import { Button, Divider, IconButton, Typography } from "@mui/material";
+
 import {
-  PhoneOutlined as Phone,
-  Facebook,
-  Instagram,
-  EmailOutlined as Mail,
-  LocationOnOutlined as MapPin,
-  WhatsApp,
-} from "@mui/icons-material";
+  MdOutlineLocalPhone as Phone,
+  MdOutlineMail as Mail,
+} from "react-icons/md";
+import { FaFacebook as Facebook } from "react-icons/fa6";
+import {
+  IoLogoInstagram as Instagram,
+  IoLocationOutline as MapPin,
+  IoLogoWhatsapp as WhatsApp,
+} from "react-icons/io5";
 
 import logoLight from "../../../../public/assets/villasbyserene-light.png";
 
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 const Footer = () => {
   const router = useRouter();
@@ -24,7 +28,7 @@ const Footer = () => {
     const message =
       "Hi! I'd like to learn more about your holiday rental properties.";
     const whatsappUrl = `https://wa.me/9594377736?text=${encodeURIComponent(
-      message
+      message,
     )}`;
     window.open(whatsappUrl, "_blank");
   };
@@ -41,8 +45,8 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center mb-1">
               <Image
-                className="sm:w-[90px] xl:w-[120px] 2xl:w-[150px]"
-                width={100}
+                className="sm:w-22.5 xl:w-30 2xl:w-37.5"
+                width={150}
                 alt="VillasBySerene: Your boutique getaway!"
                 src={logoLight}
               />
@@ -56,7 +60,7 @@ const Footer = () => {
                 size="small"
                 sx={{ color: "#fff" }}
               >
-                <Facebook className="w-4 h-4" />
+                <Facebook className="w-5 h-5" />
               </IconButton>
               <IconButton
                 href="https://www.instagram.com/villasbyserene"
@@ -65,7 +69,7 @@ const Footer = () => {
                 size="small"
                 sx={{ color: "#fff" }}
               >
-                <Instagram className="w-4 h-4" />
+                <Instagram className="w-5 h-5" />
               </IconButton>
             </div>
           </div>
@@ -118,17 +122,17 @@ const Footer = () => {
             </Typography>
             <div className="flex flex-col gap-1.5 my-3">
               <div className="flex items-center space-x-3 text-gray-300">
-                <Phone className="w-4 h-4 text-primary" />
+                <Phone className="w-5 h-5 text-primary" />
                 <span>+91 95943 77736</span>
               </div>
               <div className="flex items-center space-x-3 text-gray-300">
-                <Mail className="w-4 h-4 text-primary" />
+                <Mail className="w-5 h-5 text-primary" />
                 <span>villasbyserene@gmail.com</span>
               </div>
               <div className="flex items-start space-x-3 text-gray-300">
-                <MapPin className="w-4 h-4 text-primary mt-1" />
+                <MapPin className="w-5 h-5 text-primary mt-1" />
                 <span>
-                  B-104, Yashonarayan CHS., Takka Rd, Panvel 
+                  B-104, Yashonarayan CHS., Takka Rd, Panvel
                   <br />
                   Raigad, Maharashtra 410206
                 </span>
@@ -140,8 +144,8 @@ const Footer = () => {
               onClick={handleWhatsAppContact}
               className="w-full mt-4"
             >
+              <WhatsApp className="mr-2 w-5 h-5" />
               WhatsApp Us
-              <WhatsApp className="ml-1" />
             </Button>
           </div>
         </div>
@@ -157,16 +161,13 @@ const Footer = () => {
           </div>
           {/* <div className="flex gap-4 md:gap-6 text-sm text-gray-400">
             <div className="hover:text-white transition-colors duration-200 cursor-pointer">
-              Privacy Policy
+              <Link href="/privacy">Privacy Policy</Link>
             </div>
             <div className="hover:text-white transition-colors duration-200 cursor-pointer">
-              Terms of Service
+              <Link href="/terms">Terms & Conditions</Link>
             </div>
             <div className="hover:text-white transition-colors duration-200 cursor-pointer">
-              Cookie Policy
-            </div>
-            <div className="hover:text-white transition-colors duration-200 cursor-pointer">
-              Cancellation Policy
+              <Link href="/cancellation">Cancellation Policy</Link>
             </div>
           </div> */}
         </div>

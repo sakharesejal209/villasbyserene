@@ -3,18 +3,22 @@
 import React, { useRef } from "react";
 
 import {
-  SettingsOutlined as Settings,
-  CameraOutlined as Camera,
-  CalendarMonthOutlined as Calendar,
-  FavoriteBorderOutlined as Heart,
-  TrendingUpOutlined as TrendingUp,
-  HomeOutlined as Home,
-  FlagCircleOutlined as Target,
-  ArrowRightAltOutlined as ArrowRight,
-  CheckCircleOutlineOutlined as CheckCircle,
-  PeopleAltOutlined as Users,
-  PhoneOutlined as Phone,
-} from "@mui/icons-material";
+  IoSettingsOutline as Settings,
+  IoCameraOutline as Camera,
+  IoCalendarOutline as Calendar,
+  IoHeartOutline as Heart,
+  IoTrendingUpOutline as TrendingUp,
+  IoHomeOutline as Home,
+  IoArrowForwardOutline as ArrowRight,
+  IoCheckmarkCircleOutline as CheckCircle,
+} from "react-icons/io5";
+
+import { PiTargetLight as Target } from "react-icons/pi";
+import {
+  MdOutlinePhone as Phone,
+  MdOutlineGroups as Users,
+} from "react-icons/md";
+
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 
@@ -41,7 +45,7 @@ const services = [
     icon: Users,
     title: "Staff Hiring & Training",
     description:
-      "From housekeeping to service staff—we hire, train, and supervise so your guests get a 5-star experience.",
+      "From housekeeping to service staff, we hire, train, and supervise so your guests get a 5-star experience.",
   },
   {
     icon: Camera,
@@ -53,7 +57,7 @@ const services = [
     icon: Calendar,
     title: "Guest Bookings & Payments",
     description:
-      "We handle inquiries, reservations, calendar blocking, and secure payments—no stress, no confusion.",
+      "We handle inquiries, reservations, calendar blocking, and secure payments! No stress, no confusion.",
   },
   {
     icon: Heart,
@@ -81,7 +85,7 @@ const steps = [
     number: "02",
     title: "We Set It Up",
     description:
-      "Professional photoshoot, staff training, and listing creation—we prepare your villa for success.",
+      "Professional photoshoot, staff training, and listing creation, we prepare your villa for success.",
     icon: Settings,
   },
   {
@@ -121,10 +125,10 @@ const ListYourProperty = () => {
   }));
 
   return (
-    <div>
-      <section
+    <section className="p-0!">
+      <div
         ref={heroRef}
-        className="relative min-h-[100vh] flex items-center justify-center overflow-hidden"
+        className="relative min-h-screen flex items-center justify-center overflow-hidden"
       >
         <motion.div className="absolute inset-0" style={{ y: heroY }}>
           <Image
@@ -136,7 +140,7 @@ const ListYourProperty = () => {
               objectPosition: "center center",
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/55 to-black/55"></div>
+          <div className="absolute inset-0 bg-linear-to-b from-black/55 via-black/55 to-black/55"></div>
         </motion.div>
 
         <motion.div className="relative text-center px-4 text-white flex justify-center flex-col items-center">
@@ -145,7 +149,7 @@ const ListYourProperty = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Typography variant="h3" className="!mb-2">
+            <Typography variant="h3" className="mb-2!">
               List Your Home With Us
             </Typography>
           </motion.div>
@@ -155,62 +159,45 @@ const ListYourProperty = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Typography className="!text-lg">
-              Turn Your Villa Into a Hassle-Free Income Source
+            <Typography className="md:text-lg! my-4!">
+              Turn Your Villa Into a Hassle-Free Income Source!
             </Typography>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            style={{ width: "70%", textAlign: "center" }}
-          >
-            <Typography className="!text-lg">
+          <div className="text-center md:w-[70%]">
+            <Typography className="md:text-lg! my-4!">
               Owning a beautiful property shouldn&apos;t feel like a full-time
               job. We take care of the day-to-day operations, marketing, and
               guest management so you can enjoy steady returns without the
               stress.
             </Typography>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="mb-8"
-          >
-            <div className="bg-white/10 backdrop-blur-sm border border-white/20 mt-4 p-4 inline-block">
-              <Typography variant="subtitle1">You earn. We manage.</Typography>
-            </div>
-          </motion.div>
+          <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-4 inline-block my-4">
+            <Typography variant="subtitle1">You earn. We manage.</Typography>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+          <Button
+            // className="my-4!"
+            variant="contained"
+            size="large"
+            onClick={() => router.push("/contact")}
           >
-            <Button
-              variant="contained"
-              size="large"
-              onClick={() => router.push("/contact")}
-            >
-              Get Started Today
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
-          </motion.div>
+            Get Started Today
+            <ArrowRight className="w-5 h-5 ml-2" />
+          </Button>
         </motion.div>
-      </section>
+      </div>
 
       {/* Why Partner Section */}
-      <section>
-        <div className="container mx-auto md:!px-16">
+      <div className="my-14">
+        <div className="container mx-auto md:px-16!">
           <FadeInSection>
             <div className="flex flex-col items-center justify-center mb-6 text-center">
-              <Typography variant="h4" className="!mb-2">
+              <Typography variant="h4" className="mb-2!">
                 Managing a villa can be overwhelming
               </Typography>
-              <Typography className="w-full block md:w-[75%] !text-lg text-center">
+              <Typography className="w-full block md:w-[75%] text-lg! text-center">
                 Staffing, guest communication, marketing, upkeep… the list never
                 ends. That&apos;s where we step in.
               </Typography>
@@ -219,20 +206,20 @@ const ListYourProperty = () => {
             <div className="relative grid md:grid-cols-2 md:gap-12 items-center">
               {/* <FadeInSection> */}
               <div className="md:p-10 order-2 md:order-1 ">
-                <Typography variant="h5">
+                <Typography className="mt-4! md:mt-0! md:text-lg!">
                   We specialize in end-to-end property management for owners who
                   don&apos;t have the time to handle everything themselves.
                 </Typography>
-                <Typography className="!text-lg !mt-2">
+                <Typography className="mt-2! md:text-lg!">
                   With us, your property is always guest-ready and performing at
                   its best.
                 </Typography>
-                <StyledKPI className="flex items-center rounded-md gap-2 md:gap-4 p-2 md:p-6 mt-4">
+                <StyledKPI className="flex items-center rounded-sm gap-2 md:gap-4 p-2 md:p-6 mt-4">
                   <StyledKPICircle className="w-8 md:w-12 md:h-12 h-8 rounded-full flex items-center justify-center">
-                    <CheckCircle className="md:w-6 w-3 md:h-6 h-3 !text-white" />
+                    <CheckCircle className="md:w-6 w-3 md:h-6 h-3 text-white!" />
                   </StyledKPICircle>
                   <div>
-                    <Typography className="!font-medium">
+                    <Typography className="font-medium!">
                       Property always guest-ready
                     </Typography>
                     <Typography variant="body2">
@@ -242,7 +229,7 @@ const ListYourProperty = () => {
                 </StyledKPI>
               </div>
               {/* </FadeInSection> */}
-              <div className="relative w-full h-[350px]">
+              <div className="relative w-full h-87.5">
                 <Image
                   src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/skapa-alibaug%2Fskapa-alibaug-livingroom.webp?alt=media&token=82832501-11c9-44af-a9fd-1e0b5e518ea4"
                   alt="Professional property management"
@@ -256,14 +243,14 @@ const ListYourProperty = () => {
             </div>
           </FadeInSection>
         </div>
-      </section>
+      </div>
 
       {/* Services Section */}
-      <section>
+      <div className="my-14">
         <div className="container mx-auto px-4">
           <FadeInSection>
             <div className="text-center mb-8">
-              <Typography variant="h4" className="!mb-2">
+              <Typography variant="h4" className="mb-2!">
                 Complete Property Management
               </Typography>
               <Typography>
@@ -283,11 +270,11 @@ const ListYourProperty = () => {
                           sx={{
                             backgroundColor: theme.palette.grey[600],
                           }}
-                          className={`w-14 h-14 rounded-md flex items-center justify-center mb-6`}
+                          className={`w-14 h-14 rounded-sm flex items-center justify-center mb-6`}
                         >
                           <IconComponent color="primary" />
                         </Box>
-                        <Typography variant="h5" className="!mb-4">
+                        <Typography variant="h5" className="mb-4!">
                           {service.title}
                         </Typography>
                         <Typography>{service.description}</Typography>
@@ -299,17 +286,17 @@ const ListYourProperty = () => {
             </div>
           </FadeInSection>
         </div>
-      </section>
+      </div>
 
       {/* 3 steps */}
-      <section>
+      <div className="my-14">
         <div className="container mx-auto px-4">
           <FadeInSection>
             <div className="text-center mb-10 md:mb-12">
-              <Typography variant="h4" className="!mb-2">
+              <Typography variant="h4" className="mb-2!">
                 Simple 3-Step Process
               </Typography>
-              <Typography className="!text-lg text-center block">
+              <Typography className="text-lg! text-center block">
                 Getting started is easy. We&apos;ll handle the complex stuff so
                 you can focus on earning.
               </Typography>
@@ -327,7 +314,7 @@ const ListYourProperty = () => {
                             sx={{
                               background: theme.palette.grey[600],
                             }}
-                            className="w-20 h-20 flex items-center rounded-md justify-center mx-auto mb-4"
+                            className="w-20 h-20 flex items-center rounded-sm justify-center mx-auto mb-4"
                           >
                             <IconComponent fontSize="large" />
                           </Box>
@@ -368,17 +355,17 @@ const ListYourProperty = () => {
             </div>
           </FadeInSection>
         </div>
-      </section>
+      </div>
 
       {/* Success priority */}
-      <section>
+      <div className="my-14">
         <div className="container">
           <FadeInSection>
-            <div className="grid md:grid-cols-2 lg:px-[150px]">
+            <div className="grid md:grid-cols-2 lg:px-37.5">
               <div className="flex justify-center items-left flex-col">
                 <Typography
                   variant="h4"
-                  className="md:!mb-6 text-center md:text-left"
+                  className="md:mb-6! text-center md:text-left"
                 >
                   Your Success Is Our Priority
                 </Typography>
@@ -408,15 +395,15 @@ const ListYourProperty = () => {
             </div>
           </FadeInSection>
         </div>
-      </section>
+      </div>
 
       {/* CTA Section */}
-      <section
-        className={`text-white p-6
+      <div
+        className={`text-white p-6 my-14
         ${
           theme.palette.mode == "light"
-            ? "bg-gradient-to-r from-[color:var(--cta-light)] to-[color:color-mix(in_oklab,var(--cta-light)_80%,transparent)]"
-            : "bg-gradient-to-r from-[color:var(--cta-dark)] to-[color:color-mix(in_oklab,var(--cta-dark)_80%,transparent)]"
+            ? "bg-linear-to-r from-(--cta-light) to-[color-mix(in_oklab,var(--cta-light)_80%,transparent)]"
+            : "bg-linear-to-r from-(--cta-dark) to-[color-mix(in_oklab,var(--cta-dark)_80%,transparent)]"
         }
         `}
       >
@@ -454,8 +441,8 @@ const ListYourProperty = () => {
             </div>
           </FadeInSection>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
   );
 };
 

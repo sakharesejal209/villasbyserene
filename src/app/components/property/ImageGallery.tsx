@@ -1,7 +1,8 @@
 import { FC, useState } from "react";
 import { Masonry } from "@mui/lab";
 import { Dialog, DialogContent, IconButton } from "@mui/material";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import { IoClose as CloseIcon } from "react-icons/io5";
+
 import { Carousel } from "@/application/default";
 import { SwiperSlide } from "swiper/react";
 import Image from "next/image";
@@ -44,21 +45,27 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
   };
 
   return (
-    <div>
+    <div className="flex justify-center overflow-hidden">
       <Masonry
-        columns={{ xs: 2, md: 3 }}
-        spacing={{ xs: 0.5, md: 1.5}}
+        sx={{ width: "100%", height: "110%" }}
+        columns={{ xs: 1, md: 1 }}
+        spacing={{ xs: 1, md: 2.5 }}
       >
         {images.map((item, index) => (
           <button
             key={index}
             onClick={() => handleOpen(index)}
-            className="relative"
+            className="relative aspect-4/3 md:aspect-video overflow-hidden"
           >
-            <img
+            <Image
               src={item.src}
               alt={item.alt}
-              className={`cursor-pointer object-cover w-full h-auto`}
+              className={`cursor-pointer`}
+              fill
+              style={{
+                objectFit: fits?.[index],
+                objectPosition: "top center",
+              }}
             />
           </button>
         ))}
@@ -95,7 +102,7 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
             zIndex: 1000,
           }}
         >
-          <CloseRoundedIcon />
+          <CloseIcon />
         </IconButton>
         <DialogContent
           sx={{
@@ -112,7 +119,7 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
           >
             {images.map((e, idx) => (
               <SwiperSlide key={idx}>
-                <div className="relative w-full aspect-[4/3] md:aspect-[16/9] overflow-hidden">
+                <div className="relative w-full aspect-4/3 md:aspect-video overflow-hidden">
                   <Image
                     src={e.src}
                     alt={e.alt}
@@ -128,11 +135,8 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
                 </div>
 
                 {"category" in e && e.hasOwnProperty("category") && (
-                  <div className="absolute bottom-5 md:bottom-14 left-5 bg-black/70 text-white text-md px-2 py-1 rounded-md">
-                    {
-                      (e as { src: string; alt: string; category: string })
-                        .category
-                    }
+                  <div className="absolute bottom-5 md:bottom-14 left-5 bg-black/70 text-white text-md px-2 py-1 rounded-sm">
+                    {e.category}
                   </div>
                 )}
               </SwiperSlide>

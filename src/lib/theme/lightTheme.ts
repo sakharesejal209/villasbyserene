@@ -34,6 +34,7 @@ let lightTheme: Theme = createTheme({
       main: commonColors.coral,
       light: commonColors.coralLight,
       contrastText: commonColors.white,
+      50: "rgba(4, 66, 49, 0.2)",
     },
     secondary: {
       main: commonColors.gold,
@@ -54,7 +55,7 @@ let lightTheme: Theme = createTheme({
     grey: {
       "100": "#708F8F",
       "200": "#8AA3A3",
-      "300":"#A4B7B7",
+      "300": "#A4B7B7",
       "400": "#C0CDCD",
       "500": "#DAE1E1",
       "600": "#f1f4f4",
@@ -73,33 +74,41 @@ let lightTheme: Theme = createTheme({
     borderRadius: 12,
   },
   typography: {
-    fontSize: 13,
+    // fontSize: 13,
     fontFamily: "var(--font-montserrat), serif !important",
     button: { textTransform: "none" },
     h1: {
       fontWeight: "700",
       fontFamily: "var(--font-eb-garamond), serif",
+      fontSize: "3.5rem", // ← add
     },
     h2: {
       fontWeight: "600",
       fontFamily: "var(--font-eb-garamond), serif",
+      fontSize: "2.75rem", // ← add
     },
     h3: {
       fontWeight: "600",
       fontFamily: "var(--font-eb-garamond), serif",
+      fontSize: "2.25rem", // ← add
     },
     h4: {
       fontWeight: "500",
       fontFamily: "var(--font-eb-garamond), serif",
+      fontSize: "1.75rem", // ← add
     },
     h5: {
       fontWeight: "500",
       fontFamily: "var(--font-eb-garamond), serif",
+      fontSize: "1.375rem", // ← add
     },
     h6: {
       fontWeight: "500",
       fontFamily: "var(--font-eb-garamond), serif",
+      fontSize: "1.125rem", // ← add
     },
+    body1: { fontSize: "0.875rem" },
+    body2: { fontSize: "0.75rem" },
   },
   components: {
     MuiTextField: {

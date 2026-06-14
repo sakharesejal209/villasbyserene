@@ -34,6 +34,7 @@ let darkTheme: Theme = createTheme({
       main: commonColors.coral,
       light: commonColors.coralLight,
       contrastText: commonColors.black,
+      50: "rgba(9, 154, 115, 0.1)",
     },
     secondary: {
       main: commonColors.gold,
@@ -70,33 +71,41 @@ let darkTheme: Theme = createTheme({
     borderRadius: 12,
   },
   typography: {
-    fontSize: 13,
+    // fontSize: 13,
     fontFamily: "var(--font-montserrat), serif !important",
     button: { textTransform: "none" },
     h1: {
       fontWeight: "700",
       fontFamily: "var(--font-eb-garamond), serif",
+      fontSize: "3.5rem", // ← add
     },
     h2: {
       fontWeight: "600",
       fontFamily: "var(--font-eb-garamond), serif",
+      fontSize: "2.75rem", // ← add
     },
     h3: {
       fontWeight: "600",
       fontFamily: "var(--font-eb-garamond), serif",
+      fontSize: "2.25rem", // ← add
     },
     h4: {
       fontWeight: "500",
       fontFamily: "var(--font-eb-garamond), serif",
+      fontSize: "1.75rem", // ← add
     },
     h5: {
       fontWeight: "500",
       fontFamily: "var(--font-eb-garamond), serif",
+      fontSize: "1.375rem", // ← add
     },
     h6: {
       fontWeight: "500",
       fontFamily: "var(--font-eb-garamond), serif",
-    }
+      fontSize: "1.125rem", // ← add
+    },
+    body1: { fontSize: "0.875rem" },
+    body2: { fontSize: "0.75rem" },
   },
   components: {
     MuiPaper: {

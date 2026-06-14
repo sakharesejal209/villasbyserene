@@ -1,5 +1,5 @@
+import StaysMainContainer from "@/app/components/stays/StaysMainContainer";
 import { Metadata } from "next";
-import StaysClientPage from "./StaysClientPage";
 
 export async function generateMetadata({
   params,
@@ -26,5 +26,5 @@ export async function generateMetadata({
 }
 
 export default async function Page() {
-  return <StaysClientPage />;
+  return <StaysMainContainer />;
 }

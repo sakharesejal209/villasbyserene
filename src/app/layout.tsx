@@ -2,11 +2,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./globals.css";
 import { Montserrat, EB_Garamond } from "next/font/google";
-import Navbar from "./components/home/navbar";
-import Footer from "./components/home/footer";
-import { fetchAllData } from "@/scripts/getProperties";
 import ClientProviders from "./components/client-providers/ClientProviders";
 import { Metadata } from "next";
+import { propertiesService } from "./@services";
+import NavbarFooterWrapper from "./components/home/Navbarfooterwrapper";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.villasbyserene.com"),
@@ -34,7 +33,6 @@ export const metadata: Metadata = {
     "luxury villas in India",
     "private pool villa near Mumbai",
     "Villas by Serene",
-
     "book luxury villas in India",
     "private villas for rent",
     "holiday villas with pool",
@@ -43,8 +41,6 @@ export const metadata: Metadata = {
     "luxury stays for couples and families",
     "villa resorts with private pool",
     "weekend getaway villas",
-
-    // Location based (Pan India)
     "villas in Goa",
     "villas in Udaipur",
     "villas in Rajasthan",
@@ -57,8 +53,6 @@ export const metadata: Metadata = {
     "beachfront villas in Alibaug",
     "hill view villas in Lonavala",
     "heritage villas in Udaipur",
-
-    // Experience based
     "romantic villa stays",
     "family villa getaways",
     "pool villas for group stays",
@@ -66,8 +60,6 @@ export const metadata: Metadata = {
     "eco-friendly villa stays",
     "private villas for destination weddings",
     "corporate retreat villas",
-
-    // Brand & recall
     "Villas by Serene",
     "Serene Villas India",
     "Serene luxury stays",
@@ -106,11 +98,6 @@ export const metadata: Metadata = {
   },
   authors: [{ name: "Villas by Serene" }],
   category: "Holiday Rentals & Hospitality",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
 };
 
 const roboto = Montserrat({
@@ -130,15 +117,26 @@ export default async function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const propertiesData = await fetchAllData();
+  const propertiesData = await propertiesService.getProperties();
 
   return (
     <html lang="en" className={roboto.className + " " + ibmPlex.className}>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+    try {
+      var m = localStorage.getItem('theme-mode');
+      if (!m) m = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.classList.add(m);
+    } catch(e) {}
+  `,
+          }}
+        />
+      </head>
       <body className="flex flex-col min-h-screen">
         <ClientProviders propertiesData={propertiesData}>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
+          <NavbarFooterWrapper>{children}</NavbarFooterWrapper>
         </ClientProviders>
       </body>
     </html>

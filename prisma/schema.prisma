@@ -52,10 +52,13 @@ model Unit {
   is_pool_available Boolean   @default(true)
   max_capacity      Int?
   is_available      Boolean   @default(true)
+  is_display_unit   Boolean   @default(false)
   created_at        DateTime  @default(now())
 
-  property   Property?   @relation(fields: [property_id], references: [property_id])
-  unitImages UnitImage[]
+  property         Property?         @relation(fields: [property_id], references: [property_id])
+  unitImages       UnitImage[]
+  unitPricing      UnitPricing?
+  seasonalPricings SeasonalPricing[]
 
   @@map("Unit")
 }
@@ -186,6 +189,40 @@ model PropertyTheme {
   theme    Theme    @relation(fields: [theme_id], references: [theme_id])
 
   @@id([property_id, theme_id])
+}
+
+model UnitPricing {
+  id               String   @id @default(uuid()) @db.Uuid
+  unit_id          String   @db.Uuid
+  weekday_price    Decimal  @db.Decimal(10, 2) // Mon–Thu
+  weekend_price    Decimal  @db.Decimal(10, 2) // Fri–Sun
+  cleaning_fee     Decimal  @default(0) @db.Decimal(10, 2)
+  security_deposit Decimal  @default(0) @db.Decimal(10, 2)
+  tax_percent      Decimal  @default(18) @db.Decimal(5, 2) // GST %
+  min_nights       Int      @default(1)
+  is_active        Boolean  @default(true)
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  unit Unit @relation(fields: [unit_id], references: [unit_id])
+
+  @@unique([unit_id]) // one active pricing row per unit
+  @@map("unit_pricing")
+}
+
+model SeasonalPricing {
+  id              String   @id @default(uuid()) @db.Uuid
+  unit_id         String   @db.Uuid
+  label           String // e.g. "Diwali", "New Year", "Summer Peak"
+  start_date      DateTime @db.Date
+  end_date        DateTime @db.Date
+  price_per_night Decimal  @db.Decimal(10, 2) // overrides weekday/weekend during this range
+  is_active       Boolean  @default(true)
+  created_at      DateTime @default(now())
+
+  unit Unit @relation(fields: [unit_id], references: [unit_id])
+
+  @@map("seasonal_pricing")
 }
 
 enum UnityType {

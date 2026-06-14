@@ -37,7 +37,7 @@ body {
 section {
   float: left;
   width: 100%;
-  padding: 50px 0;
+  padding: 60px 0;
 }
 
 .container {
@@ -194,7 +194,7 @@ section {
   }
 }
 
-@media only screen and (max-width: 992px) {
+@media (max-width: 992px) {
   section {
     padding: 30px 0;
   }

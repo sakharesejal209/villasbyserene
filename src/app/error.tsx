@@ -2,11 +2,11 @@
 
 import { Button, Typography } from "@mui/material";
 import { useEffect } from "react";
-import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
+import { IoRefresh as RefreshIcon } from "react-icons/io5";
 
 export default function GlobalError({
   error,
-  reset
+  reset,
 }: Readonly<{
   error: Error & { digest?: string };
   reset: () => void;
@@ -36,7 +36,7 @@ export default function GlobalError({
               onClick={() => reset()}
               className="flex justify-between gap-2 items-center"
             >
-              <RefreshRoundedIcon /> Try again
+              <RefreshIcon /> Try again
             </Button>
           </div>
         </div>

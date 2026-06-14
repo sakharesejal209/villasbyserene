@@ -2,7 +2,7 @@ import React from "react";
 import { SvgIcon, SvgIconProps } from "@mui/material";
 
 const BarTender: React.FC<SvgIconProps> = (props) => (
-  <SvgIcon {...props} viewBox="0 0 500 500" sx={{fontSize: 26}} >
+  <SvgIcon {...props} viewBox="0 0 500 500" sx={{fontSize: 18}} >
     <g
       transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
       fill="currentColor"
