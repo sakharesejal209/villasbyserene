@@ -70,11 +70,11 @@ export const formatINR = (n: number) =>
 
 function getCheckinRate(checkIn: Dayjs, group: UnitGroupDTO) {
   if (group.seasonal_rate) {
-    const s = dayjs(group.seasonal_rate.start_date);
-    const e = dayjs(group.seasonal_rate.end_date);
+    const s = dayjs(group.seasonal_rate.startDate);
+    const e = dayjs(group.seasonal_rate.endDate);
     if (!checkIn.isBefore(s, "day") && !checkIn.isAfter(e, "day"))
       return {
-        price: group.seasonal_rate.price_per_night,
+        price: group.seasonal_rate.pricePerNight,
         label: group.seasonal_rate.label,
         type: "seasonal" as const,
       };
@@ -401,7 +401,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
           {unitGroups.map((g, idx) => {
             const selected = idx === selectedIdx;
             const rate =
-              isDirect && selected && checkinRate
+             selected && checkinRate
                 ? checkinRate.price
                 : (g.pricing?.weekday_price ?? null);
             const rateLabel =
@@ -503,7 +503,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                       variant="outlined"
                       sx={{ fontSize: 10 }}
                     />
-                  ) : isDirect && rate !== null ? (
+                  ) : rate !== null ? (
                     <>
                       <Typography
                         variant="body1"
