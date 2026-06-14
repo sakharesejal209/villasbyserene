@@ -520,7 +520,7 @@ const CancellationPolicyPage = () => {
                 borderColor: "warning.light",
                 borderRadius: 0.5,
                 p: 2,
-                bgcolor: "warning.main" ?? "action.hover",
+                bgcolor: "warning.main",
                 mb: 1,
               }}
             >
