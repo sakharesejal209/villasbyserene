@@ -21,6 +21,7 @@ import { formatINR } from "@/app/components/property/BookingWidget";
 import { FadeInSection } from "../home";
 import Carousel from "@/application/carousel";
 import { SwiperSlide } from "swiper/react";
+import ReadMore from "@/application/readMore";
 
 export const FeaturedVillas = () => {
   const router = useRouter();
@@ -33,7 +34,7 @@ export const FeaturedVillas = () => {
 
   // Fallback to any properties if none are direct
   const display = featured.length > 0 ? featured : properties.slice(0, 4);
-  
+
   function toPropertySlug(name: string, id: string): string {
     return `${name
       .toLowerCase()
@@ -42,10 +43,10 @@ export const FeaturedVillas = () => {
       .replaceAll(/-+/g, "-")
       .trim()}-${id.slice(0, 8)}`;
   }
-  
+
   const handleNavigate = useCallback(
-    
-    (name: string, id: string) => router.push(`/property/${toPropertySlug(name, id)}`),
+    (name: string, id: string) =>
+      router.push(`/property/${toPropertySlug(name, id)}`),
     [router],
   );
 
@@ -217,7 +218,7 @@ export const FeaturedVillas = () => {
                         color="text.secondary"
                         sx={{ mt: -0.5 }}
                       >
-                        {property.area}, {property.state}
+                        {property.city}, {property.state}
                       </Typography>
 
                       {/* Chips */}
@@ -246,7 +247,7 @@ export const FeaturedVillas = () => {
                       <Box
                         sx={{
                           display: "flex",
-                          flexDirection: 'column',
+                          flexDirection: "column",
                           alignItems: "center",
                           justifyContent: "space-between",
                           mt: "auto",
@@ -255,7 +256,7 @@ export const FeaturedVillas = () => {
                           borderColor: "divider",
                         }}
                       >
-                        <Box sx={{width: '100%'}}>
+                        <Box sx={{ width: "100%" }}>
                           {weekdayPrice && (
                             <div className="">
                               <Typography
@@ -283,7 +284,7 @@ export const FeaturedVillas = () => {
                               </Typography>
                             </div>
                           )}
-                          
+
                           {/* // : (
                           //   <Typography variant="body2" color="text.secondary">
                           //     Contact for pricing
@@ -297,7 +298,7 @@ export const FeaturedVillas = () => {
                             e.stopPropagation();
                             handleNavigate(property.name, property.property_id);
                           }}
-                          sx={{width: '100%', mt: '4px'}}
+                          sx={{ width: "100%", mt: "4px" }}
                         >
                           {property.booking_type === "DIRECT"
                             ? "Book Now"

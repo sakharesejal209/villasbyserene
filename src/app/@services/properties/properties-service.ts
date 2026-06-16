@@ -43,10 +43,11 @@ class PropertiesService {
     );
   }
 
-  getPropertyBySlug = (slug: string, checkIn?: string, checkOut?: string) => {
+  getPropertyBySlug = (slug: string, checkIn?: string, checkOut?: string, guests?: number) => {
     const params = new URLSearchParams();
     if (checkIn) params.set("checkIn", checkIn);
     if (checkOut) params.set("checkOut", checkOut);
+    if (guests) params.set("guests", guests.toString());
     const qs = params.toString() ? `?${params.toString()}` : "";
     return httpService<PropertyDetailDTO>().get(
       `/properties/slug/${slug}${qs}`,

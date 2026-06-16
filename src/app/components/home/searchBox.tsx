@@ -50,7 +50,7 @@ const CustomDatePicker = styled(DatePicker)({
 
 const SearchBox = () => {
   const [location, setLocation] = useState<string>("All");
-  const [guests, setGuests] = useState<number>(1);
+  const [guests, setGuests] = useState<number>(6);
   const [checkIn, setCheckIn] = useState<PickerValue>(dayjs());
   const [checkOut, setCheckOut] = useState<PickerValue>(dayjs().add(1, "day"));
 

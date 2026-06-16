@@ -55,8 +55,9 @@ import { IoArrowBackOutline } from "react-icons/io5";
 
 type PropertyPropType = {
   propertyDetails: PropertyDetailDTO;
-  checkIn?: string; // YYYY-MM-DD from URL
-  checkOut?: string; // YYYY-MM-DD from URL
+  checkIn?: string;
+  checkOut?: string;
+  guests?: number;
 };
 
 type CustomSectionProps = { background: string };
@@ -112,6 +113,7 @@ const Property: FC<PropertyPropType> = ({
   propertyDetails,
   checkIn,
   checkOut,
+  guests
 }) => {
   const searchParams = useSearchParams();
 
@@ -180,8 +182,7 @@ const Property: FC<PropertyPropType> = ({
     }
   }, [searchParams]);
 
-  console.log('nearby.length < 3:', nearby.length < 3);
-  
+  console.log("nearby.length < 3:", nearby.length < 3);
 
   return (
     <section>
@@ -534,7 +535,7 @@ const Property: FC<PropertyPropType> = ({
                   }}
                   showDots={false}
                   arrowPosition="outside"
-                  arrowVisibility={nearby.length < 4 ? 'hidden' : 'hover'}
+                  arrowVisibility={nearby.length < 4 ? "hidden" : "hover"}
                 >
                   <>
                     {nearby.map((item) => (
@@ -621,7 +622,8 @@ const Property: FC<PropertyPropType> = ({
                 bookingType={propertyDetails.booking_type}
                 defaultCheckIn={checkIn}
                 defaultCheckOut={checkOut}
-                onStateChange={setWidgetState} // ← add this
+                guests={guests}
+                onStateChange={setWidgetState}
               />
             </Card>
           </div>
@@ -630,7 +632,7 @@ const Property: FC<PropertyPropType> = ({
 
       <Paper className="md:hidden fixed bottom-0 h-fit w-full px-3 py-2 rounded-none! z-50">
         <div className="flex justify-between items-center w-full gap-3">
-          <div className="flex-1 min-w-0">
+          <button onClick={() => setOpenForm(true)}>
             {isDirect && propertyDetails.unit_groups[0]?.pricing ? (
               <div>
                 {/* Show actual quote total if available, else fall back to base rate */}
@@ -649,7 +651,7 @@ const Property: FC<PropertyPropType> = ({
                     color="text.secondary"
                   >
                     {widgetState?.totalPrice && widgetState.nights > 0
-                      ? ` · ${widgetState.nights} night${widgetState.nights !== 1 ? "s" : ""}`
+                      ? ` · ${widgetState.nights} night${widgetState.nights === 1 ? "" : "s"}`
                       : "/night"}
                   </Typography>
                 </Typography>
@@ -659,9 +661,9 @@ const Property: FC<PropertyPropType> = ({
                   <Typography variant="caption" noWrap>
                     {dayjs(widgetState.checkIn).format("DD MMM")}-{" "}
                     {dayjs(widgetState.checkOut).format("DD MMM")}
-                    {` · ${widgetState.adults + widgetState.children} guest${widgetState.adults + widgetState.children !== 1 ? "s" : ""}`}
+                    {` · ${widgetState.adults + widgetState.children} guest${widgetState.adults + widgetState.children === 1 ? "" : "s"}`}
                     {widgetState.infants > 0
-                      ? `, ${widgetState.infants} infant${widgetState.infants !== 1 ? "s" : ""}`
+                      ? `, ${widgetState.infants} infant${widgetState.infants === 1 ? "" : "s"}`
                       : ""}
                   </Typography>
                 ) : (
@@ -683,7 +685,7 @@ const Property: FC<PropertyPropType> = ({
                 )}
               </div>
             )}
-          </div>
+          </button>
           <Button
             variant="contained"
             onClick={() => setOpenForm(true)}

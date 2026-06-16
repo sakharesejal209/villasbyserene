@@ -58,6 +58,7 @@ interface BookingWidgetProps {
   userId?: string;
   defaultCheckIn?: string;
   defaultCheckOut?: string;
+  guests?: number;
   onStateChange?: (state: WidgetState) => void;
 }
 
@@ -164,6 +165,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
   bookingType,
   defaultCheckIn,
   defaultCheckOut,
+  guests,
   onStateChange,
 }) => {
   const theme = useTheme();
@@ -201,12 +203,12 @@ const BookingWidget: FC<BookingWidgetProps> = ({
         : defaultCheckIn
           ? dayjs(defaultCheckIn).add(1, "day")
           : null,
-      adults: 2,
+      adults: guests || 6,
       children: 0,
       infants: 0,
       petCount: 0,
     },
-  });
+  });  
 
   const checkIn = useWatch({ control, name: "checkIn" });
   const checkOut = useWatch({ control, name: "checkOut" });
@@ -215,7 +217,10 @@ const BookingWidget: FC<BookingWidgetProps> = ({
   const infants = useWatch({ control, name: "infants" });
 
   const nights = checkIn && checkOut ? checkOut.diff(checkIn, "day") : 0;
-  const totalPax = adults + children;
+  const totalPax = +adults + +children;
+
+  console.log('totalPax:', totalPax);
+
 
   const checkinRate =
     checkIn && group && hasPricing ? getCheckinRate(checkIn, group) : null;

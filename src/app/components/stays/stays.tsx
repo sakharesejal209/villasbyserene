@@ -70,6 +70,7 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
 
   const checkIn = searchParams.get("checkIn");
   const checkOut = searchParams.get("checkOut");
+  const guests = searchParams.get("guests");
   const nights =
     checkIn && checkOut ? dayjs(checkOut).diff(dayjs(checkIn), "day") : null;
 
@@ -78,6 +79,7 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
     const params = new URLSearchParams();
     if (checkIn) params.set("checkIn", checkIn);
     if (checkOut) params.set("checkOut", checkOut);
+    if (guests) params.set("guests", guests);
     return `/property/${slug}${params.toString() ? `?${params.toString()}` : ""}`;
   };
 
@@ -106,7 +108,7 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
         </Typography>
         <ArrowForward fontSize={10} color={theme.palette.text.disabled} />
         <Typography variant="body2" color="text.secondary">
-          {location === "all"
+          {location === "All"
             ? "All Properties"
             : `Properties in ${toPascalCase(location)}`}
         </Typography>
@@ -119,12 +121,12 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
           justifyContent: "space-between",
           flexWrap: "wrap",
           gap: 1,
-          mb: 3,
+          mb: 2,
         }}
       >
         <Box>
           <Typography variant="h4" fontWeight={800}>
-            {location === "all"
+            {location === "All"
               ? "All Properties"
               : `Properties in ${toPascalCase(location)}`}
           </Typography>
@@ -134,25 +136,27 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
           </Typography>
         </Box>
         {dateLabel && (
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              gap: 0.75,
-              px: 1.5,
-              py: 0.75,
-              borderRadius: 2,
-              border: "1px solid",
-              borderColor: "divider",
-              bgcolor: "action.hover",
-            }}
-          >
-            <CalendarIcon fontSize={15} color={theme.palette.primary.main} />
-            <Typography variant="body2" fontWeight={600}>
-              {dateLabel}
-              {nights && ` · ${nights} night${nights === 1 ? "" : "s"}`}
-            </Typography>
-          </Box>
+          <div className="flex w-full justify-end">
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 0.75,
+                px: 1.5,
+                py: 0.75,
+                borderRadius: 2,
+                border: "1px solid",
+                borderColor: "divider",
+                bgcolor: "action.hover",
+              }}
+            >
+              <CalendarIcon fontSize={15} color={theme.palette.primary.main} />
+              <Typography variant="body2" fontWeight={600}>
+                {dateLabel}
+                {nights && ` · ${nights} night${nights === 1 ? "" : "s"}`}
+              </Typography>
+            </Box>
+          </div>
         )}
       </Box>
 

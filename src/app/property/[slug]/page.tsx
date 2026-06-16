@@ -9,7 +9,7 @@ interface PageProps {
   searchParams: Promise<{
     checkIn?: string;
     checkOut?: string;
-    guests?: string;
+    guests?: number;
   }>;
 }
 
@@ -38,7 +38,7 @@ export async function generateMetadata({
 
 export default async function Page({ params, searchParams }: PageProps) {
   const { slug } = await params;
-  const { checkIn, checkOut } = await searchParams;
+  const { checkIn, checkOut, guests } = await searchParams;
 
   let property;
   try {
@@ -46,6 +46,7 @@ export default async function Page({ params, searchParams }: PageProps) {
       slug,
       checkIn,
       checkOut,
+      guests
     );
   } catch {
     notFound();
@@ -59,6 +60,6 @@ export default async function Page({ params, searchParams }: PageProps) {
     // />
 
 
-    <PropertyContainer slug={slug} checkIn={checkIn} checkOut={checkOut} />
+    <PropertyContainer slug={slug} checkIn={checkIn} checkOut={checkOut} guests={guests} />
   );
 }

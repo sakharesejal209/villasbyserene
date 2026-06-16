@@ -36,7 +36,7 @@ export const ListPropertySection = () => {
   const isDark = theme.palette.mode === "dark";
 
   return (
-    <section>
+    <section className="overflow-x-hidden">
       <div className="container">
         <FadeInSection>
           <div className="grid lg:grid-cols-2 gap-10 md:gap-16 items-center">

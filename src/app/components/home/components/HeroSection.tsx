@@ -2,7 +2,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { motion, useScroll, useTransform } from "motion/react";
 import { useTheme } from "@mui/material";
 import SearchBox from "../searchBox";
@@ -196,9 +196,6 @@ export const HeroSection = () => {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.7 + i * 0.08, duration: 0.4 }}
                   style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
                     background: "rgba(255,255,255,0.12)",
                     backdropFilter: "blur(8px)",
                     border: "1px solid rgba(255,255,255,0.2)",
@@ -206,19 +203,25 @@ export const HeroSection = () => {
                     padding: "4px 12px",
                   }}
                 >
-                  <span
-                    style={{ color: "#fff", fontWeight: 700, fontSize: 13 }}
+                  <div
+                    style={{
+                      color: "#fff",
+                      fontWeight: 700,
+                      fontSize: 13,
+                      textAlign: "center",
+                    }}
                   >
                     {stat.value}
-                  </span>
-                  <span
-                    style={{
+                  </div>
+                  <Box
+                    sx={{
                       color: "rgba(255,255,255,0.75)",
-                      fontSize: 12,
+                      fontSize: { md: 12, xs: 10 },
+                      textAlign: "center",
                     }}
                   >
                     {stat.label}
-                  </span>
+                  </Box>
                 </motion.div>
               ))}
             </motion.div>

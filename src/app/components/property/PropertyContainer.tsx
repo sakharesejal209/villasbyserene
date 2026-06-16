@@ -11,20 +11,21 @@ interface Props {
   slug: string;
   checkIn?: string;
   checkOut?: string;
+  guests?: number;
 }
 
-export default function PropertyContainer({ slug, checkIn, checkOut }: Readonly<Props>) {
+export default function PropertyContainer({ slug, checkIn, checkOut, guests }: Readonly<Props>) {
   const router = useRouter();
   const [property, setProperty] = useState<PropertyDetailDTO | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     propertiesService
-      .getPropertyBySlug(slug, checkIn, checkOut)
+      .getPropertyBySlug(slug, checkIn, checkOut, guests)
       .then(setProperty)
       .catch(() => router.replace("/404"))
       .finally(() => setLoading(false));
-  }, [slug, checkIn, checkOut, router]);
+  }, [slug, checkIn, checkOut, router, guests]);
 
   if (loading)
     return (
@@ -40,6 +41,7 @@ export default function PropertyContainer({ slug, checkIn, checkOut }: Readonly<
       propertyDetails={property}
       checkIn={checkIn}
       checkOut={checkOut}
+      guests={guests}
     />
   );
 }
