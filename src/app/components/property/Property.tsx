@@ -661,7 +661,7 @@ const Property: FC<PropertyPropType> = ({
                   <Typography variant="caption" noWrap>
                     {dayjs(widgetState.checkIn).format("DD MMM")}-{" "}
                     {dayjs(widgetState.checkOut).format("DD MMM")}
-                    {` · ${widgetState.adults + widgetState.children} guest${widgetState.adults + widgetState.children === 1 ? "" : "s"}`}
+                    {` · ${+widgetState.adults + +widgetState.children} guest${widgetState.adults + widgetState.children === 1 ? "" : "s"}`}
                     {widgetState.infants > 0
                       ? `, ${widgetState.infants} infant${widgetState.infants === 1 ? "" : "s"}`
                       : ""}
