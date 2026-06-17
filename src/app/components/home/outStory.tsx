@@ -84,8 +84,8 @@ export const AboutPage = () => {
         {/* Hero Section */}
         <div className="">
           <FadeInSection>
-            <div className="grid lg:grid-cols-2 gap-2 md:gap-10 items-center">
-              <div className="md:pl-10 md:py-10">
+            <div className="grid lg:grid-cols-2 gap-2 md:gap-0 items-center">
+              <div className="md:p-6">
                 <Typography variant="h3">
                   Welcome to
                   <Typography
@@ -93,21 +93,22 @@ export const AboutPage = () => {
                     color={
                       theme.palette.mode == "light" ? "primary" : "secondary"
                     }
-                    className="!inline-block !ml-2"
+                    className="inline-block! ml-2!"
                   >
                     Villas by Serene
                   </Typography>
                 </Typography>
-                <Typography className="!text-xl !my-4">
+                <Typography variant="h5" className="my-3!">
                   Where every stay feels like home, and every moment is crafted
                   with care.
                 </Typography>
-                <div className="flex items-center my-4">
+                <div className="flex items-center">
                   <MapPin
+                  size={18}
                     color={
                       theme.palette.mode == "light" ? "primary" : "secondary"
                     }
-                    className="w-5 h-5"
+                    // className="w-5 h-5"
                   />
                   <Typography
                     color={
@@ -185,27 +186,27 @@ export const AboutPage = () => {
             </div>
             <div className="grid grid-cols-6 gap-4 md:gap-12 items-center mb-4 md:mb-10">
               <div className="col-span-6 md:col-span-4">
-                <Typography className="!block !my-4 !text-lg">
+                <Typography className="block! my-4!">
                   At Villas by Serene, our purpose is simple, to serve people
                   and offer them unforgettable stays in serene, unexplored
                   villas that are often hidden from the mainstream. We believe
                   that a stay should feel like home, not a commercial
                   transaction.
                 </Typography>
-                <Typography className="!block !my-4 !text-lg">
+                <Typography className="lock!! my-4!">
                   Our journey began from a very personal space. I have always
                   loved traveling, but one thing was always missing. A place
                   that felt personal, warm, and truly my own, a place I could
                   call home away from home!
                 </Typography>
-                <Typography className="!block !my-4 !text-lg">
+                <Typography className="block! my-4!">
                   That&apos;s when the thought struck: why not build something
                   where our guests could feel the same? With the right people,
                   the right mindset, and some truly{" "}
                   <span className="italic">khubsurat</span> properties, Villas
                   by Serene was born.
                 </Typography>
-                <Typography className="!block !my-4 !text-lg">
+                <Typography className="block! my-4!">
                   We carefully curate boutique and homely properties, each
                   thoughtfully designed to offer a hint of luxury while
                   remaining approachable and affordable. Every property comes
@@ -242,7 +243,7 @@ export const AboutPage = () => {
             <Typography variant="h4" className="!mb-3 text-center">
               What Drives Us
             </Typography>
-            <Typography className="text-xl w-full text-center">
+            <Typography variant="h5" className="w-full text-center">
               Our values guide every decision we make and every experience we
               create
             </Typography>
@@ -254,7 +255,7 @@ export const AboutPage = () => {
                     <div className="p-6 flex justify-center items-center flex-col">
                       <Box
                         sx={{
-                          background: theme.palette.primary.light,
+                          background: theme.palette.grey[600],
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -286,7 +287,7 @@ export const AboutPage = () => {
           <FadeInSection>
             <div className="max-w-4xl mx-auto text-center">
               <Typography variant="h4">Our Vision</Typography>
-              <Typography className="!text-xl !mt-4">
+              <Typography className="mt-4!">
                 Our vision is to take this experience global, to connect people
                 with hidden gems, bring a sense of belonging, and make luxurious
                 escapes accessible to everyone. At Villas by Serene, we invite
@@ -308,13 +309,13 @@ export const AboutPage = () => {
           <Typography variant="h5" className="text-center !mb-1">
             Ready to Experience Serenity?
           </Typography>
-          <Typography className="!text-xl !mb-8 opacity-90 text-center">
+          <Typography className="mb-8! opacity-90 text-center">
             Discover our carefully curated collection of villas and find your
             perfect home away from home.
           </Typography>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
-              size="large"
+              // size="large"
               variant="contained"
               onClick={() => router.push("/stays/all?guests=1")}
             >
@@ -323,7 +324,7 @@ export const AboutPage = () => {
             <Button
               variant="outlined"
               color="secondary"
-              size="large"
+              // size="large"
               onClick={() => router.push("/contact")}
             >
               Get in Touch

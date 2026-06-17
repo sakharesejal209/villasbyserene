@@ -414,9 +414,9 @@ const ProfilePage: FC = () => {
             ) : bookings.length === 0 ? (
               <Box sx={{ textAlign: "center", py: 6 }}>
                 <HomeIcon
-                  fontSize={48}
+                  fontSize={36}
                   color={theme.palette.text.disabled}
-                  className="mb-1"
+                  className="m-auto"
                 />
                 <Typography variant="h6" color="text.secondary">
                   No trips yet
@@ -506,7 +506,7 @@ const ProfilePage: FC = () => {
             <Typography variant="subtitle1" fontWeight={700}>
               Personal Details
             </Typography>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-3 gap-4">
               <Controller
                 name="full_name"
                 control={control}
@@ -515,6 +515,7 @@ const ProfilePage: FC = () => {
                   <TextField
                     {...field}
                     label="Full name"
+                    size="small"
                     fullWidth
                     error={!!errors.full_name}
                     helperText={errors.full_name?.message}
@@ -523,6 +524,7 @@ const ProfilePage: FC = () => {
               />
               <TextField
                 label="Email"
+                size="small"
                 value={user.email ?? ""}
                 fullWidth
                 disabled
@@ -541,6 +543,7 @@ const ProfilePage: FC = () => {
                   <TextField
                     {...field}
                     label="Phone number"
+                    size="small"
                     fullWidth
                     placeholder="10-digit mobile number"
                     error={!!errors.phone}
@@ -561,16 +564,16 @@ const ProfilePage: FC = () => {
             <Button
               type="submit"
               variant="contained"
-              size="large"
+              size="small"
               disabled={saving}
               startIcon={
                 saving ? (
                   <CircularProgress size={18} color="inherit" />
                 ) : (
-                  <LockOutlined />
+                  <LockOutlined size={18} />
                 )
               }
-              sx={{ alignSelf: "flex-end", px: 4 }}
+              sx={{ alignSelf: "flex-end" }}
             >
               {saving ? "Saving..." : "Save Changes"}
             </Button>

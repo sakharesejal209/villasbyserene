@@ -2,7 +2,6 @@
 
 import {
   Box,
-  Container,
   Divider,
   Paper,
   Table,
@@ -54,7 +53,12 @@ const SectionHeading = ({
   title: string;
 }) => (
   <Box id={id} sx={{ pt: 1, mb: 1.5, scrollMarginTop: 80 }}>
-    <Typography variant="h5" fontWeight={700} color="primary">
+    <Typography
+      variant="h5"
+      fontWeight={700}
+      color="primary"
+      sx={{ fontSize: { xs: "1.15rem", md: "1.5rem" } }}
+    >
       {number}. {title}
     </Typography>
   </Box>
@@ -64,7 +68,7 @@ const SubHeading = ({ title }: { title: string }) => (
   <Typography
     variant="subtitle1"
     fontWeight={700}
-    sx={{ mt: 2.5, mb: 0.75 }}
+    sx={{ mt: 2.5, mb: 0.75, fontSize: { xs: "0.95rem", md: "1rem" } }}
     color="text.primary"
   >
     {title}
@@ -72,24 +76,139 @@ const SubHeading = ({ title }: { title: string }) => (
 );
 
 const BodyText = ({ children }: { children: React.ReactNode }) => (
-  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-    {children}
-  </Typography>
+  <Typography sx={{ mb: 1 }}>{children}</Typography>
 );
 
 const BulletItem = ({ text }: { text: string }) => (
   <Box sx={{ display: "flex", gap: 1.5, mb: 0.75, alignItems: "flex-start" }}>
-    <Typography
-      variant="body2"
-      color="primary"
-      sx={{ mt: "1px", flexShrink: 0 }}
-    >
+    <Typography color="primary" sx={{ mt: "1px", flexShrink: 0 }}>
       —
     </Typography>
-    <Typography variant="body2" color="text.secondary">
-      {text}
-    </Typography>
+    <Typography sx={{ minWidth: 0 }}>{text}</Typography>
   </Box>
+);
+
+// ── Mobile-friendly stacked cards for cancellation table ──────────
+
+const CancellationScheduleCards = () => {
+  const rows = [
+    {
+      window: "21+ days before check-in",
+      refund: "100% of total paid",
+      time: "5–7 business days",
+    },
+    {
+      window: "14–20 days before check-in",
+      refund: "50% of total paid",
+      time: "5–7 business days",
+    },
+    { window: "Within 14 days of check-in", refund: "No refund", time: "—" },
+    { window: "No-show", refund: "No refund", time: "—" },
+  ];
+  return (
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 1.25, mb: 3 }}>
+      {rows.map((r, i) => (
+        <Paper
+          key={i}
+          elevation={0}
+          sx={{
+            border: "1px solid",
+            borderColor: "divider",
+            borderRadius: 0.5,
+            p: 2,
+            bgcolor: i % 2 === 0 ? "background.paper" : "action.hover",
+          }}
+        >
+          <Typography fontWeight={700} sx={{ mb: 1 }}>
+            {r.window}
+          </Typography>
+          <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 1 }}>
+            <Box>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                display="block"
+              >
+                Refund
+              </Typography>
+              <Typography variant="body2">{r.refund}</Typography>
+            </Box>
+            <Box>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                display="block"
+              >
+                Processing time
+              </Typography>
+              <Typography variant="body2">{r.time}</Typography>
+            </Box>
+          </Box>
+        </Paper>
+      ))}
+    </Box>
+  );
+};
+
+const CancellationScheduleTable = () => (
+  <TableContainer
+    component={Paper}
+    elevation={0}
+    sx={{
+      border: "1px solid",
+      borderColor: "divider",
+      borderRadius: 0.5,
+      mb: 3,
+    }}
+  >
+    <Table size="small">
+      <TableHead>
+        <TableRow sx={{ bgcolor: "primary.main" }}>
+          {["Cancellation window", "Refund", "Processing time"].map((h) => (
+            <TableCell className="p-1" key={h}>
+              <Typography
+                variant="caption"
+                fontWeight={700}
+                color="primary.contrastText"
+              >
+                {h}
+              </Typography>
+            </TableCell>
+          ))}
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {[
+          [
+            "21+ days before check-in",
+            "100% of total paid",
+            "5–7 business days",
+          ],
+          [
+            "14–20 days before check-in",
+            "50% of total paid",
+            "5–7 business days",
+          ],
+          ["Within 14 days of check-in", "No refund", "—"],
+          ["No-show", "No refund", "—"],
+        ].map((row, i) => (
+          <TableRow
+            key={i}
+            className="p-1"
+            sx={{
+              bgcolor: i % 2 === 0 ? "background.paper" : "action.hover",
+            }}
+          >
+            {row.map((cell, j) => (
+              <TableCell key={j}>
+                <Typography>{cell}</Typography>
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
 );
 
 // ── Main page ─────────────────────────────────────────────────────
@@ -104,17 +223,24 @@ const TermsPage = () => {
     <section>
       <div className="container">
         {/* ── Page header ─────────────────────────────────────── */}
-        <Box sx={{ my: 3 }}>
+        <Box sx={{ my: { xs: 2, md: 3 } }}>
           <Typography variant="overline" color="primary" fontWeight={700}>
             Legal
           </Typography>
-          <Typography variant="h3" fontWeight={800} sx={{ mt: 0.5, mb: 1 }}>
+          <Typography
+            variant="h4"
+            fontWeight={800}
+            sx={{
+              mt: 0.5,
+              mb: 1,
+            }}
+          >
             Terms & Conditions
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography>
             VBS Hospitality Private Limited · villasbyserene.com
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography>
             Effective: 1 June 2025 · Last updated: June 2025
           </Typography>
         </Box>
@@ -123,7 +249,7 @@ const TermsPage = () => {
           sx={{
             display: "grid",
             gridTemplateColumns: { xs: "1fr", md: "260px 1fr" },
-            gap: 5,
+            gap: { xs: 3, md: 5 },
             alignItems: "start",
           }}
         >
@@ -155,7 +281,6 @@ const TermsPage = () => {
                 <Typography
                   variant="caption"
                   fontWeight={700}
-                  color="text.secondary"
                   sx={{ textTransform: "uppercase", letterSpacing: 0.8 }}
                 >
                   Contents
@@ -184,9 +309,7 @@ const TermsPage = () => {
                     >
                       {s.number}
                     </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      {s.title}
-                    </Typography>
+                    <Typography variant="caption">{s.title}</Typography>
                   </Box>
                 ))}
               </Box>
@@ -194,7 +317,7 @@ const TermsPage = () => {
           </Box>
 
           {/* ── Content ──────────────────────────────────────── */}
-          <Box>
+          <Box sx={{ minWidth: 0 }}>
             {/* 1. About Us */}
             <SectionHeading id="about" number="1" title="About Us" />
             <BodyText>
@@ -213,7 +336,7 @@ const TermsPage = () => {
             <BodyText>
               For support: villasbyserene@gmail.com · WhatsApp: +91 95943 77736
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 2. Acceptance */}
             <SectionHeading
@@ -235,7 +358,7 @@ const TermsPage = () => {
               version in effect at the time of your booking confirmation governs
               that booking.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 3. Bookings */}
             <SectionHeading
@@ -281,7 +404,7 @@ const TermsPage = () => {
               additional charges at the property. The declared guest count must
               not exceed the maximum occupancy stated in the property listing.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 4. Pricing */}
             <SectionHeading
@@ -326,7 +449,7 @@ const TermsPage = () => {
               reattempt or contact us. Villas By Serene is not liable for
               unavailability of dates arising from a failed payment.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 5. Cancellation */}
             <SectionHeading
@@ -341,7 +464,7 @@ const TermsPage = () => {
                 border: "1px solid",
                 borderColor: "primary.main",
                 borderRadius: 0.5,
-                p: 2.5,
+                p: { xs: 2, sm: 2.5 },
                 mb: 3,
                 bgcolor: "action.hover",
               }}
@@ -354,74 +477,19 @@ const TermsPage = () => {
               >
                 Standard Cancellation Policy
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography>
                 All refunds are calculated on the total amount paid inclusive of
                 taxes and fees.
               </Typography>
             </Paper>
 
-            <TableContainer
-              component={Paper}
-              elevation={0}
-              sx={{
-                border: "1px solid",
-                borderColor: "divider",
-                borderRadius: 0.5,
-                mb: 3,
-              }}
-            >
-              <Table size="small">
-                <TableHead>
-                  <TableRow sx={{ bgcolor: "primary.main" }}>
-                    {["Cancellation window", "Refund", "Processing time"].map(
-                      (h) => (
-                        <TableCell key={h}>
-                          <Typography
-                            variant="caption"
-                            fontWeight={700}
-                            color="primary.contrastText"
-                          >
-                            {h}
-                          </Typography>
-                        </TableCell>
-                      ),
-                    )}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {[
-                    [
-                      "21+ days before check-in",
-                      "100% of total paid",
-                      "5–7 business days",
-                    ],
-                    [
-                      "14–20 days before check-in",
-                      "50% of total paid",
-                      "5–7 business days",
-                    ],
-                    ["Within 14 days of check-in", "No refund", "—"],
-                    ["No-show", "No refund", "—"],
-                  ].map((row, i) => (
-                    <TableRow
-                      key={i}
-                      sx={{
-                        bgcolor:
-                          i % 2 === 0 ? "background.paper" : "action.hover",
-                      }}
-                    >
-                      {row.map((cell, j) => (
-                        <TableCell key={j}>
-                          <Typography variant="body2" color="text.secondary">
-                            {cell}
-                          </Typography>
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            {/* Mobile: stacked cards. Desktop: table */}
+            <Box sx={{ display: { xs: "block", sm: "none" } }}>
+              <CancellationScheduleCards />
+            </Box>
+            <Box sx={{ display: { xs: "none", sm: "block" } }}>
+              <CancellationScheduleTable />
+            </Box>
 
             <SubHeading title="5.1  How to Cancel" />
             <BodyText>
@@ -472,7 +540,7 @@ const TermsPage = () => {
               for consequential losses such as travel costs or other bookings
               made in anticipation of your stay.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 6. Check-in */}
             <SectionHeading
@@ -489,7 +557,7 @@ const TermsPage = () => {
             ].map((t, i) => (
               <BulletItem key={i} text={t} />
             ))}
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 7. Conduct */}
             <SectionHeading
@@ -559,7 +627,7 @@ const TermsPage = () => {
                 border: "1px solid",
                 borderColor: "error.light",
                 borderRadius: 0.5,
-                p: 2,
+                p: { xs: 1.5, sm: 2 },
                 mb: 1.5,
                 bgcolor: "error.50",
               }}
@@ -620,7 +688,7 @@ const TermsPage = () => {
               emergency, and at reasonable notice for maintenance or inspection
               purposes.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 8. Liability */}
             <SectionHeading
@@ -694,7 +762,7 @@ const TermsPage = () => {
               supersede any prior verbal representations made by our staff or
               agents.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 9. Insurance */}
             <SectionHeading
@@ -710,7 +778,7 @@ const TermsPage = () => {
               insurance and is not responsible for losses that would have been
               covered by such insurance.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 10. Privacy */}
             <SectionHeading id="privacy" number="10" title="Privacy & Data" />
@@ -729,7 +797,7 @@ const TermsPage = () => {
               communications sent via WhatsApp constitute valid written notice
               under these Terms.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 11. IP */}
             <SectionHeading id="ip" number="11" title="Intellectual Property" />
@@ -740,7 +808,7 @@ const TermsPage = () => {
               reproduced, redistributed, or used for commercial purposes without
               prior written consent.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 12. OTA */}
             <SectionHeading
@@ -756,7 +824,7 @@ const TermsPage = () => {
               terms will prevail for that booking. These Terms continue to
               govern guest conduct, property use, and all on-property matters.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 13. Disputes */}
             <SectionHeading
@@ -775,7 +843,7 @@ const TermsPage = () => {
               the exclusive jurisdiction of the courts at Navi Mumbai,
               Maharashtra, India.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 14. Amendments */}
             <SectionHeading id="amendments" number="14" title="Amendments" />
@@ -786,7 +854,7 @@ const TermsPage = () => {
               made prior to any update remain governed by the Terms in force at
               the time of booking confirmation.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 15. Contact */}
             <SectionHeading id="contact" number="15" title="Contact Us" />
@@ -810,24 +878,29 @@ const TermsPage = () => {
                   key={row.label}
                   sx={{
                     display: "flex",
-                    px: 2.5,
+                    flexDirection: { xs: "column", sm: "row" },
+                    px: { xs: 2, sm: 2.5 },
                     py: 1.5,
-                    gap: 3,
-                    alignItems: "baseline",
+                    gap: { xs: 0.25, sm: 3 },
+                    alignItems: { xs: "flex-start", sm: "baseline" },
                     borderTop: i === 0 ? "none" : "1px solid",
                     borderColor: "divider",
                     bgcolor: i % 2 === 0 ? "background.paper" : "action.hover",
                   }}
                 >
                   <Typography
-                    variant="body2"
                     fontWeight={700}
-                    color="text.secondary"
-                    sx={{ minWidth: 100 }}
+                    sx={{ width: { xs: "auto", sm: "20%" }, flexShrink: 0 }}
                   >
                     {row.label}
                   </Typography>
-                  <Typography variant="body2" color="text.primary">
+                  <Typography
+                    sx={{
+                      width: { xs: "auto", sm: "80%" },
+                      wordBreak: "break-word",
+                    }}
+                    color="text.primary"
+                  >
                     {row.value}
                   </Typography>
                 </Box>
@@ -842,7 +915,7 @@ const TermsPage = () => {
                 borderColor: "divider",
               }}
             >
-              <Typography variant="caption" color="text.secondary">
+              <Typography variant="caption">
                 © 2025 VBS Hospitality Private Limited. All rights reserved.
               </Typography>
             </Box>

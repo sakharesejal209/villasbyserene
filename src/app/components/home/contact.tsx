@@ -105,9 +105,9 @@ const Contact = () => {
 
   return (
     <CustomSection>
-      <div className="py-8">
+      <div className="py-10">
         <div className="container">
-          <div className="flex flex-col justify-center items-center mb-8 md:mb-12 text-white">
+          <div className="flex flex-col justify-center items-center mb-8 md:mb-8 text-white">
             <Typography variant="h3" className="mb-4">
               Contact Us
             </Typography>

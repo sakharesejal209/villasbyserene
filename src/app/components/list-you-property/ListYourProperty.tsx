@@ -197,7 +197,7 @@ const ListYourProperty = () => {
               <Typography variant="h4" className="mb-2!">
                 Managing a villa can be overwhelming
               </Typography>
-              <Typography className="w-full block md:w-[75%] text-lg! text-center">
+              <Typography className="w-full block md:w-[75%] text-center">
                 Staffing, guest communication, marketing, upkeep… the list never
                 ends. That&apos;s where we step in.
               </Typography>
@@ -272,7 +272,7 @@ const ListYourProperty = () => {
                           }}
                           className={`w-14 h-14 rounded-sm flex items-center justify-center mb-6`}
                         >
-                          <IconComponent color="primary" />
+                          <IconComponent size={20} color="primary" />
                         </Box>
                         <Typography variant="h5" className="mb-4!">
                           {service.title}
@@ -296,7 +296,7 @@ const ListYourProperty = () => {
               <Typography variant="h4" className="mb-2!">
                 Simple 3-Step Process
               </Typography>
-              <Typography className="text-lg! text-center block">
+              <Typography variant="button" className="text-center block">
                 Getting started is easy. We&apos;ll handle the complex stuff so
                 you can focus on earning.
               </Typography>
@@ -316,20 +316,20 @@ const ListYourProperty = () => {
                             }}
                             className="w-20 h-20 flex items-center rounded-sm justify-center mx-auto mb-4"
                           >
-                            <IconComponent fontSize="large" />
+                            <IconComponent size={24} />
                           </Box>
                           <Box
                             sx={{
                               border: `2px solid ${theme.palette.primary.main}`,
                               position: "absolute",
-                              right: "-8px",
-                              top: "-8px",
+                              right: `calc(50% - 48px)`,
+                              top: "-10px",
                               borderRadius: "100%",
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "center",
                             }}
-                            className={`w-6 md:w-8 h-6 md:h-8 shadow-lg`}
+                            className={`w-6 md:w-8 h-6 md:h-8 shadow-sm`}
                           >
                             <Box
                               sx={{ color: theme.palette.primary.main }}
@@ -365,7 +365,7 @@ const ListYourProperty = () => {
               <div className="flex justify-center items-left flex-col">
                 <Typography
                   variant="h4"
-                  className="md:mb-6! text-center md:text-left"
+                  className="md:mb-4! text-center md:text-left"
                 >
                   Your Success Is Our Priority
                 </Typography>
@@ -373,9 +373,9 @@ const ListYourProperty = () => {
                   {benefits.map((benefit, index) => (
                     <div key={index} className="flex items-center my-4 gap-2">
                       <div className="w-6 h-6 flex items-center justify-center">
-                        <CheckCircle color="primary" />
+                        <CheckCircle size={20} color="primary" />
                       </div>
-                      <span className="text-lg">{benefit}</span>
+                      <Typography variant="h6">{benefit}</Typography>
                     </div>
                   ))}
                 </div>
@@ -399,7 +399,7 @@ const ListYourProperty = () => {
 
       {/* CTA Section */}
       <div
-        className={`text-white p-6 my-14
+        className={`text-white p-6 mt-14
         ${
           theme.palette.mode == "light"
             ? "bg-linear-to-r from-(--cta-light) to-[color-mix(in_oklab,var(--cta-light)_80%,transparent)]"
@@ -419,19 +419,17 @@ const ListYourProperty = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
                   variant="contained"
-                  className="text-xl px-10 py-4"
                   onClick={() => router.push("/contact")}
                 >
-                  <Home className="w-6 h-6 mr-3" />
                   List Your Property Today
-                  <ArrowRight className="w-6 h-6 ml-3" />
+                  <ArrowRight size={24} />
                 </Button>
 
                 <a href={`tel:${contactNumber}`}>
                   <Button
                     variant="outlined"
                     color="secondary"
-                    className="text-xl px-10 py-4 border-white text-white hover:bg-white hover:text-primary"
+                    className="border-white text-white hover:bg-white hover:text-primary"
                   >
                     <Phone className="w-6 h-6 mr-3" />
                     Call Us Now

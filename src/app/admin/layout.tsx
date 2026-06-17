@@ -33,6 +33,9 @@ import Image from "next/image";
 import logoLight from "../../../public/assets/villasbyserene-dark.png";
 import logoDark from "../../../public/assets/villasbyserene-light.png";
 import { useThemeContext } from "@/context/ThemeContext";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+dayjs.extend(relativeTime);
 
 const DRAWER_WIDTH = 240;
 
@@ -43,7 +46,7 @@ const navItems = [
 
     path: "/admin/calendar",
   },
-  // { label: "iCal Sync", path: "/admin/ical" },
+  { label: "iCal Sync", path: "/admin/ical" },
   { label: "Properties", path: "/admin/properties" },
   { label: "Quotation", path: "/admin/quotation" },
 ];
@@ -110,6 +113,7 @@ export default function AdminLayout({
               src={mode === "light" ? logoLight : logoDark}
             />
           </Link>
+
           <div className="flex justify-between items-center w-full">
             <Typography variant="caption" color="text.secondary">
               Admin Panel
@@ -206,19 +210,19 @@ export default function AdminLayout({
             bgcolor: "background.paper",
           }}
         >
-          <Toolbar>
-            <IconButton
-              edge="start"
-              onClick={() => setMobileOpen(true)}
-              sx={{ mr: 1 }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <div>
-              <Typography variant="subtitle1" fontWeight={800} color="primary">
-                Admin Panel
-              </Typography>
-              {/* Theme toggle in mobile appbar */}
+          <Toolbar sx={{ justifyContent: "space-between", width: "100%" }}>
+            <Typography variant="subtitle1" fontWeight={800} color="primary">
+              Admin Panel
+            </Typography>
+            {/* Theme toggle in mobile appbar */}
+            <div className="flex gap-1 items-center">
+              <IconButton
+                edge="start"
+                onClick={() => setMobileOpen(true)}
+                sx={{ mr: 1 }}
+              >
+                <MenuIcon />
+              </IconButton>
               <IconButton onClick={toggleTheme} sx={{ ml: "auto" }}>
                 {mode === "dark" ? (
                   <SunIcon fontSize={20} />

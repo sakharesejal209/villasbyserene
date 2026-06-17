@@ -2,7 +2,6 @@
 
 import {
   Box,
-  Container,
   Divider,
   Paper,
   Table,
@@ -21,15 +20,11 @@ import {
   IoLogoWhatsapp as WhatsAppIcon,
 } from "react-icons/io5";
 
-// ── Types ─────────────────────────────────────────────────────────
-
 interface Section {
   id: string;
   number: string;
   title: string;
 }
-
-// ── TOC ───────────────────────────────────────────────────────────
 
 const sections: Section[] = [
   { id: "overview", number: "1", title: "Policy Overview" },
@@ -39,17 +34,14 @@ const sections: Section[] = [
   { id: "no-show", number: "5", title: "No-Show & Early Departure" },
   { id: "partial-payments", number: "6", title: "Partial Payments" },
   { id: "modifications", number: "7", title: "Date Modifications" },
-  { id: "force-majeure", number: "8", title: "Force Majeure" },
   {
     id: "vbs-cancellation",
-    number: "9",
+    number: "8",
     title: "Cancellation by Villas By Serene",
   },
-  { id: "ota-bookings", number: "10", title: "OTA Bookings" },
-  { id: "contact", number: "11", title: "Contact Us" },
+  { id: "ota-bookings", number: "9", title: "OTA Bookings" },
+  { id: "contact", number: "10", title: "Contact Us" },
 ];
-
-// ── Sub-components ────────────────────────────────────────────────
 
 const SectionHeading = ({
   id,
@@ -61,7 +53,12 @@ const SectionHeading = ({
   title: string;
 }) => (
   <Box id={id} sx={{ pt: 1, mb: 1.5, scrollMarginTop: 80 }}>
-    <Typography variant="h5" fontWeight={700} color="primary">
+    <Typography
+      variant="h5"
+      fontWeight={700}
+      color="primary"
+      sx={{ fontSize: { xs: "1.15rem", md: "1.5rem" } }}
+    >
       {number}. {title}
     </Typography>
   </Box>
@@ -88,8 +85,6 @@ const BulletItem = ({ text }: { text: string }) => (
   </Box>
 );
 
-// ── Refund tier card ──────────────────────────────────────────────
-
 const RefundTierCard = ({
   icon,
   window,
@@ -113,7 +108,7 @@ const RefundTierCard = ({
       border: "1px solid",
       borderColor,
       borderRadius: 0.5,
-      p: 2.5,
+      p: { xs: 2, sm: 2.5 },
       bgcolor: bgColor,
       display: "flex",
       flexDirection: "column",
@@ -124,7 +119,12 @@ const RefundTierCard = ({
       <Box sx={{ color, fontSize: 22, display: "flex", alignItems: "center" }}>
         {icon}
       </Box>
-      <Typography variant="h6" fontWeight={800} color={color}>
+      <Typography
+        variant="h6"
+        fontWeight={800}
+        color={color}
+        sx={{ fontSize: { xs: "1.05rem", sm: "1.25rem" } }}
+      >
         {refund}
       </Typography>
     </Box>
@@ -136,8 +136,6 @@ const RefundTierCard = ({
     </Typography>
   </Paper>
 );
-
-// ── Step card ─────────────────────────────────────────────────────
 
 const StepCard = ({
   number,
@@ -167,7 +165,7 @@ const StepCard = ({
         {number}
       </Typography>
     </Box>
-    <Box>
+    <Box sx={{ minWidth: 0 }}>
       <Typography
         variant="body2"
         fontWeight={700}
@@ -183,7 +181,282 @@ const StepCard = ({
   </Box>
 );
 
-// ── Main page ─────────────────────────────────────────────────────
+// ── Mobile-friendly stacked cards for tables ─────────────────────
+// Replaces horizontally-scrolling tables on small screens
+
+const RefundScheduleCards = () => {
+  const rows = [
+    {
+      window: "21+ days before check-in",
+      refund: "100% of total paid",
+      time: "5–7 business days",
+      method: "Original payment method",
+    },
+    {
+      window: "14–20 days before check-in",
+      refund: "50% of total paid",
+      time: "5–7 business days",
+      method: "Original payment method",
+    },
+    {
+      window: "Within 14 days of check-in",
+      refund: "No refund",
+      time: "—",
+      method: "—",
+    },
+    {
+      window: "No-show (no cancellation notice)",
+      refund: "No refund",
+      time: "—",
+      method: "—",
+    },
+    {
+      window: "Early departure",
+      refund: "No refund for unused nights",
+      time: "—",
+      method: "—",
+    },
+  ];
+  return (
+    <Box
+      sx={{ display: "flex", flexDirection: "column", gap: 1.25, mb: 3, mt: 2 }}
+    >
+      {rows.map((r, i) => (
+        <Paper
+          key={i}
+          elevation={0}
+          sx={{
+            border: "1px solid",
+            borderColor: "divider",
+            borderRadius: 0.5,
+            p: 2,
+            bgcolor: i % 2 === 0 ? "background.paper" : "action.hover",
+          }}
+        >
+          <Typography variant="body2" fontWeight={700} sx={{ mb: 1 }}>
+            {r.window}
+          </Typography>
+          <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 1 }}>
+            <Box>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                display="block"
+              >
+                Refund
+              </Typography>
+              <Typography variant="body2">{r.refund}</Typography>
+            </Box>
+            <Box>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                display="block"
+              >
+                Processing time
+              </Typography>
+              <Typography variant="body2">{r.time}</Typography>
+            </Box>
+            <Box sx={{ gridColumn: "1 / -1" }}>
+              <Typography
+                variant="caption"
+                color="text.secondary"
+                display="block"
+              >
+                Method
+              </Typography>
+              <Typography variant="body2">{r.method}</Typography>
+            </Box>
+          </Box>
+        </Paper>
+      ))}
+    </Box>
+  );
+};
+
+const OtaPlatformCards = () => {
+  const rows = [
+    {
+      platform: "Airbnb",
+      policy: "Governed by Airbnb's cancellation policy selected at listing",
+      contact: "Airbnb Help Centre",
+    },
+    {
+      platform: "MakeMyTrip",
+      policy: "Governed by MakeMyTrip's cancellation terms",
+      contact: "MakeMyTrip customer support",
+    },
+    {
+      platform: "villasbyserene.com",
+      policy: "This policy applies in full",
+      contact: "villasbyserene@gmail.com",
+    },
+  ];
+  return (
+    <Box
+      sx={{ display: "flex", flexDirection: "column", gap: 1.25, mt: 2, mb: 2 }}
+    >
+      {rows.map((r, i) => (
+        <Paper
+          key={i}
+          elevation={0}
+          sx={{
+            border: "1px solid",
+            borderColor: "divider",
+            borderRadius: 0.5,
+            p: 2,
+            bgcolor: i % 2 === 0 ? "background.paper" : "action.hover",
+          }}
+        >
+          <Typography variant="body2" fontWeight={700} sx={{ mb: 0.75 }}>
+            {r.platform}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+            {r.policy}
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            Refund contact: {r.contact}
+          </Typography>
+        </Paper>
+      ))}
+    </Box>
+  );
+};
+
+// ── Desktop tables (unchanged, shown only on sm and up) ──────────
+
+const RefundScheduleTable = () => (
+  <TableContainer
+    component={Paper}
+    elevation={0}
+    sx={{
+      border: "1px solid",
+      borderColor: "divider",
+      borderRadius: 0.5,
+      mb: 3,
+      mt: 2,
+    }}
+  >
+    <Table size="small">
+      <TableHead>
+        <TableRow sx={{ bgcolor: "primary.main" }}>
+          {[
+            "Cancellation window",
+            "Refund amount",
+            "Processing time",
+            "Method",
+          ].map((h) => (
+            <TableCell key={h}>
+              <Typography
+                variant="caption"
+                fontWeight={700}
+                color="primary.contrastText"
+              >
+                {h}
+              </Typography>
+            </TableCell>
+          ))}
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {[
+          [
+            "21+ days before check-in",
+            "100% of total paid",
+            "5–7 business days",
+            "Original payment method",
+          ],
+          [
+            "14–20 days before check-in",
+            "50% of total paid",
+            "5–7 business days",
+            "Original payment method",
+          ],
+          ["Within 14 days of check-in", "No refund", "—", "—"],
+          ["No-show (no cancellation notice)", "No refund", "—", "—"],
+          ["Early departure", "No refund for unused nights", "—", "—"],
+        ].map((row, i) => (
+          <TableRow
+            key={i}
+            sx={{ bgcolor: i % 2 === 0 ? "background.paper" : "action.hover" }}
+          >
+            {row.map((cell, j) => (
+              <TableCell key={j}>
+                <Typography variant="body2" color="text.secondary">
+                  {cell}
+                </Typography>
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
+);
+
+const OtaPlatformTable = () => (
+  <TableContainer
+    component={Paper}
+    elevation={0}
+    sx={{
+      border: "1px solid",
+      borderColor: "divider",
+      borderRadius: 0.5,
+      mt: 2,
+      mb: 2,
+    }}
+  >
+    <Table size="small">
+      <TableHead>
+        <TableRow sx={{ bgcolor: "primary.main" }}>
+          {["Platform", "Cancellation policy", "Refund contact"].map((h) => (
+            <TableCell key={h}>
+              <Typography
+                variant="caption"
+                fontWeight={700}
+                color="primary.contrastText"
+              >
+                {h}
+              </Typography>
+            </TableCell>
+          ))}
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {[
+          [
+            "Airbnb",
+            "Governed by Airbnb's cancellation policy selected at listing",
+            "Airbnb Help Centre",
+          ],
+          [
+            "MakeMyTrip",
+            "Governed by MakeMyTrip's cancellation terms",
+            "MakeMyTrip customer support",
+          ],
+          [
+            "villasbyserene.com",
+            "This policy applies in full",
+            "villasbyserene@gmail.com",
+          ],
+        ].map((row, i) => (
+          <TableRow
+            key={i}
+            sx={{ bgcolor: i % 2 === 0 ? "background.paper" : "action.hover" }}
+          >
+            {row.map((cell, j) => (
+              <TableCell key={j}>
+                <Typography variant="body2" color="text.secondary">
+                  {cell}
+                </Typography>
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
+);
 
 const CancellationPolicyPage = () => {
   const handleScrollTo = (id: string) => {
@@ -194,12 +467,18 @@ const CancellationPolicyPage = () => {
   return (
     <section>
       <div className="container mt-4">
-        {/* Header */}
-        <Box sx={{ mb: 5 }}>
+        <Box sx={{ mb: { xs: 3, md: 5 } }}>
           <Typography variant="overline" color="primary" fontWeight={700}>
             Legal
           </Typography>
-          <Typography variant="h3" fontWeight={800} sx={{ mt: 0.5, mb: 1 }}>
+          <Typography
+            variant="h4"
+            fontWeight={800}
+            sx={{
+              mt: 0.5,
+              mb: 1,
+            }}
+          >
             Cancellation Policy
           </Typography>
           <Typography variant="body2" color="text.secondary">
@@ -210,15 +489,14 @@ const CancellationPolicyPage = () => {
           </Typography>
         </Box>
 
-        {/* Intro notice */}
         <Paper
           elevation={0}
           sx={{
             border: "1px solid",
             borderColor: "primary.main",
             borderRadius: 0.5,
-            p: 2.5,
-            mb: 5,
+            p: { xs: 2, sm: 2.5 },
+            mb: { xs: 3, md: 5 },
             bgcolor: "action.hover",
           }}
         >
@@ -237,11 +515,10 @@ const CancellationPolicyPage = () => {
           sx={{
             display: "grid",
             gridTemplateColumns: { xs: "1fr", md: "260px 1fr" },
-            gap: 5,
+            gap: { xs: 3, md: 5 },
             alignItems: "start",
           }}
         >
-          {/* Sticky TOC */}
           <Box
             sx={{
               display: { xs: "none", md: "block" },
@@ -306,7 +583,6 @@ const CancellationPolicyPage = () => {
               </Box>
             </Paper>
 
-            {/* Quick help card */}
             <Paper
               elevation={0}
               sx={{
@@ -374,9 +650,7 @@ const CancellationPolicyPage = () => {
             </Paper>
           </Box>
 
-          {/* Content */}
-          <Box>
-            {/* 1. Overview */}
+          <Box sx={{ minWidth: 0 }}>
             <SectionHeading id="overview" number="1" title="Policy Overview" />
             <BodyText>
               Villas By Serene operates a tiered cancellation policy based on
@@ -387,7 +661,6 @@ const CancellationPolicyPage = () => {
               property owner&apos;s livelihood.
             </BodyText>
 
-            {/* Tier cards */}
             <Box
               sx={{
                 display: "grid",
@@ -425,9 +698,8 @@ const CancellationPolicyPage = () => {
               />
             </Box>
 
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
-            {/* 2. Refund table */}
             <SectionHeading
               id="refund-table"
               number="2"
@@ -438,80 +710,13 @@ const CancellationPolicyPage = () => {
               bookings on villasbyserene.com.
             </BodyText>
 
-            <TableContainer
-              component={Paper}
-              elevation={0}
-              sx={{
-                border: "1px solid",
-                borderColor: "divider",
-                borderRadius: 0.5,
-                mb: 3,
-                mt: 2,
-              }}
-            >
-              <Table size="small">
-                <TableHead>
-                  <TableRow sx={{ bgcolor: "primary.main" }}>
-                    {[
-                      "Cancellation window",
-                      "Refund amount",
-                      "Processing time",
-                      "Method",
-                    ].map((h) => (
-                      <TableCell key={h}>
-                        <Typography
-                          variant="caption"
-                          fontWeight={700}
-                          color="primary.contrastText"
-                        >
-                          {h}
-                        </Typography>
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {[
-                    [
-                      "21+ days before check-in",
-                      "100% of total paid",
-                      "5–7 business days",
-                      "Original payment method",
-                    ],
-                    [
-                      "14–20 days before check-in",
-                      "50% of total paid",
-                      "5–7 business days",
-                      "Original payment method",
-                    ],
-                    ["Within 14 days of check-in", "No refund", "—", "—"],
-                    ["No-show (no cancellation notice)", "No refund", "—", "—"],
-                    [
-                      "Early departure",
-                      "No refund for unused nights",
-                      "—",
-                      "—",
-                    ],
-                  ].map((row, i) => (
-                    <TableRow
-                      key={i}
-                      sx={{
-                        bgcolor:
-                          i % 2 === 0 ? "background.paper" : "action.hover",
-                      }}
-                    >
-                      {row.map((cell, j) => (
-                        <TableCell key={j}>
-                          <Typography variant="body2" color="text.secondary">
-                            {cell}
-                          </Typography>
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            {/* Mobile: stacked cards. Desktop: table */}
+            <Box sx={{ display: { xs: "block", sm: "none" } }}>
+              <RefundScheduleCards />
+            </Box>
+            <Box sx={{ display: { xs: "none", sm: "block" } }}>
+              <RefundScheduleTable />
+            </Box>
 
             <Paper
               elevation={0}
@@ -533,9 +738,8 @@ const CancellationPolicyPage = () => {
               </Typography>
             </Paper>
 
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
-            {/* 3. How to cancel */}
             <SectionHeading
               id="how-to-cancel"
               number="3"
@@ -573,9 +777,8 @@ const CancellationPolicyPage = () => {
               />
             </Box>
 
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
-            {/* 4. Refund processing */}
             <SectionHeading
               id="refund-processing"
               number="4"
@@ -592,9 +795,8 @@ const CancellationPolicyPage = () => {
               <BulletItem key={i} text={t} />
             ))}
 
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
-            {/* 5. No-show */}
             <SectionHeading
               id="no-show"
               number="5"
@@ -631,9 +833,8 @@ const CancellationPolicyPage = () => {
               amount remains due.
             </BodyText>
 
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
-            {/* 6. Partial payments */}
             <SectionHeading
               id="partial-payments"
               number="6"
@@ -652,9 +853,8 @@ const CancellationPolicyPage = () => {
               <BulletItem key={i} text={t} />
             ))}
 
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
-            {/* 7. Modifications */}
             <SectionHeading
               id="modifications"
               number="7"
@@ -675,10 +875,8 @@ const CancellationPolicyPage = () => {
               <BulletItem key={i} text={t} />
             ))}
 
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
-           
-            {/* 9. VBS cancellation */}
             <SectionHeading
               id="vbs-cancellation"
               number="8"
@@ -703,14 +901,9 @@ const CancellationPolicyPage = () => {
               of enjoyment arising from our cancellation.
             </BodyText>
 
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
-            {/* 10. OTA */}
-            <SectionHeading
-              id="ota-bookings"
-              number="9"
-              title="OTA Bookings"
-            />
+            <SectionHeading id="ota-bookings" number="9" title="OTA Bookings" />
             <BodyText>
               Bookings made through third-party platforms are governed by that
               platform&apos;s cancellation and refund policy, not this one.
@@ -718,76 +911,15 @@ const CancellationPolicyPage = () => {
               processed by these platforms.
             </BodyText>
 
-            <TableContainer
-              component={Paper}
-              elevation={0}
-              sx={{
-                border: "1px solid",
-                borderColor: "divider",
-                borderRadius: 0.5,
-                mt: 2,
-                mb: 2,
-              }}
-            >
-              <Table size="small">
-                <TableHead>
-                  <TableRow sx={{ bgcolor: "primary.main" }}>
-                    {["Platform", "Cancellation policy", "Refund contact"].map(
-                      (h) => (
-                        <TableCell key={h}>
-                          <Typography
-                            variant="caption"
-                            fontWeight={700}
-                            color="primary.contrastText"
-                          >
-                            {h}
-                          </Typography>
-                        </TableCell>
-                      ),
-                    )}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {[
-                    [
-                      "Airbnb",
-                      "Governed by Airbnb's cancellation policy selected at listing",
-                      "Airbnb Help Centre",
-                    ],
-                    [
-                      "MakeMyTrip",
-                      "Governed by MakeMyTrip's cancellation terms",
-                      "MakeMyTrip customer support",
-                    ],
-                    [
-                      "villasbyserene.com",
-                      "This policy applies in full",
-                      "villasbyserene@gmail.com",
-                    ],
-                  ].map((row, i) => (
-                    <TableRow
-                      key={i}
-                      sx={{
-                        bgcolor:
-                          i % 2 === 0 ? "background.paper" : "action.hover",
-                      }}
-                    >
-                      {row.map((cell, j) => (
-                        <TableCell key={j}>
-                          <Typography variant="body2" color="text.secondary">
-                            {cell}
-                          </Typography>
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <Box sx={{ display: { xs: "block", sm: "none" } }}>
+              <OtaPlatformCards />
+            </Box>
+            <Box sx={{ display: { xs: "none", sm: "block" } }}>
+              <OtaPlatformTable />
+            </Box>
 
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
-            {/* 10. Contact */}
             <SectionHeading id="contact" number="10" title="Contact Us" />
             <BodyText>
               For all cancellation requests, refund queries, or policy
@@ -810,7 +942,7 @@ const CancellationPolicyPage = () => {
                   border: "1px solid",
                   borderColor: "divider",
                   borderRadius: 0.5,
-                  p: 2.5,
+                  p: { xs: 2, sm: 2.5 },
                   display: "flex",
                   alignItems: "center",
                   gap: 2,
@@ -828,7 +960,7 @@ const CancellationPolicyPage = () => {
                 >
                   <MailIcon />
                 </Box>
-                <Box>
+                <Box sx={{ minWidth: 0 }}>
                   <Typography
                     variant="body2"
                     fontWeight={700}
@@ -836,7 +968,11 @@ const CancellationPolicyPage = () => {
                   >
                     Email
                   </Typography>
-                  <Typography variant="body2" color="primary">
+                  <Typography
+                    variant="body2"
+                    color="primary"
+                    sx={{ wordBreak: "break-word" }}
+                  >
                     villasbyserene@gmail.com
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
@@ -855,7 +991,7 @@ const CancellationPolicyPage = () => {
                   border: "1px solid",
                   borderColor: "divider",
                   borderRadius: 0.5,
-                  p: 2.5,
+                  p: { xs: 2, sm: 2.5 },
                   display: "flex",
                   alignItems: "center",
                   gap: 2,
@@ -873,7 +1009,7 @@ const CancellationPolicyPage = () => {
                 >
                   <WhatsAppIcon />
                 </Box>
-                <Box>
+                <Box sx={{ minWidth: 0 }}>
                   <Typography
                     variant="body2"
                     fontWeight={700}

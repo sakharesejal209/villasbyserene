@@ -159,7 +159,7 @@ const Footer = () => {
           <div className="text-gray-400 text-sm">
             © 2025 Villas By Serene. All rights reserved.
           </div>
-          {/* <div className="flex gap-4 md:gap-6 text-sm text-gray-400">
+          <div className="flex gap-4 md:gap-6 text-sm text-gray-400">
             <div className="hover:text-white transition-colors duration-200 cursor-pointer">
               <Link href="/privacy">Privacy Policy</Link>
             </div>
@@ -169,7 +169,7 @@ const Footer = () => {
             <div className="hover:text-white transition-colors duration-200 cursor-pointer">
               <Link href="/cancellation">Cancellation Policy</Link>
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
     </footer>

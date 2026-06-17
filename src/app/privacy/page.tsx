@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Container, Divider, Paper, Typography } from "@mui/material";
+import { Box, Divider, Paper, Typography } from "@mui/material";
 
 interface Section {
   id: string;
@@ -34,7 +34,12 @@ const SectionHeading = ({
   title: string;
 }) => (
   <Box id={id} sx={{ pt: 1, mb: 1.5, scrollMarginTop: 80 }}>
-    <Typography variant="h5" fontWeight={700} color="primary">
+    <Typography
+      variant="h5"
+      fontWeight={700}
+      color="primary"
+      sx={{ fontSize: { xs: "1.15rem", md: "1.5rem" } }}
+    >
       {number}. {title}
     </Typography>
   </Box>
@@ -44,7 +49,7 @@ const SubHeading = ({ title }: { title: string }) => (
   <Typography
     variant="subtitle1"
     fontWeight={700}
-    sx={{ mt: 2.5, mb: 0.75 }}
+    sx={{ mt: 2.5, mb: 0.75, fontSize: { xs: "0.95rem", md: "1rem" } }}
     color="text.primary"
   >
     {title}
@@ -52,23 +57,15 @@ const SubHeading = ({ title }: { title: string }) => (
 );
 
 const BodyText = ({ children }: { children: React.ReactNode }) => (
-  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-    {children}
-  </Typography>
+  <Typography sx={{ mb: 1 }}>{children}</Typography>
 );
 
 const BulletItem = ({ text }: { text: string }) => (
   <Box sx={{ display: "flex", gap: 1.5, mb: 0.75, alignItems: "flex-start" }}>
-    <Typography
-      variant="body2"
-      color="primary"
-      sx={{ mt: "1px", flexShrink: 0 }}
-    >
+    <Typography color="primary" sx={{ mt: "1px", flexShrink: 0 }}>
       —
     </Typography>
-    <Typography variant="body2" color="text.secondary">
-      {text}
-    </Typography>
+    <Typography sx={{ minWidth: 0 }}>{text}</Typography>
   </Box>
 );
 
@@ -84,27 +81,401 @@ const DataRow = ({
   <Box
     sx={{
       display: "flex",
-      gap: 3,
-      px: 2.5,
+      flexDirection: { xs: "column", sm: "row" },
+      flexWrap: "wrap",
+      gap: { xs: 0.25, sm: 0 },
+      px: { xs: 2, sm: 2.5 },
       py: 1.5,
-      alignItems: "baseline",
+      alignItems: { xs: "flex-start", sm: "baseline" },
       borderBottom: last ? "none" : "1px solid",
       borderColor: "divider",
     }}
   >
     <Typography
-      variant="body2"
       fontWeight={700}
-      color="text.secondary"
-      sx={{ minWidth: 160, flexShrink: 0 }}
+      sx={{ width: { xs: "auto", sm: "35%" }, flexShrink: 0 }}
     >
       {label}
     </Typography>
-    <Typography variant="body2" color="text.primary">
+    <Typography
+      sx={{ width: { xs: "auto", sm: "65%" }, overflowWrap: "break-word" }}
+      color="text.primary"
+    >
       {value}
     </Typography>
   </Box>
 );
+
+// ── Mobile-friendly stacked card for "Why We Use Your Data" ──────
+
+const PurposeCards = () => {
+  const rows = [
+    { purpose: "Process and manage your booking", basis: "Contract" },
+    {
+      purpose: "Send booking confirmations and check-in details",
+      basis: "Contract",
+    },
+    { purpose: "Process payments via Razorpay", basis: "Contract" },
+    {
+      purpose: "Respond to support queries and complaints",
+      basis: "Legitimate interest",
+    },
+    {
+      purpose: "Send booking-related WhatsApp communications",
+      basis: "Contract",
+    },
+    {
+      purpose: "Comply with legal and tax obligations",
+      basis: "Legal obligation",
+    },
+    {
+      purpose: "Improve our website and service",
+      basis: "Legitimate interest",
+    },
+    {
+      purpose: "Prevent fraud and ensure platform security",
+      basis: "Legitimate interest",
+    },
+  ];
+  return (
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mb: 2 }}>
+      {rows.map((row, i) => (
+        <Paper
+          key={i}
+          elevation={0}
+          sx={{
+            border: "1px solid",
+            borderColor: "divider",
+            borderRadius: 0.5,
+            p: 1.75,
+            bgcolor: i % 2 === 0 ? "background.paper" : "action.hover",
+          }}
+        >
+          <Typography sx={{ mb: 0.5 }}>{row.purpose}</Typography>
+          <Typography variant="caption" fontWeight={700} color="primary">
+            {row.basis}
+          </Typography>
+        </Paper>
+      ))}
+    </Box>
+  );
+};
+
+const PurposeTable = () => {
+  const rows = [
+    { purpose: "Process and manage your booking", basis: "Contract" },
+    {
+      purpose: "Send booking confirmations and check-in details",
+      basis: "Contract",
+    },
+    { purpose: "Process payments via Razorpay", basis: "Contract" },
+    {
+      purpose: "Respond to support queries and complaints",
+      basis: "Legitimate interest",
+    },
+    {
+      purpose: "Send booking-related WhatsApp communications",
+      basis: "Contract",
+    },
+    {
+      purpose: "Comply with legal and tax obligations",
+      basis: "Legal obligation",
+    },
+    {
+      purpose: "Improve our website and service",
+      basis: "Legitimate interest",
+    },
+    {
+      purpose: "Prevent fraud and ensure platform security",
+      basis: "Legitimate interest",
+    },
+  ];
+  return (
+    <Paper
+      elevation={0}
+      sx={{
+        border: "1px solid",
+        borderColor: "divider",
+        borderRadius: 0.5,
+        overflow: "hidden",
+        mb: 2,
+      }}
+    >
+      {rows.map((row, i) => (
+        <Box
+          key={i}
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "2fr 1fr",
+            gap: 1,
+            px: 2.5,
+            py: 1.25,
+            borderTop: i === 0 ? "none" : "1px solid",
+            borderColor: "divider",
+            bgcolor: i % 2 === 0 ? "background.paper" : "action.hover",
+          }}
+        >
+          <Typography>{row.purpose}</Typography>
+          <Typography fontWeight={600} color="text.primary">
+            {row.basis}
+          </Typography>
+        </Box>
+      ))}
+    </Paper>
+  );
+};
+
+// ── Mobile-friendly stacked card for cookies table ────────────────
+
+const CookieCards = () => {
+  const rows = [
+    {
+      name: "Session cookie",
+      purpose: "Keeps you logged in during your visit",
+      duration: "Session (cleared on close)",
+      type: "Functional",
+    },
+    {
+      name: "Auth token",
+      purpose: "Authenticates your Google Sign-In session",
+      duration: "Up to 30 days",
+      type: "Functional",
+    },
+    {
+      name: "Next.js internal",
+      purpose: "Routing and server-side rendering functionality",
+      duration: "Session",
+      type: "Functional",
+    },
+  ];
+  return (
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mb: 2 }}>
+      {rows.map((row, i) => (
+        <Paper
+          key={i}
+          elevation={0}
+          sx={{
+            border: "1px solid",
+            borderColor: "divider",
+            borderRadius: 0.5,
+            p: 1.75,
+            bgcolor: i % 2 === 0 ? "background.paper" : "action.hover",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "flex-start",
+              mb: 0.5,
+            }}
+          >
+            <Typography fontWeight={600} color="text.primary">
+              {row.name}
+            </Typography>
+            <Typography variant="caption" fontWeight={700} color="primary">
+              {row.type}
+            </Typography>
+          </Box>
+          <Typography variant="body2" sx={{ mb: 0.25 }}>
+            {row.purpose}
+          </Typography>
+          <Typography variant="caption" color="text.secondary">
+            {row.duration}
+          </Typography>
+        </Paper>
+      ))}
+    </Box>
+  );
+};
+
+const CookieTable = () => {
+  const rows = [
+    {
+      name: "Session cookie",
+      purpose: "Keeps you logged in during your visit",
+      duration: "Session (cleared on close)",
+      type: "Functional",
+    },
+    {
+      name: "Auth token",
+      purpose: "Authenticates your Google Sign-In session",
+      duration: "Up to 30 days",
+      type: "Functional",
+    },
+    {
+      name: "Next.js internal",
+      purpose: "Routing and server-side rendering functionality",
+      duration: "Session",
+      type: "Functional",
+    },
+  ];
+  return (
+    <Paper
+      elevation={0}
+      sx={{
+        border: "1px solid",
+        borderColor: "divider",
+        borderRadius: 0.5,
+        overflow: "hidden",
+        mb: 2,
+      }}
+    >
+      {rows.map((row, i) => (
+        <Box
+          key={i}
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr 130px 90px",
+            px: 2.5,
+            py: 1.25,
+            gap: 1,
+            borderTop: i === 0 ? "none" : "1px solid",
+            borderColor: "divider",
+            bgcolor: i % 2 === 0 ? "background.paper" : "action.hover",
+          }}
+        >
+          <Typography fontWeight={600} color="text.primary">
+            {row.name}
+          </Typography>
+          <Typography>{row.purpose}</Typography>
+          <Typography>{row.duration}</Typography>
+          <Typography fontWeight={600} color="primary">
+            {row.type}
+          </Typography>
+        </Box>
+      ))}
+    </Paper>
+  );
+};
+
+// ── Mobile-friendly stacked card for third-party services ────────
+
+const ThirdPartyCards = () => {
+  const rows = [
+    {
+      service: "Razorpay",
+      purpose: "Payment processing",
+      policy: "razorpay.com/privacy",
+    },
+    {
+      service: "Google OAuth",
+      purpose: "User authentication (Sign in with Google)",
+      policy: "policies.google.com/privacy",
+    },
+    {
+      service: "Google Ads",
+      purpose:
+        "Paid advertising to acquire new users (no pixel on this website)",
+      policy: "policies.google.com/privacy",
+    },
+    {
+      service: "Resend",
+      purpose: "Transactional email delivery (booking confirmations, receipts)",
+      policy: "resend.com/privacy",
+    },
+    {
+      service: "WhatsApp Business",
+      purpose: "Booking communications and customer support",
+      policy: "whatsapp.com/legal/privacy-policy",
+    },
+  ];
+  return (
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mb: 2 }}>
+      {rows.map((row, i) => (
+        <Paper
+          key={i}
+          elevation={0}
+          sx={{
+            border: "1px solid",
+            borderColor: "divider",
+            borderRadius: 0.5,
+            p: 1.75,
+            bgcolor: i % 2 === 0 ? "background.paper" : "action.hover",
+          }}
+        >
+          <Typography fontWeight={600} color="text.primary" sx={{ mb: 0.5 }}>
+            {row.service}
+          </Typography>
+          <Typography variant="body2" sx={{ mb: 0.25 }}>
+            {row.purpose}
+          </Typography>
+          <Typography
+            variant="caption"
+            color="text.secondary"
+            sx={{ wordBreak: "break-all" }}
+          >
+            {row.policy}
+          </Typography>
+        </Paper>
+      ))}
+    </Box>
+  );
+};
+
+const ThirdPartyTable = () => {
+  const rows = [
+    {
+      service: "Razorpay",
+      purpose: "Payment processing",
+      policy: "razorpay.com/privacy",
+    },
+    {
+      service: "Google OAuth",
+      purpose: "User authentication (Sign in with Google)",
+      policy: "policies.google.com/privacy",
+    },
+    {
+      service: "Google Ads",
+      purpose:
+        "Paid advertising to acquire new users (no pixel on this website)",
+      policy: "policies.google.com/privacy",
+    },
+    {
+      service: "Resend",
+      purpose: "Transactional email delivery (booking confirmations, receipts)",
+      policy: "resend.com/privacy",
+    },
+    {
+      service: "WhatsApp Business",
+      purpose: "Booking communications and customer support",
+      policy: "whatsapp.com/legal/privacy-policy",
+    },
+  ];
+  return (
+    <Paper
+      elevation={0}
+      sx={{
+        border: "1px solid",
+        borderColor: "divider",
+        borderRadius: 0.5,
+        overflow: "hidden",
+        mb: 2,
+      }}
+    >
+      {rows.map((row, i) => (
+        <Box
+          key={i}
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "130px 1fr 1fr",
+            px: 2.5,
+            py: 1.25,
+            borderTop: i === 0 ? "none" : "1px solid",
+            borderColor: "divider",
+            bgcolor: i % 2 === 0 ? "background.paper" : "action.hover",
+          }}
+        >
+          <Typography fontWeight={600} color="text.primary">
+            {row.service}
+          </Typography>
+          <Typography>{row.purpose}</Typography>
+          <Typography sx={{ wordBreak: "break-all" }}>{row.policy}</Typography>
+        </Box>
+      ))}
+    </Paper>
+  );
+};
 
 const PrivacyPolicyPage = () => {
   const handleScrollTo = (id: string) => {
@@ -115,17 +486,24 @@ const PrivacyPolicyPage = () => {
   return (
     <section>
       <div className="container">
-        <Box sx={{ my: 3 }}>
+        <Box sx={{ my: { xs: 2, md: 3 } }}>
           <Typography variant="overline" color="primary" fontWeight={700}>
             Legal
           </Typography>
-          <Typography variant="h3" fontWeight={800} sx={{ mt: 0.5, mb: 1 }}>
+          <Typography
+            variant="h4"
+            fontWeight={800}
+            sx={{
+              mt: 0.5,
+              mb: 1,
+            }}
+          >
             Privacy Policy
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography>
             VBS Hospitality Private Limited · villasbyserene.com
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography>
             Effective: 1 June 2025 · Last updated: June 2025
           </Typography>
         </Box>
@@ -136,18 +514,20 @@ const PrivacyPolicyPage = () => {
             border: "1px solid",
             borderColor: "primary.main",
             borderRadius: 0.5,
-            p: 2.5,
-            mb: 5,
+            p: { xs: 2, sm: 2.5 },
+            mb: { xs: 3, md: 5 },
             bgcolor: "action.hover",
+            width: "100%",
           }}
         >
-          <Typography variant="body2" color="text.secondary">
+          <Typography>
             This Privacy Policy explains how VBS Hospitality Private Limited
-            (&quot;Villas By Serene&quot;, &quot;we&quot;, &quot;our&quot;, &quot;us&quot;) collects, uses, stores, and
-            protects your personal data when you use our website at
-            villasbyserene.com or make a booking with us. It is governed by
-            India&apos;s Digital Personal Data Protection Act 2023 (DPDPA). By using
-            our platform, you consent to the practices described in this policy.
+            (&quot;Villas By Serene&quot;, &quot;we&quot;, &quot;our&quot;,
+            &quot;us&quot;) collects, uses, stores, and protects your personal
+            data when you use our website at villasbyserene.com or make a
+            booking with us. It is governed by India&apos;s Digital Personal
+            Data Protection Act 2023 (DPDPA). By using our platform, you consent
+            to the practices described in this policy.
           </Typography>
         </Paper>
 
@@ -155,7 +535,7 @@ const PrivacyPolicyPage = () => {
           sx={{
             display: "grid",
             gridTemplateColumns: { xs: "1fr", md: "260px 1fr" },
-            gap: 5,
+            gap: { xs: 3, md: 5 },
             alignItems: "start",
           }}
         >
@@ -187,7 +567,6 @@ const PrivacyPolicyPage = () => {
                 <Typography
                   variant="caption"
                   fontWeight={700}
-                  color="text.secondary"
                   sx={{ textTransform: "uppercase", letterSpacing: 0.8 }}
                 >
                   Contents
@@ -216,9 +595,7 @@ const PrivacyPolicyPage = () => {
                     >
                       {s.number}
                     </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      {s.title}
-                    </Typography>
+                    <Typography variant="caption">{s.title}</Typography>
                   </Box>
                 ))}
               </Box>
@@ -226,7 +603,7 @@ const PrivacyPolicyPage = () => {
           </Box>
 
           {/* Content */}
-          <Box>
+          <Box sx={{ minWidth: 0 }}>
             {/* 1 */}
             <SectionHeading id="who-we-are" number="1" title="Who We Are" />
             <BodyText>
@@ -255,7 +632,7 @@ const PrivacyPolicyPage = () => {
               <DataRow label="WhatsApp" value="+91 95943 77736" />
               <DataRow label="Website" value="villasbyserene.com" last />
             </Paper>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 2 */}
             <SectionHeading
@@ -304,7 +681,7 @@ const PrivacyPolicyPage = () => {
               Google password. The data shared is governed by Google&apos;s own
               Privacy Policy in addition to ours.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 3 */}
             <SectionHeading
@@ -321,7 +698,7 @@ const PrivacyPolicyPage = () => {
             ].map((t, i) => (
               <BulletItem key={i} text={t} />
             ))}
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 4 */}
             <SectionHeading
@@ -329,77 +706,17 @@ const PrivacyPolicyPage = () => {
               number="4"
               title="Why We Use Your Data"
             />
-            <Paper
-              elevation={0}
-              sx={{
-                border: "1px solid",
-                borderColor: "divider",
-                borderRadius: 0.5,
-                overflow: "hidden",
-                mb: 2,
-              }}
-            >
-              {[
-                {
-                  purpose: "Process and manage your booking",
-                  basis: "Contract",
-                },
-                {
-                  purpose: "Send booking confirmations and check-in details",
-                  basis: "Contract",
-                },
-                { purpose: "Process payments via Razorpay", basis: "Contract" },
-                {
-                  purpose: "Respond to support queries and complaints",
-                  basis: "Legitimate interest",
-                },
-                {
-                  purpose: "Send booking-related WhatsApp communications",
-                  basis: "Contract",
-                },
-                {
-                  purpose: "Comply with legal and tax obligations",
-                  basis: "Legal obligation",
-                },
-                {
-                  purpose: "Improve our website and service",
-                  basis: "Legitimate interest",
-                },
-                {
-                  purpose: "Prevent fraud and ensure platform security",
-                  basis: "Legitimate interest",
-                },
-              ].map((row, i) => (
-                <Box
-                  key={i}
-                  sx={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 160px",
-                    px: 2.5,
-                    py: 1.25,
-                    borderTop: i === 0 ? "none" : "1px solid",
-                    borderColor: "divider",
-                    bgcolor: i % 2 === 0 ? "background.paper" : "action.hover",
-                  }}
-                >
-                  <Typography variant="body2" color="text.secondary">
-                    {row.purpose}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    fontWeight={600}
-                    color="text.primary"
-                  >
-                    {row.basis}
-                  </Typography>
-                </Box>
-              ))}
-            </Paper>
+            <Box sx={{ display: { xs: "block", sm: "none" } }}>
+              <PurposeCards />
+            </Box>
+            <Box sx={{ display: { xs: "none", sm: "block" } }}>
+              <PurposeTable />
+            </Box>
             <BodyText>
               We do not use your personal data for automated decision-making or
               profiling.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 5 */}
             <SectionHeading
@@ -441,7 +758,7 @@ const PrivacyPolicyPage = () => {
               Private Limited, your data may be transferred to the acquiring
               entity. You will be notified of any such change via email.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 6 */}
             <SectionHeading
@@ -462,7 +779,7 @@ const PrivacyPolicyPage = () => {
               After the applicable retention period, data is securely deleted or
               anonymised.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 7 */}
             <SectionHeading
@@ -485,13 +802,13 @@ const PrivacyPolicyPage = () => {
               security. In the event of a data breach that affects your rights,
               we will notify you as required by law.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 8 */}
             <SectionHeading id="rights" number="8" title="Your Rights" />
             <BodyText>
-              Under India&apos;s Digital Personal Data Protection Act 2023, you have
-              the following rights regarding your personal data:
+              Under India&apos;s Digital Personal Data Protection Act 2023, you
+              have the following rights regarding your personal data:
             </BodyText>
             {[
               "Right to access — you may request a copy of the personal data we hold about you",
@@ -510,10 +827,10 @@ const PrivacyPolicyPage = () => {
             </BodyText>
             <BodyText>
               If you are unsatisfied with our response, you may escalate your
-              complaint to India&apos;s Data Protection Board once it is established
-              under the DPDPA 2023.
+              complaint to India&apos;s Data Protection Board once it is
+              established under the DPDPA 2023.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 9 */}
             <SectionHeading id="cookies" number="9" title="Cookies" />
@@ -523,7 +840,7 @@ const PrivacyPolicyPage = () => {
                 border: "1px solid",
                 borderColor: "primary.main",
                 borderRadius: 0.5,
-                p: 2.5,
+                p: { xs: 2, sm: 2.5 },
                 mb: 2.5,
                 bgcolor: "action.hover",
               }}
@@ -536,7 +853,7 @@ const PrivacyPolicyPage = () => {
               >
                 We do not use advertising or tracking cookies.
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography>
                 No third-party advertising pixels, retargeting scripts, or
                 behavioural tracking tools are installed on villasbyserene.com.
               </Typography>
@@ -545,78 +862,19 @@ const PrivacyPolicyPage = () => {
               Our website uses only the following functional cookies, which are
               strictly necessary for the site to operate:
             </BodyText>
-            <Paper
-              elevation={0}
-              sx={{
-                border: "1px solid",
-                borderColor: "divider",
-                borderRadius: 0.5,
-                overflow: "hidden",
-                mb: 2,
-              }}
-            >
-              {[
-                {
-                  name: "Session cookie",
-                  purpose: "Keeps you logged in during your visit",
-                  duration: "Session (cleared on close)",
-                  type: "Functional",
-                },
-                {
-                  name: "Auth token",
-                  purpose: "Authenticates your Google Sign-In session",
-                  duration: "Up to 30 days",
-                  type: "Functional",
-                },
-                {
-                  name: "Next.js internal",
-                  purpose: "Routing and server-side rendering functionality",
-                  duration: "Session",
-                  type: "Functional",
-                },
-              ].map((row, i) => (
-                <Box
-                  key={i}
-                  sx={{
-                    display: "grid",
-                    gridTemplateColumns: {
-                      xs: "1fr",
-                      sm: "1fr 1fr 130px 90px",
-                    },
-                    px: 2.5,
-                    py: 1.25,
-                    gap: 1,
-                    borderTop: i === 0 ? "none" : "1px solid",
-                    borderColor: "divider",
-                    bgcolor: i % 2 === 0 ? "background.paper" : "action.hover",
-                  }}
-                >
-                  <Typography
-                    variant="body2"
-                    fontWeight={600}
-                    color="text.primary"
-                  >
-                    {row.name}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {row.purpose}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {row.duration}
-                  </Typography>
-                  <Typography variant="body2" fontWeight={600} color="primary">
-                    {row.type}
-                  </Typography>
-                </Box>
-              ))}
-            </Paper>
+            <Box sx={{ display: { xs: "block", sm: "none" } }}>
+              <CookieCards />
+            </Box>
+            <Box sx={{ display: { xs: "none", sm: "block" } }}>
+              <CookieTable />
+            </Box>
             <BodyText>
               Because we use only functional cookies, we do not display a cookie
               consent banner. You can disable cookies in your browser settings,
               but doing so may prevent you from logging in or completing a
               booking.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 10 */}
             <SectionHeading
@@ -628,84 +886,19 @@ const PrivacyPolicyPage = () => {
               Our website integrates with the following third-party services.
               Each operates under its own privacy policy:
             </BodyText>
-            <Paper
-              elevation={0}
-              sx={{
-                border: "1px solid",
-                borderColor: "divider",
-                borderRadius: 0.5,
-                overflow: "hidden",
-                mb: 2,
-              }}
-            >
-              {[
-                {
-                  service: "Razorpay",
-                  purpose: "Payment processing",
-                  policy: "razorpay.com/privacy",
-                },
-                {
-                  service: "Google OAuth",
-                  purpose: "User authentication (Sign in with Google)",
-                  policy: "policies.google.com/privacy",
-                },
-                {
-                  service: "Google Ads",
-                  purpose:
-                    "Paid advertising to acquire new users (no pixel on this website)",
-                  policy: "policies.google.com/privacy",
-                },
-                {
-                  service: "Resend",
-                  purpose:
-                    "Transactional email delivery (booking confirmations, receipts)",
-                  policy: "resend.com/privacy",
-                },
-                {
-                  service: "WhatsApp Business",
-                  purpose: "Booking communications and customer support",
-                  policy: "whatsapp.com/legal/privacy-policy",
-                },
-              ].map((row, i) => (
-                <Box
-                  key={i}
-                  sx={{
-                    display: "grid",
-                    gridTemplateColumns: { xs: "1fr", sm: "130px 1fr 1fr" },
-                    px: 2.5,
-                    py: 1.25,
-                    borderTop: i === 0 ? "none" : "1px solid",
-                    borderColor: "divider",
-                    bgcolor: i % 2 === 0 ? "background.paper" : "action.hover",
-                  }}
-                >
-                  <Typography
-                    variant="body2"
-                    fontWeight={600}
-                    color="text.primary"
-                  >
-                    {row.service}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {row.purpose}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ wordBreak: "break-all" }}
-                  >
-                    {row.policy}
-                  </Typography>
-                </Box>
-              ))}
-            </Paper>
+            <Box sx={{ display: { xs: "block", sm: "none" } }}>
+              <ThirdPartyCards />
+            </Box>
+            <Box sx={{ display: { xs: "none", sm: "block" } }}>
+              <ThirdPartyTable />
+            </Box>
             <BodyText>
               We run Google Ads campaigns to reach new audiences. These
               campaigns operate on Google&apos;s platform and do not place any
               tracking pixel or retargeting cookie on villasbyserene.com.
               Visitors to our website are not tracked for advertising purposes.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 11 */}
             <SectionHeading
@@ -721,7 +914,7 @@ const PrivacyPolicyPage = () => {
               please contact us immediately at villasbyserene@gmail.com and we
               will delete it promptly.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 12 */}
             <SectionHeading
@@ -738,7 +931,7 @@ const PrivacyPolicyPage = () => {
               use of our platform after the effective date constitutes
               acceptance of the revised policy.
             </BodyText>
-            <Divider sx={{ my: 4 }} />
+            <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
             {/* 13 */}
             <SectionHeading id="contact" number="13" title="Contact Us" />
@@ -778,7 +971,7 @@ const PrivacyPolicyPage = () => {
                 borderColor: "divider",
               }}
             >
-              <Typography variant="caption" color="text.secondary">
+              <Typography variant="caption">
                 © 2025 VBS Hospitality Private Limited. All rights reserved.
               </Typography>
             </Box>
