@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Controller, useForm, useWatch } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import dayjs, { Dayjs } from "dayjs";
 import {
   Box,
@@ -55,7 +55,6 @@ interface BookingWidgetProps {
   propertyName: string;
   unitGroups: UnitGroupDTO[];
   bookingType: BookingType;
-  userId?: string;
   defaultCheckIn?: string;
   defaultCheckOut?: string;
   guests?: number;
@@ -184,6 +183,8 @@ const BookingWidget: FC<BookingWidgetProps> = ({
   const baseCapacity = group?.display_unit.max_capacity ?? 99;
   const maxCapacity = isVilla ? baseCapacity : baseCapacity * roomCount;
 
+  console.log('baseCapacity:', baseCapacity);
+  
   const [quote, setQuote] = useState<BookingQuoteDTO | null>(null);
   const [quoteLoading, setQuoteLoading] = useState(false);
   const [quoteError, setQuoteError] = useState<string | null>(null);
@@ -195,7 +196,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
 
   const [guestAnchor, setGuestAnchor] = useState<HTMLElement | null>(null);
 
-  const { control, setValue, getValues } = useForm<FormValues>({
+  const { control, setValue, getValues, watch } = useForm<FormValues>({
     defaultValues: {
       checkIn: defaultCheckIn ? dayjs(defaultCheckIn) : null,
       checkOut: defaultCheckOut
@@ -210,14 +211,17 @@ const BookingWidget: FC<BookingWidgetProps> = ({
     },
   });  
 
-  const checkIn = useWatch({ control, name: "checkIn" });
-  const checkOut = useWatch({ control, name: "checkOut" });
-  const adults = useWatch({ control, name: "adults" });
-  const children = useWatch({ control, name: "children" });
-  const infants = useWatch({ control, name: "infants" });
+  const checkIn = watch("checkIn");
+  const checkOut = watch("checkOut");
+  const adults = watch("adults");
+  const children = watch("children");
+  const infants = watch("infants");
 
+  console.log('adults:', typeof adults);
+  console.log('children:', typeof children);
+  
   const nights = checkIn && checkOut ? checkOut.diff(checkIn, "day") : 0;
-  const totalPax = +adults + +children;
+  const totalPax = adults + children;
 
   console.log('totalPax:', totalPax);
 
@@ -233,7 +237,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
   childrenRef.current = children;
   unitsRef.current = units;
 
-  const petCount = useWatch({ control, name: "petCount" });
+  const petCount = watch("petCount");
   const petCountRef = useRef(petCount);
   petCountRef.current = petCount;
 

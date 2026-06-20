@@ -113,7 +113,7 @@ const Property: FC<PropertyPropType> = ({
   propertyDetails,
   checkIn,
   checkOut,
-  guests
+  guests,
 }) => {
   const searchParams = useSearchParams();
 
@@ -622,7 +622,7 @@ const Property: FC<PropertyPropType> = ({
                 bookingType={propertyDetails.booking_type}
                 defaultCheckIn={checkIn}
                 defaultCheckOut={checkOut}
-                guests={guests}
+                guests={guests ? Number(guests) : undefined}
                 onStateChange={setWidgetState}
               />
             </Card>
@@ -785,6 +785,7 @@ const Property: FC<PropertyPropType> = ({
             bookingType={propertyDetails.booking_type}
             defaultCheckIn={checkIn}
             defaultCheckOut={checkOut}
+            guests={guests ? Number(guests) : undefined}
             onStateChange={setWidgetState} // ← add this
           />
         </Box>

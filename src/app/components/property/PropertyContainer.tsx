@@ -41,7 +41,7 @@ export default function PropertyContainer({ slug, checkIn, checkOut, guests }: R
       propertyDetails={property}
       checkIn={checkIn}
       checkOut={checkOut}
-      guests={guests}
+      guests={guests ? Number(guests) : undefined}
     />
   );
 }
