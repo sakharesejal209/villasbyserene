@@ -3,13 +3,21 @@
 import { PropertyListItemDTO } from "@/app/@types";
 import React, { createContext, useContext, useState, ReactNode } from "react";
 
+type AvailabilityCache = {
+  checkIn: string;
+  checkOut: string;
+  properties: PropertyListItemDTO[];
+} | null;
+
 type PropertyContextType = {
   properties: PropertyListItemDTO[];
   setProperties: (data: PropertyListItemDTO[]) => void;
+  availabilityCache: AvailabilityCache;
+  setAvailabilityCache: (data: AvailabilityCache) => void;
 };
 
 const PropertyContext = createContext<PropertyContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export const PropertyContextProvider = ({
@@ -21,9 +29,18 @@ export const PropertyContextProvider = ({
 }) => {
   const [properties, setProperties] =
     useState<PropertyListItemDTO[]>(initialProperties);
+  const [availabilityCache, setAvailabilityCache] =
+    useState<AvailabilityCache>(null);
 
   return (
-    <PropertyContext.Provider value={{ properties, setProperties }}>
+    <PropertyContext.Provider
+      value={{
+        properties,
+        setProperties,
+        availabilityCache,
+        setAvailabilityCache,
+      }}
+    >
       {children}
     </PropertyContext.Provider>
   );

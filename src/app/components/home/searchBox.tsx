@@ -13,6 +13,8 @@ import { useRouter } from "next/navigation";
 import { DatePicker } from "@mui/x-date-pickers";
 import { PickerValue } from "@mui/x-date-pickers/internals";
 import dayjs from "dayjs";
+import { propertiesService } from "@/app/@services";
+import { usePropertyStore } from "@/context/PropertyContext";
 
 export const locations = [
   "All",
@@ -56,17 +58,40 @@ const SearchBox = () => {
 
   const [loadingButton, setLoadingButton] = useState(false);
   const router = useRouter();
+  const { setAvailabilityCache } = usePropertyStore();
 
-  const handleSubmit = (e: FormEvent) => {
-    setLoadingButton(true);
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (loadingButton) return;
+
+    setLoadingButton(true);
+
+    const citySlug = location ? location.toLowerCase() : "all";
+    const checkInStr = checkIn ? checkIn.format("YYYY-MM-DD") : null;
+    const checkOutStr = checkOut ? checkOut.format("YYYY-MM-DD") : null;
 
     const params = new URLSearchParams();
     if (guests) params.set("guests", String(guests));
-    if (checkIn) params.set("checkIn", checkIn.format("YYYY-MM-DD"));
-    if (checkOut) params.set("checkOut", checkOut.format("YYYY-MM-DD"));
+    if (checkInStr) params.set("checkIn", checkInStr);
+    if (checkOutStr) params.set("checkOut", checkOutStr);
 
-    router.push(`/stays/${location}?${params.toString()}`);
+    try {
+      if (checkInStr && checkOutStr) {
+        const result = await propertiesService.getProperties({
+          checkIn: checkInStr,
+          checkOut: checkOutStr,
+        });
+        setAvailabilityCache({
+          checkIn: checkInStr,
+          checkOut: checkOutStr,
+          properties: result,
+        });
+      }
+    } catch {
+      setLoadingButton(false)
+    }
+
+    router.push(`/stays/${citySlug}?${params.toString()}`);
   };
 
   return (
@@ -170,7 +195,7 @@ const SearchBox = () => {
                 fullWidth
                 value={guests}
                 onChange={(e) =>
-                  setGuests(Math.max(1, parseInt(e.target.value)))
+                  setGuests(Math.max(1, Number.parseInt(e.target.value)))
                 }
                 sx={{
                   "& label": {
@@ -206,13 +231,20 @@ const SearchBox = () => {
 
               <Button
                 className="col-span-2"
-                type="submit"
                 variant="contained"
-                fullWidth
+                type="submit"
+                disabled={loadingButton}
                 onClick={handleSubmit}
+                sx={{
+                  "&.Mui-disabled": {
+                    bgcolor: "primary.main",
+                    color: "#fff",
+                    opacity: 0.85,
+                  },
+                }}
               >
                 {loadingButton ? (
-                  <CircularProgress size={30} color="inherit" />
+                  <CircularProgress size={20} color="inherit" />
                 ) : (
                   "SEARCH"
                 )}

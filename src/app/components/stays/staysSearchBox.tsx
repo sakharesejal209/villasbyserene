@@ -2,7 +2,7 @@
 
 import { Dispatch, FC, SetStateAction, useState } from "react";
 import { Controller, useForm, useWatch } from "react-hook-form";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import dayjs, { Dayjs } from "dayjs";
 import {
   Autocomplete,
@@ -20,7 +20,6 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers";
 
 import { IoClose as CloseOutlined } from "react-icons/io5";
 
@@ -82,8 +81,9 @@ const StaysSearchBox: FC<StaysSearchBoxProps> = ({
   const syncUrl = (values: FilterFormValues, price: [number, number]) => {
     const params = new URLSearchParams();
     const city =
-      values.location && values.location !== "all" ? values.location : slug;
-
+      values.location && values.location !== "all"
+        ? values.location.toLowerCase()
+        : "all";
     if (values.guests > 1) params.set("guests", String(values.guests));
     if (values.bedrooms > 0) params.set("bedrooms", String(values.bedrooms));
     if (values.amenities.length)
@@ -178,63 +178,6 @@ const StaysSearchBox: FC<StaysSearchBoxProps> = ({
                 />
               )}
             />
-          </div>
-
-          <div className="w-full flex justify-between gap-2">
-            <div className="w-1/2">
-              <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
-                Check-in
-              </Typography>
-              <Controller
-                name="checkIn"
-                control={control}
-                render={({ field }) => (
-                  <DatePicker
-                    value={field.value}
-                    format="DD/MM/YYYY"
-                    disablePast
-                    minDate={dayjs()}
-                    onChange={(val) => {
-                      handleChange("checkIn", val);
-                      const currentCheckOut = getValues("checkOut");
-                      if (
-                        val &&
-                        currentCheckOut &&
-                        val.isAfter(currentCheckOut)
-                      ) {
-                        handleChange("checkOut", val.add(1, "day"));
-                      }
-                    }}
-                    slotProps={{
-                      textField: { fullWidth: true, size: "small" },
-                    }}
-                  />
-                )}
-              />
-            </div>
-            <div className="w-1/2">
-              <Typography variant="subtitle2" sx={{ mb: 0.5 }}>
-                Check-out
-              </Typography>
-              <Controller
-                name="checkOut"
-                control={control}
-                render={({ field }) => (
-                  <DatePicker
-                    value={field.value}
-                    format="DD/MM/YYYY"
-                    disablePast
-                    minDate={
-                      checkIn ? checkIn.add(1, "day") : dayjs().add(1, "day")
-                    }
-                    onChange={(val) => handleChange("checkOut", val)}
-                    slotProps={{
-                      textField: { fullWidth: true, size: "small" },
-                    }}
-                  />
-                )}
-              />
-            </div>
           </div>
 
           <div className="w-full flex justify-between gap-2">

@@ -14,8 +14,6 @@ import {
 import {
   IoPeopleOutline as PeopleIcon,
   IoBedOutline as BedIcon,
-  IoCalendarOutline as CalendarIcon,
-  IoLogoWhatsapp as WhatsApp,
 } from "react-icons/io5";
 import { IoIosArrowForward as ArrowForward } from "react-icons/io";
 
@@ -33,11 +31,12 @@ import {
   PropertyDetailDTO,
   PropertyListItemDTO,
 } from "@/app/@types";
-import dayjs from "dayjs";
+import StaysTopBar from "./StaysTopBar";
 
 type StaysPropType = {
   location: string;
   propertiesData: PropertyListItemDTO[];
+  loading?: boolean;
 };
 
 export const getAccomodation = (type: string) => {
@@ -62,7 +61,7 @@ function toPropertySlug(name: string, id: string): string {
     .trim()}-${id.slice(0, 8)}`;
 }
 
-const Stays = ({ location, propertiesData }: StaysPropType) => {
+const Stays = ({ location, propertiesData, loading }: StaysPropType) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const theme = useTheme();
@@ -71,8 +70,6 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
   const checkIn = searchParams.get("checkIn");
   const checkOut = searchParams.get("checkOut");
   const guests = searchParams.get("guests");
-  const nights =
-    checkIn && checkOut ? dayjs(checkOut).diff(dayjs(checkIn), "day") : null;
 
   const buildUrl = (property: PropertyListItemDTO) => {
     const slug = toPropertySlug(property.name, property.property_id);
@@ -86,14 +83,9 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
   const toPascalCase = (str: string) =>
     startCase(camelCase(str)).replaceAll(" ", "");
 
-  const dateLabel =
-    checkIn && checkOut
-      ? `${dayjs(checkIn).format("DD MMM")} – ${dayjs(checkOut).format("DD MMM")}`
-      : null;
-
   return (
     <div className="col-span-12 md:col-span-9 w-full px-4 min-h-screen">
-      {/* Breadcrumb + heading */}
+      {/* Breadcrumb */}
       <Box
         sx={{
           display: "flex",
@@ -114,51 +106,25 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
         </Typography>
       </Box>
 
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "flex-end",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          gap: 1,
-          mb: 2,
-        }}
-      >
-        <Box>
-          <Typography variant="h4" fontWeight={800}>
-            {location === "All"
-              ? "All Properties"
-              : `Properties in ${toPascalCase(location)}`}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.25 }}>
-            {propertiesData.length} propert
-            {propertiesData.length === 1 ? "y" : "ies"} found
-          </Typography>
-        </Box>
-        {dateLabel && (
-          <div className="flex w-full justify-end">
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 0.75,
-                px: 1.5,
-                py: 0.75,
-                borderRadius: 2,
-                border: "1px solid",
-                borderColor: "divider",
-                bgcolor: "action.hover",
-              }}
-            >
-              <CalendarIcon fontSize={15} color={theme.palette.primary.main} />
-              <Typography variant="body2" fontWeight={600}>
-                {dateLabel}
-                {nights && ` · ${nights} night${nights === 1 ? "" : "s"}`}
-              </Typography>
-            </Box>
-          </div>
-        )}
+      {/* Heading */}
+      <Box sx={{ mb: 1 }}>
+        <Typography variant="h4" fontWeight={800}>
+          {location === "All"
+            ? "All Properties"
+            : `Properties in ${toPascalCase(location)}`}
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.25 }}>
+          {propertiesData.length} propert
+          {propertiesData.length === 1 ? "y" : "ies"} found
+        </Typography>
       </Box>
+
+      {/* Primary search bar — location, dates, guests */}
+      <StaysTopBar
+        initialCheckIn={checkIn}
+        initialCheckOut={checkOut}
+        loading={loading}
+      />
 
       {propertiesData.length ? (
         <Box
@@ -257,11 +223,7 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
                   }}
                 >
                   {/* Name + location */}
-                  <Typography
-                    variant="h5"
-                    // fontWeight={700}
-                    sx={{ mb: 0.25, lineHeight: 1.3 }}
-                  >
+                  <Typography variant="h5" sx={{ mb: 0.25, lineHeight: 1.3 }}>
                     {item.name}
                   </Typography>
                   <Typography
@@ -341,37 +303,32 @@ const Stays = ({ location, propertiesData }: StaysPropType) => {
                   >
                     <Box>
                       {priceResult ? (
-                        <>
-                          <Box
-                            sx={{
-                              display: "flex",
-                              alignItems: "baseline",
-                              gap: 0.5,
-                            }}
-                          >
-                            {priceResult.type === "starting" && (
-                              <Typography
-                                variant="caption"
-                                color="text.secondary"
-                              >
-                                From
-                              </Typography>
-                            )}
-                            <Typography
-                              variant="h5"
-                              fontWeight={600}
-                              color="primary"
-                            >
-                              ₹{priceResult.price.toLocaleString("en-IN")}
-                            </Typography>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "baseline",
+                            gap: 0.5,
+                          }}
+                        >
+                          {priceResult.type === "starting" && (
                             <Typography
                               variant="caption"
                               color="text.secondary"
                             >
-                              {isDirect ? "/ night" : "Onwards"}
+                              From
                             </Typography>
-                          </Box>
-                        </>
+                          )}
+                          <Typography
+                            variant="h5"
+                            fontWeight={600}
+                            color="primary"
+                          >
+                            ₹{priceResult.price.toLocaleString("en-IN")}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            {isDirect ? "/ night" : "Onwards"}
+                          </Typography>
+                        </Box>
                       ) : (
                         <Typography
                           variant="body2"
