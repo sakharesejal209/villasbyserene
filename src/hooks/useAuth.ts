@@ -19,6 +19,7 @@ interface UseAuthReturn {
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";
+const APP_BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
 export function useAuth(): UseAuthReturn {
   const [user, setUser] = useState<AuthUser | null>(null);
@@ -33,9 +34,10 @@ export function useAuth(): UseAuthReturn {
   }, []);
 
   const login = (returnUrl?: string) => {
-    const url = returnUrl
-      ? `${API_BASE_URL}/auth/google?returnUrl=${encodeURIComponent(returnUrl)}`
-      : `${API_BASE_URL}/auth/google`;
+    const fullReturnUrl = returnUrl
+      ? `${APP_BASE_URL}${returnUrl.startsWith("/") ? returnUrl : `/${returnUrl}`}`
+      : APP_BASE_URL;
+    const url = `${API_BASE_URL}/auth/google?returnUrl=${encodeURIComponent(fullReturnUrl)}`;
     globalThis.location.href = url;
   };
 
