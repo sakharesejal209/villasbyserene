@@ -103,6 +103,7 @@ const UnitEditor = ({
       childCharge: unit.childCharge ?? 0,
       childAgeFree: unit.childAgeFree ?? 5,
       vbs_commission: unit.vbs_commission ?? 13,
+      png_banner_image: unit.png_banner_image ?? "",
     },
   });
 
@@ -384,6 +385,21 @@ const UnitEditor = ({
                     fullWidth
                     helperText="0 = pets not allowed"
                     onChange={(e) => field.onChange(+e.target.value)}
+                  />
+                )}
+              />
+
+              <Controller
+                name="png_banner_image"
+                control={uControl}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="PNG Banner Image URL"
+                    size="small"
+                    fullWidth
+                    helperText="Firebase PNG URL for Gallabox/external use"
+                    sx={{ gridColumn: "1 / -1" }}
                   />
                 )}
               />

@@ -25,4 +25,5 @@ export default interface AdminUnitDTO {
   seasonal: SeasonalPricingDTO[];
   images: AdminUnitImageDTO[];
   maxPets?: number | null;
+  png_banner_image: string
 }

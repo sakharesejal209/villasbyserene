@@ -69,7 +69,7 @@ type UnitImagesMap = {
 // ── Styled ────────────────────────────────────────────────────────
 
 const Customsection = styled("div")<CustomSectionProps>(({ background }) => ({
-  backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${background})`,
+  backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${background})`,
   backgroundRepeat: "no-repeat",
   backgroundPosition: "center",
   backgroundSize: "cover",
@@ -713,7 +713,7 @@ const Property: FC<PropertyPropType> = ({
       >
         <DialogTitle
           // sx={{ py: "16px", px: "16px" }}
-          className="flex justify-between items-center p-2! md:p-4!"
+          className="flex justify-between items-center p-2!"
         >
           <Typography variant="h5" fontWeight={700}>
             Gallery
@@ -722,7 +722,7 @@ const Property: FC<PropertyPropType> = ({
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-        <DialogContent className="p-1! md:p-4!">
+        <DialogContent className="p-1! md:p-2!">
           {galleryImages && <ImageGallery images={galleryImages} />}
         </DialogContent>
       </Dialog>
