@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { Controller, useForm } from "react-hook-form";
@@ -227,6 +227,7 @@ const ProfilePage: FC = () => {
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [logoutLoading, setLogoutLoading] = useState(false);
+  const isLoggingOut = useRef(false);
   const theme = useTheme();
 
   const {
@@ -239,7 +240,8 @@ const ProfilePage: FC = () => {
   });
 
   useEffect(() => {
-    if (!authLoading && !user) login(globalThis.location.pathname);
+    if (!authLoading && !user && !isLoggingOut.current)
+      login(globalThis.location.pathname);
   }, [authLoading, login, user]);
 
   useEffect(() => {
@@ -297,11 +299,13 @@ const ProfilePage: FC = () => {
 
   const handleLogout = async () => {
     setLogoutLoading(true);
+    isLoggingOut.current = true;
     try {
       await logout();
-      router.push("/");
+      globalThis.location.href = "/";
     } catch {
       setLogoutLoading(false);
+      isLoggingOut.current = false;
     }
   };
 
