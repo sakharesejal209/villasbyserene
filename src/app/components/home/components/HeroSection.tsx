@@ -9,7 +9,7 @@ import SearchBox from "../searchBox";
 
 // Trust stats shown below search
 const TRUST_STATS = [
-  { value: "200+", label: "Happy Guests" },
+  { value: "6000+", label: "Happy Guests" },
   { value: "4.7★", label: "Avg Rating" },
   { value: "₹0", label: "Hidden Fees" },
 ];
