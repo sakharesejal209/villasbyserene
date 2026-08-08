@@ -73,9 +73,9 @@ export const AboutPage = () => {
   ];
 
   const stats = [
-    { number: "10+", label: "Curated Properties" },
-    { number: "100+", label: "Happy Guests" },
-    { number: "4.5", label: "Average Rating" },
+    { number: "22+", label: "Curated Properties" },
+    { number: "6000+", label: "Happy Guests" },
+    { number: "4.7", label: "Average Rating" },
   ];
 
   return (
@@ -104,7 +104,7 @@ export const AboutPage = () => {
                 </Typography>
                 <div className="flex items-center">
                   <MapPin
-                  size={18}
+                    size={18}
                     color={
                       theme.palette.mode == "light" ? "primary" : "secondary"
                     }
@@ -122,7 +122,7 @@ export const AboutPage = () => {
 
               <div className="relative h-50 md:h-87.5">
                 <Image
-                  src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/deena-villa%2Fdeena-swimmingpool1.webp?alt=media&token=6b522cd1-cb79-4a5d-825b-a8d67e76a0ac"
+                  src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/sparsh-villa%2F0R6A9174.webp?alt=media&token=28dc9c08-f39e-449c-97e7-1b72a0f93be7"
                   alt="Villa with pool"
                   fill
                   style={{
