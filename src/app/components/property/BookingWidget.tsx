@@ -183,8 +183,6 @@ const BookingWidget: FC<BookingWidgetProps> = ({
   const baseCapacity = group?.display_unit.max_capacity ?? 99;
   const maxCapacity = isVilla ? baseCapacity : baseCapacity * roomCount;
 
-  console.log('baseCapacity:', baseCapacity);
-  
   const [quote, setQuote] = useState<BookingQuoteDTO | null>(null);
   const [quoteLoading, setQuoteLoading] = useState(false);
   const [quoteError, setQuoteError] = useState<string | null>(null);
@@ -209,22 +207,15 @@ const BookingWidget: FC<BookingWidgetProps> = ({
       infants: 0,
       petCount: 0,
     },
-  });  
+  });
 
   const checkIn = watch("checkIn");
   const checkOut = watch("checkOut");
   const adults = watch("adults");
   const children = watch("children");
   const infants = watch("infants");
-
-  console.log('adults:', typeof adults);
-  console.log('children:', typeof children);
-  
   const nights = checkIn && checkOut ? checkOut.diff(checkIn, "day") : 0;
   const totalPax = adults + children;
-
-  console.log('totalPax:', totalPax);
-
 
   const checkinRate =
     checkIn && group && hasPricing ? getCheckinRate(checkIn, group) : null;
@@ -295,7 +286,17 @@ const BookingWidget: FC<BookingWidgetProps> = ({
       nights,
       totalPrice: quote?.total ?? null, // backend already multiplies by rooms
     });
-  }, [checkIn, checkOut, adults, children, infants, nights, quote, units, onStateChange]);
+  }, [
+    checkIn,
+    checkOut,
+    adults,
+    children,
+    infants,
+    nights,
+    quote,
+    units,
+    onStateChange,
+  ]);
 
   useEffect(() => {
     const unitId = group?.display_unit?.unit_id;
@@ -409,7 +410,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
         <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
           {unitGroups.map((g, idx) => {
             const selected = idx === selectedIdx;
-            
+
             const rateLabel =
               isDirect && selected && checkinRate ? checkinRate : null;
             const datesBlocked =
@@ -517,7 +518,9 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                         color="primary"
                         lineHeight={1.2}
                       >
-                        {formatINR(quote.stay_charges + quote.commission_amount)}
+                        {formatINR(
+                          quote.stay_charges + quote.commission_amount,
+                        )}
                       </Typography>
                       <Typography variant="caption" color="text.secondary">
                         /night
@@ -949,7 +952,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
           startIcon={<WhatsApp />}
           sx={
             hasPricing
-              ? { borderRadius: 0.2, fontWeight: 600, py: 1 }
+              ? { display: "none", borderRadius: 0.2, fontWeight: 600, py: 1 }
               : {
                   borderRadius: 0.2,
                   fontWeight: 700,

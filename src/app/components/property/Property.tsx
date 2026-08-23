@@ -182,8 +182,6 @@ const Property: FC<PropertyPropType> = ({
     }
   }, [searchParams]);
 
-  console.log("nearby.length < 3:", nearby.length < 3);
-
   return (
     <section>
       <Customsection background={bannerUrl}>

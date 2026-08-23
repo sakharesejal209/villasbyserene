@@ -81,9 +81,6 @@ const UnitEditor = ({
     unit.seasonal || [],
   );
 
-  useEffect(() => {
-    console.log("seasonal:", seasonal);
-  }, [seasonal]);
   // ── Unit form ─────────────────────────────────────────────────
   const { control: uControl, handleSubmit: uSubmit } = useForm<AdminUnitDTO>({
     defaultValues: {

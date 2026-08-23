@@ -55,10 +55,6 @@ export const ThemeContextProvider = ({ children }: { children: ReactNode }) => {
     return () => mediaQuery.removeEventListener("change", handleChange);
   }, []);
 
-  useEffect(() => {
-    console.log("mode:", mode);
-  }, [mode]);
-
   const toggleTheme = () => {
     setMode((prev) => {
       const newMode = prev === "light" ? "dark" : "light";

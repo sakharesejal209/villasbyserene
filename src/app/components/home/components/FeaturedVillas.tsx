@@ -33,7 +33,7 @@ export const FeaturedVillas = () => {
   const featured = properties.filter((p) => p.booking_type === "DIRECT");
 
   // Fallback to any properties if none are direct
-  const display = featured.length > 0 ? featured : properties.slice(0, 4);
+  // const display = featured.length > 0 ? featured : properties.slice(0, 4);
 
   function toPropertySlug(name: string, id: string): string {
     return `${name
@@ -50,7 +50,7 @@ export const FeaturedVillas = () => {
     [router],
   );
 
-  if (!display.length) return null;
+  if (!featured.length) return null;
 
   return (
     <section>
@@ -99,7 +99,7 @@ export const FeaturedVillas = () => {
           // variant={"dark"}
           arrowPosition="outside"
         >
-          {display.map((property, idx) => {
+          {featured.map((property, idx) => {
             const bannerImg =
               property.carousel_images?.[0]?.image_url ??
               property.banner_image?.image_url ??
