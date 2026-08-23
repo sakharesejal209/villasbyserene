@@ -86,7 +86,6 @@ export const FeaturedVillas = () => {
         </FadeInSection>
 
         <Carousel
-          // autoplay={{ delay: 3200, disableOnInteraction: false }}
           breakpoints={{
             320: { slidesPerView: 2, spaceBetween: 8 },
             480: { slidesPerView: 3, spaceBetween: 12 },
@@ -95,8 +94,6 @@ export const FeaturedVillas = () => {
           slidesPerView={4}
           spaceBetween={16}
           showDots={false}
-          arrowVisibility="hover"
-          // variant={"dark"}
           arrowPosition="outside"
         >
           {featured.map((property, idx) => {
