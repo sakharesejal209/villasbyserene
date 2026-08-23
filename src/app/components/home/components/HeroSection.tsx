@@ -89,7 +89,7 @@ export const HeroSection = () => {
                 variant="h2"
                 sx={{ color: "#fff", lineHeight: 1.1, mb: 3 }}
               >
-                PERFECT GETAWAY!
+                PERFECT GETAWAY !
               </Typography>
             </motion.div>
 
