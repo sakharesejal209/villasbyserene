@@ -1,5 +1,4 @@
-// src/app/home/components/TrustSection.tsx
-// "use client";
+"use client";
 
 import { useRef } from "react";
 import { alpha, Box, Paper, Typography, useTheme } from "@mui/material";
@@ -58,13 +57,7 @@ const TrustCard = ({
   const inView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 28 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay }}
-      style={{ height: "100%" }}
-    >
+    <div>
       <Box
         sx={{
           textAlign: "center",
@@ -112,7 +105,7 @@ const TrustCard = ({
           {description}
         </Typography>
       </Box>
-    </motion.div>
+    </div>
   );
 };
 
@@ -144,12 +137,12 @@ export const TrustSection = () => {
                 your holiday deserves more than just a stay
               </Typography>
             </div>
+            <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
+              {cards.map((card, idx) => (
+                <TrustCard key={card.title} {...card} delay={idx * 0.08} />
+              ))}
+            </div>
           </FadeInSection>
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {cards.map((card, idx) => (
-              <TrustCard key={card.title} {...card} delay={idx * 0.08} />
-            ))}
-          </div>
         </div>
       </Paper>
     </section>

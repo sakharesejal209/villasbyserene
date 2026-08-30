@@ -1,23 +1,16 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { Fab } from "@mui/material";
+import { Fab, useMediaQuery, useTheme } from "@mui/material";
 import { IoLogoWhatsapp as WhatsApp } from "react-icons/io5";
 
 import { motion } from "motion/react";
 import { usePropertyStore } from "@/context/PropertyContext";
 import { PropertyListItemDTO, ThemeDTO } from "@/app/@types";
 
-import { HeroSection } from "./components/HeroSection";
 import { FeaturedVillas } from "./components/FeaturedVillas";
 import dynamic from "next/dynamic";
-// import { TopLocations } from "./components/TopLocations";
-// import { ThemeSection } from "./components/ThemeSection";
-// import { TrustSection } from "./components/TrustSection";
-// import { TestimonialsSection } from "./components/TestimonialsSection";
-// import { ListPropertySection } from "./components/ListPropertySection";
-// import { CtaSection } from "./components/CtaSection";
-// import { ThemeDrawer } from "./components/ThemeDrawer";
+import HeroSection from "./components/HeroSection";
 
 const TopLocations = dynamic(() =>
   import("./components/TopLocations").then((m) => ({
@@ -53,16 +46,15 @@ const ThemeDrawer = dynamic(() =>
 
 export const FadeInSection = ({
   children,
-  delay = 0,
 }: {
   children: React.ReactNode;
   delay?: number;
 }) => (
   <motion.div
-    initial={{ opacity: 0, y: 40 }}
+    initial={{ opacity: 0, y: 60 }}
     whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-80px" }}
-    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay }}
+    viewport={{ once: true, margin: "-60px" }}
+    transition={{ duration: 0.5, ease: "linear" }}
   >
     {children}
   </motion.div>
@@ -76,6 +68,8 @@ const Home = () => {
     PropertyListItemDTO[]
   >([]);
   const [selectedPropTheme, setSelectedPropTheme] = useState<string>("");
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleThemeSelection = useCallback(
     (proptheme: string) => {
@@ -104,7 +98,7 @@ const Home = () => {
   return (
     <div>
       {/* 1. Hero — video parallax + search + trust bar */}
-      <HeroSection />
+      <HeroSection theme={theme} isMobile={isMobile} />
 
       {/* 2. Featured Villas — highest conversion section (NEW) */}
       <FeaturedVillas />

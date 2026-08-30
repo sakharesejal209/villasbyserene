@@ -6,13 +6,13 @@ import {
 } from "@mui/material";
 
 const commonColors = {
-  gold: "#fecc89",
-  goldLight: "#fecc89",
-  coral: "#099A73",
-  coralLight: "#099A73",
+  secondary: "#fecc89",
+  secondaryLight: "#E5BC88",
+  primary: "#099A73",
+  primaryLight: "#099A73",
   sand: "#1a1a1a",
-  white: "#ffffff",
-  black: "#000000",
+  white: "#faf9f8",
+  black: "#242324",
   textPrimary: "#ffffff",
   textSecondary: "#d4d4d4",
   divider: "#444444",
@@ -31,14 +31,14 @@ let darkTheme: Theme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: commonColors.coral,
-      light: commonColors.coralLight,
+      main: commonColors.primary,
+      light: commonColors.primaryLight,
       contrastText: commonColors.black,
       50: "rgba(9, 154, 115, 0.1)",
     },
     secondary: {
-      main: commonColors.gold,
-      light: commonColors.goldLight,
+      main: commonColors.secondary,
+      light: commonColors.secondaryLight,
     },
     warning: {
       main: commonColors.warning,
@@ -59,7 +59,7 @@ let darkTheme: Theme = createTheme({
     },
     background: {
       default: commonColors.sand,
-      paper: "#212021",
+      paper: commonColors.black,
     },
     text: {
       primary: commonColors.textPrimary,
@@ -128,6 +128,7 @@ let darkTheme: Theme = createTheme({
           "& label.Mui-focused": {
             color: commonColors.white,
           },
+          borderRadius: "4px",
         },
       },
     },
@@ -135,6 +136,7 @@ let darkTheme: Theme = createTheme({
       styleOverrides: {
         notchedOutline: {
           borderColor: commonColors.border,
+          borderRadius: "4px",
         },
         root: {
           "& fieldset": {
@@ -206,7 +208,7 @@ let darkTheme: Theme = createTheme({
           backgroundColor: commonColors.black,
           height: 4,
           borderRadius: 2,
-          borderRight: `2px solid ${commonColors.coral}`,
+          borderRight: `2px solid ${commonColors.primary}`,
         },
       },
     },
