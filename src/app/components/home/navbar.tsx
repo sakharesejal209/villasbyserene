@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useEffect, useState } from "react";
 import {
   AppBar,
   Avatar,
@@ -8,9 +8,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Slide,
   Typography,
-  useScrollTrigger,
   useTheme,
 } from "@mui/material";
 
@@ -28,23 +26,38 @@ import Image from "next/image";
 import logoLight from "../../../../public/assets/villasbyserene-dark.png";
 import logoDark from "../../../../public/assets/villasbyserene-light.png";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 
 const Navbar = () => {
   const { mode, toggleTheme } = useThemeContext();
-  const [anchorElNav, setAnchorElNav] = React.useState<
+  const [anchorElNav, setAnchorElNav] = useState<
     (EventTarget & HTMLButtonElement) | null
   >(null);
   const router = useRouter();
+  const theme = useTheme();
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+  const isStaysPage = pathname.startsWith("/stays");
+  console.log("pathname:", pathname);
+
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const handleOpenNavMenu = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => setAnchorElNav(event.currentTarget);
   const handleCloseNavMenu = () => setAnchorElNav(null);
 
-  const trigger = useScrollTrigger();
-  const theme = useTheme();
   const { user, loading: authLoading, login } = useAuth();
 
   // ── Auth button — shows spinner while loading, avatar if logged in, login btn if not ──
@@ -90,61 +103,77 @@ const Navbar = () => {
   };
 
   return (
-    // <Slide direction="down" in={!trigger}>
     <AppBar
       sx={{
         background:
           theme.palette.mode === "light"
-            ? "rgba(255,255,255,0.92)"
-            : "rgba(26,26,26,0.92)",
-        backdropFilter: trigger ? "blur(12px)" : "none",
-        transition: "background 0.3s ease, backdrop-filter 0.3s ease",
+            ? scrolled || !isHomePage
+              ? "rgba(255, 255, 255, 1)"
+              : "rgba(255,255,255,0)"
+            : scrolled || !isHomePage
+              ? "rgba(26,26,26,1)"
+              : "rgba(26,26,26,0)",
+        transition: "background-color 0.3s ease",
       }}
       color="default"
       component="header"
-      elevation={trigger ? 1 : 0}
+      elevation={scrolled ? 1 : 0}
     >
-      <div className="container">
-        <div className="p-1 md:p-2 flex justify-between items-center w-full">
+      <div className={`${!isStaysPage && "container"}`}>
+        <div className="py-2 px-4 flex justify-between items-center w-full">
           {/* Brand */}
           <Link href="/">
             <Image
               className="max-sm:w-40 sm:w-45 md:w-48 transition-opacity"
               alt="VillasBySerene: Your boutique getaway!"
-              src={theme.palette.mode === "light" ? logoLight : logoDark}
+              src={
+                theme.palette.mode === "light"
+                  ? scrolled || !isHomePage
+                    ? logoLight
+                    : logoDark
+                  : logoDark
+              }
             />
           </Link>
 
           {/* Desktop */}
           <div className="flex items-center justify-between gap-6">
             <div className="hidden md:flex justify-end items-center gap-4">
-              <button onClick={() => router.push("/list")}>
+              <Button
+                className="hover:bg-transparent! group"
+                variant="text"
+                onClick={() => router.push("/list")}
+              >
                 <Typography
-                  color="textPrimary"
-                  className="hover:underline cursor-pointer"
+                  className="group-hover:underline!"
+                  color={scrolled || !isHomePage ? "textPrimary" : "white"}
                 >
                   List your home
                 </Typography>
-              </button>
-              <button>
+              </Button>
+              <Button className="hover:bg-transparent! group">
                 <Link href="https://www.instagram.com/villasbyserene/">
                   <Typography
-                    color="textPrimary"
-                    className="hover:underline cursor-pointer flex items-center gap-1"
+                    color={scrolled || !isHomePage ? "textPrimary" : "white"}
+                    className="flex items-center gap-1 group-hover:underline!"
                   >
                     <Instagram fontSize={18} />
                     <span>villasbyserene</span>
                   </Typography>
                 </Link>
-              </button>
+              </Button>
 
               <AuthControl />
 
               <IconButton onClick={toggleTheme}>
                 {mode === "light" ? (
-                  <MoonIcon color={trigger ? "action" : "inherit"} />
+                  <MoonIcon
+                    color={scrolled || !isHomePage ? "inherit" : "white"}
+                  />
                 ) : (
-                  <SunIcon color={trigger ? "action" : "inherit"} />
+                  <SunIcon
+                    color={scrolled || !isHomePage ? "inherit" : "white"}
+                  />
                 )}
               </IconButton>
             </div>
@@ -153,13 +182,16 @@ const Navbar = () => {
           {/* Mobile */}
           <div className="flex md:hidden justify-end items-center">
             <IconButton
-            
+              sx={{ paddingX: "4px" }}
               aria-label="open navigation"
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
             >
-              <MenuIcon fontSize={18} />
+              <MenuIcon
+                color={scrolled || !isHomePage ? "inherit" : "white"}
+                fontSize={18}
+              />
             </IconButton>
             <Menu
               id="menu-appbar"
@@ -199,11 +231,17 @@ const Navbar = () => {
               )}
             </Menu>
 
-            <IconButton  onClick={toggleTheme}>
+            <IconButton sx={{ paddingX: "4px" }} onClick={toggleTheme}>
               {mode === "light" ? (
-                <MoonIcon fontSize={18} color={trigger ? "action" : "inherit"} />
+                <MoonIcon
+                  fontSize={18}
+                  color={scrolled || !isHomePage ? "inherit" : "white"}
+                />
               ) : (
-                <SunIcon fontSize={18} color={trigger ? "action" : "inherit"} />
+                <SunIcon
+                  fontSize={18}
+                  color={scrolled || !isHomePage ? "inherit" : "white"}
+                />
               )}
             </IconButton>
 
@@ -213,7 +251,10 @@ const Navbar = () => {
                 <IconButton
                   onClick={() => router.push("/profile")}
                   size="small"
-                  sx={{ mx: 0.5 }}
+                  sx={{
+                    mx: 0.5,
+                    paddingX: "4px",
+                  }}
                 >
                   <Avatar
                     src={user.profile_image ?? undefined}
@@ -233,7 +274,10 @@ const Navbar = () => {
               ) : (
                 <IconButton
                   size="small"
-                  sx={{ color: trigger ? "text.primary" : "#ffffff", mx: 0.5 }}
+                  sx={{
+                    color: scrolled || !isHomePage ? "textSecondary" : "white",
+                    paddingX: "4px",
+                  }}
                   onClick={() =>
                     login(
                       globalThis.location.pathname + globalThis.location.search,
@@ -247,7 +291,6 @@ const Navbar = () => {
         </div>
       </div>
     </AppBar>
-    // {/* </Slide> */}
   );
 };
 

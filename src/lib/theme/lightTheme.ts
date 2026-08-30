@@ -6,13 +6,13 @@ import {
 } from "@mui/material";
 
 const commonColors = {
-  gold: "#fecc89",
-  goldLight: "#fecc89",
-  coral: "#044231",
-  coralLight: "#1d5546",
+  secondary: "#fecc89",
+  secondaryLight: "#FFDAA9",
+  primary: "#044231",
+  primaryLight: "#1d5546",
   sand: "#ffffff",
-  white: "#ffffff",
-  black: "#000000",
+  white: "#faf9f8",
+  black: "#242324",
   textPrimary: "#10162F",
   textSecondary: "rgba(16,22,47,0.6)",
   divider: "#cccccc",
@@ -31,14 +31,14 @@ let lightTheme: Theme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: commonColors.coral,
-      light: commonColors.coralLight,
+      main: commonColors.primary,
+      light: commonColors.primaryLight,
       contrastText: commonColors.white,
       50: "rgba(4, 66, 49, 0.2)",
     },
     secondary: {
-      main: commonColors.gold,
-      light: commonColors.goldLight,
+      main: commonColors.secondary,
+      light: commonColors.secondaryLight,
     },
     warning: {
       main: commonColors.warning,
@@ -117,6 +117,7 @@ let lightTheme: Theme = createTheme({
           "& label.Mui-focused": {
             color: commonColors.borderFocused,
           },
+          borderRadius: '4px'
         },
       },
     },
@@ -128,6 +129,7 @@ let lightTheme: Theme = createTheme({
         root: {
           [`& .${outlinedInputClasses.notchedOutline}`]: {
             borderColor: commonColors.border,
+            borderRadius: '4px'
           },
           [`&:hover .${outlinedInputClasses.notchedOutline}`]: {
             borderColor: commonColors.borderHover,
@@ -153,12 +155,14 @@ let lightTheme: Theme = createTheme({
         },
         contained: {
           "&:hover": {
-            backgroundColor: "#066048",
+            backgroundColor: "##BE996F",
+            // backgroundColor: "#066048",
             boxShadow: "none",
           },
           "&:active": {
             boxShadow: "none",
-            backgroundColor: "#07785a",
+            backgroundColor: "##DBC6AE",
+            // backgroundColor: "#07785a",
           },
         },
         text: {
@@ -188,7 +192,7 @@ let lightTheme: Theme = createTheme({
           backgroundColor: commonColors.white,
           height: 4,
           borderRadius: 2,
-          borderRight: `2px solid ${commonColors.coral}`,
+          borderRight: `2px solid ${commonColors.primary}`,
         },
       },
     },
