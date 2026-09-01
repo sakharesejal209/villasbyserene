@@ -180,8 +180,8 @@ const SearchBox = ({ isMobile }: { isMobile: boolean }) => {
         }}
       >
         {[
-          { value: "13+", label: "Curated Villas" },
-          { value: "500+", label: "Happy Guests" },
+          { value: "2+", label: "Curated Villas" },
+          { value: "6000+", label: "Happy Guests" },
           { value: "4.8★", label: "Average Rating" },
         ].map((stat) => (
           <Box

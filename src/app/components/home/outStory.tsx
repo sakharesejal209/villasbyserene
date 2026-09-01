@@ -75,7 +75,7 @@ export const AboutPage = () => {
   const stats = [
     { number: "22+", label: "Curated Properties" },
     { number: "6000+", label: "Happy Guests" },
-    { number: "4.7", label: "Average Rating" },
+    { number: "4.8", label: "Average Rating" },
   ];
 
   return (
