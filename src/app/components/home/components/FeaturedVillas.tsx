@@ -93,7 +93,7 @@ export const FeaturedVillas = () => {
           slidesPerView={4}
           spaceBetween={16}
           showDots={true}
-          // arrowPosition="outside"
+          arrowPosition="outside"
         >
           {featured.map((property, idx) => {
             const bannerImg =

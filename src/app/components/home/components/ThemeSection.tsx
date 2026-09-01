@@ -54,19 +54,20 @@ export const ThemeSection = ({ onThemeSelect }: Props) => {
                     transition={{ duration: 0.18 }}
                     onClick={() => onThemeSelect(proptheme)}
                     className="w-full flex flex-col items-center justify-center gap-0 py-2"
-                    style={{ background: "none", border: "none", cursor: "pointer" }}
+                    style={{
+                      background: "none",
+                      border: "none",
+                      cursor: "pointer",
+                    }}
                   >
                     <Box
                       sx={{
                         width: { xs: 52, md: 80 },
                         height: { xs: 52, md: 80 },
-                        // bgcolor: theme.palette.grey[600],
                         borderRadius: "50%",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        // p: { xs: "0.75rem", md: "1.25rem" },
-                        // transition: "background-color 0.2s",
                       }}
                     >
                       <Image
@@ -80,8 +81,11 @@ export const ThemeSection = ({ onThemeSelect }: Props) => {
                         height={72}
                       />
                     </Box>
-                    <Typography fontWeight={600} textAlign="center">
+                    <Typography variant="subtitle1" fontWeight={600} textAlign="center">
                       {propertyThemeMap[proptheme].label}
+                    </Typography>
+                    <Typography variant="body2" textAlign="center">
+                      {propertyThemeMap[proptheme].subLabel}
                     </Typography>
                   </motion.button>
                 </SwiperSlide>

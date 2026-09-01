@@ -18,8 +18,7 @@ export const TestimonialsSection = () => (
             What Our Guests Say
           </Typography>
           <Typography color="text.secondary" sx={{ maxWidth: 500, mx: "auto" }}>
-            Hospitality that goes beyond expectations - through the words of our
-            delighted guests.
+            Eleven of us, one long table, and nobody wanted to leave on Sunday.
           </Typography>
         </div>
         <Carousel
