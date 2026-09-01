@@ -23,7 +23,7 @@ export const TestimonialsSection = () => (
           </Typography>
         </div>
         <Carousel
-          spaceBetween={12}
+          spaceBetween={16}
           slidesPerView={4}
           breakpoints={{
             320: { slidesPerView: 2, spaceBetween: 8 },
@@ -42,30 +42,18 @@ export const TestimonialsSection = () => (
                 className="flex flex-col items-center"
               >
                 <div className="relative w-full aspect-square overflow-hidden rounded-sm shadow-md">
-                  {t.mediaType === "video" ? (
-                    <video
-                      src={t.src}
-                      controls
-                      playsInline
-                      className="absolute top-0 left-0 w-full h-full object-cover"
-                      poster={t.poster}
-                    />
-                  ) : (
-                    <Image
-                      src={t.src}
-                      alt={t.name}
-                      fill
-                      sizes="(max-width: 768px) 50vw, 25vw"
-                      style={{ objectFit: "cover" }}
-                    />
-                  )}
+                  <Image
+                    src={t.src}
+                    alt={t.name}
+                    fill
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    style={{ objectFit: "cover" }}
+                  />
                 </div>
                 <Typography variant="caption" sx={{ mt: 1, opacity: 0.65 }}>
                   {t.name}
                 </Typography>
-                <Typography variant="h6" >
-                  {t.property}
-                </Typography>
+                <Typography variant="h6">{t.property}</Typography>
               </motion.div>
             </SwiperSlide>
           ))}

@@ -1,12 +1,21 @@
 [
   {
     "id": 2,
-    "src": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/guest-testimonials%2Fsameksha-nahar.webp.jpg?alt=media&token=a7b50c0e-a884-4de3-99a3-0d6f877ac3e5",
-    "name": "Sameksha Nahar",
-    "property": "The First Villa By Serene",
+    "src": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/guest-testimonials%2FGemini_Generated_Image_93jve493jve493jv.webp?alt=media",
+    "name": "Aarti Kothari",
+    "property": "Poonam Villa By Serene",
     "mediaType": "img",
     "poster": ""
   },
+  {
+    "id": 2,
+    "src": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/guest-testimonials%2FGemini_Generated_Image_4q6n1a4q6n1a4q6n.webp?alt=media",
+    "name": "Aarti Kothari",
+    "property": "Elara Villa By Serene",
+    "mediaType": "img",
+    "poster": ""
+  },
+
   {
     "id": 3,
     "src": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/guest-testimonials%2Faarti-kothari.webp.jpg?alt=media&token=6f372af7-bb13-4660-a87e-efcfbeea4ea7",
@@ -17,33 +26,65 @@
   },
   {
     "id": 4,
-    "src": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/guest-testimonials%2Fdeva-patil.png?alt=media&token=72c0d6ad-a3d2-4749-83eb-3e76e4e7380e",
-    "name": "Deva Patil",
-    "property": "Savali Red Stone By Serene",
+    "src": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/guest-testimonials%2FGemini_Generated_Image_lxscnblxscnblxsc.webp?alt=media",
+    "name": "Aarti Kothari",
+    "property": "Elara Villa by Serene",
+    "mediaType": "img",
+    "poster": ""
+  },
+  {
+    "id": 5,
+    "src": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/guest-testimonials%2FGemini_Generated_Image_oi6368oi6368oi63.webp?alt=media",
+    "name": "Aarti Kothari",
+    "property": "Poonam Villa by Serene",
     "mediaType": "img",
     "poster": ""
   },
   {
     "id": 6,
-    "src": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/guest-testimonials%2Fmansi-modak.jpg?alt=media&token=75d7596f-f8da-4e83-9e47-2de75e50afe9",
-    "name": "Mansi Modak",
-    "property": "Hillview Villa By Serene",
+    "src": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/guest-testimonials%2FGemini_Generated_Image_zb1elizb1elizb1e.webp?alt=media&token=84f46cea-26ba-408a-a723-65813e6b2ace",
+    "name": "Aarti Kothari",
+    "property": "Elara Villa by Serene",
     "mediaType": "img",
     "poster": ""
   },
   {
     "id": 7,
-    "src": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/guest-testimonials%2Fpooja-joshi.webp?alt=media&token=454a4956-3fd2-457e-ba32-bc9cbf2c67bb",
-    "name": "Priyanka Sahu",
-    "property": "Hillview Villa By Serene",
+    "src": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/guest-testimonials%2FGemini_Generated_Image_1c53981c53981c53.webp?alt=media",
+    "name": "Aarti Kothari",
+    "property": "Air Eco Stay by Serene",
     "mediaType": "img",
     "poster": ""
   },
   {
     "id": 8,
-    "src": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/guest-testimonials%2Fmansi-modak%20(2).jpg?alt=media&token=a34fa10b-b136-4d5d-be01-4a4570274879",
-    "name": "Mansi Modak",
-    "property": "Hillview Villa By Serene",
+    "src": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/guest-testimonials%2FGemini_Generated_Image_k0bqw7k0bqw7k0bq.webp?alt=media",
+    "name": "Aarti Kbjn,jknothari",
+    "property": "Ocean Pearl Villa by Serene",
+    "mediaType": "img",
+    "poster": ""
+  },
+  {
+    "id": 9,
+    "src": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/guest-testimonials%2FGemini_Generated_Image_ftikwwftikwwftik.webp?alt=media",
+    "name": "Aarti Kothari",
+    "property": "Air Eco Stay by Serene",
+    "mediaType": "img",
+    "poster": ""
+  },
+  {
+    "id": 10,
+    "src": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/guest-testimonials%2FGemini_Generated_Image_iylwi2iylwi2iylw.webp?alt=media",
+    "name": "Aarti Kothari",
+    "property": "Air Eco Stay by Serene",
+    "mediaType": "img",
+    "poster": ""
+  },
+  {
+    "id": 11,
+    "src": "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/guest-testimonials%2FGemini_Generated_Image_a8jw5ea8jw5ea8jw.webp?alt=media",
+    "name": "Aarti Kothari",
+    "property": "Ocean Pearl Villa by Serene",
     "mediaType": "img",
     "poster": ""
   }
