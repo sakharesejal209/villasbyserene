@@ -41,7 +41,8 @@ export const ListPropertySection = () => {
             {/* Image — slides in from left */}
             <div className="relative aspect-video md:aspect-4/3 overflow-hidden rounded-sm">
               <Image
-                src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/house-of-mars%2Fhouse-of-mars-swimming-pool5.webp?alt=media&token=1076deb0-cd52-4cb9-86be-324d7a43ff8d"
+                src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/house-of-mars%2Fhouse-of-mars-swimming-pool6.webp?alt=media&token=ee8c8a9e-0f5d-490f-b6e4-c3a8336eebbf"
+                // src="https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/house-of-mars%2Fhouse-of-mars-swimming-pool5.webp?alt=media&token=1076deb0-cd52-4cb9-86be-324d7a43ff8d"
                 alt="Villa management services"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
