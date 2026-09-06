@@ -92,7 +92,7 @@ export const FeaturedVillas = () => {
           }}
           slidesPerView={4}
           spaceBetween={16}
-          showDots={true}
+          showDots={false}
           arrowPosition="outside"
         >
           {featured.map((property, idx) => {
