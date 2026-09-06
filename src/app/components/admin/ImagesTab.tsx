@@ -1214,17 +1214,26 @@ export const ImagesTab = ({ detail, propertyId, onSaved }: Props) => {
                               right: 2,
                               bgcolor: "rgba(0,0,0,0.6)",
                               color: "#fff",
-                              width: 18,
-                              height: 18,
+                              width: 20,
+                              height: 20,
                             }}
                           >
                             {removing === ui.image_id ? (
                               <CircularProgress size={10} color="inherit" />
                             ) : (
-                              <DeleteIcon fontSize={11} />
+                              <DeleteIcon fontSize={18} />
                             )}
                           </IconButton>
                         )}
+                        <Typography
+                          variant="caption"
+                          color="text.secondary"
+                          display="block"
+                          noWrap
+                          sx={{ fontSize: 9 }}
+                        >
+                          Order: {ui.display_order}
+                        </Typography>
                       </Box>
                     ),
                 )}

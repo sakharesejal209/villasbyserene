@@ -7,10 +7,9 @@ import {
   Button,
   CircularProgress,
   Chip,
-  Paper,
   Typography,
 } from "@mui/material";
-import { IoSaveOutline  as SaveIcon } from "react-icons/io5";
+import { IoSaveOutline as SaveIcon } from "react-icons/io5";
 import { httpService } from "@/app/@services";
 import {
   AdminPropertyDetailDTO,
@@ -128,7 +127,7 @@ export const AmenitiesTab = ({ detail, propertyId, onSaved }: Props) => {
               border: "1px solid",
               borderColor: "divider",
               borderRadius: 0.2,
-              maxWidth: '74%'
+              maxWidth: "74%",
             }}
           >
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
