@@ -541,7 +541,7 @@ const Property: FC<PropertyPropType> = ({
                         <div className="h-75 md:h-100">
                           <div className="relative flex h-[50%]">
                             <Image
-                              src={item.image_url}
+                              src={item.imageUrl}
                               alt={item.title}
                               fill
                               style={{

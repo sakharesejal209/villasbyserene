@@ -25,5 +25,6 @@ export default interface PropertyListItemDTO {
   banner_image: ImageDTO | null;
   carousel_images: ImageDTO[];
   starting_price: number | null;
+  vbs_commission: number | null;
   amenities: AmenityDTO[];
 }

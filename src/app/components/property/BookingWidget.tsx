@@ -196,12 +196,12 @@ const BookingWidget: FC<BookingWidgetProps> = ({
 
   const { control, setValue, getValues, watch } = useForm<FormValues>({
     defaultValues: {
-      checkIn: defaultCheckIn ? dayjs(defaultCheckIn) : null,
+      checkIn: defaultCheckIn ? dayjs(defaultCheckIn) : dayjs(),
       checkOut: defaultCheckOut
         ? dayjs(defaultCheckOut)
         : defaultCheckIn
           ? dayjs(defaultCheckIn).add(1, "day")
-          : null,
+          : dayjs().add(1, "day"),
       adults: guests || 6,
       children: 0,
       infants: 0,

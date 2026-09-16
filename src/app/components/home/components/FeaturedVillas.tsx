@@ -70,7 +70,8 @@ export const FeaturedVillas = () => {
               Our Handpicked Villas
             </Typography>
             <Typography color="text.secondary">
-              Premium stays curated for unforgettable experiences. We visit <br />
+              Premium stays curated for unforgettable experiences. We visit{" "}
+              <br />
               every home before it joins the collection.
             </Typography>
           </Box>
@@ -100,7 +101,10 @@ export const FeaturedVillas = () => {
               property.carousel_images?.[0]?.image_url ??
               property.banner_image?.image_url ??
               null;
-            const weekdayPrice = property.starting_price ?? null;
+            const weekdayPrice = Math.round(
+              (property.starting_price || 0) *
+                (1 + (property.vbs_commission ?? 13) / 100),
+            );
 
             return (
               <SwiperSlide key={property.property_id}>
@@ -280,12 +284,6 @@ export const FeaturedVillas = () => {
                               </Typography>
                             </div>
                           )}
-
-                          {/* // : (
-                          //   <Typography variant="body2" color="text.secondary">
-                          //     Contact for pricing
-                          //   </Typography>
-                          // )} */}
                         </Box>
                         <Button
                           variant="contained"
