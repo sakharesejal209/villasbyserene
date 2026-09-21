@@ -238,7 +238,7 @@ const TermsPage = () => {
             Terms & Conditions
           </Typography>
           <Typography>
-            VBS Hospitality Private Limited · villasbyserene.com
+            VBS Hospitality Private Limited · villasbyserene.in
           </Typography>
           <Typography>
             Effective: 1 June 2025 · Last updated: June 2025
@@ -324,7 +324,7 @@ const TermsPage = () => {
               Villas By Serene is a premium holiday villa rental and management
               platform operated by VBS Hospitality Private Limited, a company
               incorporated under the Companies Act 2013 and registered in India.
-              Our platform at villasbyserene.com connects guests with curated
+              Our platform at villasbyserene.in connects guests with curated
               private villa properties across Maharashtra and neighbouring
               leisure destinations.
             </BodyText>
@@ -345,7 +345,7 @@ const TermsPage = () => {
               title="Acceptance of Terms"
             />
             <BodyText>
-              By accessing villasbyserene.com, making an enquiry, or completing
+              By accessing villasbyserene.in, making an enquiry, or completing
               a booking, you confirm that you have read, understood, and agree
               to be bound by these Terms & Conditions in full. If you are
               booking on behalf of a group, you represent that you have the
@@ -368,7 +368,7 @@ const TermsPage = () => {
             />
             <SubHeading title="3.1  How to Book" />
             <BodyText>
-              Bookings may be placed directly through villasbyserene.com, via
+              Bookings may be placed directly through villasbyserene.in, via
               our listed OTA channels (Airbnb, MakeMyTrip), or by contacting our
               team on WhatsApp. A booking is confirmed only upon receipt of a
               booking confirmation email from Villas By Serene and realisation
@@ -414,7 +414,7 @@ const TermsPage = () => {
             />
             <SubHeading title="4.1  Pricing" />
             <BodyText>
-              All prices displayed on villasbyserene.com are in Indian Rupees
+              All prices displayed on villasbyserene.in are in Indian Rupees
               (INR) and are inclusive of applicable GST unless explicitly stated
               otherwise. Prices are dynamic and may vary by season, date, and
               occupancy. The price confirmed at the time of booking is the price
@@ -802,7 +802,7 @@ const TermsPage = () => {
             {/* 11. IP */}
             <SectionHeading id="ip" number="11" title="Intellectual Property" />
             <BodyText>
-              All content on villasbyserene.com — including photography, copy,
+              All content on villasbyserene.in — including photography, copy,
               branding, and design — is the intellectual property of VBS
               Hospitality Private Limited or its licensors. No content may be
               reproduced, redistributed, or used for commercial purposes without
@@ -850,7 +850,7 @@ const TermsPage = () => {
             <BodyText>
               Villas By Serene reserves the right to amend these Terms at any
               time. The updated Terms will be published at
-              villasbyserene.com/terms with a revised effective date. Bookings
+              villasbyserene.in/terms with a revised effective date. Bookings
               made prior to any update remain governed by the Terms in force at
               the time of booking confirmation.
             </BodyText>
@@ -869,7 +869,7 @@ const TermsPage = () => {
             >
               {[
                 { label: "Company", value: "VBS Hospitality Private Limited" },
-                { label: "Website", value: "villasbyserene.com" },
+                { label: "Website", value: "villasbyserene.in" },
                 { label: "Email", value: "villasbyserene@gmail.com" },
                 { label: "WhatsApp", value: "+91 95943 77736" },
                 { label: "GSTIN", value: "27AALCV7250R1ZD" },

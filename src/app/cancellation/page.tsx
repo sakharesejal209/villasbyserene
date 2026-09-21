@@ -270,7 +270,7 @@ const OtaPlatformCards = () => {
       contact: "MakeMyTrip customer support",
     },
     {
-      platform: "villasbyserene.com",
+      platform: "villasbyserene.in",
       policy: "This policy applies in full",
       contact: "villasbyserene@gmail.com",
     },
@@ -416,7 +416,7 @@ const OtaPlatformTable = () => (
             "MakeMyTrip customer support",
           ],
           [
-            "villasbyserene.com",
+            "villasbyserene.in",
             "This policy applies in full",
             "villasbyserene@gmail.com",
           ],
@@ -461,7 +461,7 @@ const CancellationPolicyPage = () => {
             Cancellation Policy
           </Typography>
           <Typography color="text.secondary">
-            VBS Hospitality Private Limited · villasbyserene.com
+            VBS Hospitality Private Limited · villasbyserene.in
           </Typography>
           <Typography color="text.secondary">
             Effective: 1 June 2025 · Last updated: June 2025
@@ -481,7 +481,7 @@ const CancellationPolicyPage = () => {
         >
           <Typography color="text.secondary">
             This Cancellation Policy applies to all bookings made directly
-            through villasbyserene.com. For bookings made via Airbnb or
+            through villasbyserene.in. For bookings made via Airbnb or
             MakeMyTrip, the respective platform&apos;s cancellation policy
             governs the refund process, though Villas By Serene&apos;s
             on-property conduct policies remain in effect. All refund amounts
@@ -686,7 +686,7 @@ const CancellationPolicyPage = () => {
             />
             <BodyText>
               The table below summarises the complete refund schedule for direct
-              bookings on villasbyserene.com.
+              bookings on villasbyserene.in.
             </BodyText>
 
             {/* Mobile: stacked cards. Desktop: table */}
