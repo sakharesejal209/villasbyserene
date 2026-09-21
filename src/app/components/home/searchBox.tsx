@@ -25,7 +25,7 @@ export const locations = [
   "Lonavala",
   "Karjat",
   "Alibaug",
-  "Navi Mumbai",
+  "Navi-Mumbai",
   "Udaipur",
 ];
 
@@ -50,7 +50,9 @@ const SearchBox = ({ isMobile }: { isMobile: boolean }) => {
 
     setLoadingButton(true);
 
-    const citySlug = location ? location.toLowerCase() : "all";
+    const citySlug = location
+      ? location.toLowerCase().replaceAll(/\s+/g, "-")
+      : "all";
     const checkInStr = checkIn ? checkIn.format("YYYY-MM-DD") : null;
     const checkOutStr = checkOut ? checkOut.format("YYYY-MM-DD") : null;
 

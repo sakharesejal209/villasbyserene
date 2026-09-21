@@ -81,7 +81,7 @@ const Stays = ({ location, propertiesData, loading }: StaysPropType) => {
   };
 
   const toPascalCase = (str: string) =>
-    startCase(camelCase(str)).replaceAll(" ", "");
+    startCase(camelCase(str.replaceAll("-", " ")));
 
   return (
     <div className="col-span-12 md:col-span-9 w-full px-4 min-h-screen">

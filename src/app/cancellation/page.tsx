@@ -65,23 +65,13 @@ const SectionHeading = ({
 );
 
 const BodyText = ({ children }: { children: React.ReactNode }) => (
-  <Typography variant="body2" sx={{ mb: 1 }}>
-    {children}
-  </Typography>
+  <Typography sx={{ mb: 1 }}>{children}</Typography>
 );
 
 const BulletItem = ({ text }: { text: string }) => (
   <Box sx={{ display: "flex", gap: 1.5, mb: 0.75, alignItems: "flex-start" }}>
-    <Typography
-      variant="body2"
-      color="primary"
-      sx={{ mt: "1px", flexShrink: 0 }}
-    >
-      —
-    </Typography>
-    <Typography variant="body2" color="text.secondary">
-      {text}
-    </Typography>
+    <Typography sx={{ mt: "1px", flexShrink: 0 }}>—</Typography>
+    <Typography>{text}</Typography>
   </Box>
 );
 
@@ -128,7 +118,7 @@ const RefundTierCard = ({
         {refund}
       </Typography>
     </Box>
-    <Typography variant="body2" fontWeight={700} color={color}>
+    <Typography fontWeight={700} color={color}>
       {window}
     </Typography>
     <Typography variant="caption" color="#121111">
@@ -166,17 +156,10 @@ const StepCard = ({
       </Typography>
     </Box>
     <Box sx={{ minWidth: 0 }}>
-      <Typography
-        variant="body2"
-        fontWeight={700}
-        color="text.primary"
-        sx={{ mb: 0.25 }}
-      >
+      <Typography fontWeight={700} sx={{ mb: 0.25 }}>
         {title}
       </Typography>
-      <Typography variant="body2" color="text.secondary">
-        {body}
-      </Typography>
+      <Typography>{body}</Typography>
     </Box>
   </Box>
 );
@@ -233,7 +216,7 @@ const RefundScheduleCards = () => {
             bgcolor: i % 2 === 0 ? "background.paper" : "action.hover",
           }}
         >
-          <Typography variant="body2" fontWeight={700} sx={{ mb: 1 }}>
+          <Typography fontWeight={700} sx={{ mb: 1 }}>
             {r.window}
           </Typography>
           <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 1 }}>
@@ -245,7 +228,7 @@ const RefundScheduleCards = () => {
               >
                 Refund
               </Typography>
-              <Typography variant="body2">{r.refund}</Typography>
+              <Typography>{r.refund}</Typography>
             </Box>
             <Box>
               <Typography
@@ -255,7 +238,7 @@ const RefundScheduleCards = () => {
               >
                 Processing time
               </Typography>
-              <Typography variant="body2">{r.time}</Typography>
+              <Typography>{r.time}</Typography>
             </Box>
             <Box sx={{ gridColumn: "1 / -1" }}>
               <Typography
@@ -265,7 +248,7 @@ const RefundScheduleCards = () => {
               >
                 Method
               </Typography>
-              <Typography variant="body2">{r.method}</Typography>
+              <Typography>{r.method}</Typography>
             </Box>
           </Box>
         </Paper>
@@ -308,13 +291,13 @@ const OtaPlatformCards = () => {
             bgcolor: i % 2 === 0 ? "background.paper" : "action.hover",
           }}
         >
-          <Typography variant="body2" fontWeight={700} sx={{ mb: 0.75 }}>
+          <Typography fontWeight={700} sx={{ mb: 0.75 }}>
             {r.platform}
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+          <Typography sx={{ mb: 0.5 }}>
             {r.policy}
           </Typography>
-          <Typography variant="caption" color="text.secondary">
+          <Typography variant="caption">
             Refund contact: {r.contact}
           </Typography>
         </Paper>
@@ -382,9 +365,7 @@ const RefundScheduleTable = () => (
           >
             {row.map((cell, j) => (
               <TableCell key={j}>
-                <Typography variant="body2" color="text.secondary">
-                  {cell}
-                </Typography>
+                <Typography>{cell}</Typography>
               </TableCell>
             ))}
           </TableRow>
@@ -446,9 +427,7 @@ const OtaPlatformTable = () => (
           >
             {row.map((cell, j) => (
               <TableCell key={j}>
-                <Typography variant="body2" color="text.secondary">
-                  {cell}
-                </Typography>
+                <Typography color="text.secondary">{cell}</Typography>
               </TableCell>
             ))}
           </TableRow>
@@ -481,10 +460,10 @@ const CancellationPolicyPage = () => {
           >
             Cancellation Policy
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography color="text.secondary">
             VBS Hospitality Private Limited · villasbyserene.com
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography color="text.secondary">
             Effective: 1 June 2025 · Last updated: June 2025
           </Typography>
         </Box>
@@ -500,7 +479,7 @@ const CancellationPolicyPage = () => {
             bgcolor: "action.hover",
           }}
         >
-          <Typography variant="body2" color="text.secondary">
+          <Typography color="text.secondary">
             This Cancellation Policy applies to all bookings made directly
             through villasbyserene.com. For bookings made via Airbnb or
             MakeMyTrip, the respective platform&apos;s cancellation policy
@@ -729,7 +708,7 @@ const CancellationPolicyPage = () => {
                 mb: 1,
               }}
             >
-              <Typography variant="body2" color="#121111">
+              <Typography color="#121111">
                 <strong>Important:</strong> The cancellation window is
                 calculated from 12:00 AM on your check-in date, not from the
                 time of check-in. A booking with a check-in of 15 July must be
@@ -748,7 +727,7 @@ const CancellationPolicyPage = () => {
             <BodyText>
               All cancellation requests must be submitted in writing. The date
               and time we receive your written request determines which refund
-              tier applies — not the date you intend to cancel. Verbal or phone
+              tier applies, not the date you intend to cancel. Verbal or phone
               requests are not accepted as valid cancellations.
             </BodyText>
 
@@ -785,7 +764,7 @@ const CancellationPolicyPage = () => {
               title="Refund Processing"
             />
             {[
-              "Refunds are processed to the original payment method only — we cannot issue refunds to a different card, account, or UPI ID",
+              "Refunds are processed to the original payment method only, we cannot issue refunds to a different card, account, or UPI ID",
               "Razorpay processes the reversal within 5–7 business days of our confirmation",
               "Your bank or card provider may take an additional 2–3 business days to credit the amount to your account",
               "Villas By Serene is not responsible for delays caused by Razorpay, your bank, or payment network outages",
@@ -802,28 +781,18 @@ const CancellationPolicyPage = () => {
               number="5"
               title="No-Show & Early Departure"
             />
-            <Typography
-              variant="subtitle1"
-              fontWeight={700}
-              sx={{ mt: 1, mb: 0.75 }}
-              color="text.primary"
-            >
+            <Typography fontWeight={700} sx={{ mt: 1, mb: 0.75 }}>
               No-Show
             </Typography>
             <BodyText>
               A no-show occurs when the Lead Guest fails to arrive at the
               property on the confirmed check-in date without submitting a prior
               written cancellation request. No refund is provided for no-shows,
-              regardless of the reason — including travel delays, medical
+              regardless of the reason, including travel delays, medical
               emergencies, or personal circumstances. We strongly recommend
               purchasing travel insurance to cover such eventualities.
             </BodyText>
-            <Typography
-              variant="subtitle1"
-              fontWeight={700}
-              sx={{ mt: 2, mb: 0.75 }}
-              color="text.primary"
-            >
+            <Typography fontWeight={700} sx={{ mt: 2, mb: 0.75 }}>
               Early Departure
             </Typography>
             <BodyText>
@@ -846,7 +815,7 @@ const CancellationPolicyPage = () => {
               applies:
             </BodyText>
             {[
-              "Partial payments are not individually eligible for refund — the total booking value is used to calculate refund entitlement",
+              "Partial payments are not individually eligible for refund. The total booking value is used to calculate refund entitlement",
               "If the total amount paid at the time of cancellation is less than the refundable amount under the applicable tier, only the amount actually paid is refunded",
               "Outstanding instalments remain due regardless of cancellation, unless the cancellation falls within the 100% refund window",
             ].map((t, i) => (
@@ -867,7 +836,7 @@ const CancellationPolicyPage = () => {
             </BodyText>
             {[
               "Date change requests must be submitted in writing at least 21 days before the original check-in date to avoid any cancellation charge",
-              "Date changes within 14–20 days of check-in are subject to the 50% refund window — the difference between the original and new booking cost is settled accordingly",
+              "Date changes within 14–20 days of check-in are subject to the 50% refund window. The difference between the original and new booking cost is settled accordingly",
               "Date changes within 14 days of check-in are treated as a no-refund cancellation of the original booking",
               "The new booking is priced at rates applicable at the time of the change request, not the original booking rate",
               "All date changes are subject to availability and are not guaranteed",
@@ -884,9 +853,9 @@ const CancellationPolicyPage = () => {
             />
             <BodyText>
               In the rare event that Villas By Serene must cancel a confirmed
-              booking — for example, due to a property becoming uninhabitable, a
-              significant safety issue, or circumstances outside our control —
-              we will:
+              booking, for example, due to a property becoming uninhabitable, a
+              significant safety issue, or circumstances outside our control, we
+              will:
             </BodyText>
             {[
               "Notify you as soon as possible via email and WhatsApp",
@@ -961,18 +930,8 @@ const CancellationPolicyPage = () => {
                   <MailIcon />
                 </Box>
                 <Box sx={{ minWidth: 0 }}>
-                  <Typography
-                    variant="body2"
-                    fontWeight={700}
-                    color="text.primary"
-                  >
-                    Email
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="primary"
-                    sx={{ wordBreak: "break-word" }}
-                  >
+                  <Typography fontWeight={700}>Email</Typography>
+                  <Typography color="primary" sx={{ wordBreak: "break-word" }}>
                     villasbyserene@gmail.com
                   </Typography>
                   <Typography variant="caption" color="text.secondary">
@@ -1010,16 +969,8 @@ const CancellationPolicyPage = () => {
                   <WhatsAppIcon />
                 </Box>
                 <Box sx={{ minWidth: 0 }}>
-                  <Typography
-                    variant="body2"
-                    fontWeight={700}
-                    color="text.primary"
-                  >
-                    WhatsApp
-                  </Typography>
-                  <Typography variant="body2" color="success.main">
-                    +91 95943 77736
-                  </Typography>
+                  <Typography fontWeight={700}>WhatsApp</Typography>
+                  <Typography color="success.main">+91 95943 77736</Typography>
                   <Typography variant="caption" color="text.secondary">
                     Quickest for urgent requests
                   </Typography>

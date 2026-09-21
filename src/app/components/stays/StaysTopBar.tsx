@@ -41,7 +41,8 @@ const StaysTopBar: FC<StaysTopBarProps> = ({
     if (checkOut) params.set("checkOut", checkOut.format("YYYY-MM-DD"));
     else params.delete("checkOut");
     const slug = decodeURIComponent(urlParams.slug || "all");
-    router.push(`/stays/${slug}?${params.toString()}`, { scroll: false });
+    const cleanSlug = slug.toLowerCase().replaceAll(/\s+/g, "-");
+    router.push(`/stays/${cleanSlug}?${params.toString()}`, { scroll: false });
   };
 
   const nights = checkIn && checkOut ? checkOut.diff(checkIn, "day") : null;
@@ -53,7 +54,7 @@ const StaysTopBar: FC<StaysTopBarProps> = ({
 
   const hasDate = !!(checkIn && checkOut);
 
-    useEffect(() => {
+  useEffect(() => {
     if (!loading) setOpen(false);
   }, [loading]);
 
@@ -161,40 +162,38 @@ const StaysTopBar: FC<StaysTopBarProps> = ({
 
         {/* Chip — always visible, divider appears when open */}
         {!open && (
-
-        <Box
-          onClick={() => setOpen((v) => !v)}
-          sx={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 0.75,
-            px: 1.5,
-            py: 0.875,
-            flexShrink: 0,
-            cursor: "pointer",
-            "&:hover": { opacity: 0.75 },
-            transition: "all 0.2s ease",
-          }}
-        >
-          <CalendarIcon
-            size={14}
-            color={
-              hasDate
-                ? theme.palette.primary.main
-                : theme.palette.text.secondary
-            }
-          />
-          <Typography
-            variant="body2"
-            fontWeight={hasDate ? 600 : 400}
-            color={hasDate ? "text.primary" : "text.secondary"}
-            sx={{ whiteSpace: "nowrap" }}
+          <Box
+            onClick={() => setOpen((v) => !v)}
+            sx={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 0.75,
+              px: 1.5,
+              py: 0.875,
+              flexShrink: 0,
+              cursor: "pointer",
+              "&:hover": { opacity: 0.75 },
+              transition: "all 0.2s ease",
+            }}
           >
-            {open ? "Close" : dateLabel}
-          </Typography>
-        </Box>
+            <CalendarIcon
+              size={14}
+              color={
+                hasDate
+                  ? theme.palette.primary.main
+                  : theme.palette.text.secondary
+              }
+            />
+            <Typography
+              variant="body2"
+              fontWeight={hasDate ? 600 : 400}
+              color={hasDate ? "text.primary" : "text.secondary"}
+              sx={{ whiteSpace: "nowrap" }}
+            >
+              {open ? "Close" : dateLabel}
+            </Typography>
+          </Box>
         )}
-
       </Box>
     </Box>
   );
