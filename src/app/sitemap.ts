@@ -88,7 +88,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const res = await fetch(`${API_BASE_URL}/properties`, {
-      next: { revalidate: 3600 }, // re-fetch every hour
+      next: { revalidate: 3600 },
+      signal: AbortSignal.timeout(5000), // 5 second timeout
     });
 
     if (res.ok) {
