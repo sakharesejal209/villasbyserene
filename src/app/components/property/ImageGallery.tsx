@@ -22,7 +22,6 @@ type ImageGalleryPropType = {
 
 const ImageGallery: FC<ImageGalleryPropType> = (props) => {
   const { images } = props;
-
   const [open, setOpen] = useState(false);
   const [fits, setFits] = useState<Record<number, "fill" | "contain">>({});
   const [startIndex, setStartIndex] = useState(0);
@@ -49,13 +48,13 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
       <Masonry
         sx={{ width: "100%", height: "110%" }}
         columns={{ xs: 1, md: 1 }}
-        spacing={{ xs: 1, md: 2.5 }}
+        spacing={{ xs: 1, md: 1 }}
       >
         {images.map((item, index) => (
           <button
             key={index}
             onClick={() => handleOpen(index)}
-            className="relative aspect-4/3 md:aspect-video overflow-hidden"
+            className="relative aspect-video overflow-hidden"
           >
             <Image
               src={item.src}
@@ -119,7 +118,7 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
           >
             {images.map((e, idx) => (
               <SwiperSlide key={idx}>
-                <div className="relative w-full aspect-4/3 md:aspect-video overflow-hidden">
+                <div className="relative w-full aspect-video overflow-hidden">
                   <Image
                     src={e.src}
                     alt={e.alt}
@@ -133,12 +132,6 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
                     priority={idx === 0}
                   />
                 </div>
-
-                {"category" in e && e.hasOwnProperty("category") && (
-                  <div className="absolute bottom-5 md:bottom-14 left-5 bg-black/70 text-white text-md px-2 py-1 rounded-sm">
-                    {e.category}
-                  </div>
-                )}
               </SwiperSlide>
             ))}
           </Carousel>

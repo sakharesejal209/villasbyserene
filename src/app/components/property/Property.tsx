@@ -701,18 +701,15 @@ const Property: FC<PropertyPropType> = ({
         slotProps={{
           paper: {
             sx: {
-              width: { xs: "80vw", md: "80vw" },
-              maxHeight: "90vh",
+              width: { xs: "90vw", md: "75vw" },
+              maxHeight: "96vh",
               borderRadius: 1,
               backgroundImage: "none",
             },
           },
         }}
       >
-        <DialogTitle
-          // sx={{ py: "16px", px: "16px" }}
-          className="flex justify-between items-center p-2!"
-        >
+        <DialogTitle className="flex justify-between items-center px-2! py-1!">
           <Typography variant="h5" fontWeight={700}>
             Gallery
           </Typography>
@@ -720,7 +717,7 @@ const Property: FC<PropertyPropType> = ({
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-        <DialogContent className="p-1! md:p-2!">
+        <DialogContent className="p-1! md:p-1!">
           {galleryImages && <ImageGallery images={galleryImages} />}
         </DialogContent>
       </Dialog>
@@ -732,8 +729,8 @@ const Property: FC<PropertyPropType> = ({
         slotProps={{
           paper: {
             sx: {
-              width: { xs: "90vw", md: "90vw" },
-              maxHeight: "90vh",
+              width: { xs: "80vw", md: "75vw" },
+              maxHeight: "96vh",
               borderRadius: 1,
               backgroundImage: "none",
             },
@@ -741,15 +738,17 @@ const Property: FC<PropertyPropType> = ({
         }}
       >
         <DialogTitle
-          sx={{ py: "8px", px: "12px" }}
-          className="flex justify-between items-center"
+          // sx={{ py: "8px", px: "12px" }}
+          className="flex justify-between items-center px-2! py-1!"
         >
-          Photos{" "}
+          <Typography variant="h5" fontWeight={700}>
+            Gallery
+          </Typography>
           <IconButton onClick={() => setOpenUnitGallery(false)}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-        <DialogContent sx={{ width: "100%", p: "12px", pr: 0 }}>
+        <DialogContent className="p-1! md:p-1!">
           {unitGalleryImages && selectedUnit && (
             <ImageGallery images={unitGalleryImages[selectedUnit]} />
           )}
