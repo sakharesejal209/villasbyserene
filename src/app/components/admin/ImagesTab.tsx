@@ -1336,7 +1336,7 @@ import {
   ImageSelection,
 } from "@/app/@types";
 
-type PropImageFlag = { is_banner_image: string; is_carousel_image: string };
+type PropImageFlag = { is_banner_image: string; is_carousel_image: string | null };
 type UnitImageFlag = { is_banner_image: string };
 
 interface Props {
