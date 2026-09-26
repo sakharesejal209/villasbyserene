@@ -22,7 +22,7 @@ import { usePropertyStore } from "@/context/PropertyContext";
 
 export const locations = [
   "All",
-  "Lonavala",
+  "Pune",
   "Karjat",
   "Alibaug",
   "Navi-Mumbai",

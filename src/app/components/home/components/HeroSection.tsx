@@ -3,20 +3,22 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-import {
-  Box,
-  Drawer,
-  IconButton,
-  Theme,
-  Typography,
-} from "@mui/material";
+import { Box, Drawer, IconButton, Theme, Typography } from "@mui/material";
 import { IoCloseOutline as CloseIcon } from "react-icons/io5";
 import SearchBox from "../searchBox";
-import petFriendly from "../../../../../public/assets/pet-friendly.webp";
 import family from "../../../../../public/assets/family.webp";
 import bonfire from "../../../../../public/assets/bonfire.webp";
 import elara from "../../../../../public/assets/elara.webp";
 import poonam from "../../../../../public/assets/poonam.webp";
+
+const CITIES = [
+  "Karjat",
+  "Alibaug",
+  "Panvel",
+  "Navi Mumbai",
+  "Udaipur",
+  "Pune",
+];
 
 const HERO_SLIDES = [
   {
@@ -79,14 +81,7 @@ export default function HeroSection({
   const heroY = useTransform(scrollY, [0, 600], [0, 180]);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const CITIES = [
-    "Karjat",
-    "Alibaug",
-    "Panvel",
-    "Navi Mumbai",
-    "Udaipur",
-    "Lonavala",
-  ];
+
   const [cityIndex, setCityIndex] = useState(0);
   const [displayed, setDisplayed] = useState("");
   const [typing, setTyping] = useState(true);
@@ -138,9 +133,7 @@ export default function HeroSection({
 
   return (
     <section ref={heroRef} className="p-0!">
-      <div
-        className={`relative h-[80vh] flex flex-col overflow-hidden`}
-      >
+      <div className={`relative h-[80vh] flex flex-col overflow-hidden`}>
         {/* Slide images */}
         <motion.div className="absolute inset-0 z-1" style={{ y: heroY }}>
           {HERO_SLIDES.map((slide, i) => (

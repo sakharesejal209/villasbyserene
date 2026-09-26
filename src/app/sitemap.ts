@@ -37,7 +37,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
-      url: `${BASE_URL}/stays/lonavala`,
+      url: `${BASE_URL}/stays/pune`,
       changeFrequency: "daily",
       priority: 0.8,
     },
