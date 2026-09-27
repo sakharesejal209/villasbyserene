@@ -99,7 +99,7 @@ const UnitEditor = ({
       maxPets: unit.maxPets ?? 0,
       childCharge: unit.childCharge ?? 0,
       childAgeFree: unit.childAgeFree ?? 5,
-      vbs_commission: unit.vbs_commission ?? 13,
+      vbs_commission: 0,
       png_banner_image: unit.png_banner_image ?? "",
     },
   });
@@ -246,6 +246,11 @@ const UnitEditor = ({
                     size="small"
                     fullWidth
                     onChange={(e) => field.onChange(+e.target.value)}
+                    slotProps={{
+                      input: {
+                        readOnly: true,
+                      },
+                    }}
                   />
                 )}
               />
