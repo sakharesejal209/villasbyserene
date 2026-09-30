@@ -18,7 +18,6 @@ import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { usePropertyStore } from "@/context/PropertyContext";
 import { formatINR } from "@/app/components/property/BookingWidget";
-import { FadeInSection } from "../home";
 import Carousel from "@/application/carousel";
 import { SwiperSlide } from "swiper/react";
 
