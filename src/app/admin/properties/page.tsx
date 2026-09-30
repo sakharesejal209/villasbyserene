@@ -1,4 +1,4 @@
-"use client";
+export const dynamic = "force-dynamic";
 
 import { useCallback, useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
