@@ -6,6 +6,7 @@ import ClientProviders from "./components/client-providers/ClientProviders";
 import { Metadata } from "next";
 import { propertiesService } from "./@services";
 import NavbarFooterWrapper from "./components/home/Navbarfooterwrapper";
+import { PropertyListItemDTO } from "./@types";
 
 export const metadata: Metadata = {
   verification: {
@@ -120,7 +121,12 @@ export default async function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const propertiesData = await propertiesService.getProperties();
+  let propertiesData: PropertyListItemDTO[] = [];
+  try {
+    propertiesData = await propertiesService.getProperties();
+  } catch {
+    // backend unavailable at build time
+  }
 
   return (
     <html lang="en" className={roboto.className + " " + ibmPlex.className}>
