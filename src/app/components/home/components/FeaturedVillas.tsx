@@ -35,12 +35,15 @@ export const FeaturedVillas = () => {
   // const display = featured.length > 0 ? featured : properties.slice(0, 4);
 
   function toPropertySlug(name: string, id: string): string {
-    return `${name
+    const test = `${name
       .toLowerCase()
       .replaceAll(/[^a-z0-9\s]/g, "")
       .replaceAll(/\s+/g, "-")
       .replaceAll(/-+/g, "-")
       .trim()}-${id.slice(0, 8)}`;
+    console.log("test:", test);
+
+    return test;
   }
 
   const handleNavigate = useCallback(
