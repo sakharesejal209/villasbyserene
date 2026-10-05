@@ -6,9 +6,13 @@ import ClientProviders from "./components/client-providers/ClientProviders";
 import { Metadata } from "next";
 import { propertiesService } from "./@services";
 import NavbarFooterWrapper from "./components/home/Navbarfooterwrapper";
+import { PropertyListItemDTO } from "./@types";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.villasbyserene.com"),
+  verification: {
+    google: "bZgMGkyhPgtSoOtoMrL5ErGTAumHBcXSTX-Jxhio8tQ",
+  },
+  metadataBase: new URL("https://www.villasbyserene.in"),
   title: {
     default: "Villas by Serene | Handpicked Luxury Villas",
     template: "%s | Villas by Serene",
@@ -26,7 +30,7 @@ export const metadata: Metadata = {
     "villas in Navi mumbai",
     "villas in Panvel",
     "villas in Alibaug",
-    "villas in Lonavala",
+    "villas in Pune",
     "villas in Rajasthan",
     "villas in Udaipur",
     "luxury villas in Maharashtra",
@@ -46,12 +50,12 @@ export const metadata: Metadata = {
     "villas in Rajasthan",
     "villas in Maharashtra",
     "villas in Karjat",
-    "villas in Lonavala",
+    "villas in Pune",
     "villas in Alibaug",
     "villas near Mumbai",
     "beachfront villas in Goa",
     "beachfront villas in Alibaug",
-    "hill view villas in Lonavala",
+    "hill view villas in Pune",
     "heritage villas in Udaipur",
     "romantic villa stays",
     "family villa getaways",
@@ -68,7 +72,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://www.villasbyserene.com",
+    url: "https://www.villasbyserene.in",
     title: "Villas by Serene | Handpicked Luxury Villas",
     description:
       "Book stunning villas across India. Handpicked by Villas by Serene for unforgettable getaways surrounded by nature.",
@@ -87,11 +91,11 @@ export const metadata: Metadata = {
     title: "Villas by Serene | Luxury Villas & Nature Retreats",
     description:
       "Experience the serenity of luxury villas with pools, scenic hill views, and curated hospitality.",
-    images: ["https://www.villasbyserene.com/assets/villasbyserene-dark.png"],
+    images: ["https://www.villasbyserene.in/assets/villasbyserene-dark.png"],
     creator: "@villasbyserene",
   },
   alternates: {
-    canonical: "https://www.villasbyserene.com",
+    canonical: "https://www.villasbyserene.in",
   },
   icons: {
     icon: "/favicon.ico",
@@ -117,7 +121,12 @@ export default async function Layout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const propertiesData = await propertiesService.getProperties();
+  let propertiesData: PropertyListItemDTO[] = [];
+  try {
+    propertiesData = await propertiesService.getProperties();
+  } catch {
+    // backend unavailable at build time
+  }
 
   return (
     <html lang="en" className={roboto.className + " " + ibmPlex.className}>

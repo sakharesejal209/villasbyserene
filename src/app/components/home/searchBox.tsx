@@ -22,10 +22,10 @@ import { usePropertyStore } from "@/context/PropertyContext";
 
 export const locations = [
   "All",
-  "Lonavala",
+  "Pune",
   "Karjat",
   "Alibaug",
-  "Navi Mumbai",
+  "Navi-Mumbai",
   "Udaipur",
 ];
 
@@ -50,7 +50,9 @@ const SearchBox = ({ isMobile }: { isMobile: boolean }) => {
 
     setLoadingButton(true);
 
-    const citySlug = location ? location.toLowerCase() : "all";
+    const citySlug = location
+      ? location.toLowerCase().replaceAll(/\s+/g, "-")
+      : "all";
     const checkInStr = checkIn ? checkIn.format("YYYY-MM-DD") : null;
     const checkOutStr = checkOut ? checkOut.format("YYYY-MM-DD") : null;
 
@@ -180,7 +182,7 @@ const SearchBox = ({ isMobile }: { isMobile: boolean }) => {
         }}
       >
         {[
-          { value: "2+", label: "Curated Villas" },
+          { value: "22+", label: "Curated Villas" },
           { value: "6000+", label: "Happy Guests" },
           { value: "4.8★", label: "Average Rating" },
         ].map((stat) => (

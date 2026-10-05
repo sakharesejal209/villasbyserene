@@ -183,7 +183,7 @@ const PropertyEditor = ({
 // ════════════════════════════════════════════════════════════════════
 // Main Page — property list + create
 // ════════════════════════════════════════════════════════════════════
-export default function AdminPropertiesPage() {
+const AdminPropertiesPage = () => {
   const [properties, setProperties] = useState<AdminPropertyRowDTO[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -599,4 +599,6 @@ export default function AdminPropertiesPage() {
       </Dialog>
     </Box>
   );
-}
+};
+
+export default AdminPropertiesPage;

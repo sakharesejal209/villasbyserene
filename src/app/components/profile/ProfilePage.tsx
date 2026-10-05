@@ -416,11 +416,20 @@ const ProfilePage: FC = () => {
             ) : tripsError ? (
               <Alert severity="error">{tripsError}</Alert>
             ) : bookings.length === 0 ? (
-              <Box sx={{ textAlign: "center", py: 6 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: "center",
+                  width: "100%",
+                  py: 6,
+                }}
+              >
                 <HomeIcon
                   fontSize={36}
                   color={theme.palette.text.disabled}
-                  className="m-auto"
+                  // className="m-auto"
                 />
                 <Typography variant="h6" color="text.secondary">
                   No trips yet

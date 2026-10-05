@@ -36,7 +36,7 @@ export async function generateMetadata({
   const imageUrl =
     property.banner_image?.image_url ??
     property.carousel_images?.[0]?.image_url ??
-    "https://www.villasbyserene.com/logo.png";
+    "https://www.villasbyserene.in/logo.png";
 
   // Title: name + location + key selling point, front-loaded for search + social
   const title = `${name} | ${bedrooms} BHK Private Villa in ${area}, ${state}`;
@@ -46,7 +46,7 @@ export async function generateMetadata({
     ? `Book ${name}, a ${bedrooms} BHK private villa in ${area} with space for up to ${guests} guests. Starting from ₹${startingPrice.toLocaleString("en-IN")}/night. Private pool, instant booking, verified by Villas by Serene.`
     : `Book ${name}, a ${bedrooms} BHK private villa in ${area} with space for up to ${guests} guests. Verified listing by Villas by Serene — premium villa rentals in Maharashtra.`;
 
-  const canonicalUrl = `https://www.villasbyserene.com/property/${slug}`;
+  const canonicalUrl = `https://www.villasbyserene.in/property/${slug}`;
 
   return {
     title,

@@ -82,7 +82,7 @@ const StaysSearchBox: FC<StaysSearchBoxProps> = ({
     const params = new URLSearchParams();
     const city =
       values.location && values.location !== "all"
-        ? values.location.toLowerCase()
+        ? values.location.toLowerCase().replaceAll(/\s+/g, "-")
         : "all";
     if (values.guests > 1) params.set("guests", String(values.guests));
     if (values.bedrooms > 0) params.set("bedrooms", String(values.bedrooms));

@@ -27,6 +27,7 @@ import { CgGames as IndoorGames, CgGym as Gym } from "react-icons/cg";
 import {
   GiHighGrass as GrassIcon,
   GiMountainCave as MountainsIcon,
+  GiPoolTableCorner as PoolTable,
 } from "react-icons/gi";
 import {
   IoWaterOutline as WaterSupply,
@@ -96,6 +97,7 @@ const amenityIconMap: Record<string, React.ElementType> = {
   watersupply: WaterSupply,
   wifi: WifiIcon,
   workspace: Workspace,
+  poolTable: PoolTable,
 };
 
 export default amenityIconMap;

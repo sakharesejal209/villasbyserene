@@ -2130,7 +2130,7 @@ const ListYourProperty = () => {
                     </Box>
                   </a>
                   <a
-                    href="https://villasbyserene.com"
+                    href="https://villasbyserene.in"
                     style={{ textDecoration: "none" }}
                   >
                     <Box
@@ -2152,7 +2152,7 @@ const ListYourProperty = () => {
                         },
                       }}
                     >
-                      <GlobeIcon size={18} /> Visit villasbyserene.com
+                      <GlobeIcon size={18} /> Visit villasbyserene.in
                     </Box>
                   </a>
                 </Box>

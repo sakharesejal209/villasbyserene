@@ -501,7 +501,7 @@ const PrivacyPolicyPage = () => {
             Privacy Policy
           </Typography>
           <Typography>
-            VBS Hospitality Private Limited · villasbyserene.com
+            VBS Hospitality Private Limited · villasbyserene.in
           </Typography>
           <Typography>
             Effective: 1 June 2025 · Last updated: June 2025
@@ -524,7 +524,7 @@ const PrivacyPolicyPage = () => {
             This Privacy Policy explains how VBS Hospitality Private Limited
             (&quot;Villas By Serene&quot;, &quot;we&quot;, &quot;our&quot;,
             &quot;us&quot;) collects, uses, stores, and protects your personal
-            data when you use our website at villasbyserene.com or make a
+            data when you use our website at villasbyserene.in or make a
             booking with us. It is governed by India&apos;s Digital Personal
             Data Protection Act 2023 (DPDPA). By using our platform, you consent
             to the practices described in this policy.
@@ -611,7 +611,7 @@ const PrivacyPolicyPage = () => {
               platform operated by VBS Hospitality Private Limited, incorporated
               under the Companies Act 2013, India. We are the data fiduciary
               responsible for your personal data collected through
-              villasbyserene.com and associated booking communications.
+              villasbyserene.in and associated booking communications.
             </BodyText>
             <Paper
               elevation={0}
@@ -630,7 +630,7 @@ const PrivacyPolicyPage = () => {
               <DataRow label="GSTIN" value="27AALCV7250R1ZD" />
               <DataRow label="Email" value="villasbyserene@gmail.com" />
               <DataRow label="WhatsApp" value="+91 95943 77736" />
-              <DataRow label="Website" value="villasbyserene.com" last />
+              <DataRow label="Website" value="villasbyserene.in" last />
             </Paper>
             <Divider sx={{ my: { xs: 3, md: 4 } }} />
 
@@ -691,7 +691,7 @@ const PrivacyPolicyPage = () => {
             />
             {[
               "Directly from you when you fill in the booking form, create an account, or contact us via WhatsApp or email",
-              "Automatically via our website server when you browse villasbyserene.com (IP address, device, and page data)",
+              "Automatically via our website server when you browse villasbyserene.in (IP address, device, and page data)",
               "From Google when you choose to sign in using your Google account",
               "From Razorpay when a payment transaction is completed or attempted",
               "From third-party booking platforms (Airbnb, MakeMyTrip) when a booking is made through those channels and relayed to us",
@@ -855,7 +855,7 @@ const PrivacyPolicyPage = () => {
               </Typography>
               <Typography>
                 No third-party advertising pixels, retargeting scripts, or
-                behavioural tracking tools are installed on villasbyserene.com.
+                behavioural tracking tools are installed on villasbyserene.in.
               </Typography>
             </Paper>
             <BodyText>
@@ -895,7 +895,7 @@ const PrivacyPolicyPage = () => {
             <BodyText>
               We run Google Ads campaigns to reach new audiences. These
               campaigns operate on Google&apos;s platform and do not place any
-              tracking pixel or retargeting cookie on villasbyserene.com.
+              tracking pixel or retargeting cookie on villasbyserene.in.
               Visitors to our website are not tracked for advertising purposes.
             </BodyText>
             <Divider sx={{ my: { xs: 3, md: 4 } }} />
@@ -925,7 +925,7 @@ const PrivacyPolicyPage = () => {
             <BodyText>
               We may update this Privacy Policy from time to time to reflect
               changes in our practices, technology, or legal requirements. The
-              updated policy will be published at villasbyserene.com/privacy
+              updated policy will be published at villasbyserene.in/privacy
               with a revised effective date. For material changes, we will
               notify you via email or a notice on our website. Your continued
               use of our platform after the effective date constitutes

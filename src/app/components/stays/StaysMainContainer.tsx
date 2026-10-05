@@ -144,11 +144,9 @@ const StaysMainContainer: FC = () => {
     return properties.filter((p) => {
       if (filters.location && filters.location.toLowerCase() !== "all") {
         const loc = filters.location.toLowerCase();
-        if (
-          !p.city.toLowerCase().includes(loc) &&
-          !p.area.toLowerCase().includes(loc)
-        )
-          return false;
+        const city = p.city.toLowerCase().replaceAll(/\s+/g, "-");
+        const area = p.area.toLowerCase().replaceAll(/\s+/g, "-");
+        if (!city.includes(loc) && !area.includes(loc)) return false;
       }
       if (filters.guests > 1 && p.max_capacity < filters.guests) return false;
       if (filters.bedrooms > 0 && p.bedroom_count < filters.bedrooms)

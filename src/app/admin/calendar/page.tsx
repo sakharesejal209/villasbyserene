@@ -37,11 +37,10 @@ import {
 } from "react-icons/hi";
 import { MdDeleteOutline as DeleteOutlined } from "react-icons/md";
 
-import { calendarService, propertiesService } from "@/app/@services";
+import { calendarService } from "@/app/@services";
 import {
   BlockedRangeDTO,
   FeedSourceDTO,
-  PropertyListItemDTO,
   UnitCalendarDTO,
 } from "@/app/@types";
 import { usePropertyStore } from "@/context/PropertyContext";

@@ -131,10 +131,10 @@ export const AttractionsTab = ({ detail, propertyId, onSaved }: Props) => {
             <Box
               sx={{ display: "flex", gap: 1.5, alignItems: "center", flex: 1 }}
             >
-              {a.image_url && (
+              {a.imageUrl && (
                 <Box
                   component="img"
-                  src={a.image_url}
+                  src={a.imageUrl}
                   sx={{
                     width: 56,
                     height: 40,
@@ -307,7 +307,7 @@ export const AttractionsTab = ({ detail, propertyId, onSaved }: Props) => {
               )}
             />
             <Controller
-              name="image_url"
+              name="imageUrl"
               control={eControl}
               render={({ field }) => (
                 <TextField

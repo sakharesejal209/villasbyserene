@@ -39,7 +39,6 @@ const Navbar = () => {
   const pathname = usePathname();
   const isHomePage = pathname === "/";
   const isStaysPage = pathname.startsWith("/stays");
-  console.log("pathname:", pathname);
 
   const [scrolled, setScrolled] = useState(false);
 
