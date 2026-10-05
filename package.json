@@ -6,8 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "postinstall": "prisma generate"
+    "lint": "next lint"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -16,7 +15,6 @@
     "@mui/lab": "^7.0.0-beta.16",
     "@mui/material": "^7.2.0",
     "@mui/x-date-pickers": "^8.10.2",
-    "@prisma/client": "^6.14.0",
     "@types/lodash": "^4.17.20",
     "axios": "^1.13.3",
     "crypto-js": "^4.2.0",
