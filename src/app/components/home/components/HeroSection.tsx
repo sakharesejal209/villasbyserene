@@ -6,10 +6,10 @@ import Image from "next/image";
 import { Box, Drawer, IconButton, Theme, Typography } from "@mui/material";
 import { IoCloseOutline as CloseIcon } from "react-icons/io5";
 import SearchBox from "../searchBox";
-import family from "../../../../../public/assets/family.webp";
-import bonfire from "../../../../../public/assets/bonfire.webp";
+import pool from "../../../../../public/assets/poonam-villa2Fpoonam-villa-swimming-pool.webp";
 import elara from "../../../../../public/assets/elara.webp";
-import poonam from "../../../../../public/assets/poonam.webp";
+import poonam from "../../../../../public/assets/poonam-villa_poonam-villa-exterior.webp";
+import poonamGarden from "../../../../../public/assets/poonam-villa2Fpoonam-villa-garden.webp";
 
 const CITIES = [
   "Karjat",
@@ -29,11 +29,25 @@ const HERO_SLIDES = [
       "Feel the cool morning air before you even open your eyes, just the water moving past and nowhere you need to be.",
   },
   {
+    img: pool,
+    name: "Poolside",
+    heading: "Where the Day Slows Down",
+    subheading:
+      "A quiet dip, a little sunshine, and nowhere else to be - just good conversations, cool water, and a day that feels wonderfully unhurried.",
+  },
+  {
     img: elara,
     name: "Karjat",
     heading: "Where the Only Plan Is Bare Feet on Grass",
     subheading:
       "Feel the grass underfoot and that easy kind of laughter that only shows up when old friends have nowhere to be.",
+  },
+  {
+    img: poonamGarden,
+    name: "Garden",
+    heading: "The Kind of Quiet You Remember",
+    subheading:
+      "The grass beneath your feet, the palms moving gently in the breeze, and everyone around you with nowhere else to be. For a little while, the world feels beautifully far away.",
   },
   // {
   //   img: "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/coram8-villa%2Fcoram8-exterior5.webp?alt=media",
@@ -49,20 +63,14 @@ const HERO_SLIDES = [
   //   subheading:
   //     "Steps from the coast in Alibaug — a villa that trades noise for long, unhurried mornings.",
   // },
-  {
-    img: family,
-    name: "Family",
-    heading: "The View That Makes Everyone Go Quiet",
-    subheading:
-      "That pause in conversation when someone glances at the mountains and the whole family just sits with it, coffee in hand, in no rush to speak again.",
-  },
-  {
-    img: bonfire,
-    name: "Bonfire",
-    heading: "Gather Round, Stay a While",
-    subheading:
-      "Feel the warmth on your face, someone hands you the guitar, and for once nobody's checking the time.",
-  },
+
+  // {
+  //   img: bonfire,
+  //   name: "Bonfire",
+  //   heading: "Gather Round, Stay a While",
+  //   subheading:
+  //     "Feel the warmth on your face, someone hands you the guitar, and for once nobody's checking the time.",
+  // },
 ];
 
 const HERO_LABEL = ["Karjat", "Panvel", "Navi Mumbai", "Udaipur"];
