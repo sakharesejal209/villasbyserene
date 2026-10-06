@@ -114,10 +114,12 @@ export default async function Page({ params, searchParams }: PageProps) {
       property.carousel_images?.[0]?.image_url,
     address: {
       "@type": "PostalAddress",
+      streetAddress: property.address,
       addressLocality: property.area,
       addressRegion: property.state,
       addressCountry: "IN",
     },
+    telephone: "+919594377736",
     numberOfRooms: property.bedroom_count,
     occupancy: {
       "@type": "QuantitativeValue",
