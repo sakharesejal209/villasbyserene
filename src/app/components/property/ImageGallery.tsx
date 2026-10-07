@@ -73,7 +73,7 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
       <Dialog
         open={open}
         onClose={handleClose}
-        maxWidth="lg"
+        
         fullWidth
         slotProps={{
           paper: {
@@ -82,6 +82,8 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
               boxShadow: "none",
               borderRadius: 0,
               padding: 0,
+              maxWidth: '992px',
+              height: 'auto'
             },
           },
           backdrop: {
@@ -95,8 +97,8 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
           onClick={handleClose}
           sx={{
             position: "absolute",
-            top: 10,
-            right: 10,
+            top: 0,
+            right: 0,
             color: "white",
             zIndex: 1000,
           }}
@@ -106,6 +108,7 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
         <DialogContent
           sx={{
             width: "100%",
+            height: "100%",
             padding: "0",
             paddingRight: "0px",
             overflow: "hidden",
@@ -115,20 +118,20 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
             slidesPerView={1}
             initialSlide={startIndex}
             showDots={false}
+            variant="light"
           >
             {images.map((e, idx) => (
               <SwiperSlide key={idx}>
-                <div className="relative w-full aspect-video overflow-hidden">
+                <div className="relative aspect-video overflow-hidden">
                   <Image
                     src={e.src}
                     alt={e.alt}
                     fill
-                    style={{
-                      objectFit: fits?.[idx] || "contain",
-                      objectPosition: "top center",
-                    }}
+                    // style={{
+                    //   objectFit: fits?.[idx] || "contain",
+                    //   objectPosition: "top center",
+                    // }}
                     onLoadingComplete={(img) => handleImageLoad(idx, img)}
-                    // sizes="100vw"
                     priority={idx === 0}
                   />
                 </div>
