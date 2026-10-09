@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import { propertiesService } from "./@services";
 import NavbarFooterWrapper from "./components/home/Navbarfooterwrapper";
 import { PropertyListItemDTO } from "./@types";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   verification: {
@@ -134,16 +135,28 @@ export default async function Layout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-    try {
-      var m = localStorage.getItem('theme-mode');
-      if (!m) m = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      document.documentElement.classList.add(m);
-    } catch(e) {}
-  `,
+try {
+  var m = localStorage.getItem('theme-mode');
+  if (!m) m = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.classList.add(m);
+} catch(e) {}
+`,
           }}
         />
       </head>
       <body className="flex flex-col min-h-screen">
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-N8W81KP676');
+    `}
+        </Script>
         <ClientProviders propertiesData={propertiesData}>
           <NavbarFooterWrapper>{children}</NavbarFooterWrapper>
         </ClientProviders>
