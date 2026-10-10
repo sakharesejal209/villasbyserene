@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import { propertiesService } from "./@services";
 import NavbarFooterWrapper from "./components/home/Navbarfooterwrapper";
 import { PropertyListItemDTO } from "./@types";
+import MetaPixelPageView from "./components/MetaPixelPageView/MetaPixelPageView";
 import Script from "next/script";
 
 export const metadata: Metadata = {
@@ -135,28 +136,55 @@ export default async function Layout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-try {
-  var m = localStorage.getItem('theme-mode');
-  if (!m) m = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  document.documentElement.classList.add(m);
-} catch(e) {}
-`,
+    try {
+      var m = localStorage.getItem('theme-mode');
+      if (!m) m = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.classList.add(m);
+    } catch(e) {}
+  `,
           }}
         />
       </head>
       <body className="flex flex-col min-h-screen">
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
+          src="https://www.googletagmanager.com/gtag/js?id=G-N8W81KP676"
           strategy="afterInteractive"
         />
         <Script id="google-analytics" strategy="afterInteractive">
           {`
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-N8W81KP676');
-    `}
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-N8W81KP676');
+          `}
         </Script>
+
+        <Script id="meta-pixel" strategy="afterInteractive">
+          {`
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '2020290815355750');
+            fbq('track', 'PageView');
+          `}
+        </Script>
+        <noscript>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            height="1"
+            width="1"
+            alt=""
+            style={{ display: "none" }}
+            src="https://www.facebook.com/tr?id=2020290815355750&ev=PageView&noscript=1"
+          />
+        </noscript>
+        <MetaPixelPageView />
+
         <ClientProviders propertiesData={propertiesData}>
           <NavbarFooterWrapper>{children}</NavbarFooterWrapper>
         </ClientProviders>
