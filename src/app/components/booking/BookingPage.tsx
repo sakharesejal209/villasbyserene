@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import dayjs from "dayjs";
@@ -23,15 +23,6 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-// import {
-//   ArrowBackOutlined,
-//   CheckCircleOutlined,
-//   CloseOutlined,
-//   ExpandMoreOutlined,
-//   LockOutlined,
-//   WarningAmberOutlined,
-//   WhatsApp,
-// } from "@mui/icons-material";
 import {
   IoArrowBackOutline as ArrowBack,
   IoCheckmarkCircleOutline as CheckCircleIcon,
@@ -53,6 +44,7 @@ import {
 } from "@/app/@services";
 import { decryptCheckout } from "@/lib/crypto/checkout-crypto";
 import Link from "next/link";
+import DraggableWhatsApp from "../property/DraggableWhatsApp";
 
 // ── Types ─────────────────────────────────────────────────────────
 
@@ -64,67 +56,6 @@ interface GuestForm {
 }
 
 type AvailabilityStatus = "checking" | "available" | "unavailable" | "error";
-
-// ── Section accordion ─────────────────────────────────────────────
-
-const Section: FC<{
-  title: string;
-  children: React.ReactNode;
-  defaultOpen?: boolean;
-}> = ({ title, children, defaultOpen = false }) => {
-  const [open, setOpen] = useState(defaultOpen);
-  return (
-    <Box
-      sx={{
-        borderRadius: 0.2,
-        border: "1px solid",
-        borderColor: "divider",
-        overflow: "hidden",
-        mb: 2,
-      }}
-    >
-      <Box
-        onClick={() => setOpen((v) => !v)}
-        sx={{
-          px: 2.5,
-          py: 2,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          cursor: "pointer",
-          "&:hover": { bgcolor: "action.hover" },
-        }}
-      >
-        <Typography variant="subtitle1" fontWeight={700}>
-          {title}
-        </Typography>
-        <Box
-          sx={{
-            fontSize: 20,
-            color: "text.secondary",
-            transition: "transform 0.2s",
-            transform: open ? "rotate(180deg)" : "none",
-          }}
-        >
-          <ArrowDownIcon />
-        </Box>
-        {/* <ArrowIcon /> */}
-      </Box>
-      <Collapse in={open}>
-        <Box
-          sx={{
-            px: 2.5,
-            py: 2,
-            borderTop: "1px solid",
-            borderColor: "divider",
-          }}
-        >
-          {children}
-        </Box>
-      </Collapse>
-    </Box>
-  );
-};
 
 // ── Price row ─────────────────────────────────────────────────────
 
@@ -164,7 +95,6 @@ const BookingPage: FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const { openCheckout } = useRazorpay();
   const { user, loading: authLoading, login } = useAuth();
 
@@ -172,6 +102,8 @@ const BookingPage: FC = () => {
   // URL looks like /checkout?b=U2FsdGVkX1... (encrypted, shareable)
   const token = searchParams.get("b") ?? "";
   const stored = token ? decryptCheckout(token) : null;
+
+  console.log("stored:", stored);
 
   const propertyId = stored?.propertyId ?? "";
   const unitId = stored?.unitId ?? "";
@@ -373,6 +305,25 @@ const BookingPage: FC = () => {
       setPaying(false);
     }
   };
+
+  const handleWhatsAppContact = useCallback(() => {
+    const parts = [
+      `Hi, I'm interested in booking *${property?.name ?? propertyId}*`,
+      checkIn ? `Check-in: ${dayjs(checkIn).format("DD MMM YYYY")}` : null,
+      checkOut ? `Check-out: ${dayjs(checkOut).format("DD MMM YYYY")}` : null,
+      adults
+        ? `Adults: ${adults}${children > 0 ? `, Children: ${children}` : ""}`
+        : null,
+      "Please share availability and pricing.",
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    window.open(
+      `https://wa.me/9594377736?text=${encodeURIComponent(parts)}`,
+      "_blank",
+    );
+  }, [adults, checkIn, checkOut, children, property?.name, propertyId]);
 
   // ── Loading ───────────────────────────────────────────────────
   if (loadingPage)
@@ -1494,6 +1445,8 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
           </Box>
         </Box>
       </div>
+
+      <DraggableWhatsApp onClick={handleWhatsAppContact} />
     </section>
   );
 };

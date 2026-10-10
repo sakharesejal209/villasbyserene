@@ -1,8 +1,12 @@
 "use client";
 
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 
-import { IoCloseOutline as CloseIcon } from "react-icons/io5";
+import {
+  IoCloseOutline as CloseIcon,
+  IoLogoWhatsapp as WhatsApp,
+} from "react-icons/io5";
+
 import {
   Accordion,
   AccordionDetails,
@@ -14,6 +18,7 @@ import {
   DialogContent,
   DialogTitle,
   Drawer,
+  Fab,
   IconButton,
   Paper,
   styled,
@@ -50,6 +55,7 @@ import dayjs from "dayjs";
 import { BookingType, PropertyDetailDTO } from "@/app/@types";
 import { useSearchParams } from "next/navigation";
 import { IoArrowBackOutline } from "react-icons/io5";
+import DraggableWhatsApp from "./DraggableWhatsApp";
 
 // ── Types ─────────────────────────────────────────────────────────
 
@@ -181,6 +187,29 @@ const Property: FC<PropertyPropType> = ({
       globalThis.history.replaceState({}, "", url.toString());
     }
   }, [searchParams]);
+
+  const handleWhatsAppContact = useCallback(() => {
+    const parts = [
+      `Hi, I'm interested in booking *${propertyDetails.name}*`,
+      widgetState?.checkIn
+        ? `Check-in: ${dayjs(widgetState.checkIn).format("DD MMM YYYY")}`
+        : null,
+      widgetState?.checkOut
+        ? `Check-out: ${dayjs(widgetState.checkOut).format("DD MMM YYYY")}`
+        : null,
+      widgetState?.adults
+        ? `Adults: ${widgetState.adults}${widgetState.children > 0 ? `, Children: ${widgetState.children}` : ""}`
+        : null,
+      "Please share availability and pricing.",
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    window.open(
+      `https://wa.me/9594377736?text=${encodeURIComponent(parts)}`,
+      "_blank",
+    );
+  }, [propertyDetails.name, widgetState]);
 
   return (
     <section>
@@ -787,6 +816,8 @@ const Property: FC<PropertyPropType> = ({
           />
         </Box>
       </Drawer>
+
+      <DraggableWhatsApp onClick={handleWhatsAppContact} />
     </section>
   );
 };
