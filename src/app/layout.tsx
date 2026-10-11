@@ -169,18 +169,16 @@ export default async function Layout({
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '2020290815355750');
+            fbq('init', '1737587664198741');
             fbq('track', 'PageView');
           `}
         </Script>
         <noscript>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             height="1"
             width="1"
-            alt=""
-            style={{ display: "none" }}
-            src="https://www.facebook.com/tr?id=2020290815355750&ev=PageView&noscript=1"
+            style="display:none"
+            src="https://www.facebook.com/tr?id=1737587664198741&ev=PageView&noscript=1"
           />
         </noscript>
         <MetaPixelPageView />
