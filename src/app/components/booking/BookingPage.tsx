@@ -333,6 +333,16 @@ const BookingPage: FC = () => {
     );
   }, [adults, checkIn, checkOut, children, property?.name, propertyId]);
 
+  useEffect(() => {
+    track("ViewCheckoutPage", {
+      content_ids: [property?.property_id],
+      content_name: [property?.name],
+      checkin: [checkIn],
+      checkout: [checkOut],
+      content_type: "hotel",
+    });
+  }, [checkIn, checkOut, property]);
+
   // ── Loading ───────────────────────────────────────────────────
   if (loadingPage)
     return (
