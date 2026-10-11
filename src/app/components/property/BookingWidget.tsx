@@ -618,6 +618,16 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                   if (val && co && !val.isBefore(co)) {
                     setValue("checkOut", val.add(1, "day"));
                   } else {
+                    trackCustom("CheckAvailability", {
+                      content_ids: [propertyId],
+                      content_name: propertyName,
+                      unit_type: group.unit_type,
+                      checkin_date: checkIn?.format("YYYY-MM-DD"),
+                      checkout_date: checkOut?.format("YYYY-MM-DD"),
+                      nights,
+                      available: !isSelectedUnitSoldOut,
+                      booking_type: isDirect ? "direct" : "enquiry",
+                    });
                     datesTouchedRef.current = true;
                   }
                 }}
