@@ -7,8 +7,8 @@ import { Metadata } from "next";
 import { propertiesService } from "./@services";
 import NavbarFooterWrapper from "./components/home/Navbarfooterwrapper";
 import { PropertyListItemDTO } from "./@types";
-import MetaPixelPageView from "./components/MetaPixelPageView/MetaPixelPageView";
 import Script from "next/script";
+import MetaPixel from "./components/MetaPixelPageView/MetaPixel";
 
 export const metadata: Metadata = {
   verification: {
@@ -158,30 +158,7 @@ export default async function Layout({
             gtag('config', 'G-N8W81KP676');
           `}
         </Script>
-
-        <Script id="meta-pixel" strategy="afterInteractive">
-          {`
-            !function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '1737587664198741');
-fbq('track', 'PageView');
-          `}
-        </Script>
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{ display: "none" }}
-            src="https://www.facebook.com/tr?id=1737587664198741&ev=PageView&noscript=1"
-          />
-        </noscript>
-        <MetaPixelPageView />
+        <MetaPixel />
 
         <ClientProviders propertiesData={propertiesData}>
           <NavbarFooterWrapper>{children}</NavbarFooterWrapper>

@@ -30,6 +30,7 @@ import { propertiesService, calendarService } from "@/app/@services/";
 import { useRouter } from "next/navigation";
 import { BookingQuoteDTO, BookingType, UnitGroupDTO } from "@/app/@types";
 import { encryptCheckout } from "@/lib/crypto/checkout-crypto";
+import { track, trackCustom } from "@/lib/metaPixel";
 
 interface FormValues {
   checkIn: Dayjs | null;
@@ -224,6 +225,8 @@ const BookingWidget: FC<BookingWidgetProps> = ({
   const adultsRef = useRef(adults);
   const childrenRef = useRef(children);
   const unitsRef = useRef(units);
+  const datesTouchedRef = useRef(false);
+  const lastAvailabilityKeyRef = useRef<string | null>(null);
   adultsRef.current = adults;
   childrenRef.current = children;
   unitsRef.current = units;
@@ -350,6 +353,40 @@ const BookingWidget: FC<BookingWidgetProps> = ({
     (!!checkIn && isCheckinBlocked(checkIn)) ||
     (!!checkIn && !!checkOut && hasBlockedNightBetween(checkIn, checkOut));
 
+  useEffect(() => {
+    if (!datesTouchedRef.current) return;
+    if (!group || !checkIn || !checkOut || nights < 1 || blockedLoading) return;
+
+    const key = `${group.display_unit.unit_id}|${checkIn.format("YYYY-MM-DD")}|${checkOut.format("YYYY-MM-DD")}`;
+    if (lastAvailabilityKeyRef.current === key) return;
+
+    const t = setTimeout(() => {
+      lastAvailabilityKeyRef.current = key;
+      trackCustom("CheckAvailability", {
+        content_ids: [propertyId],
+        content_name: propertyName,
+        unit_type: group.unit_type,
+        checkin_date: checkIn.format("YYYY-MM-DD"),
+        checkout_date: checkOut.format("YYYY-MM-DD"),
+        nights,
+        available: !isSelectedUnitSoldOut,
+        booking_type: isDirect ? "direct" : "enquiry",
+      });
+    }, 400);
+
+    return () => clearTimeout(t);
+  }, [
+    group,
+    checkIn,
+    checkOut,
+    nights,
+    blockedLoading,
+    isSelectedUnitSoldOut,
+    propertyId,
+    propertyName,
+    isDirect,
+  ]);
+
   const handleSelectUnit = (idx: number) => {
     setSelectedIdx(idx);
     setQuote(null);
@@ -372,6 +409,12 @@ const BookingWidget: FC<BookingWidgetProps> = ({
 
   // ── WhatsApp enquiry ──────────────────────────────────────────
   const handleWhatsApp = () => {
+    track("Contact", {
+      method: "whatsapp",
+      location: "booking_widget",
+      content_ids: [propertyId],
+      content_name: [propertyName],
+    });
     const unit = group?.display_unit.title ?? group?.type_label ?? "";
     const rooms = !isVilla && roomCount > 1 ? ` (${roomCount} units)` : "";
     const guests = `${adults} adults${children > 0 ? `, ${children} children` : ""}${infants > 0 ? `, ${infants} infants` : ""}`;
@@ -572,8 +615,11 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                 onChange={(val) => {
                   field.onChange(val);
                   const co = getValues("checkOut");
-                  if (val && co && !val.isBefore(co))
+                  if (val && co && !val.isBefore(co)) {
                     setValue("checkOut", val.add(1, "day"));
+                  } else {
+                    datesTouchedRef.current = true;
+                  }
                 }}
                 slotProps={{
                   textField: {
@@ -604,7 +650,10 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                   checkIn ? checkIn.add(1, "day") : dayjs().add(1, "day")
                 }
                 shouldDisableDate={(date) => isCheckoutBlocked(date)}
-                onChange={(val) => field.onChange(val)}
+                onChange={(val) => {
+                  field.onChange(val);
+                  datesTouchedRef.current = true;
+                }}
                 slotProps={{ textField: { fullWidth: true, size: "small" } }}
               />
             )}

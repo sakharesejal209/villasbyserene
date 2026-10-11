@@ -45,6 +45,7 @@ import {
 import { decryptCheckout } from "@/lib/crypto/checkout-crypto";
 import Link from "next/link";
 import DraggableWhatsApp from "../property/DraggableWhatsApp";
+import { track } from "@/lib/metaPixel";
 
 // ── Types ─────────────────────────────────────────────────────────
 
@@ -102,8 +103,6 @@ const BookingPage: FC = () => {
   // URL looks like /checkout?b=U2FsdGVkX1... (encrypted, shareable)
   const token = searchParams.get("b") ?? "";
   const stored = token ? decryptCheckout(token) : null;
-
-  console.log("stored:", stored);
 
   const propertyId = stored?.propertyId ?? "";
   const unitId = stored?.unitId ?? "";
@@ -307,6 +306,15 @@ const BookingPage: FC = () => {
   };
 
   const handleWhatsAppContact = useCallback(() => {
+    track("Contact", {
+      method: "whatsapp",
+      location: "checkout-floating",
+      content_ids: [propertyId],
+      content_name: [property?.name],
+      checkin: [checkIn],
+      checkout: [checkOut],
+    });
+
     const parts = [
       `Hi, I'm interested in booking *${property?.name ?? propertyId}*`,
       checkIn ? `Check-in: ${dayjs(checkIn).format("DD MMM YYYY")}` : null,

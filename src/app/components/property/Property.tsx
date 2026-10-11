@@ -2,10 +2,7 @@
 
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 
-import {
-  IoCloseOutline as CloseIcon,
-  IoLogoWhatsapp as WhatsApp,
-} from "react-icons/io5";
+import { IoCloseOutline as CloseIcon } from "react-icons/io5";
 
 import {
   Accordion,
@@ -18,7 +15,6 @@ import {
   DialogContent,
   DialogTitle,
   Drawer,
-  Fab,
   IconButton,
   Paper,
   styled,
@@ -56,6 +52,7 @@ import { BookingType, PropertyDetailDTO } from "@/app/@types";
 import { useSearchParams } from "next/navigation";
 import { IoArrowBackOutline } from "react-icons/io5";
 import DraggableWhatsApp from "./DraggableWhatsApp";
+import { track } from "@/lib/metaPixel";
 
 // ── Types ─────────────────────────────────────────────────────────
 
@@ -189,6 +186,14 @@ const Property: FC<PropertyPropType> = ({
   }, [searchParams]);
 
   const handleWhatsAppContact = useCallback(() => {
+    track("Contact", {
+      method: "whatsapp",
+      location: "property-floating",
+      content_ids: [propertyDetails.property_id],
+      content_name: [propertyDetails.name],
+      checkin: [widgetState?.checkIn],
+      checkout: [widgetState?.checkOut],
+    });
     const parts = [
       `Hi, I'm interested in booking *${propertyDetails.name}*`,
       widgetState?.checkIn
@@ -210,6 +215,14 @@ const Property: FC<PropertyPropType> = ({
       "_blank",
     );
   }, [propertyDetails.name, widgetState]);
+
+  useEffect(() => {
+    track("ViewContent", {
+      content_ids: [propertyDetails.property_id],
+      content_name: [propertyDetails.name],
+      content_type: "hotel",
+    });
+  }, [propertyDetails]);
 
   return (
     <section>
