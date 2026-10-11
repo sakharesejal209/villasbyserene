@@ -217,7 +217,7 @@ const Property: FC<PropertyPropType> = ({
   }, [propertyDetails.name, widgetState]);
 
   useEffect(() => {
-    track("ViewContent", {
+    track("ViewPropertyPage", {
       content_ids: [propertyDetails.property_id],
       content_name: [propertyDetails.name],
       content_type: "hotel",
