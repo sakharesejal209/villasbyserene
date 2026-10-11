@@ -13,6 +13,9 @@ import MetaPixel from "./components/MetaPixelPageView/MetaPixel";
 export const metadata: Metadata = {
   verification: {
     google: "bZgMGkyhPgtSoOtoMrL5ErGTAumHBcXSTX-Jxhio8tQ",
+    other: {
+      "facebook-domain-verification": "0thsid3v1pwan5p7kjiugdhtbbmcwc",
+    },
   },
   metadataBase: new URL("https://www.villasbyserene.in"),
   title: {
