@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import dayjs from "dayjs";
@@ -45,7 +45,7 @@ import {
 import { decryptCheckout } from "@/lib/crypto/checkout-crypto";
 import Link from "next/link";
 import DraggableWhatsApp from "../property/DraggableWhatsApp";
-import { track } from "@/lib/metaPixel";
+import { track, trackCustom } from "@/lib/metaPixel";
 
 // ── Types ─────────────────────────────────────────────────────────
 
@@ -243,6 +243,13 @@ const BookingPage: FC = () => {
       const unitName =
         unitGroup?.display_unit.title ?? unitGroup?.type_label ?? "";
 
+      track("AddPaymentInfo", {
+        content_ids: [propertyId],
+        content_name: property?.name,
+        value: quote.total,
+        currency: "INR",
+      });
+
       openCheckout({
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ?? "",
         amount: booking.amount,
@@ -280,6 +287,17 @@ const BookingPage: FC = () => {
               pets: petCount,
               specialRequests: formData.specialRequests, // ← add this
             });
+
+            track(
+              "Purchase",
+              {
+                content_ids: [propertyId],
+                content_name: property?.name,
+                value: quote.total,
+                currency: "INR",
+              },
+              `booking_${booking.bookingId}`,
+            );
             router.push(`/booking/confirmed/${booking.bookingId}`);
           } catch {
             setVerifying(false);
@@ -289,6 +307,10 @@ const BookingPage: FC = () => {
         },
         modal: {
           ondismiss: () => {
+            trackCustom("PaymentDismissed", {
+              content_ids: [propertyId],
+              value: quote.total,
+            });
             setPaying(false);
             document.body.style.overflow = "";
             document.body.style.pointerEvents = "";
@@ -328,20 +350,29 @@ const BookingPage: FC = () => {
       .join("\n");
 
     window.open(
-      `https://wa.me/9594377736?text=${encodeURIComponent(parts)}`,
+      `https://wa.me/919594377736?text=${encodeURIComponent(parts)}`,
       "_blank",
     );
   }, [adults, checkIn, checkOut, children, property?.name, propertyId]);
 
+  const checkoutViewTracked = useRef(false);
+
   useEffect(() => {
-    track("ViewCheckoutPage", {
-      content_ids: [property?.property_id],
-      content_name: [property?.name],
-      checkin: [checkIn],
-      checkout: [checkOut],
-      content_type: "hotel",
+    if (!property || !quote || checkoutViewTracked.current) return;
+    checkoutViewTracked.current = true;
+
+    const cameFromSite = document.referrer.includes(window.location.host);
+
+    trackCustom("ViewCheckoutPage", {
+      content_ids: [propertyId],
+      content_name: property.name,
+      checkin_date: checkIn,
+      checkout_date: checkOut,
+      value: quote.total,
+      currency: "INR",
+      entry: cameFromSite ? "internal" : "shared_link",
     });
-  }, [checkIn, checkOut, property]);
+  }, [checkIn, checkOut, property, propertyId, quote]);
 
   // ── Loading ───────────────────────────────────────────────────
   if (loadingPage)
@@ -1045,12 +1076,18 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                 variant="outlined"
                 size="small"
                 startIcon={<WhatsApp color={"#25D366"} />}
-                onClick={() =>
+                onClick={() => {
+                  track("Contact", {
+                    method: "whatsapp",
+                    location: "checkout-help",
+                    content_ids: [propertyId],
+                  });
+
                   window.open(
                     `https://wa.me/919594377736?text=${encodeURIComponent("Hi! I need help completing my booking.")}`,
                     "_blank",
-                  )
-                }
+                  );
+                }}
                 sx={{
                   borderRadius: 2,
                 }}

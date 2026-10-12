@@ -423,13 +423,24 @@ const BookingWidget: FC<BookingWidgetProps> = ({
         ? `\n\nCheck-in: ${checkIn.format("DD MMM YYYY")}\nCheck-out: ${checkOut.format("DD MMM YYYY")}\nGuests: ${guests}`
         : "";
     window.open(
-      `https://wa.me/9594377736?text=${encodeURIComponent(`Hi! I'd like to enquire about *${propertyName}* — ${unit}${rooms}.${dates}`)}`,
+      `https://wa.me/919594377736?text=${encodeURIComponent(`Hi! I'd like to enquire about *${propertyName}* — ${unit}${rooms}.${dates}`)}`,
       "_blank",
     );
   };
 
   const handleProceedToBook = () => {
     if (!quote || nights < 1 || !group) return;
+
+    track("InitiateCheckout", {
+      content_ids: [propertyId],
+      content_name: propertyName,
+      value: quote.total,
+      currency: "INR",
+      num_adults: adults,
+      num_children: children,
+      nights,
+    });
+
     const token = encryptCheckout({
       propertyId,
       unitId: group.display_unit.unit_id,
