@@ -298,6 +298,14 @@ const BookingPage: FC = () => {
               },
               `booking_${booking.bookingId}`,
             );
+
+            (window as any).gtag?.("event", "conversion", {
+              send_to: "AW-17413728290/DKRFCMO_05sdEKLQwe9A",
+              value: quote.total,
+              currency: "INR",
+              transaction_id: booking.bookingId,
+            });
+
             router.push(`/booking/confirmed/${booking.bookingId}`);
           } catch {
             setVerifying(false);

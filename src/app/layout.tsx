@@ -159,6 +159,7 @@ export default async function Layout({
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'G-N8W81KP676');
+            gtag('config', 'AW-17413728290/DKRFCMO_05sdEKLQwe9A');
           `}
         </Script>
         <MetaPixel />
