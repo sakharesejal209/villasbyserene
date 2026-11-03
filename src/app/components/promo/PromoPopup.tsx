@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 
 const PROMO_STORAGE_KEY = "vbs_diwali_promo_nov7_seen";
-const OFFER_EXPIRY = "2026-11-09";
+const OFFER_EXPIRY = "2026-11-10";
 
 const sparkles = [
   {
@@ -302,7 +302,7 @@ export default function PromoPopup({
         {/* Body */}
         <Box sx={{ px: 3.5, pt: 3, pb: 3.5, bgcolor: "background.paper" }}>
           <Typography variant="h6" fontWeight={700} textAlign="center" mb={0.5}>
-            Book for 7–9 November 2026
+            Book for 7-10 November 2026
           </Typography>
           <Typography
             variant="body2"
@@ -383,7 +383,7 @@ export default function PromoPopup({
             display="block"
             textAlign="center"
           >
-            Valid check-in dates: 7–9 Nov 2026 only · 1 use per user
+            Valid check-in dates: 7-10 Nov 2026 only · 1 use per user
           </Typography>
         </Box>
       </Dialog>
