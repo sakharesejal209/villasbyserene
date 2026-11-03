@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 
 const PROMO_STORAGE_KEY = "vbs_diwali_promo_nov7_seen";
-const OFFER_EXPIRY = "2026-11-07";
+const OFFER_EXPIRY = "2026-11-09";
 
 const sparkles = [
   {
@@ -242,7 +242,6 @@ export default function PromoPopup({
 
           <Typography
             sx={{
-              fontSize: 10,
               fontWeight: 600,
               letterSpacing: "3px",
               textTransform: "uppercase",
@@ -252,6 +251,7 @@ export default function PromoPopup({
               position: "relative",
               zIndex: 5,
             }}
+            variant="body2"
           >
             🪔 Diwali Special Offer 🪔
           </Typography>
@@ -273,24 +273,19 @@ export default function PromoPopup({
 
           <Typography
             sx={{
-              fontFamily: "'Playfair Display', Georgia, serif",
-              fontSize: 64,
-              fontWeight: 900,
-              lineHeight: 1,
               color: "#ffd060",
               textAlign: "center",
               textShadow: "0 2px 24px rgba(240,180,41,0.35)",
               position: "relative",
               zIndex: 5,
             }}
+            variant="h1"
           >
             20% OFF
           </Typography>
 
           <Typography
             sx={{
-              fontFamily: "'Playfair Display', Georgia, serif",
-              fontSize: 16,
               fontStyle: "italic",
               color: "rgba(240,210,150,0.7)",
               textAlign: "center",
@@ -298,6 +293,7 @@ export default function PromoPopup({
               position: "relative",
               zIndex: 5,
             }}
+            variant="h5"
           >
             on your villa stay
           </Typography>
@@ -306,7 +302,7 @@ export default function PromoPopup({
         {/* Body */}
         <Box sx={{ px: 3.5, pt: 3, pb: 3.5, bgcolor: "background.paper" }}>
           <Typography variant="h6" fontWeight={700} textAlign="center" mb={0.5}>
-            Book for 7th November 2026
+            Book for 7–9 November 2026
           </Typography>
           <Typography
             variant="body2"
@@ -314,7 +310,7 @@ export default function PromoPopup({
             textAlign="center"
             mb={2.5}
           >
-            One-time use per guest. Apply at checkout.
+            One-time use per user. Apply at checkout.
           </Typography>
 
           <Box
@@ -324,15 +320,15 @@ export default function PromoPopup({
               justifyContent: "space-between",
               border: "2px dashed #c8922a",
               borderRadius: "3px",
-              px: 2.5,
-              py: 1.75,
+              px: { xs: 1, md: 1.5, lg: 2.5 },
+              py: { xs: 1.5, md: 1.75 },
               mb: 2.5,
               background: "rgba(200,146,42,0.10) !important",
             }}
           >
             <Typography
               sx={{
-                fontSize: 18,
+                fontSize: { xs: 12, md: 16, lg: 18 },
                 fontWeight: 700,
                 letterSpacing: "3px",
                 color: "#c8922a",
@@ -346,9 +342,6 @@ export default function PromoPopup({
               variant="outlined"
               onClick={handleCopy}
               sx={{
-                minWidth: 64,
-                fontWeight: 600,
-                borderRadius: "3px",
                 borderColor: copied ? "#16a34a" : "#c8922a",
                 color: copied ? "#16a34a" : "#c8922a",
                 "&:hover": {
@@ -390,7 +383,7 @@ export default function PromoPopup({
             display="block"
             textAlign="center"
           >
-            Valid check-in date: 7 Nov 2026 only · 1 use per user
+            Valid check-in dates: 7–9 Nov 2026 only · 1 use per user
           </Typography>
         </Box>
       </Dialog>
