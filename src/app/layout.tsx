@@ -9,6 +9,7 @@ import NavbarFooterWrapper from "./components/home/Navbarfooterwrapper";
 import { PropertyListItemDTO } from "./@types";
 import Script from "next/script";
 import MetaPixel from "./components/MetaPixelPageView/MetaPixel";
+import PromoPopup from "./components/promo/PromoPopup";
 
 export const metadata: Metadata = {
   verification: {
@@ -165,6 +166,7 @@ export default async function Layout({
         <MetaPixel />
 
         <ClientProviders propertiesData={propertiesData}>
+          <PromoPopup /> {/* ← add this */}
           <NavbarFooterWrapper>{children}</NavbarFooterWrapper>
         </ClientProviders>
       </body>

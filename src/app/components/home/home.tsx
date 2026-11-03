@@ -11,6 +11,7 @@ import { PropertyListItemDTO, ThemeDTO } from "@/app/@types";
 import { FeaturedVillas } from "./components/FeaturedVillas";
 import dynamic from "next/dynamic";
 import HeroSection from "./components/HeroSection";
+import PromoPopup from "../promo/PromoPopup";
 
 const TopLocations = dynamic(() =>
   import("./components/TopLocations").then((m) => ({

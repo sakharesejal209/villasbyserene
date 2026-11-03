@@ -6,4 +6,5 @@ export default interface QuoteRequestDTO {
   children: number;
   rooms?: number;
   petCount: number;
+  couponCode?: string;
 }

@@ -116,6 +116,7 @@ const BookingPage: FC = () => {
   const nights = dayjs(checkOut).diff(dayjs(checkIn), "day");
   const units = rooms;
   const totalPax = adults + children;
+  const couponCode = stored?.couponCode ?? "";
 
   // ── State ─────────────────────────────────────────────────────
   const [property, setProperty] = useState<PropertyDetailDTO | null>(null);
@@ -163,7 +164,8 @@ const BookingPage: FC = () => {
         adults,
         children,
         petCount,
-        rooms: units, // pass rooms so extra guest charge is calculated correctly
+        rooms: units, // pass rooms so extra guest charge is calculated correctly,
+        couponCode: couponCode || undefined,
       }),
     ])
       .then(([prop, q]) => {
@@ -233,6 +235,7 @@ const BookingPage: FC = () => {
           kidsCount: children,
           petCount,
           rooms: units, // number of rooms for resort bookings
+          couponCode: couponCode || undefined,
         },
         idempotencyKey,
       );
@@ -1159,6 +1162,23 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                         label="Convenience fee"
                         amount={quote.cleaning_fee}
                       />
+                    )}
+
+                    {(quote.discount_amount ?? 0) > 0 && (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Typography variant="body2" color="success.main">
+                          Coupon discount ({couponCode})
+                        </Typography>
+                        <Typography variant="body2" color="success.main">
+                          -{formatINR(quote.discount_amount)}
+                        </Typography>
+                      </Box>
                     )}
 
                     {/* Breakdown toggle */}

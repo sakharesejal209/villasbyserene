@@ -323,10 +323,10 @@ const Stays = ({ location, propertiesData, loading }: StaysPropType) => {
                             fontWeight={600}
                             color="primary"
                           >
-                            ₹{priceResult.price.toLocaleString("en-IN")}
+                            ₹{priceResult.price.toLocaleString("en-IN")}/-
                           </Typography>
                           <Typography variant="caption" color="text.secondary">
-                            {isDirect ? "/ night" : "Onwards"}
+                            { "Onwards"}
                           </Typography>
                         </Box>
                       ) : (

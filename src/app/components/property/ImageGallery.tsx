@@ -46,7 +46,7 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
   return (
     <div className="flex justify-center overflow-hidden">
       <Masonry
-        sx={{ width: "100%", height: "110%" }}
+        sx={{ width: "100%", height: "100%" }}
         columns={{ xs: 1, md: 1 }}
         spacing={{ xs: 1, md: 1 }}
       >

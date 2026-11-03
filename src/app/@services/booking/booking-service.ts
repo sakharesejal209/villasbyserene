@@ -1,5 +1,6 @@
 import { UserBookingDTO } from "@/app/@types/user";
 import httpService from "../http-service";
+import { AuthUser } from "@/hooks/useAuth";
 
 export interface CreateBookingPayload {
   unitId: string;
@@ -13,6 +14,7 @@ export interface CreateBookingPayload {
   kidsCount: number;
   petCount: number;
   rooms: number;
+  couponCode?: string;
 }
 
 export interface CreateBookingResponse {
@@ -78,6 +80,18 @@ class BookingService {
 
   cancelBooking = (cancelTargetId: string) => {
     return httpService().put(`/booking/${cancelTargetId}/cancel`);
+  };
+
+  validateCoupon = (couponInput: string, checkIn: string, userId: string) => {
+    return httpService<{
+      valid: boolean;
+      discountPercent: number;
+      message: string;
+    }>().post("/booking/validate-coupon", {
+      code: couponInput,
+      checkIn: checkIn,
+      userId: userId,
+    });
   };
 }
 
