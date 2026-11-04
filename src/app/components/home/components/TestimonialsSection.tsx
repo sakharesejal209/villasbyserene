@@ -1,13 +1,19 @@
 // src/app/home/components/TestimonialsSection.tsx
 // "use client";
 
-import { Typography } from "@mui/material";
+import { styled, Typography } from "@mui/material";
 import { SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import { motion } from "motion/react";
 import { Carousel } from "@/application/default";
 import { FadeInSection } from "../home";
 import testimonials from "../data/testimonials.json";
+import { IoMdStar as Stars } from "react-icons/io";
+
+const StyledStars = styled(Stars)(({ theme }) => ({
+  color: theme.palette.warning.main,
+  fontSize: "20px",
+}));
 
 export const TestimonialsSection = () => (
   <section>
@@ -48,6 +54,13 @@ export const TestimonialsSection = () => (
                     sizes="(max-width: 768px) 50vw, 25vw"
                     style={{ objectFit: "cover" }}
                   />
+                </div>
+                <div className="flex items-center gap-1 mt-1">
+                  <StyledStars />
+                  <StyledStars />
+                  <StyledStars />
+                  <StyledStars />
+                  <StyledStars />
                 </div>
                 <Typography variant="caption" sx={{ mt: 1, opacity: 0.65 }}>
                   {t.name}

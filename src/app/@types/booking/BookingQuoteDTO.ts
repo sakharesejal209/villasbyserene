@@ -8,6 +8,8 @@ export default interface BookingQuoteDTO {
   nightly_breakdown: NightlyBreakdownDTO[];
   pet_count: number;
   max_pets: number;
+  discount_amount: number;
+  discount_percent: number;
 
   // Charges
   subtotal: number; // nightly total for 1 unit

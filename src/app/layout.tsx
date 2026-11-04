@@ -7,10 +7,16 @@ import { Metadata } from "next";
 import { propertiesService } from "./@services";
 import NavbarFooterWrapper from "./components/home/Navbarfooterwrapper";
 import { PropertyListItemDTO } from "./@types";
+import Script from "next/script";
+import MetaPixel from "./components/MetaPixelPageView/MetaPixel";
+import PromoPopup from "./components/promo/PromoPopup";
 
 export const metadata: Metadata = {
   verification: {
     google: "bZgMGkyhPgtSoOtoMrL5ErGTAumHBcXSTX-Jxhio8tQ",
+    other: {
+      "facebook-domain-verification": "0thsid3v1pwan5p7kjiugdhtbbmcwc",
+    },
   },
   metadataBase: new URL("https://www.villasbyserene.in"),
   title: {
@@ -144,7 +150,23 @@ export default async function Layout({
         />
       </head>
       <body className="flex flex-col min-h-screen">
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-N8W81KP676"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-N8W81KP676');
+            gtag('config', 'AW-17413728290/DKRFCMO_05sdEKLQwe9A');
+          `}
+        </Script>
+        <MetaPixel />
+
         <ClientProviders propertiesData={propertiesData}>
+          <PromoPopup /> {/* ← add this */}
           <NavbarFooterWrapper>{children}</NavbarFooterWrapper>
         </ClientProviders>
       </body>

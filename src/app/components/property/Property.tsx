@@ -1,8 +1,9 @@
 "use client";
 
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 
 import { IoCloseOutline as CloseIcon } from "react-icons/io5";
+
 import {
   Accordion,
   AccordionDetails,
@@ -50,6 +51,9 @@ import dayjs from "dayjs";
 import { BookingType, PropertyDetailDTO } from "@/app/@types";
 import { useSearchParams } from "next/navigation";
 import { IoArrowBackOutline } from "react-icons/io5";
+import DraggableWhatsApp from "./DraggableWhatsApp";
+import { track } from "@/lib/metaPixel";
+import PromoPopup from "../promo/PromoPopup";
 
 // ── Types ─────────────────────────────────────────────────────────
 
@@ -181,6 +185,45 @@ const Property: FC<PropertyPropType> = ({
       globalThis.history.replaceState({}, "", url.toString());
     }
   }, [searchParams]);
+
+  const handleWhatsAppContact = useCallback(() => {
+    track("Contact", {
+      method: "whatsapp",
+      location: "property-floating",
+      content_ids: [propertyDetails.property_id],
+      content_name: [propertyDetails.name],
+      checkin: [widgetState?.checkIn],
+      checkout: [widgetState?.checkOut],
+    });
+    const parts = [
+      `Hi, I'm interested in booking *${propertyDetails.name}*`,
+      widgetState?.checkIn
+        ? `Check-in: ${dayjs(widgetState.checkIn).format("DD MMM YYYY")}`
+        : null,
+      widgetState?.checkOut
+        ? `Check-out: ${dayjs(widgetState.checkOut).format("DD MMM YYYY")}`
+        : null,
+      widgetState?.adults
+        ? `Adults: ${widgetState.adults}${widgetState.children > 0 ? `, Children: ${widgetState.children}` : ""}`
+        : null,
+      "Please share availability and pricing.",
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    window.open(
+      `https://wa.me/9594377736?text=${encodeURIComponent(parts)}`,
+      "_blank",
+    );
+  }, [propertyDetails.name, widgetState]);
+
+  useEffect(() => {
+    track("ViewPropertyPage", {
+      content_ids: [propertyDetails.property_id],
+      content_name: [propertyDetails.name],
+      content_type: "hotel",
+    });
+  }, [propertyDetails]);
 
   return (
     <section>
@@ -787,6 +830,8 @@ const Property: FC<PropertyPropType> = ({
           />
         </Box>
       </Drawer>
+
+      <DraggableWhatsApp onClick={handleWhatsAppContact} />
     </section>
   );
 };

@@ -26,10 +26,17 @@ import {
 } from "react-icons/io5";
 
 import { PiConfetti } from "react-icons/pi";
-import { propertiesService, calendarService } from "@/app/@services/";
+import {
+  propertiesService,
+  calendarService,
+  httpService,
+  bookingService,
+} from "@/app/@services/";
 import { useRouter } from "next/navigation";
 import { BookingQuoteDTO, BookingType, UnitGroupDTO } from "@/app/@types";
 import { encryptCheckout } from "@/lib/crypto/checkout-crypto";
+import { track, trackCustom } from "@/lib/metaPixel";
+import { useAuth } from "@/hooks/useAuth";
 
 interface FormValues {
   checkIn: Dayjs | null;
@@ -186,13 +193,20 @@ const BookingWidget: FC<BookingWidgetProps> = ({
   const [quote, setQuote] = useState<BookingQuoteDTO | null>(null);
   const [quoteLoading, setQuoteLoading] = useState(false);
   const [quoteError, setQuoteError] = useState<string | null>(null);
-
   const [blockedRanges, setBlockedRanges] = useState<
     { start: string; end: string }[]
   >([]);
   const [blockedLoading, setBlockedLoading] = useState(false);
-
   const [guestAnchor, setGuestAnchor] = useState<HTMLElement | null>(null);
+  const [couponCode, setCouponCode] = useState("");
+  const [couponInput, setCouponInput] = useState("");
+  const [couponStatus, setCouponStatus] = useState<
+    "idle" | "valid" | "invalid" | "loading"
+  >("idle");
+  const [couponMessage, setCouponMessage] = useState("");
+  const [discountAmount, setDiscountAmount] = useState(0);
+  const [discountPercent, setDiscountPercent] = useState(0);
+  const { user } = useAuth();
 
   const { control, setValue, getValues, watch } = useForm<FormValues>({
     defaultValues: {
@@ -224,6 +238,8 @@ const BookingWidget: FC<BookingWidgetProps> = ({
   const adultsRef = useRef(adults);
   const childrenRef = useRef(children);
   const unitsRef = useRef(units);
+  const datesTouchedRef = useRef(false);
+  const lastAvailabilityKeyRef = useRef<string | null>(null);
   adultsRef.current = adults;
   childrenRef.current = children;
   unitsRef.current = units;
@@ -309,6 +325,14 @@ const BookingWidget: FC<BookingWidgetProps> = ({
       .finally(() => setBlockedLoading(false));
   }, [group?.display_unit?.unit_id, roomCount]);
 
+  useEffect(() => {
+    if (couponStatus === "valid" && quote && discountPercent > 0) {
+      setDiscountAmount(
+        Math.round((quote.stay_charges * discountPercent) / 100),
+      );
+    }
+  }, [quote, couponStatus, discountPercent]);
+
   // Memoize parsed blocked ranges to avoid re-parsing on every render
   const parsedBlockedRanges = useMemo(
     () =>
@@ -350,6 +374,50 @@ const BookingWidget: FC<BookingWidgetProps> = ({
     (!!checkIn && isCheckinBlocked(checkIn)) ||
     (!!checkIn && !!checkOut && hasBlockedNightBetween(checkIn, checkOut));
 
+  useEffect(() => {
+    if (!datesTouchedRef.current) return;
+    if (!group || !checkIn || !checkOut || nights < 1 || blockedLoading) return;
+
+    const key = `${group.display_unit.unit_id}|${checkIn.format("YYYY-MM-DD")}|${checkOut.format("YYYY-MM-DD")}`;
+    if (lastAvailabilityKeyRef.current === key) return;
+
+    const t = setTimeout(() => {
+      lastAvailabilityKeyRef.current = key;
+      trackCustom("CheckAvailability", {
+        content_ids: [propertyId],
+        content_name: propertyName,
+        unit_type: group.unit_type,
+        checkin_date: checkIn.format("YYYY-MM-DD"),
+        checkout_date: checkOut.format("YYYY-MM-DD"),
+        nights,
+        available: !isSelectedUnitSoldOut,
+        booking_type: isDirect ? "direct" : "enquiry",
+      });
+    }, 400);
+
+    return () => clearTimeout(t);
+  }, [
+    group,
+    checkIn,
+    checkOut,
+    nights,
+    blockedLoading,
+    isSelectedUnitSoldOut,
+    propertyId,
+    propertyName,
+    isDirect,
+  ]);
+
+  // Optional: reset coupon if check-in date changes (coupon is date-specific)
+  useEffect(() => {
+    setCouponStatus("idle");
+    setCouponCode("");
+    setCouponInput("");
+    setCouponMessage("");
+    setDiscountAmount(0);
+    setDiscountPercent(0);
+  }, [checkIn]);
+
   const handleSelectUnit = (idx: number) => {
     setSelectedIdx(idx);
     setQuote(null);
@@ -372,6 +440,12 @@ const BookingWidget: FC<BookingWidgetProps> = ({
 
   // ── WhatsApp enquiry ──────────────────────────────────────────
   const handleWhatsApp = () => {
+    track("Contact", {
+      method: "whatsapp",
+      location: "booking_widget",
+      content_ids: [propertyId],
+      content_name: [propertyName],
+    });
     const unit = group?.display_unit.title ?? group?.type_label ?? "";
     const rooms = !isVilla && roomCount > 1 ? ` (${roomCount} units)` : "";
     const guests = `${adults} adults${children > 0 ? `, ${children} children` : ""}${infants > 0 ? `, ${infants} infants` : ""}`;
@@ -380,13 +454,24 @@ const BookingWidget: FC<BookingWidgetProps> = ({
         ? `\n\nCheck-in: ${checkIn.format("DD MMM YYYY")}\nCheck-out: ${checkOut.format("DD MMM YYYY")}\nGuests: ${guests}`
         : "";
     window.open(
-      `https://wa.me/9594377736?text=${encodeURIComponent(`Hi! I'd like to enquire about *${propertyName}* — ${unit}${rooms}.${dates}`)}`,
+      `https://wa.me/919594377736?text=${encodeURIComponent(`Hi! I'd like to enquire about *${propertyName}* — ${unit}${rooms}.${dates}`)}`,
       "_blank",
     );
   };
 
   const handleProceedToBook = () => {
     if (!quote || nights < 1 || !group) return;
+
+    track("InitiateCheckout", {
+      content_ids: [propertyId],
+      content_name: propertyName,
+      value: quote.total,
+      currency: "INR",
+      num_adults: adults,
+      num_children: children,
+      nights,
+    });
+
     const token = encryptCheckout({
       propertyId,
       unitId: group.display_unit.unit_id,
@@ -397,8 +482,44 @@ const BookingWidget: FC<BookingWidgetProps> = ({
       infants,
       rooms: units,
       petCount,
+      couponCode: couponStatus === "valid" ? couponCode : undefined,
     });
     router.push(`/checkout?b=${token}`);
+  };
+
+  const handleApplyCoupon = async () => {
+    if (!couponInput.trim() || !checkIn) return;
+    setCouponStatus("loading");
+    try {
+      const res = await bookingService.validateCoupon(
+        couponInput.trim(),
+        checkIn.format("YYYY-MM-DD"),
+        user?.id || "",
+      );
+
+      if (res.valid) {
+        // ← removed `&& quote` check
+        setCouponStatus("valid");
+        setCouponCode(couponInput.trim().toUpperCase());
+        setCouponMessage(res.message);
+        setDiscountPercent(res.discountPercent); // ← new state, see below
+        // Store discountPercent; compute amount from quote when available
+        setDiscountAmount(
+          quote
+            ? Math.round((quote.stay_charges * res.discountPercent) / 100)
+            : 0,
+        );
+      } else {
+        setCouponStatus("invalid");
+        setCouponMessage(res.message);
+        setDiscountAmount(0);
+        setDiscountPercent(0);
+      }
+    } catch {
+      setCouponStatus("invalid");
+      setCouponMessage("Could not validate coupon");
+      setDiscountAmount(0);
+    }
   };
 
   return (
@@ -572,8 +693,21 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                 onChange={(val) => {
                   field.onChange(val);
                   const co = getValues("checkOut");
-                  if (val && co && !val.isBefore(co))
+                  if (val && co && !val.isBefore(co)) {
                     setValue("checkOut", val.add(1, "day"));
+                  } else {
+                    trackCustom("CheckAvailability", {
+                      content_ids: [propertyId],
+                      content_name: propertyName,
+                      unit_type: group.unit_type,
+                      checkin_date: checkIn?.format("YYYY-MM-DD"),
+                      checkout_date: checkOut?.format("YYYY-MM-DD"),
+                      nights,
+                      available: !isSelectedUnitSoldOut,
+                      booking_type: isDirect ? "direct" : "enquiry",
+                    });
+                    datesTouchedRef.current = true;
+                  }
                 }}
                 slotProps={{
                   textField: {
@@ -604,7 +738,10 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                   checkIn ? checkIn.add(1, "day") : dayjs().add(1, "day")
                 }
                 shouldDisableDate={(date) => isCheckoutBlocked(date)}
-                onChange={(val) => field.onChange(val)}
+                onChange={(val) => {
+                  field.onChange(val);
+                  datesTouchedRef.current = true;
+                }}
                 slotProps={{ textField: { fullWidth: true, size: "small" } }}
               />
             )}
@@ -821,6 +958,23 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                       {formatINR(quote.stay_charges + quote.commission_amount)}
                     </Typography>
                   </Box>
+                  {/* Discount row */}
+                  {couponStatus === "valid" && discountAmount > 0 && (
+                    <Box
+                      sx={{ display: "flex", justifyContent: "space-between" }}
+                    >
+                      <Typography variant="body2" color="success.main">
+                        Coupon discount (SERENEDIWALI20)
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="success.main"
+                        fontWeight={700}
+                      >
+                        -{formatINR(discountAmount)}
+                      </Typography>
+                    </Box>
+                  )}
 
                   {/* Property charges */}
                   {/* {quote.commission_amount > 0 && (
@@ -874,6 +1028,64 @@ const BookingWidget: FC<BookingWidgetProps> = ({
 
                   <Divider sx={{ my: 0.25 }} />
 
+                  {/* Coupon input */}
+                  <Box sx={{ display: "flex", gap: 1, mt: 0.5 }}>
+                    <TextField
+                      size="small"
+                      placeholder="Coupon code"
+                      value={couponInput}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleApplyCoupon();
+                        }
+                      }}
+                      onChange={(e) => {
+                        setCouponInput(e.target.value.toUpperCase());
+                        if (couponStatus !== "idle") {
+                          setCouponStatus("idle");
+                          setCouponCode("");
+                          setDiscountAmount(0);
+                          setDiscountPercent(0); // ← reset this too
+                        }
+                      }}
+                      disabled={couponStatus === "valid"}
+                      sx={{ flex: 1 }}
+                      slotProps={{ input: { sx: { fontSize: 13 } } }}
+                    />
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      onClick={handleApplyCoupon}
+                      disabled={
+                        couponStatus === "loading" ||
+                        couponStatus === "valid" ||
+                        !couponInput.trim()
+                      }
+                      sx={{ minWidth: 64, borderRadius: 0.2 }}
+                    >
+                      {couponStatus === "loading" ? (
+                        <CircularProgress size={14} />
+                      ) : couponStatus === "valid" ? (
+                        "✓"
+                      ) : (
+                        "Apply"
+                      )}
+                    </Button>
+                  </Box>
+
+                  {couponMessage && (
+                    <Typography
+                      variant="caption"
+                      color={
+                        couponStatus === "valid" ? "success.main" : "error.main"
+                      }
+                    >
+                      {couponMessage}
+                    </Typography>
+                  )}
+
                   {/* Total = stay + property charges + GST */}
                   <Box
                     sx={{
@@ -890,7 +1102,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                       fontWeight={800}
                       color="primary"
                     >
-                      {formatINR(quote.total)}
+                      {formatINR(quote.total - discountAmount)}
                     </Typography>
                   </Box>
                 </>

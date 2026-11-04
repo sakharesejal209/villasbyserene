@@ -19,6 +19,7 @@ import { PickerValue } from "@mui/x-date-pickers/internals";
 import dayjs from "dayjs";
 import { propertiesService } from "@/app/@services";
 import { usePropertyStore } from "@/context/PropertyContext";
+import { track } from "@/lib/metaPixel";
 
 export const locations = [
   "All",
@@ -46,6 +47,12 @@ const SearchBox = ({ isMobile }: { isMobile: boolean }) => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    track("Search", {
+      search_string: location,
+      checkin_date: checkIn,
+      checkout_date: checkOut,
+      num_adults: guests,
+    });
     if (loadingButton) return;
 
     setLoadingButton(true);

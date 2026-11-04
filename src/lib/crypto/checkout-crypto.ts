@@ -20,6 +20,7 @@ export interface CheckoutState {
   infants: number;
   rooms: number;
   petCount: number;
+  couponCode?: string;
 }
 
 export function encryptCheckout(state: CheckoutState): string {

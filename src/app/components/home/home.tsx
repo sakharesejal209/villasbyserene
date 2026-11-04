@@ -11,6 +11,8 @@ import { PropertyListItemDTO, ThemeDTO } from "@/app/@types";
 import { FeaturedVillas } from "./components/FeaturedVillas";
 import dynamic from "next/dynamic";
 import HeroSection from "./components/HeroSection";
+import PromoPopup from "../promo/PromoPopup";
+import { PartnerBand } from "./components/PartnerBand";
 
 const TopLocations = dynamic(() =>
   import("./components/TopLocations").then((m) => ({
@@ -108,6 +110,8 @@ const Home = () => {
 
       {/* 3. Top Locations */}
       <TopLocations />
+
+      <PartnerBand />
 
       {/* 5. Testimonials — peer validation before brand claims */}
       <TestimonialsSection />

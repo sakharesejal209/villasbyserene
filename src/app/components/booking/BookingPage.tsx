@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import dayjs from "dayjs";
@@ -23,15 +23,6 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-// import {
-//   ArrowBackOutlined,
-//   CheckCircleOutlined,
-//   CloseOutlined,
-//   ExpandMoreOutlined,
-//   LockOutlined,
-//   WarningAmberOutlined,
-//   WhatsApp,
-// } from "@mui/icons-material";
 import {
   IoArrowBackOutline as ArrowBack,
   IoCheckmarkCircleOutline as CheckCircleIcon,
@@ -53,6 +44,8 @@ import {
 } from "@/app/@services";
 import { decryptCheckout } from "@/lib/crypto/checkout-crypto";
 import Link from "next/link";
+import DraggableWhatsApp from "../property/DraggableWhatsApp";
+import { track, trackCustom } from "@/lib/metaPixel";
 
 // ── Types ─────────────────────────────────────────────────────────
 
@@ -64,67 +57,6 @@ interface GuestForm {
 }
 
 type AvailabilityStatus = "checking" | "available" | "unavailable" | "error";
-
-// ── Section accordion ─────────────────────────────────────────────
-
-const Section: FC<{
-  title: string;
-  children: React.ReactNode;
-  defaultOpen?: boolean;
-}> = ({ title, children, defaultOpen = false }) => {
-  const [open, setOpen] = useState(defaultOpen);
-  return (
-    <Box
-      sx={{
-        borderRadius: 0.2,
-        border: "1px solid",
-        borderColor: "divider",
-        overflow: "hidden",
-        mb: 2,
-      }}
-    >
-      <Box
-        onClick={() => setOpen((v) => !v)}
-        sx={{
-          px: 2.5,
-          py: 2,
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          cursor: "pointer",
-          "&:hover": { bgcolor: "action.hover" },
-        }}
-      >
-        <Typography variant="subtitle1" fontWeight={700}>
-          {title}
-        </Typography>
-        <Box
-          sx={{
-            fontSize: 20,
-            color: "text.secondary",
-            transition: "transform 0.2s",
-            transform: open ? "rotate(180deg)" : "none",
-          }}
-        >
-          <ArrowDownIcon />
-        </Box>
-        {/* <ArrowIcon /> */}
-      </Box>
-      <Collapse in={open}>
-        <Box
-          sx={{
-            px: 2.5,
-            py: 2,
-            borderTop: "1px solid",
-            borderColor: "divider",
-          }}
-        >
-          {children}
-        </Box>
-      </Collapse>
-    </Box>
-  );
-};
 
 // ── Price row ─────────────────────────────────────────────────────
 
@@ -164,7 +96,6 @@ const BookingPage: FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const { openCheckout } = useRazorpay();
   const { user, loading: authLoading, login } = useAuth();
 
@@ -185,6 +116,7 @@ const BookingPage: FC = () => {
   const nights = dayjs(checkOut).diff(dayjs(checkIn), "day");
   const units = rooms;
   const totalPax = adults + children;
+  const couponCode = stored?.couponCode ?? "";
 
   // ── State ─────────────────────────────────────────────────────
   const [property, setProperty] = useState<PropertyDetailDTO | null>(null);
@@ -232,7 +164,8 @@ const BookingPage: FC = () => {
         adults,
         children,
         petCount,
-        rooms: units, // pass rooms so extra guest charge is calculated correctly
+        rooms: units, // pass rooms so extra guest charge is calculated correctly,
+        couponCode: couponCode || undefined,
       }),
     ])
       .then(([prop, q]) => {
@@ -302,6 +235,7 @@ const BookingPage: FC = () => {
           kidsCount: children,
           petCount,
           rooms: units, // number of rooms for resort bookings
+          couponCode: couponCode || undefined,
         },
         idempotencyKey,
       );
@@ -311,6 +245,13 @@ const BookingPage: FC = () => {
       );
       const unitName =
         unitGroup?.display_unit.title ?? unitGroup?.type_label ?? "";
+
+      track("AddPaymentInfo", {
+        content_ids: [propertyId],
+        content_name: property?.name,
+        value: quote.total,
+        currency: "INR",
+      });
 
       openCheckout({
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID ?? "",
@@ -349,6 +290,25 @@ const BookingPage: FC = () => {
               pets: petCount,
               specialRequests: formData.specialRequests, // ← add this
             });
+
+            track(
+              "Purchase",
+              {
+                content_ids: [propertyId],
+                content_name: property?.name,
+                value: quote.total,
+                currency: "INR",
+              },
+              `booking_${booking.bookingId}`,
+            );
+
+            (window as any).gtag?.("event", "conversion", {
+              send_to: "AW-17413728290/DKRFCMO_05sdEKLQwe9A",
+              value: quote.total,
+              currency: "INR",
+              transaction_id: booking.bookingId,
+            });
+
             router.push(`/booking/confirmed/${booking.bookingId}`);
           } catch {
             setVerifying(false);
@@ -358,6 +318,10 @@ const BookingPage: FC = () => {
         },
         modal: {
           ondismiss: () => {
+            trackCustom("PaymentDismissed", {
+              content_ids: [propertyId],
+              value: quote.total,
+            });
             setPaying(false);
             document.body.style.overflow = "";
             document.body.style.pointerEvents = "";
@@ -373,6 +337,53 @@ const BookingPage: FC = () => {
       setPaying(false);
     }
   };
+
+  const handleWhatsAppContact = useCallback(() => {
+    track("Contact", {
+      method: "whatsapp",
+      location: "checkout-floating",
+      content_ids: [propertyId],
+      content_name: [property?.name],
+      checkin: [checkIn],
+      checkout: [checkOut],
+    });
+
+    const parts = [
+      `Hi, I'm interested in booking *${property?.name ?? propertyId}*`,
+      checkIn ? `Check-in: ${dayjs(checkIn).format("DD MMM YYYY")}` : null,
+      checkOut ? `Check-out: ${dayjs(checkOut).format("DD MMM YYYY")}` : null,
+      adults
+        ? `Adults: ${adults}${children > 0 ? `, Children: ${children}` : ""}`
+        : null,
+      "Please share availability and pricing.",
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    window.open(
+      `https://wa.me/919594377736?text=${encodeURIComponent(parts)}`,
+      "_blank",
+    );
+  }, [adults, checkIn, checkOut, children, property?.name, propertyId]);
+
+  const checkoutViewTracked = useRef(false);
+
+  useEffect(() => {
+    if (!property || !quote || checkoutViewTracked.current) return;
+    checkoutViewTracked.current = true;
+
+    const cameFromSite = document.referrer.includes(window.location.host);
+
+    trackCustom("ViewCheckoutPage", {
+      content_ids: [propertyId],
+      content_name: property.name,
+      checkin_date: checkIn,
+      checkout_date: checkOut,
+      value: quote.total,
+      currency: "INR",
+      entry: cameFromSite ? "internal" : "shared_link",
+    });
+  }, [checkIn, checkOut, property, propertyId, quote]);
 
   // ── Loading ───────────────────────────────────────────────────
   if (loadingPage)
@@ -1076,12 +1087,18 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                 variant="outlined"
                 size="small"
                 startIcon={<WhatsApp color={"#25D366"} />}
-                onClick={() =>
+                onClick={() => {
+                  track("Contact", {
+                    method: "whatsapp",
+                    location: "checkout-help",
+                    content_ids: [propertyId],
+                  });
+
                   window.open(
                     `https://wa.me/919594377736?text=${encodeURIComponent("Hi! I need help completing my booking.")}`,
                     "_blank",
-                  )
-                }
+                  );
+                }}
                 sx={{
                   borderRadius: 2,
                 }}
@@ -1145,6 +1162,23 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                         label="Convenience fee"
                         amount={quote.cleaning_fee}
                       />
+                    )}
+
+                    {(quote.discount_amount ?? 0) > 0 && (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Typography variant="body2" color="success.main">
+                          Coupon discount ({couponCode})
+                        </Typography>
+                        <Typography variant="body2" color="success.main">
+                          -{formatINR(quote.discount_amount)}
+                        </Typography>
+                      </Box>
                     )}
 
                     {/* Breakdown toggle */}
@@ -1494,6 +1528,8 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
           </Box>
         </Box>
       </div>
+
+      <DraggableWhatsApp onClick={handleWhatsAppContact} />
     </section>
   );
 };
