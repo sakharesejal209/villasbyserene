@@ -62,7 +62,7 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
               className={`cursor-pointer`}
               fill
               style={{
-                objectFit: fits?.[index],
+                objectFit: 'cover',
                 objectPosition: "top center",
               }}
             />
