@@ -66,7 +66,7 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
               //   objectFit: "cover",
               //   objectPosition: "top center",
               // }}
-              // sizes="(max-width: 768px) 100vw, 50vw"
+              sizes="(max-width: 768px) 100vw, 50vw"
               style={{ objectFit: "cover", objectPosition: "center" }}
             />
           </button>
