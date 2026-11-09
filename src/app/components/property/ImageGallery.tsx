@@ -54,17 +54,20 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
           <button
             key={index}
             onClick={() => handleOpen(index)}
-            className="relative aspect-video overflow-hidden"
+            // className="relative aspect-video overflow-hidden"
+            className="relative w-full aspect-4/3 overflow-hidden"
           >
             <Image
               src={item.src}
               alt={item.alt}
               className={`cursor-pointer`}
               fill
-              style={{
-                objectFit: "cover",
-                objectPosition: "top center",
-              }}
+              // style={{
+              //   objectFit: "cover",
+              //   objectPosition: "top center",
+              // }}
+              // sizes="(max-width: 768px) 100vw, 50vw"
+              style={{ objectFit: "cover", objectPosition: "center" }}
             />
           </button>
         ))}
