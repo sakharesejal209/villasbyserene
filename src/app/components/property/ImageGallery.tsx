@@ -62,7 +62,7 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
               className={`cursor-pointer`}
               fill
               style={{
-                objectFit: 'cover',
+                objectFit: "cover",
                 objectPosition: "top center",
               }}
             />
@@ -73,7 +73,6 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
       <Dialog
         open={open}
         onClose={handleClose}
-        
         fullWidth
         slotProps={{
           paper: {
@@ -82,8 +81,8 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
               boxShadow: "none",
               borderRadius: 0,
               padding: 0,
-              maxWidth: '992px',
-              height: 'auto'
+              maxWidth: "992px",
+              height: "auto",
             },
           },
           backdrop: {
@@ -127,10 +126,10 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
                     src={e.src}
                     alt={e.alt}
                     fill
-                    // style={{
-                    //   objectFit: fits?.[idx] || "contain",
-                    //   objectPosition: "top center",
-                    // }}
+                    style={{
+                      objectFit: fits?.[idx],
+                      objectPosition: "top center",
+                    }}
                     onLoadingComplete={(img) => handleImageLoad(idx, img)}
                     priority={idx === 0}
                   />
