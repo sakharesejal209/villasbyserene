@@ -53,7 +53,6 @@ import { useSearchParams } from "next/navigation";
 import { IoArrowBackOutline } from "react-icons/io5";
 import DraggableWhatsApp from "./DraggableWhatsApp";
 import { track } from "@/lib/metaPixel";
-import PromoPopup from "../promo/PromoPopup";
 
 // ── Types ─────────────────────────────────────────────────────────
 

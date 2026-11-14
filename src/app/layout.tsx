@@ -166,7 +166,7 @@ export default async function Layout({
         <MetaPixel />
 
         <ClientProviders propertiesData={propertiesData}>
-          <PromoPopup /> {/* ← add this */}
+          {/* <PromoPopup /> */}
           <NavbarFooterWrapper>{children}</NavbarFooterWrapper>
         </ClientProviders>
       </body>

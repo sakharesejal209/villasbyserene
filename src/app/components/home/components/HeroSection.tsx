@@ -9,9 +9,7 @@ import SearchBox from "../searchBox";
 import pool from "../../../../../public/assets/poonam-villa2Fpoonam-villa-swimming-pool.webp";
 import elara from "../../../../../public/assets/elara.webp";
 import poonam from "../../../../../public/assets/poonam-villa_poonam-villa-exterior.webp";
-import diwaliGrp from "../../../../../public/assets/diwaliGrp.webp";
-import rangoli from "../../../../../public/assets/rangoli.webp";
-import couple from "../../../../../public/assets/couple.webp";
+import poonamGarden from "../../../../../public/assets/poonam-garden.webp";
 
 const CITIES = [
   "Karjat",
@@ -24,13 +22,6 @@ const CITIES = [
 
 const HERO_SLIDES = [
   {
-    img: diwaliGrp,
-    name: "DiwaliGroup",
-    heading: "#sereneDiwali",
-    subheading:
-      "Some celebrations deserve more than a day, they deserve a beautiful place to come together, traditions to share, and memories to take home. Celebrate Diwali with Villas By Serene.",
-  },
-  {
     img: poonam,
     name: "Navi Mumbai",
     heading: "Wake Up to the Sound of the River",
@@ -38,63 +29,27 @@ const HERO_SLIDES = [
       "Feel the cool morning air before you even open your eyes, just the water moving past and nowhere you need to be.",
   },
 
-  // {
-  //   img: pool,
-  //   name: "Poolside",
-  //   heading: "Where the Day Slows Down",
-  //   subheading:
-  //     "A quiet dip, a little sunshine, and nowhere else to be - just good conversations, cool water, and a day that feels wonderfully unhurried.",
-  // },
   {
-    img: rangoli,
-    name: "rangoli",
-    heading: "#sereneDiwali",
+    img: pool,
+    name: "Poolside",
+    heading: "Where the Day Slows Down",
     subheading:
-      "Make room for what matters most — unhurried mornings, glowing diyas, shared laughter, and a Diwali spent together.",
+      "A quiet dip, a little sunshine, and nowhere else to be - just good conversations, cool water, and a day that feels wonderfully unhurried.",
   },
-  // {
-  //   img: elara,
-  //   name: "Karjat",
-  //   heading: "Where the Only Plan Is Bare Feet on Grass",
-  //   subheading:
-  //     "Feel the grass underfoot and that easy kind of laughter that only shows up when old friends have nowhere to be.",
-  // },
   {
-    img: couple,
-    name: "couple",
-    heading: "#sereneDiwali",
+    img: elara,
+    name: "Karjat",
+    heading: "Where the Only Plan Is Bare Feet on Grass",
     subheading:
-      "Somewhere away from the rush, surrounded by your favourite people, is where the true magic of Diwali unfolds",
+      "Feel the grass underfoot and that easy kind of laughter that only shows up when old friends have nowhere to be.",
   },
-  // {
-  //   img: poonamGarden,
-  //   name: "Garden",
-  //   heading: "The Kind of Quiet You Remember",
-  //   subheading:
-  //     "The grass beneath your feet, the palms moving gently in the breeze, and everyone around you with nowhere else to be. For a little while, the world feels beautifully far away.",
-  // },
-  // {
-  //   img: "https://firebasestorage.googleapis.com/v0/b/villasbyserene-6a7c7.firebasestorage.app/o/coram8-villa%2Fcoram8-exterior5.webp?alt=media",
-  //   name: "Udaipur",
-  //   heading: "Salt air, sea light, and a pool all to yourself.",
-  //   subheading:
-  //     "Steps from the coast in Alibaug — a villa that trades noise for long, unhurried mornings.",
-  // },
-  // {
-  //   img: petFriendly,
-  //   name: "Pet Friendly",
-  //   heading: "Salt air, sea light, and a pool all to yourself.",
-  //   subheading:
-  //     "Steps from the coast in Alibaug — a villa that trades noise for long, unhurried mornings.",
-  // },
-
-  // {
-  //   img: bonfire,
-  //   name: "Bonfire",
-  //   heading: "Gather Round, Stay a While",
-  //   subheading:
-  //     "Feel the warmth on your face, someone hands you the guitar, and for once nobody's checking the time.",
-  // },
+  {
+    img: poonamGarden,
+    name: "Garden",
+    heading: "The Kind of Quiet You Remember",
+    subheading:
+      "The grass beneath your feet, the palms moving gently in the breeze, and everyone around you with nowhere else to be. For a little while, the world feels beautifully far away.",
+  },
 ];
 
 const HERO_LABEL = ["Karjat", "Panvel", "Navi Mumbai", "Udaipur"];
