@@ -31,9 +31,10 @@ export const TopLocations = () => {
           <Carousel
             autoplay={{ delay: 3200, disableOnInteraction: false }}
             breakpoints={{
-              320: { slidesPerView: 2, spaceBetween: 8 },
-              480: { slidesPerView: 3, spaceBetween: 12 },
-              900: { slidesPerView: 4, spaceBetween: 16 },
+              375: { slidesPerView: 2, spaceBetween: 8 },
+              576: { slidesPerView: 2, spaceBetween: 8 },
+              768: { slidesPerView: 3, spaceBetween: 10 },
+              992: { slidesPerView: 4, spaceBetween: 16 },
             }}
             slidesPerView={4}
             spaceBetween={16}
@@ -59,10 +60,10 @@ export const TopLocations = () => {
                         src={item.locationImg}
                         alt={item.locationId}
                         fill
-                        sizes="(max-width: 768px) 50vw, 25vw"
+                        // sizes="(max-width: 768px) 50vw, 25vw"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
+                      <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/15 to-transparent" />
                       <div className="absolute bottom-0 left-0 right-0 p-3 md:p-5">
                         <Typography
                           variant="h6"
@@ -74,7 +75,7 @@ export const TopLocations = () => {
                           variant="body2"
                           sx={{
                             color: "rgba(255,255,255,0.85)",
-                            display: { xs: "none", md: "block" },
+                            fontSize: {xs: '10px', sm: '12px', md: '12px', lg: '14px'}
                           }}
                         >
                           {item.description}

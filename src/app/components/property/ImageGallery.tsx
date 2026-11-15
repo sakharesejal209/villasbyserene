@@ -62,12 +62,12 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
               alt={item.alt}
               className={`cursor-pointer`}
               fill
-              // style={{
-              //   objectFit: "cover",
-              //   objectPosition: "top center",
-              // }}
-              sizes="(max-width: 768px) 100vw, 50vw"
-              style={{ objectFit: "cover", objectPosition: "center" }}
+              style={{
+                objectFit: "cover",
+                objectPosition: "top center",
+              }}
+              // sizes="(max-width: 768px) 100vw, 50vw"
+              // style={{ objectFit: "cover", objectPosition: "center" }}
             />
           </button>
         ))}
@@ -111,6 +111,7 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
           sx={{
             width: "100%",
             height: "100%",
+            maxHeight: "100vh", // ← add this
             padding: "0",
             paddingRight: "0px",
             overflow: "hidden",
@@ -124,14 +125,21 @@ const ImageGallery: FC<ImageGalleryPropType> = (props) => {
           >
             {images.map((e, idx) => (
               <SwiperSlide key={idx}>
-                <div className="relative aspect-video overflow-hidden">
+                <div
+                  // className="relative w-full aspect-4/3 overflow-hidden"
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    height: "90vh",
+                  }}
+                >
                   <Image
                     src={e.src}
                     alt={e.alt}
                     fill
                     style={{
-                      objectFit: fits?.[idx],
-                      objectPosition: "top center",
+                      objectFit: "cover",
+                      objectPosition: "center",
                     }}
                     onLoadingComplete={(img) => handleImageLoad(idx, img)}
                     priority={idx === 0}

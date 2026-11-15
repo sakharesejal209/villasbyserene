@@ -28,6 +28,11 @@ const PARTNERS = [
     dark: "/logos/kimirica-light.webp",
     light: "/logos/kimirica-dark.webp",
   },
+  {
+    name: "Razorpay",
+    dark: "/logos/razorpay-light.webp",
+    light: "/logos/razorpay-dark.webp",
+  },
 ];
 // Duplicate for seamless infinite scroll
 const ITEMS = [...PARTNERS, ...PARTNERS];
