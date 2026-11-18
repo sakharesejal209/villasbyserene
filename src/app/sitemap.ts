@@ -53,17 +53,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${BASE_URL}/list`,
-      changeFrequency: "monthly",
+      changeFrequency: "daily",
       priority: 0.7,
     },
     {
       url: `${BASE_URL}/our-story`,
-      changeFrequency: "monthly",
+      changeFrequency: "daily",
       priority: 0.5,
     },
     {
       url: `${BASE_URL}/contact`,
-      changeFrequency: "monthly",
+      changeFrequency: "daily",
       priority: 0.5,
     },
     {
@@ -98,7 +98,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         (p: { name: string; property_id: string; created_at: string }) => ({
           url: `${BASE_URL}/property/${toPropertySlug(p.name, p.property_id)}`,
           lastModified: new Date(p.created_at),
-          changeFrequency: "weekly" as const,
+          changeFrequency: "daily" as const,
           priority: 0.8,
         }),
       );
