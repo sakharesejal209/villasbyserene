@@ -70,8 +70,10 @@ const Carousel: React.FC<CarouselPropType> = ({
   const arrowBg = isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.07)";
   const arrowBgHover = isDark ? "rgba(255,255,255,0.28)" : "rgba(0,0,0,0.15)";
   const arrowIconColor = isDark ? "#ffffff" : "#1a1a1a";
-  const dotColor = isDark ? "rgba(255,255,255,0.45)" : "rgba(0,0,0,0.2)";
-  const dotActiveColor = isDark ? "#ffffff" : "#1a1a1a";
+  // const dotColor = isDark ? "rgba(255,255,255,0.45)" : "rgba(0,0,0,0.2)";
+  const dotColor = "#fff";
+  const dotActiveColor = "#ffffff";
+  // const dotActiveColor = isDark ? "#ffffff" : "#1a1a1a";
 
   // ── Arrow visibility logic ────────────────────────────────────
   const arrowsVisible =
@@ -109,13 +111,13 @@ const Carousel: React.FC<CarouselPropType> = ({
         "& .swiper-pagination-bullet": {
           backgroundColor: dotColor,
           opacity: 1,
-          width: 7,
-          height: 7,
+          width: 5.5,
+          height: 5.5,
           transition: "background-color 0.25s, transform 0.25s",
         },
         "& .swiper-pagination-bullet-active": {
           backgroundColor: dotActiveColor,
-          transform: "scale(1.3)",
+          transform: "scale(1.35)",
         },
 
         // ── Hide default swiper arrows (we use custom ones) ─────

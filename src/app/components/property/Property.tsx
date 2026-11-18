@@ -69,22 +69,6 @@ type UnitImagesMap = {
   [unitType: string]: { src: string; alt: string; category: string | null }[];
 };
 
-// ── Styled ────────────────────────────────────────────────────────
-
-const Customsection = styled("div")<CustomSectionProps>(({ background }) => ({
-  backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${background})`,
-  backgroundRepeat: "no-repeat",
-  backgroundPosition: "center",
-  backgroundSize: "cover",
-  width: "100%",
-  height: "80vh",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  position: "relative",
-  "@media (min-width:768px)": { height: "80vh" },
-}));
-
 export const SlideTopSection = ({
   children,
 }: {
@@ -226,31 +210,116 @@ const Property: FC<PropertyPropType> = ({
 
   return (
     <section>
-      <Customsection background={bannerUrl}>
-        <div className="container p-4 md:p-0">
-          <div className="text-white slide-bottom">
-            <Typography variant="h3">{propertyDetails.name}</Typography>
-            <div className="flex items-center gap-1">
-              <PinIcon className="inline-block mt-0" size={22} />
-              <Typography className="mt-4 text-2xl!" variant="h5">
-                {propertyDetails.area}, {propertyDetails.city},{" "}
-                {propertyDetails.state}
-              </Typography>
-            </div>
-          </div>
-          {propertyImages.length > 0 && (
-            <div className="flex h-full justify-end items-end">
+      {/* ── Hero: 5-image grid (desktop) / carousel (mobile) ── */}
+      <div className="relative container mt-3">
+        {/* Desktop grid — hidden on mobile */}
+        <div className="hidden md:grid grid-cols-4 grid-rows-2 gap-2 h-120">
+          {/* Large hero image — spans 2 cols × 2 rows */}
+          <button
+            className="col-span-2 row-span-2 relative overflow-hidden hover:cursor-pointer rounded-l-xl"
+            onClick={() => setOpenGallery(true)}
+          >
+            <Image
+              src={galleryImages?.[0]?.src ?? bannerUrl}
+              alt={galleryImages?.[0]?.alt ?? propertyDetails.name}
+              fill
+              priority
+              style={{ objectFit: "cover", objectPosition: "center" }}
+              // sizes="50vw"
+            />
+          </button>
+
+          {/* 4 smaller images */}
+          {[1, 2, 3, 4].map((i) => {
+            const img = galleryImages?.[i];
+            const isLast = i === 4;
+            const remaining = (galleryImages?.length ?? 0) - 5;
+            return (
               <button
-                className="hover:cursor-pointer z-50 text-white absolute top-[87%] md:top-[73%] xs:right-[5%] right-[3.5%] px-2 py-3 md:px-8 md:py-10 font-bold bg-cover bg-center border-white border-[2px] border-solid rounded-sm bg-black/50 bg-blend-overlay"
-                style={{ backgroundImage: `url(${bannerUrl})` }}
+                key={i}
+                className={`${isLast ? "rounded-b-xl rounded-l-none!" : i === 2 ? "rounded-r-xl rounded-b-none" : "rounded-none"} relative overflow-hidden hover:cursor-pointer`}
                 onClick={() => setOpenGallery(true)}
               >
-                See all {propertyImages.length} images
+                {img ? (
+                  <Image
+                    src={img.src}
+                    alt={img.alt}
+                    fill
+                    style={{ objectFit: "cover", objectPosition: "center" }}
+                    sizes="25vw"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gray-200" />
+                )}
+                {isLast && remaining > 0 && (
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                    <span className="text-white font-semibold text-lg">
+                      +{remaining} More
+                    </span>
+                  </div>
+                )}
               </button>
-            </div>
-          )}
+            );
+          })}
         </div>
-      </Customsection>
+
+        {/* Mobile carousel — visible only on mobile */}
+        <div className="md:hidden">
+          <Carousel
+            slidesPerView={1}
+            autoplay={{ delay: 3000, disableOnInteraction: false }}
+            arrowVisibility="hidden"
+            showDots={true}
+            spaceBetween={0}
+          >
+            {(galleryImages ?? [{ src: bannerUrl, alt: propertyDetails.name }])
+              .slice(0, 5)
+              .map((img, idx) => (
+                <SwiperSlide key={idx}>
+                  <button
+                    className="relative w-full overflow-hidden block"
+                    style={{ aspectRatio: "4/3" }}
+                    onClick={() => setOpenGallery(true)}
+                  >
+                    <Image
+                      src={img.src}
+                      alt={img.alt}
+                      fill
+                      priority={idx === 0}
+                      style={{ objectFit: "cover", objectPosition: "center" }}
+                      // sizes="100vw"
+                    />
+                  </button>
+                </SwiperSlide>
+              ))}
+          </Carousel>
+        </div>
+
+        {/* View all photos button */}
+        {(galleryImages?.length ?? 0) > 0 && (
+          <Typography
+            variant="caption"
+            className="md:hidden absolute bottom-2 right-6 z-10 text-white px-2 py-1 font-semibold bg-black/30 border backdrop-blur-xs border-white rounded-sm hover:bg-black/80 transition"
+            onClick={() => setOpenGallery(true)}
+          >
+            View photos
+          </Typography>
+        )}
+      </div>
+
+      {/* Property name + location overlay — desktop only */}
+      <div className="container mt-2">
+        <Typography variant="h4" fontWeight={700}>
+          {propertyDetails.name}
+        </Typography>
+        <div className="flex items-center">
+          <PinIcon size={18} />
+          <Typography variant="h6">
+            {propertyDetails.area}, {propertyDetails.city},{" "}
+            {propertyDetails.state}
+          </Typography>
+        </div>
+      </div>
 
       <section>
         <div className="container w-full grid grid-cols-12 md:gap-8 p-0">
