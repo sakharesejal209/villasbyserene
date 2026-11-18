@@ -1,5 +1,6 @@
 "use client";
 
+import { ImageCategory } from "@/app/@types";
 import {
   Box,
   Button,
@@ -13,7 +14,6 @@ import {
   Typography,
 } from "@mui/material";
 import { IoAdd as AddIcon } from "react-icons/io5";
-import { ImageCategory } from "./images-tab.types";
 
 interface Props {
   newImg: { image_url: string; image_alt: string; image_category_id: string };
