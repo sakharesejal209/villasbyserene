@@ -133,7 +133,7 @@ export const TrustSection = () => {
             </div>
             <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
               {cards.map((card, idx) => (
-                <TrustCard key={card.title} {...card} delay={idx * 0.08} />
+                <TrustCard key={card.title} {...card} />
               ))}
             </div>
           </FadeInSection>
