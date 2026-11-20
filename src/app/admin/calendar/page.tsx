@@ -151,7 +151,6 @@ const MiniCalendar = ({
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    borderRadius: 0.2,
                     cursor: isPast ? "default" : "pointer",
                     fontWeight: isToday ? 800 : 400,
                     color: selected
@@ -400,7 +399,6 @@ const AdminCalendarPage = () => {
             size="small"
             startIcon={<RefreshOutlined />}
             onClick={refreshCalendar}
-            sx={{ borderRadius: 0.2 }}
           >
             Refresh
           </Button>
@@ -410,7 +408,6 @@ const AdminCalendarPage = () => {
             startIcon={<LinkOutlined />}
             onClick={handleOpenIcal}
             disabled={!selectedUnit}
-            sx={{ borderRadius: 0.2 }}
           >
             iCal Sync
           </Button>
@@ -476,7 +473,6 @@ const AdminCalendarPage = () => {
               p: 2.5,
               border: "1px solid",
               borderColor: "divider",
-              borderRadius: 0.2,
             }}
           >
             {/* Month nav */}
@@ -570,7 +566,7 @@ const AdminCalendarPage = () => {
                 setBlockOpen(true);
               }}
               disabled={!selectedUnit}
-              sx={{ borderRadius: 0.2, fontWeight: 700 }}
+              sx={{ fontWeight: 700 }}
             >
               Block Dates
             </Button>
@@ -582,7 +578,6 @@ const AdminCalendarPage = () => {
                   p: 2,
                   border: "1px solid",
                   borderColor: "divider",
-                  borderRadius: 0.2,
                 }}
               >
                 <Typography
@@ -605,7 +600,6 @@ const AdminCalendarPage = () => {
                     wordBreak: "break-all",
                     bgcolor: "action.hover",
                     p: 1,
-                    borderRadius: 0.2,
                     fontFamily: "monospace",
                   }}
                 >
@@ -629,7 +623,6 @@ const AdminCalendarPage = () => {
                 p: 2,
                 border: "1px solid",
                 borderColor: "divider",
-                borderRadius: 0.2,
                 flex: 1,
               }}
             >
@@ -650,7 +643,6 @@ const AdminCalendarPage = () => {
                         justifyContent: "space-between",
                         alignItems: "flex-start",
                         p: 1.25,
-                        borderRadius: 0.2,
                         border: "1px solid",
                         borderColor: "divider",
                       }}
@@ -689,7 +681,7 @@ const AdminCalendarPage = () => {
         maxWidth="xs"
         fullWidth
         slotProps={{
-          paper: { sx: { borderRadius: 0.2, backgroundImage: "none" } },
+          paper: { sx: { backgroundImage: "none" } },
         }}
       >
         <DialogTitle>
@@ -743,7 +735,6 @@ const AdminCalendarPage = () => {
           <Button
             onClick={() => setBlockOpen(false)}
             disabled={blocking}
-            sx={{ borderRadius: 0.2 }}
           >
             Cancel
           </Button>
@@ -758,7 +749,7 @@ const AdminCalendarPage = () => {
                 <AddOutlined />
               )
             }
-            sx={{ borderRadius: 0.2, fontWeight: 700 }}
+            sx={{ fontWeight: 700 }}
           >
             {blocking ? "Blocking..." : "Block Dates"}
           </Button>
@@ -772,7 +763,7 @@ const AdminCalendarPage = () => {
         maxWidth="sm"
         fullWidth
         slotProps={{
-          paper: { sx: { borderRadius: 0.2, backgroundImage: "none" } },
+          paper: { sx: { backgroundImage: "none" } },
         }}
       >
         <DialogTitle>
@@ -814,7 +805,6 @@ const AdminCalendarPage = () => {
                       alignItems: "center",
                       p: 1.5,
                       mb: 1,
-                      borderRadius: 0.2,
                       border: "1px solid",
                       borderColor: "divider",
                     }}
@@ -888,7 +878,6 @@ const AdminCalendarPage = () => {
                     )
                   }
                   sx={{
-                    borderRadius: 0.2,
                     fontWeight: 700,
                     alignSelf: "flex-start",
                   }}
@@ -900,7 +889,7 @@ const AdminCalendarPage = () => {
           </Box>
         </DialogContent>
         <DialogActions sx={{ px: 3, pb: 2 }}>
-          <Button onClick={() => setIcalOpen(false)} sx={{ borderRadius: 0.2 }}>
+          <Button onClick={() => setIcalOpen(false)}>
             Close
           </Button>
         </DialogActions>

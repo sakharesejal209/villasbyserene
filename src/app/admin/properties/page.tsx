@@ -284,7 +284,7 @@ const AdminPropertiesPage = () => {
           variant="contained"
           startIcon={<AddIcon />}
           onClick={() => setCreateOpen(true)}
-          sx={{ borderRadius: 0.2, fontWeight: 700 }}
+          sx={{ fontWeight: 700 }}
         >
           Add Property
         </Button>
@@ -319,7 +319,6 @@ const AdminPropertiesPage = () => {
               sx={{
                 border: "1px solid",
                 borderColor: "divider",
-                borderRadius: 0.2,
                 overflow: "hidden",
                 cursor: "pointer",
                 transition: "all 0.15s",
@@ -423,7 +422,7 @@ const AdminPropertiesPage = () => {
         maxWidth="sm"
         fullWidth
         slotProps={{
-          paper: { sx: { borderRadius: 0.2, backgroundImage: "none" } },
+          paper: { sx: { backgroundImage: "none" } },
         }}
       >
         <DialogTitle>
@@ -591,7 +590,7 @@ const AdminPropertiesPage = () => {
                 <AddIcon />
               )
             }
-            sx={{ borderRadius: 0.2, fontWeight: 700 }}
+            sx={{ fontWeight: 700 }}
           >
             {creating ? "Creating..." : "Create Property"}
           </Button>

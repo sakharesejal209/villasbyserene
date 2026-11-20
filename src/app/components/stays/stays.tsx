@@ -151,7 +151,6 @@ const Stays = ({ location, propertiesData, loading }: StaysPropType) => {
                 sx={{
                   display: "flex",
                   flexDirection: "column",
-                  borderRadius: 0.2,
                   border: "1px solid",
                   borderColor: "divider",
                   overflow: "hidden",

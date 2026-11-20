@@ -97,7 +97,6 @@ const RefundTierCard = ({
     sx={{
       border: "1px solid",
       borderColor,
-      borderRadius: 0.5,
       p: { xs: 2, sm: 2.5 },
       bgcolor: bgColor,
       display: "flex",
@@ -211,7 +210,6 @@ const RefundScheduleCards = () => {
           sx={{
             border: "1px solid",
             borderColor: "divider",
-            borderRadius: 0.5,
             p: 2,
             bgcolor: i % 2 === 0 ? "background.paper" : "action.hover",
           }}
@@ -286,7 +284,7 @@ const OtaPlatformCards = () => {
           sx={{
             border: "1px solid",
             borderColor: "divider",
-            borderRadius: 0.5,
+
             p: 2,
             bgcolor: i % 2 === 0 ? "background.paper" : "action.hover",
           }}
@@ -294,12 +292,8 @@ const OtaPlatformCards = () => {
           <Typography fontWeight={700} sx={{ mb: 0.75 }}>
             {r.platform}
           </Typography>
-          <Typography sx={{ mb: 0.5 }}>
-            {r.policy}
-          </Typography>
-          <Typography variant="caption">
-            Refund contact: {r.contact}
-          </Typography>
+          <Typography sx={{ mb: 0.5 }}>{r.policy}</Typography>
+          <Typography variant="caption">Refund contact: {r.contact}</Typography>
         </Paper>
       ))}
     </Box>
@@ -315,7 +309,7 @@ const RefundScheduleTable = () => (
     sx={{
       border: "1px solid",
       borderColor: "divider",
-      borderRadius: 0.5,
+
       mb: 3,
       mt: 2,
     }}
@@ -382,7 +376,7 @@ const OtaPlatformTable = () => (
     sx={{
       border: "1px solid",
       borderColor: "divider",
-      borderRadius: 0.5,
+
       mt: 2,
       mb: 2,
     }}
@@ -473,7 +467,7 @@ const CancellationPolicyPage = () => {
           sx={{
             border: "1px solid",
             borderColor: "primary.main",
-            borderRadius: 0.5,
+
             p: { xs: 2, sm: 2.5 },
             mb: { xs: 3, md: 5 },
             bgcolor: "action.hover",
@@ -510,7 +504,7 @@ const CancellationPolicyPage = () => {
               sx={{
                 border: "1px solid",
                 borderColor: "divider",
-                borderRadius: 0.5,
+
                 overflow: "hidden",
               }}
             >
@@ -567,7 +561,7 @@ const CancellationPolicyPage = () => {
               sx={{
                 border: "1px solid",
                 borderColor: "divider",
-                borderRadius: 0.5,
+
                 p: 2,
                 mt: 2,
               }}
@@ -702,7 +696,7 @@ const CancellationPolicyPage = () => {
               sx={{
                 border: "1px solid",
                 borderColor: "warning.light",
-                borderRadius: 0.5,
+
                 p: 2,
                 bgcolor: "warning.main",
                 mb: 1,
@@ -910,7 +904,7 @@ const CancellationPolicyPage = () => {
                 sx={{
                   border: "1px solid",
                   borderColor: "divider",
-                  borderRadius: 0.5,
+
                   p: { xs: 2, sm: 2.5 },
                   display: "flex",
                   alignItems: "center",
@@ -949,7 +943,7 @@ const CancellationPolicyPage = () => {
                 sx={{
                   border: "1px solid",
                   borderColor: "divider",
-                  borderRadius: 0.5,
+
                   p: { xs: 2, sm: 2.5 },
                   display: "flex",
                   alignItems: "center",

@@ -116,7 +116,7 @@ const Navbar = () => {
       }}
       color="default"
       component="header"
-      elevation={scrolled ? 1 : 0}
+      // elevation={scrolled ? 1 : 0}
     >
       <div className={`${!isStaysPage && "container"}`}>
         <div className="py-2 px-4 flex justify-between items-center w-full">

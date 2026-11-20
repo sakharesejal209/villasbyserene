@@ -182,7 +182,7 @@ const AddFeedDialog = ({
               <AddIcon />
             )
           }
-          sx={{ borderRadius: 0.2, fontWeight: 700 }}
+          sx={{ fontWeight: 700 }}
         >
           {saving ? "Connecting..." : "Connect"}
         </Button>
@@ -536,7 +536,7 @@ export default function ICalSyncPage() {
               size="small"
               startIcon={<AddIcon />}
               onClick={() => setAddOpen(true)}
-              sx={{ borderRadius: 0.2, fontWeight: 700 }}
+              sx={{ fontWeight: 700 }}
             >
               Connect calendar
             </Button>

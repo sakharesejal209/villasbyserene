@@ -1,23 +1,21 @@
 "use client";
 
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { IoCloseOutline as CloseIcon } from "react-icons/io5";
 
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   Box,
   Button,
   Card,
+  Chip,
   Dialog,
   DialogContent,
   DialogTitle,
+  Divider,
   Drawer,
   IconButton,
   Paper,
-  styled,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -29,15 +27,13 @@ import {
   IoRestaurantOutline as MealsIcon,
   IoArrowForwardOutline as ArrowRight,
   IoLocationOutline as PinIcon,
+  IoArrowBackOutline,
 } from "react-icons/io5";
 import {
   PiBathtub as ShowerIcon,
   PiSwimmingPool as PoolIcon,
 } from "react-icons/pi";
 
-import { IoIosArrowUp as ExpandMoreIcon } from "react-icons/io";
-
-import { motion } from "motion/react";
 import Image from "next/image";
 import { SwiperSlide } from "swiper/react";
 
@@ -50,11 +46,10 @@ import BookingWidget, { WidgetState } from "./BookingWidget";
 import dayjs from "dayjs";
 import { BookingType, PropertyDetailDTO } from "@/app/@types";
 import { useSearchParams } from "next/navigation";
-import { IoArrowBackOutline } from "react-icons/io5";
 import DraggableWhatsApp from "./DraggableWhatsApp";
 import { track } from "@/lib/metaPixel";
 
-// ── Types ─────────────────────────────────────────────────────────
+// ── Types ──────────────────────────────────────────────────────────
 
 type PropertyPropType = {
   propertyDetails: PropertyDetailDTO;
@@ -63,38 +58,47 @@ type PropertyPropType = {
   guests?: number;
 };
 
-type CustomSectionProps = { background: string };
-
 type UnitImagesMap = {
   [unitType: string]: { src: string; alt: string; category: string | null }[];
 };
 
-export const SlideTopSection = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => (
-  <motion.div
-    initial={{ y: 60 }}
-    whileInView={{ y: 0 }}
-    viewport={{ once: false, margin: "-100px" }}
-    transition={{ duration: 0.5, ease: "easeOut" }}
-  >
-    {children}
-  </motion.div>
-);
+// ── Constants ──────────────────────────────────────────────────────
+
+// Match your AppBar: py-2 + logo/text ≈ 56px mobile, 64px desktop
+const NAVBAR_H = { xs: 56, md: 64 };
+
+const TABS = [
+  { id: "overview", label: "Overview" },
+  { id: "accommodation", label: "Accommodation" },
+  { id: "amenities", label: "Amenities" },
+  { id: "food-menu", label: "Food Menu" },
+  { id: "house-rules", label: "House Rules" },
+  { id: "cancellation", label: "Cancellation" },
+  { id: "nearby", label: "Nearby" },
+  { id: "location", label: "Location" },
+] as const;
+
+// ── Helpers ────────────────────────────────────────────────────────
 
 function getLatLngFromEmbed(
   src: string | null,
 ): { lat: string; lng: string } | null {
   if (!src) return null;
-  const latMatch = new RegExp(/!3d([-.\d]+)/).exec(src);
-  const lngMatch = new RegExp(/!2d([-.\d]+)/).exec(src);
+  const latMatch = /!3d([-.\d]+)/.exec(src);
+  const lngMatch = /!2d([-.\d]+)/.exec(src);
   if (latMatch && lngMatch) return { lat: latMatch[1], lng: lngMatch[1] };
   return null;
 }
 
-// ── Component ─────────────────────────────────────────────────────
+// ── Sub-components ─────────────────────────────────────────────────
+
+const SectionHeading = ({ children }: { children: React.ReactNode }) => (
+  <Typography variant="h5" className="mb-4!">
+    {children}
+  </Typography>
+);
+
+// ── Component ──────────────────────────────────────────────────────
 
 const Property: FC<PropertyPropType> = ({
   propertyDetails,
@@ -103,6 +107,7 @@ const Property: FC<PropertyPropType> = ({
   guests,
 }) => {
   const searchParams = useSearchParams();
+  const theme = useTheme();
 
   const [openGallery, setOpenGallery] = useState(false);
   const [openUnitGallery, setOpenUnitGallery] = useState(false);
@@ -112,6 +117,12 @@ const Property: FC<PropertyPropType> = ({
   const [unitGalleryImages, setUnitGalleryImages] = useState<UnitImagesMap>();
   const [openForm, setOpenForm] = useState(false);
   const [widgetState, setWidgetState] = useState<WidgetState | null>(null);
+  const [activeTab, setActiveTab] = useState("overview");
+
+  const tabBarRef = useRef<HTMLDivElement>(null);
+  const tabScrollRef = useRef<HTMLDivElement>(null);
+  const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
+  const isScrollingTo = useRef(false);
 
   const foodMenu = propertyDetails.food_menus[0];
   const propertyImages = propertyDetails.all_images;
@@ -120,16 +131,25 @@ const Property: FC<PropertyPropType> = ({
   const nearby = propertyDetails.nearby_attractions;
   const isDirect = propertyDetails.booking_type === BookingType.DIRECT;
 
-  useEffect(() => {
-    const _galleryImages = [...propertyImages]
-      .sort((a, b) => a.display_order - b.display_order)
-      .map((e) => ({
-        src: e.image?.image_url ?? "",
-        alt: e.image?.image_alt ?? "property image",
-      }));
-    setGalleryImages(_galleryImages);
+  const visibleTabs = TABS.filter((t) => {
+    if (t.id === "food-menu")
+      return propertyDetails.meals_available && !!foodMenu;
+    if (t.id === "nearby") return nearby.length > 0;
+    if (t.id === "location") return !!propertyDetails.map_location;
+    return true;
+  });
 
-    const _unitGalleryImages =
+  // ── Build image maps ───────────────────────────────────────────
+  useEffect(() => {
+    setGalleryImages(
+      [...propertyImages]
+        .sort((a, b) => a.display_order - b.display_order)
+        .map((e) => ({
+          src: e.image?.image_url ?? "",
+          alt: e.image?.image_alt ?? "property image",
+        })),
+    );
+    setUnitGalleryImages(
       propertyDetails.unit_groups.reduce<UnitImagesMap>((acc, group) => {
         acc[group.unit_type] = [...group.display_unit.images]
           .sort((a, b) => (a.display_order ?? 0) - (b.display_order ?? 0))
@@ -139,30 +159,87 @@ const Property: FC<PropertyPropType> = ({
             category: img.image?.category_name ?? null,
           }));
         return acc;
-      }, {});
-    setUnitGalleryImages(_unitGalleryImages);
+      }, {}),
+    );
   }, [propertyDetails, propertyImages]);
 
-  const handleOpenGallery = (unitType: string) => {
-    setSelectedUnit(unitType);
-    setOpenUnitGallery(true);
+  // ── Scroll-spy via scroll event ────────────────────────────────
+  // Uses scroll event (not IntersectionObserver) so the active tab
+  // tracks the section whose top has most recently crossed the
+  // combined navbar + tab bar threshold.
+  useEffect(() => {
+    const onScroll = () => {
+      if (isScrollingTo.current) return;
+
+      const navbarH = window.innerWidth >= 768 ? NAVBAR_H.md : NAVBAR_H.xs;
+      const tabBarH = tabBarRef.current?.offsetHeight ?? 44;
+      const threshold = navbarH + tabBarH + 1; // 1px buffer
+
+      let current = visibleTabs[0].id;
+
+      for (const tab of visibleTabs) {
+        const el = sectionRefs.current[tab.id];
+        if (!el) continue;
+        // section top (relative to viewport) has scrolled at or above the threshold
+        if (el.getBoundingClientRect().top <= threshold) {
+          current = tab.id;
+        }
+      }
+
+      setActiveTab(current);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll(); // set initial active tab on mount
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [visibleTabs]);
+
+  // ── Auto-scroll active tab chip into view ─────────────────────
+  useEffect(() => {
+    const bar = tabScrollRef.current;
+    if (!bar) return;
+    bar
+      .querySelector<HTMLElement>(`[data-tab="${activeTab}"]`)
+      ?.scrollIntoView({
+        block: "nearest",
+        inline: "center",
+        behavior: "smooth",
+      });
+  }, [activeTab]);
+
+  // ── Click tab → scroll to section ─────────────────────────────
+  const scrollToSection = (id: string) => {
+    const el = sectionRefs.current[id];
+    if (!el) return;
+    const navbarH = window.innerWidth >= 768 ? NAVBAR_H.md : NAVBAR_H.xs;
+    const tabBarH = tabBarRef.current?.offsetHeight ?? 44;
+    const top =
+      el.getBoundingClientRect().top + window.scrollY - navbarH - tabBarH - 8;
+    isScrollingTo.current = true;
+    setActiveTab(id);
+    window.scrollTo({ top, behavior: "smooth" });
+    setTimeout(() => {
+      isScrollingTo.current = false;
+    }, 900);
   };
 
+  const setRef = (id: string) => (el: HTMLElement | null) => {
+    sectionRefs.current[id] = el;
+  };
+
+  // ── Misc ───────────────────────────────────────────────────────
   const coord = useMemo(
     () => getLatLngFromEmbed(propertyDetails.map_location),
     [propertyDetails.map_location],
   );
 
-  const bannerImage =
-    propertyImages.find((e) => e.is_banner_image === true) ?? propertyImages[0];
-  const bannerUrl = bannerImage?.image?.image_url ?? "";
-  const theme = useTheme();
+  const bannerUrl =
+    (propertyImages.find((e) => e.is_banner_image) ?? propertyImages[0])?.image
+      ?.image_url ?? "";
 
   useEffect(() => {
-    // Auto-open booking form after Google login redirect
     if (searchParams.get("bookingIntent") === "true") {
       setOpenForm(true);
-      // Clean URL without reload
       const url = new URL(globalThis.location.href);
       url.searchParams.delete("bookingIntent");
       globalThis.history.replaceState({}, "", url.toString());
@@ -174,9 +251,9 @@ const Property: FC<PropertyPropType> = ({
       method: "whatsapp",
       location: "property-floating",
       content_ids: [propertyDetails.property_id],
-      content_name: [propertyDetails.name],
-      checkin: [widgetState?.checkIn],
-      checkout: [widgetState?.checkOut],
+      content_name: propertyDetails.name,
+      checkin: widgetState?.checkIn,
+      checkout: widgetState?.checkOut,
     });
     const parts = [
       `Hi, I'm interested in booking *${propertyDetails.name}*`,
@@ -193,7 +270,6 @@ const Property: FC<PropertyPropType> = ({
     ]
       .filter(Boolean)
       .join("\n");
-
     window.open(
       `https://wa.me/9594377736?text=${encodeURIComponent(parts)}`,
       "_blank",
@@ -203,20 +279,39 @@ const Property: FC<PropertyPropType> = ({
   useEffect(() => {
     track("ViewPropertyPage", {
       content_ids: [propertyDetails.property_id],
-      content_name: [propertyDetails.name],
+      content_name: propertyDetails.name,
       content_type: "hotel",
     });
   }, [propertyDetails]);
 
+  // ── Quick-fact chips ───────────────────────────────────────────
+  const quickFacts = [
+    {
+      icon: <HouseIcon color="text.primary" />,
+      label: getAccomodation(propertyDetails.accommodation_type),
+    },
+    {
+      icon: <PeopleIcon color="text.primary" />,
+      label: `${propertyDetails.max_capacity} Guests`,
+    },
+    {
+      icon: <BedIcon color="text.primary" />,
+      label: `${propertyDetails.bedroom_count} Bedroom${propertyDetails.bedroom_count === 1 ? "" : "s"}`,
+    },
+    ...(propertyDetails.meals_available
+      ? [{ icon: <MealsIcon color="text.primary" />, label: "Meals Included" }]
+      : []),
+  ];
+
+  // ── Render ─────────────────────────────────────────────────────
   return (
     <section>
-      {/* ── Hero: 5-image grid (desktop) / carousel (mobile) ── */}
-      <div className="relative container mt-3">
-        {/* Desktop grid — hidden on mobile */}
-        <div className="hidden md:grid grid-cols-4 grid-rows-2 gap-2 h-120">
-          {/* Large hero image — spans 2 cols × 2 rows */}
+      {/* ── Hero ── */}
+      <div className="relative container mt-10">
+        {/* Desktop 5-panel grid */}
+        <div className="hidden md:grid grid-cols-4 grid-rows-2 gap-1.5 h-120 rounded-xl overflow-hidden">
           <button
-            className="col-span-2 row-span-2 relative overflow-hidden hover:cursor-pointer rounded-l-xl"
+            className="col-span-2 row-span-2 relative overflow-hidden group"
             onClick={() => setOpenGallery(true)}
           >
             <Image
@@ -224,12 +319,9 @@ const Property: FC<PropertyPropType> = ({
               alt={galleryImages?.[0]?.alt ?? propertyDetails.name}
               fill
               priority
-              style={{ objectFit: "cover", objectPosition: "center" }}
-              // sizes="50vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
             />
           </button>
-
-          {/* 4 smaller images */}
           {[1, 2, 3, 4].map((i) => {
             const img = galleryImages?.[i];
             const isLast = i === 4;
@@ -237,7 +329,7 @@ const Property: FC<PropertyPropType> = ({
             return (
               <button
                 key={i}
-                className={`${isLast ? "rounded-b-xl rounded-l-none!" : i === 2 ? "rounded-r-xl rounded-b-none" : "rounded-none"} relative overflow-hidden hover:cursor-pointer`}
+                className="relative overflow-hidden group"
                 onClick={() => setOpenGallery(true)}
               >
                 {img ? (
@@ -245,16 +337,16 @@ const Property: FC<PropertyPropType> = ({
                     src={img.src}
                     alt={img.alt}
                     fill
-                    style={{ objectFit: "cover", objectPosition: "center" }}
                     sizes="25vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 ) : (
-                  <div className="w-full h-full bg-gray-200" />
+                  <div className="w-full h-full bg-gray-100" />
                 )}
                 {isLast && remaining > 0 && (
-                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                    <span className="text-white font-semibold text-lg">
-                      +{remaining} More
+                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[1px]">
+                    <span className="text-white font-medium text-sm">
+                      +{remaining} more
                     </span>
                   </div>
                 )}
@@ -263,21 +355,21 @@ const Property: FC<PropertyPropType> = ({
           })}
         </div>
 
-        {/* Mobile carousel — visible only on mobile */}
-        <div className="md:hidden">
+        {/* Mobile carousel */}
+        <div className="md:hidden rounded-lg overflow-hidden">
           <Carousel
             slidesPerView={1}
-            autoplay={{ delay: 3000, disableOnInteraction: false }}
+            autoplay={{ delay: 3500, disableOnInteraction: false }}
             arrowVisibility="hidden"
-            showDots={true}
+            showDots
             spaceBetween={0}
           >
             {(galleryImages ?? [{ src: bannerUrl, alt: propertyDetails.name }])
-              .slice(0, 5)
+              .slice(0, 6)
               .map((img, idx) => (
                 <SwiperSlide key={idx}>
                   <button
-                    className="relative w-full overflow-hidden block"
+                    className="relative w-full block"
                     style={{ aspectRatio: "4/3" }}
                     onClick={() => setOpenGallery(true)}
                   >
@@ -286,360 +378,368 @@ const Property: FC<PropertyPropType> = ({
                       alt={img.alt}
                       fill
                       priority={idx === 0}
-                      style={{ objectFit: "cover", objectPosition: "center" }}
-                      // sizes="100vw"
+                      className="object-cover"
                     />
                   </button>
                 </SwiperSlide>
               ))}
           </Carousel>
+          {(galleryImages?.length ?? 0) > 0 && (
+            <button
+              className="absolute bottom-3 right-4 z-10 text-xs text-white px-2.5 py-1 font-medium bg-black/40 backdrop-blur-sm border border-white/20 rounded-full"
+              onClick={() => setOpenGallery(true)}
+            >
+              View all photos
+            </button>
+          )}
         </div>
-
-        {/* View all photos button */}
-        {(galleryImages?.length ?? 0) > 0 && (
-          <Typography
-            variant="caption"
-            className="md:hidden absolute bottom-2 right-6 z-10 text-white px-2 py-1 font-semibold bg-black/30 border backdrop-blur-xs border-white rounded-sm hover:bg-black/80 transition"
-            onClick={() => setOpenGallery(true)}
-          >
-            View photos
-          </Typography>
-        )}
       </div>
 
-      {/* Property name + location overlay — desktop only */}
-      <div className="container mt-2">
-        <Typography variant="h4" fontWeight={700}>
+      {/* ── Title + location ── */}
+      <div className="container mt-4 mb-1">
+        <Typography variant="h5" fontWeight={700} sx={{ lineHeight: 1.2 }}>
           {propertyDetails.name}
         </Typography>
-        <div className="flex items-center">
-          <PinIcon size={18} />
-          <Typography variant="h6">
+        <div className="flex items-center gap-1 mt-1">
+          <PinIcon size={14} />
+          <Typography>
             {propertyDetails.area}, {propertyDetails.city},{" "}
             {propertyDetails.state}
           </Typography>
         </div>
       </div>
 
-      <section>
-        <div className="container w-full grid grid-cols-12 md:gap-8 p-0">
-          <div className="col-span-12 md:col-span-8">
-            <ReadMore
-              maxLength={250}
-              text={propertyDetails.description}
-              className="italic!"
-            />
+      {/* ── Sticky tab bar ────────────────────────────────────────
+           top = navbar height so it stacks flush below the navbar.
+           Navbar is sticky itself, so from the scroll engine's
+           perspective the page starts below it — but getBoundingClientRect
+           still measures from the visual top including the navbar,
+           hence we keep the same NAVBAR_H offset in scrollToSection.
+      ── */}
+      <Box
+        ref={tabBarRef}
+        sx={{
+          position: "sticky",
+          top: { xs: `${NAVBAR_H.xs}px`, md: `${NAVBAR_H.md}px` },
+          zIndex: 40,
+          bgcolor: "background.paper",
+          borderBottom: "1px solid",
+          borderColor: "divider",
+          marginTop: 3,
+        }}
+      >
+        <div className="container">
+          <Box
+            ref={tabScrollRef}
+            sx={{
+              display: "flex",
+              overflowX: "auto",
+              scrollbarWidth: "none",
+              "&::-webkit-scrollbar": { display: "none" },
+            }}
+          >
+            {visibleTabs.map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  data-tab={tab.id}
+                  onClick={() => scrollToSection(tab.id)}
+                  style={{
+                    padding: "12px 16px",
+                    fontWeight: isActive ? 700 : 500,
+                    color: isActive
+                      ? theme.palette.primary.main
+                      : theme.palette.text.secondary,
+                    background: "none",
+                    border: "none",
+                    borderBottom: `2px solid ${isActive ? theme.palette.primary.main : "transparent"}`,
+                    cursor: "pointer",
+                    transition: "color 0.15s, border-color 0.15s",
+                  }}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+          </Box>
+        </div>
+      </Box>
 
-            <div className="hidden md:grid grid-cols-4 items-center gap-4 my-6">
-              <Card className="p-2 rounded-sm! flex items-center gap-2">
-                <HouseIcon fontSize={18} />{" "}
-                {getAccomodation(propertyDetails.accommodation_type)}
-              </Card>
-              <Card className="p-2 rounded-sm! flex items-center gap-2">
-                <PeopleIcon fontSize={18} /> {propertyDetails.max_capacity}{" "}
-                Guests
-              </Card>
-              <Card className="p-2 rounded-sm! flex items-center gap-2">
-                <BedIcon fontSize={18} /> {propertyDetails.bedroom_count}{" "}
-                Bedrooms
-              </Card>
-              {propertyDetails.meals_available && (
-                <Card className="p-2 rounded-sm! flex items-center gap-2">
-                  <MealsIcon fontSize={18} /> Meals Available
-                </Card>
-              )}
+      {/* ── Main content + booking widget ── */}
+      <div className="container grid grid-cols-12 md:gap-10 mt-6 pb-24 md:pb-8">
+        <div className="col-span-12 md:col-span-8 flex flex-col gap-10">
+          {/* Overview */}
+          <div id="overview" ref={setRef("overview")}>
+            <ReadMore maxLength={280} text={propertyDetails.description} />
+            <div className="flex flex-wrap gap-2 mt-5">
+              {quickFacts.map((fact, i) => (
+                <Chip
+                  key={i}
+                  icon={fact.icon}
+                  label={fact.label}
+                  variant="outlined"
+                  size="small"
+                  sx={{
+                    borderRadius: 0.8,
+                    // fontSize: "0.8rem",
+                    py: 2,
+                    px: 0.5,
+                  }}
+                />
+              ))}
             </div>
+          </div>
 
-            <div className="grid max-sm:grid-cols-1 min-[370px]:grid-cols-2 max-md:grid-cols-2 md:hidden items-start gap-3">
-              <Card className="p-2 rounded-sm! flex items-center gap-2">
-                <HouseIcon />{" "}
-                {getAccomodation(propertyDetails.accommodation_type)}
-              </Card>
-              <Card className="p-2 rounded-sm! flex items-center gap-2">
-                <PeopleIcon /> {propertyDetails.max_capacity} Guests
-              </Card>
-              <Card className="p-2 rounded-sm! flex items-center gap-2">
-                <BedIcon /> {propertyDetails.bedroom_count} Bedrooms
-              </Card>
-              {propertyDetails.meals_available && (
-                <Card className="p-2 rounded-sm! flex items-center gap-2">
-                  <MealsIcon /> Meals Available
-                </Card>
-              )}
-            </div>
+          <Divider />
 
-            <div className="my-8">
-              <Typography variant="h5" className="font-bold!">
-                Accommodation
-              </Typography>
+          {/* Accommodation */}
+          <div id="accommodation" ref={setRef("accommodation")}>
+            <SectionHeading>Accommodation</SectionHeading>
+            <div className="flex flex-col gap-8">
               {propertyDetails.unit_groups.map((group) => (
-                <div key={group.unit_type} className="mt-3">
-                  <div className="w-full grid grid-cols-12 mb-8 gap-2 md:mb-4 md:grid-cols-12 md:gap-8">
-                    <button
-                      onClick={() => handleOpenGallery(group.unit_type)}
-                      className="col-span-12 md:col-span-5"
-                    >
-                      <div className="relative">
-                        <img
-                          className="max-w-full h-auto"
-                          src={
-                            group.display_unit.images.find(
-                              (e) => e.is_banner_image === true,
-                            )?.image?.image_url ??
-                            group.display_unit.images[0]?.image?.image_url ??
-                            ""
-                          }
-                          alt={
-                            group.display_unit.images.find(
-                              (e) => e.is_banner_image === true,
-                            )?.image?.image_alt ?? "unit image"
-                          }
-                        />
-                        <div className="absolute bottom-0 right-0 cursor-pointer flex items-center text-white">
-                          <Typography
-                            variant="subtitle1"
-                            className="hover:underline"
-                          >
-                            See all
-                          </Typography>
-                          <ArrowRight />
-                        </div>
-                      </div>
-                    </button>
+                <div
+                  key={group.unit_type}
+                  className="grid grid-cols-12 gap-4 md:gap-6"
+                >
+                  <button
+                    onClick={() => {
+                      setSelectedUnit(group.unit_type);
+                      setOpenUnitGallery(true);
+                    }}
+                    className="col-span-12 md:col-span-5 relative overflow-hidden rounded-lg group"
+                    style={{ aspectRatio: "4/3" }}
+                  >
+                    <Image
+                      src={
+                        group.display_unit.images.find((e) => e.is_banner_image)
+                          ?.image?.image_url ??
+                        group.display_unit.images[0]?.image?.image_url ??
+                        ""
+                      }
+                      alt={
+                        group.display_unit.images.find((e) => e.is_banner_image)
+                          ?.image?.image_alt ?? "unit image"
+                      }
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-end p-3">
+                      <span className="text-white text-xs font-medium flex items-center gap-1">
+                        See all <ArrowRight size={12} />
+                      </span>
+                    </div>
+                  </button>
 
-                    <div className="col-span-12 flex md:col-span-7 flex-col justify-center md:gap-2">
-                      <div className="flex items-center">
-                        <Typography variant="h5" className="font-bold!">
-                          {group.display_unit.title ?? group.type_label}
+                  <div className="col-span-12 md:col-span-7 flex flex-col justify-center gap-2">
+                    <div className="flex items-baseline gap-2">
+                      <Typography variant="subtitle1" fontWeight={600}>
+                        {group.display_unit.title ?? group.type_label}
+                      </Typography>
+                      {group.total_count > 1 && (
+                        <Typography variant="caption" color="text.secondary">
+                          {group.total_count} units
                         </Typography>
-                        {group.total_count > 1 && (
-                          <Typography
-                            variant="caption"
-                            color="text.secondary"
-                            sx={{ ml: 1 }}
-                          >
-                            ({group.total_count} units available)
-                          </Typography>
-                        )}
-                      </div>
-                      <ReadMore
-                        text={group.display_unit.description ?? ""}
-                        maxLength={300}
-                      />
-                      <div className="grid max-sm:grid-cols-1 min-[370px]:grid-cols-2 max-md:grid-cols-3 items-center gap-3 mt-3">
-                        {group.display_unit.no_of_bedrooms !== null && (
-                          <Typography className="flex items-center gap-1">
-                            <BedIcon /> {group.display_unit.no_of_bedrooms}{" "}
-                            bedroom
-                            {group.display_unit.no_of_bedrooms === 1 ? "" : "s"}
-                          </Typography>
-                        )}
-                        {group.display_unit.no_of_restrooms !== null && (
-                          <Typography className="flex items-center gap-1">
-                            <ShowerIcon /> {group.display_unit.no_of_restrooms}{" "}
-                            bathroom
-                            {group.display_unit.no_of_restrooms === 1
-                              ? ""
-                              : "s"}
-                          </Typography>
-                        )}
-                        {group.display_unit.is_pool_available && (
-                          <Typography className="flex items-center gap-1">
-                            <PoolIcon /> Swimming Pool
-                          </Typography>
-                        )}
-                      </div>
+                      )}
+                    </div>
+                    <ReadMore
+                      text={group.display_unit.description ?? ""}
+                      maxLength={200}
+                    />
+                    <div className="flex flex-wrap gap-3 mt-1">
+                      {group.display_unit.no_of_bedrooms != null && (
+                        <Typography className="flex items-center gap-1">
+                          <BedIcon size={15} />
+                          {group.display_unit.no_of_bedrooms} bed
+                          {group.display_unit.no_of_bedrooms === 1 ? "" : "s"}
+                        </Typography>
+                      )}
+                      {group.display_unit.no_of_restrooms != null && (
+                        <Typography className="flex items-center gap-1">
+                          <ShowerIcon size={15} />
+                          {group.display_unit.no_of_restrooms} bath
+                          {group.display_unit.no_of_restrooms === 1 ? "" : "s"}
+                        </Typography>
+                      )}
+                      {group.display_unit.is_pool_available && (
+                        <Typography className="flex items-center gap-1">
+                          <PoolIcon size={20} /> Pool
+                        </Typography>
+                      )}
                     </div>
                   </div>
                 </div>
               ))}
             </div>
+          </div>
 
-            <div className="my-8">
-              <Accordion defaultExpanded className="mb-3">
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography
-                    variant="h5"
-                    className="font-bold!"
-                    component="span"
-                  >
-                    Amenities
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails className="pt-0!">
-                  <Box
-                    display="grid"
-                    gridTemplateColumns="repeat(auto-fill, minmax(160px, 1fr))"
-                    gap={2}
-                  >
-                    {[...amenities]
-                      .sort((a, b) => a.display_order - b.display_order)
-                      .map((item) => {
-                        const Icon = amenityIconMap[item.amenity_id];
-                        return (
-                          <Box
-                            key={item.amenity_id}
-                            display="flex"
-                            alignItems="center"
-                            gap={1}
-                          >
-                            {Icon && <Icon size={18} />}
-                            <Typography>{item.name}</Typography>
-                          </Box>
-                        );
-                      })}
-                  </Box>
-                </AccordionDetails>
-              </Accordion>
+          <Divider />
 
-              {propertyDetails.meals_available && foodMenu && (
-                <Accordion className="mb-3">
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          {/* Amenities */}
+          <div id="amenities" ref={setRef("amenities")}>
+            <SectionHeading>Amenities</SectionHeading>
+            <Box
+              display="grid"
+              gridTemplateColumns="repeat(auto-fill, minmax(160px, 1fr))"
+              // gap={1}
+            >
+              {[...amenities]
+                .sort((a, b) => a.display_order - b.display_order)
+                .map((item) => {
+                  const Icon = amenityIconMap[item.amenity_id];
+                  return (
+                    <Box
+                      key={item.amenity_id}
+                      display="flex"
+                      alignItems="center"
+                      gap={1}
+                      sx={{ py: 0.75 }}
+                    >
+                      {Icon && (
+                        <Icon
+                          size={item.amenity_id == "swimmingpool" ? 22 : 16}
+                        />
+                      )}
+                      <Typography>{item.name}</Typography>
+                    </Box>
+                  );
+                })}
+            </Box>
+          </div>
+
+          <Divider />
+
+          {/* Food Menu */}
+          {propertyDetails.meals_available && foodMenu && (
+            <>
+              <div id="food-menu" ref={setRef("food-menu")}>
+                <SectionHeading>Food Menu</SectionHeading>
+                <ReadMore text={foodMenu.description ?? ""} maxLength={200} />
+                <div className="flex gap-4 my-4">
+                  {foodMenu.isVeg && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
+                        <rect
+                          x="0.5"
+                          y="0.5"
+                          width="23"
+                          height="23"
+                          rx="1.5"
+                          fill="white"
+                          stroke="#11BF0E"
+                        />
+                        <rect
+                          x="5"
+                          y="5"
+                          width="14"
+                          height="14"
+                          rx="7"
+                          fill="#11BF0E"
+                        />
+                      </svg>
+                      Veg
+                    </div>
+                  )}
+                  {foodMenu.isNonVeg && (
+                    <div className="flex items-center gap-2 text-sm">
+                      <svg
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                      >
+                        <rect
+                          x="0.5"
+                          y="0.5"
+                          width="23"
+                          height="23"
+                          rx="1.5"
+                          fill="white"
+                          stroke="#FA4B4B"
+                        />
+                        <rect
+                          x="5"
+                          y="5"
+                          width="14"
+                          height="14"
+                          rx="7"
+                          fill="#FA4B4B"
+                        />
+                      </svg>
+                      Non-Veg
+                    </div>
+                  )}
+                </div>
+                <div className="grid grid-cols-2 gap-x-6 gap-y-1 mb-4 max-w-xs">
+                  {[
+                    ["Breakfast", foodMenu.breakfastTime],
+                    ["Lunch", foodMenu.lunchTime],
+                    ["High Tea", foodMenu.highteaTime],
+                    ["Dinner", foodMenu.dinnerTime],
+                  ].map(([label, time]) => (
                     <Typography
-                      variant="h5"
-                      className="font-bold!"
-                      component="span"
+                      key={label}
+                      variant="body2"
+                      color="text.secondary"
                     >
-                      Food Menu
+                      <span className="font-medium text-foreground">
+                        {label}
+                      </span>
+                      {time ? ` · ${time}` : ""}
                     </Typography>
-                  </AccordionSummary>
-                  <AccordionDetails className="pt-0!">
-                    <ReadMore
-                      text={foodMenu.description ?? ""}
-                      maxLength={200}
-                    />
-                    <div className="flex gap-6 my-6">
-                      {foodMenu.isVeg && (
-                        <div className="flex items-center gap-3">
-                          <svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                          >
-                            <rect
-                              x="0.5"
-                              y="0.5"
-                              width="23"
-                              height="23"
-                              rx="1.5"
-                              fill="white"
-                              stroke="#11BF0E"
-                            />
-                            <rect
-                              x="5"
-                              y="5"
-                              width="14"
-                              height="14"
-                              rx="7"
-                              fill="#11BF0E"
-                            />
-                          </svg>
-                          Veg
-                        </div>
-                      )}
-                      {foodMenu.isNonVeg && (
-                        <div className="flex items-center gap-3">
-                          <svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                          >
-                            <rect
-                              x="0.5"
-                              y="0.5"
-                              width="23"
-                              height="23"
-                              rx="1.5"
-                              fill="white"
-                              stroke="#FA4B4B"
-                            />
-                            <rect
-                              x="5"
-                              y="5"
-                              width="14"
-                              height="14"
-                              rx="7"
-                              fill="#FA4B4B"
-                            />
-                          </svg>
-                          Non-Veg
-                        </div>
-                      )}
-                    </div>
-                    <div className="mb-4">
-                      <Typography className="my-2!">
-                        Breakfast: {foodMenu.breakfastTime}
-                      </Typography>
-                      <Typography className="my-2!">
-                        Lunch: {foodMenu.lunchTime}
-                      </Typography>
-                      <Typography className="my-2!">
-                        High Tea: {foodMenu.highteaTime}
-                      </Typography>
-                      <Typography className="my-2!">
-                        Dinner: {foodMenu.dinnerTime}
-                      </Typography>
-                    </div>
-                    <Button
-                      variant="outlined"
-                      color={
-                        theme.palette.mode === "light" ? "primary" : "secondary"
-                      }
-                      onClick={() => window.open(foodMenu.menuUrl)}
-                    >
-                      View Menu
-                    </Button>
-                  </AccordionDetails>
-                </Accordion>
-              )}
+                  ))}
+                </div>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  endIcon={<ArrowRight size={14} />}
+                  onClick={() => window.open(foodMenu.menuUrl)}
+                >
+                  View Full Menu
+                </Button>
+              </div>
+              <Divider />
+            </>
+          )}
 
-              <Accordion className="mb-3">
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography
-                    variant="h5"
-                    className="font-bold!"
-                    component="span"
-                  >
-                    House Rules
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails className="pt-0!">
-                  <ul className="list-disc pl-5">
-                    {houseRules.map((item) => (
-                      <li key={item.rule_id}>{item.description}</li>
-                    ))}
-                  </ul>
-                </AccordionDetails>
-              </Accordion>
+          {/* House Rules */}
+          <div id="house-rules" ref={setRef("house-rules")}>
+            <SectionHeading>House Rules</SectionHeading>
+            <ul className="flex flex-col gap-2">
+              {houseRules.map((item) => (
+                <li key={item.rule_id} className="flex items-start gap-2">
+                  <span className="mt-2 w-1 h-1 rounded-full bg-gray-400 shrink-0" />
+                  <Typography>{item.description}</Typography>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-              <Accordion className="mb-3">
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography
-                    variant="h5"
-                    className="font-bold!"
-                    component="span"
-                  >
-                    Cancellation Policy
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails className="pt-0!">
-                  <CancellationPolicy />
-                </AccordionDetails>
-              </Accordion>
-            </div>
+          <Divider />
 
-            {nearby.length > 0 && (
-              <div className="my-6">
-                <Typography className="mb-2! font-bold!" variant="h5">
-                  Nearby Attractions
-                </Typography>
+          {/* Cancellation */}
+          <div id="cancellation" ref={setRef("cancellation")}>
+            <SectionHeading>Cancellation Policy</SectionHeading>
+            <CancellationPolicy />
+          </div>
+
+          {/* Nearby */}
+          {nearby.length > 0 && (
+            <>
+              <Divider />
+              <div id="nearby" ref={setRef("nearby")}>
+                <SectionHeading>Nearby Attractions</SectionHeading>
                 <Carousel
-                  spaceBetween={15}
-                  slidesPerView={2}
+                  spaceBetween={12}
+                  slidesPerView={1.4}
                   breakpoints={{
-                    640: { slidesPerView: 2 },
+                    480: { slidesPerView: 1.8 },
+                    640: { slidesPerView: 2.2 },
                     900: { slidesPerView: 3 },
                   }}
                   showDots={false}
@@ -649,44 +749,53 @@ const Property: FC<PropertyPropType> = ({
                   <>
                     {nearby.map((item) => (
                       <SwiperSlide key={item.attraction_id}>
-                        <div className="h-75 md:h-100">
-                          <div className="relative flex h-[50%]">
+                        <Card className="overflow-hidden">
+                          <div
+                            className="relative"
+                            style={{ aspectRatio: "4/3" }}
+                          >
                             <Image
                               src={item.imageUrl}
                               alt={item.title}
                               fill
-                              style={{
-                                objectFit: "cover",
-                                objectPosition: "center",
-                              }}
+                              className="object-cover"
                             />
                           </div>
-                          <div className="mt-2 overflow-y-auto h-[50%] wrap-break-word">
-                            <Typography variant="h6">{item.title}</Typography>
-                            <Typography variant="body2">
-                              <span className="font-bold">Distance: </span>
-                              {item.distance}
+                          <div className="p-3">
+                            <Typography variant="subtitle2" fontWeight={600}>
+                              {item.title}
+                            </Typography>
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                            >
+                              {item.distance} away
                             </Typography>
                             <ReadMore
-                              textVariant="subtitle2"
+                              textVariant="caption"
                               text={item.description}
-                              maxLength={100}
+                              maxLength={80}
                             />
                           </div>
-                        </div>
+                        </Card>
                       </SwiperSlide>
                     ))}
                   </>
                 </Carousel>
               </div>
-            )}
+            </>
+          )}
 
-            {propertyDetails.map_location && (
-              <div className="mb-6">
-                <Typography variant="h5" className="font-bold!">
-                  Location
-                </Typography>
-                <div className="w-full h-50 md:h-87.5 mt-3 mb-3 overflow-hidden shadow">
+          {/* Location */}
+          {propertyDetails.map_location && (
+            <>
+              <Divider />
+              <div id="location" ref={setRef("location")} className="mb-6">
+                <SectionHeading>Location</SectionHeading>
+                <div
+                  className="w-full overflow-hidden rounded-lg"
+                  style={{ height: 320 }}
+                >
                   <iframe
                     src={propertyDetails.map_location}
                     width="100%"
@@ -695,35 +804,38 @@ const Property: FC<PropertyPropType> = ({
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                     title={`${propertyDetails.name} location`}
-                    aria-label={`${propertyDetails.name} location`}
                   />
                 </div>
                 {coord && (
                   <Button
+                    variant="outlined"
+                    size="small"
+                    sx={{ mt: 2 }}
+                    endIcon={<ArrowRight size={14} />}
                     onClick={() =>
                       window.open(
                         `https://www.google.com/maps/dir/?api=1&destination=${coord.lat},${coord.lng}`,
                         "_blank",
                       )
                     }
-                    variant="outlined"
-                    color={
-                      theme.palette.mode === "light" ? "primary" : "secondary"
-                    }
-                    endIcon={<ArrowRight />}
                   >
                     Get Directions
                   </Button>
                 )}
               </div>
-            )}
-          </div>
+            </>
+          )}
+        </div>
 
-          <div className="hidden md:block col-span-4 sticky top-2 h-fit">
-            <Typography className="mb-2!" variant="h6">
-              Plan Your Exclusive Escape!
-            </Typography>
-            <Card className="shadow-lg!">
+        {/* ── Sticky booking widget (desktop) ──
+             top = navbar + tab bar + small gap.
+             Tab bar is ~44px; this keeps the widget
+             flush below both sticky bars.
+        ── */}
+        <div className="hidden md:block col-span-4">
+          <div className="sticky" style={{ top: `${NAVBAR_H.md + 44 + 12}px` }}>
+            <Typography variant="h6">Plan Your Exclusive Escape!</Typography>
+            <Card variant="outlined" sx={{ borderRadius: 2 }}>
               <BookingWidget
                 propertyId={propertyDetails.property_id}
                 propertyName={propertyDetails.name}
@@ -737,16 +849,20 @@ const Property: FC<PropertyPropType> = ({
             </Card>
           </div>
         </div>
-      </section>
+      </div>
 
-      <Paper className="md:hidden fixed bottom-0 h-fit w-full px-3 py-2 rounded-none! z-50">
-        <div className="flex justify-between items-center w-full gap-3">
-          <button onClick={() => setOpenForm(true)}>
+      {/* ── Mobile sticky booking bar ── */}
+      <Paper
+        elevation={4}
+        className="md:hidden fixed bottom-0 w-full z-50 rounded-none!"
+        sx={{ px: 2, py: 1.5 }}
+      >
+        <div className="flex justify-between items-center gap-3">
+          <button onClick={() => setOpenForm(true)} className="text-left">
             {isDirect && propertyDetails.unit_groups[0]?.pricing ? (
               <div>
-                {/* Show actual quote total if available, else fall back to base rate */}
                 <Typography
-                  variant="h6"
+                  variant="subtitle1"
                   color="primary"
                   fontWeight={700}
                   noWrap
@@ -760,15 +876,13 @@ const Property: FC<PropertyPropType> = ({
                     color="text.secondary"
                   >
                     {widgetState?.totalPrice && widgetState.nights > 0
-                      ? ` · ${widgetState.nights} night${widgetState.nights === 1 ? "" : "s"}`
-                      : "/night"}
+                      ? ` · ${widgetState.nights}N`
+                      : " / night"}
                   </Typography>
                 </Typography>
-
-                {/* Dates + guests if selected */}
                 {widgetState?.checkIn && widgetState?.checkOut ? (
-                  <Typography variant="caption" noWrap>
-                    {dayjs(widgetState.checkIn).format("DD MMM")}-{" "}
+                  <Typography variant="caption" color="text.secondary" noWrap>
+                    {dayjs(widgetState.checkIn).format("DD MMM")} –{" "}
                     {dayjs(widgetState.checkOut).format("DD MMM")}
                     {` · ${+widgetState.adults + +widgetState.children} guest${widgetState.adults + widgetState.children === 1 ? "" : "s"}`}
                     {widgetState.infants > 0
@@ -788,7 +902,7 @@ const Property: FC<PropertyPropType> = ({
                 </Typography>
                 {widgetState?.checkIn && widgetState?.checkOut && (
                   <Typography variant="caption" color="text.secondary" noWrap>
-                    {dayjs(widgetState.checkIn).format("DD MMM")} →{" "}
+                    {dayjs(widgetState.checkIn).format("DD MMM")} –{" "}
                     {dayjs(widgetState.checkOut).format("DD MMM")}
                   </Typography>
                 )}
@@ -805,6 +919,7 @@ const Property: FC<PropertyPropType> = ({
         </div>
       </Paper>
 
+      {/* ── Gallery dialog ── */}
       <Dialog
         open={openGallery}
         onClose={() => setOpenGallery(false)}
@@ -812,27 +927,36 @@ const Property: FC<PropertyPropType> = ({
         slotProps={{
           paper: {
             sx: {
-              width: { xs: "90vw", md: "75vw" },
+              width: { xs: "95vw", md: "80vw" },
               maxHeight: "96vh",
-              borderRadius: 1,
+              borderRadius: 2,
               backgroundImage: "none",
             },
           },
         }}
       >
-        <DialogTitle className="flex justify-between items-center px-2! py-1!">
-          <Typography variant="h5" fontWeight={700}>
-            Gallery
+        <DialogTitle
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            py: 1,
+            px: 2,
+          }}
+        >
+          <Typography variant="subtitle1" fontWeight={600}>
+            Photos
           </Typography>
-          <IconButton onClick={() => setOpenGallery(false)}>
+          <IconButton size="small" onClick={() => setOpenGallery(false)}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-        <DialogContent className="p-1! md:p-1!">
+        <DialogContent sx={{ p: 1 }}>
           {galleryImages && <ImageGallery images={galleryImages} />}
         </DialogContent>
       </Dialog>
 
+      {/* ── Unit gallery dialog ── */}
       <Dialog
         open={openUnitGallery}
         onClose={() => setOpenUnitGallery(false)}
@@ -840,52 +964,52 @@ const Property: FC<PropertyPropType> = ({
         slotProps={{
           paper: {
             sx: {
-              width: { xs: "80vw", md: "75vw" },
+              width: { xs: "95vw", md: "80vw" },
               maxHeight: "96vh",
-              borderRadius: 1,
+              borderRadius: 2,
               backgroundImage: "none",
             },
           },
         }}
       >
         <DialogTitle
-          // sx={{ py: "8px", px: "12px" }}
-          className="flex justify-between items-center px-2! py-1!"
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            py: 1,
+            px: 2,
+          }}
         >
-          <Typography variant="h5" fontWeight={700}>
-            Gallery
+          <Typography variant="subtitle1" fontWeight={600}>
+            Photos
           </Typography>
-          <IconButton onClick={() => setOpenUnitGallery(false)}>
+          <IconButton size="small" onClick={() => setOpenUnitGallery(false)}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-        <DialogContent className="p-1! md:p-1!">
+        <DialogContent sx={{ p: 1 }}>
           {unitGalleryImages && selectedUnit && (
             <ImageGallery images={unitGalleryImages[selectedUnit]} />
           )}
         </DialogContent>
       </Dialog>
 
+      {/* ── Mobile booking drawer ── */}
       <Drawer
         anchor="bottom"
         open={openForm}
         onClose={() => setOpenForm(false)}
       >
         <Box sx={{ p: 2 }}>
-          <Typography
-            sx={{
-              textWrap: "pretty",
-              textAlign: "center",
-              display: "flex",
-              alignItems: "center",
-              gap: "20px",
-              marginBottom: "12px",
-            }}
-            variant="h5"
-          >
-            <IoArrowBackOutline size={16} onClick={() => setOpenForm(false)} />
-            {isDirect ? "Lock in Your Dates!" : "Send Your Enquiry"}
-          </Typography>
+          <div className="flex items-center gap-3 mb-3">
+            <IconButton size="small" onClick={() => setOpenForm(false)}>
+              <IoArrowBackOutline size={16} />
+            </IconButton>
+            <Typography variant="subtitle1" fontWeight={600}>
+              {isDirect ? "Lock in Your Dates" : "Send an Enquiry"}
+            </Typography>
+          </div>
           <BookingWidget
             propertyId={propertyDetails.property_id}
             propertyName={propertyDetails.name}
@@ -894,7 +1018,7 @@ const Property: FC<PropertyPropType> = ({
             defaultCheckIn={checkIn}
             defaultCheckOut={checkOut}
             guests={guests ? Number(guests) : undefined}
-            onStateChange={setWidgetState} // ← add this
+            onStateChange={setWidgetState}
           />
         </Box>
       </Drawer>

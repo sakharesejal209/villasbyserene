@@ -50,7 +50,7 @@ export const TopLocations = () => {
                     whileHover={{ y: -4 }}
                     transition={{ duration: 0.2 }}
                     className="relative group overflow-hidden cursor-pointer"
-                    style={{ borderRadius: 8 }}
+                    style={{ borderRadius: 15 }}
                     onClick={() =>
                       router.push(`/stays/${item.locationId}?guests=2`)
                     }

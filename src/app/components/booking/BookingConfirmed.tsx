@@ -136,7 +136,6 @@ const BookingConfirmed: FC<{ bookingId: string }> = ({ bookingId }) => {
           sx={{
             maxWidth: 480,
             width: "100%",
-            borderRadius: 0.2,
             overflow: "hidden",
             boxShadow: 4,
           }}
@@ -171,7 +170,6 @@ const BookingConfirmed: FC<{ bookingId: string }> = ({ bookingId }) => {
               sx={{
                 p: 1.5,
                 mb: 2,
-                borderRadius: 0.2,
                 bgcolor: "action.hover",
                 textAlign: "center",
               }}
@@ -250,13 +248,6 @@ const BookingConfirmed: FC<{ bookingId: string }> = ({ bookingId }) => {
                 color="success"
                 startIcon={<WhatsApp />}
                 onClick={handleWhatsApp}
-                // sx={{
-                //    borderRadius: 0.2,
-                //   fontWeight: 700,
-                //   py: 1.25,
-                //   bgcolor: "success.main",
-                //   "&:hover": { bgcolor: "success.light" },
-                // }}
               >
                 Message us on WhatsApp
               </Button>
@@ -265,7 +256,7 @@ const BookingConfirmed: FC<{ bookingId: string }> = ({ bookingId }) => {
                 fullWidth
                 startIcon={<HomeOutlined />}
                 onClick={() => router.push("/")}
-                sx={{ borderRadius: 0.2, fontWeight: 600, py: 1.25 }}
+                sx={{ fontWeight: 600, py: 1.25 }}
               >
                 Back to Home
               </Button>

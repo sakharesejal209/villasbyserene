@@ -550,7 +550,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                   alignItems: "center",
                   gap: 1.5,
                   p: 1,
-                  borderRadius: 0.2,
+                  borderRadius: 1,
                   border: "1.5px solid",
                   borderColor: selected ? "primary.main" : "divider",
                   bgcolor: selected
@@ -912,7 +912,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
         {hasPricing && (
           <Box
             sx={{
-              borderRadius: 0.2,
+              borderRadius: 1,
               border: "1px solid",
               borderColor: "divider",
               overflow: "hidden",
@@ -1063,7 +1063,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
                         couponStatus === "valid" ||
                         !couponInput.trim()
                       }
-                      sx={{ minWidth: 64, borderRadius: 0.2 }}
+                      sx={{ minWidth: 64 }}
                     >
                       {couponStatus === "loading" ? (
                         <CircularProgress size={14} />
@@ -1142,7 +1142,7 @@ const BookingWidget: FC<BookingWidgetProps> = ({
             disabled={
               !quote || nights < 1 || quoteLoading || isSelectedUnitSoldOut
             }
-            sx={{ borderRadius: 0.2, fontWeight: 700, py: 1.25 }}
+            sx={{ fontWeight: 700, py: 1.25 }}
           >
             {quoteLoading ? (
               <CircularProgress size={20} color="inherit" />

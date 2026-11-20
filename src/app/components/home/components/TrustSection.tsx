@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { alpha, Box, Paper, Typography, useTheme } from "@mui/material";
+import { alpha, Box, Card, Paper, Typography, useTheme } from "@mui/material";
 
 import {
   IoStarOutline as Star,
@@ -44,27 +44,21 @@ const TrustCard = ({
   icon: Icon,
   title,
   description,
-  delay,
 }: {
   icon: React.ElementType;
   title: string;
   description: string;
-  delay: number;
 }) => {
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
     <div>
-      <Box
+      <Card
         sx={{
           textAlign: "center",
           p: { xs: 2.5, md: 3.5 },
-          borderRadius: 2,
-          border: "1px solid",
-          borderColor: "divider",
           bgcolor: "background.paper",
           height: "100%",
           transition: "box-shadow 0.25s, transform 0.25s",
@@ -104,7 +98,7 @@ const TrustCard = ({
         >
           {description}
         </Typography>
-      </Box>
+      </Card>
     </div>
   );
 };

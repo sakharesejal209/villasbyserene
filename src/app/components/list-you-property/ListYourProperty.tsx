@@ -28,7 +28,7 @@ import Image from "next/image";
 import { motion, useScroll, useTransform } from "motion/react";
 
 import { FadeInSection } from "../home/home";
-import { Box, Button, Paper, Typography, useTheme } from "@mui/material";
+import { Box, Button, Card, Paper, Typography, useTheme } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 // ════════════════════════════════════════════════════════════════
@@ -538,7 +538,7 @@ const ListYourProperty = () => {
             </div>
           </motion.div>
 
-          <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-4 inline-block my-4">
+          <div className="bg-white/10! backdrop-blur-sm! border border-white/20 p-4 inline-block my-4">
             <Typography variant="subtitle1">You earn. We manage.</Typography>
           </div>
 
@@ -609,7 +609,7 @@ const ListYourProperty = () => {
                 elevation={0}
                 sx={{
                   p: { xs: 3, md: 5 },
-                  borderRadius: 0.5,
+
                   borderLeft: `3px solid ${emerald}`,
                   boxShadow: isDark
                     ? "0 24px 80px rgba(0,0,0,0.3)"
@@ -710,7 +710,7 @@ const ListYourProperty = () => {
               {howSteps.map((step, idx) => {
                 const active = activeStep === idx;
                 return (
-                  <Box
+                  <Card
                     key={idx}
                     onClick={() => setActiveStep(idx)}
                     sx={{
@@ -718,6 +718,7 @@ const ListYourProperty = () => {
                       p: { xs: 2.5, md: 3.5 },
                       cursor: "pointer",
                       transition: "all 0.3s ease",
+                      border: "none",
                       borderTop: active
                         ? `3px solid ${gold}`
                         : "3px solid transparent",
@@ -754,7 +755,7 @@ const ListYourProperty = () => {
                     >
                       {step.description}
                     </Typography>
-                  </Box>
+                  </Card>
                 );
               })}
             </Box>
@@ -808,6 +809,7 @@ const ListYourProperty = () => {
                   display: "grid",
                   gridTemplateColumns: { xs: "1fr 1fr", md: "1fr 1fr 1fr 1fr" },
                   gap: "2px",
+                  // background: 'unset'
                 }}
               >
                 {services.map((service, i) => {
@@ -896,7 +898,7 @@ const ListYourProperty = () => {
                       onClick={() => setActiveEarning(key)}
                       sx={{
                         p: { xs: 2.5, md: 3.5 },
-                        borderRadius: 0.5,
+
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
@@ -953,7 +955,7 @@ const ListYourProperty = () => {
                 elevation={0}
                 sx={{
                   p: { xs: 3, md: 6 },
-                  borderRadius: 0.5,
+
                   minHeight: 360,
                   display: "flex",
                   flexDirection: "column",
@@ -1019,10 +1021,7 @@ const ListYourProperty = () => {
                     ["Peak Season Premium", earning.ef3],
                     ["Key Driver", earning.ef4],
                   ].map(([label, value]) => (
-                    <Box
-                      key={label}
-                      sx={{ p: 2, bgcolor: "action.hover", borderRadius: 0.3 }}
-                    >
+                    <Card key={label} sx={{ p: 2, bgcolor: "action.hover" }}>
                       <Typography
                         variant="caption"
                         sx={{
@@ -1038,7 +1037,7 @@ const ListYourProperty = () => {
                       <Typography variant="body2" fontWeight={700}>
                         {value}
                       </Typography>
-                    </Box>
+                    </Card>
                   ))}
                 </Box>
               </Paper>
@@ -1085,12 +1084,13 @@ const ListYourProperty = () => {
               elevation={0}
               sx={{
                 bgcolor: emerald,
-                borderRadius: 0.5,
+
                 borderTop: `3px solid ${gold}`,
                 p: { xs: 3.5, md: 6.5 },
                 mb: 5,
                 position: "relative",
                 overflow: "hidden",
+                borderRadius: 3,
               }}
             >
               <Typography
@@ -1133,7 +1133,7 @@ const ListYourProperty = () => {
                 {(Object.keys(revenueScenarios) as RevenueKey[]).map((key) => {
                   const active = revScenario === key;
                   return (
-                    <Box
+                    <Card
                       key={key}
                       component="button"
                       onClick={() => setRevScenario(key)}
@@ -1147,14 +1147,13 @@ const ListYourProperty = () => {
                         fontSize: 12,
                         fontWeight: active ? 700 : 400,
                         letterSpacing: "0.06em",
-                        borderRadius: 0.3,
                         cursor: "pointer",
                         fontFamily: "inherit",
                         transition: "all 0.2s",
                       }}
                     >
                       {revenueScenarios[key].label}
-                    </Box>
+                    </Card>
                   );
                 })}
               </Box>
@@ -1168,12 +1167,12 @@ const ListYourProperty = () => {
                 mb: 5,
               }}
             >
-              <Paper
+              <Card
                 elevation={0}
                 sx={{
                   bgcolor: "rgba(255,255,255,0.04)",
                   border: "1px solid rgba(238,234,232,0.08)",
-                  borderRadius: 0.5,
+
                   p: { xs: 3, md: 4 },
                 }}
               >
@@ -1199,14 +1198,14 @@ const ListYourProperty = () => {
                   vbsColor={gold}
                   trackColor="rgba(238,234,232,0.12)"
                 />
-              </Paper>
+              </Card>
 
-              <Paper
+              <Card
                 elevation={0}
                 sx={{
                   bgcolor: "rgba(255,255,255,0.04)",
                   border: "1px solid rgba(238,234,232,0.08)",
-                  borderRadius: 0.5,
+
                   p: { xs: 3, md: 4 },
                 }}
               >
@@ -1262,7 +1261,6 @@ const ListYourProperty = () => {
                         sx={{
                           display: "flex",
                           height: 32,
-                          borderRadius: 0.3,
                           overflow: "hidden",
                           bgcolor: "rgba(255,255,255,0.04)",
                         }}
@@ -1330,14 +1328,14 @@ const ListYourProperty = () => {
                     </Box>
                   </Box>
                 </Box>
-              </Paper>
+              </Card>
 
               <Paper
                 elevation={0}
                 sx={{
                   bgcolor: "rgba(255,255,255,0.04)",
                   border: "1px solid rgba(238,234,232,0.08)",
-                  borderRadius: 0.5,
+
                   p: { xs: 3, md: 4 },
                 }}
               >
@@ -1414,7 +1412,6 @@ const ListYourProperty = () => {
                           flex: 1,
                           display: "flex",
                           height: 36,
-                          borderRadius: 0.3,
                           overflow: "hidden",
                           gap: "2px",
                         }}
@@ -1552,7 +1549,7 @@ const ListYourProperty = () => {
               elevation={0}
               sx={{
                 border: "1px solid rgba(238,234,232,0.1)",
-                borderRadius: 0.5,
+
                 overflow: "hidden",
                 background: "transparent",
               }}
@@ -1771,7 +1768,6 @@ const ListYourProperty = () => {
                         opacity: 0.8,
                         p: "10px 14px",
                         bgcolor: "rgba(254,204,137,0.06)",
-                        borderRadius: 0.3,
                       }}
                     >
                       ✦ Inhouse kitchen figures shown. Food cost reduced to
@@ -2059,11 +2055,10 @@ const ListYourProperty = () => {
                 })}
               </Box>
 
-              <Paper
+              <Card
                 elevation={0}
                 sx={{
                   bgcolor: emerald,
-                  borderRadius: 0.5,
                   p: { xs: 3.5, md: 6 },
                   display: "flex",
                   flexDirection: "column",
@@ -2119,11 +2114,11 @@ const ListYourProperty = () => {
                         color: "#fff",
                         px: 3,
                         py: 2,
-                        borderRadius: 0.3,
                         fontSize: 14,
                         fontWeight: 600,
                         transition: "all 0.2s",
                         "&:hover": { bgcolor: "#1ebe5d" },
+                        borderRadius: 1,
                       }}
                     >
                       <IoLogoWhatsapp size={18} /> WhatsApp Us: 9594377736
@@ -2142,10 +2137,11 @@ const ListYourProperty = () => {
                         color: "rgba(238,234,232,0.7)",
                         px: 3,
                         py: 2,
-                        borderRadius: 0.3,
                         fontSize: 14,
                         border: "1px solid rgba(238,234,232,0.12)",
                         transition: "all 0.2s",
+                        borderRadius: 1,
+
                         "&:hover": {
                           bgcolor: "rgba(255,255,255,0.12)",
                           color: marble,
@@ -2156,7 +2152,7 @@ const ListYourProperty = () => {
                     </Box>
                   </a>
                 </Box>
-              </Paper>
+              </Card>
             </Box>
           </FadeInSection>
         </div>

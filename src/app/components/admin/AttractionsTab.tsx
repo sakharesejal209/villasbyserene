@@ -118,7 +118,6 @@ export const AttractionsTab = ({ detail, propertyId, onSaved }: Props) => {
             p: 2,
             border: "1px solid",
             borderColor: "divider",
-            borderRadius: 0.2,
           }}
         >
           <Box
@@ -175,7 +174,6 @@ export const AttractionsTab = ({ detail, propertyId, onSaved }: Props) => {
           p: 2,
           border: "1px dashed",
           borderColor: "divider",
-          borderRadius: 0.2,
         }}
       >
         <Typography
@@ -250,7 +248,6 @@ export const AttractionsTab = ({ detail, propertyId, onSaved }: Props) => {
               variant="contained"
               size="small"
               startIcon={<AddIcon />}
-              sx={{ borderRadius: 0.2 }}
             >
               Add
             </Button>
@@ -265,7 +262,7 @@ export const AttractionsTab = ({ detail, propertyId, onSaved }: Props) => {
         maxWidth="sm"
         fullWidth
         slotProps={{
-          paper: { sx: { borderRadius: 0.2, backgroundImage: "none" } },
+          paper: { sx: { backgroundImage: "none" } },
         }}
       >
         <DialogTitle>

@@ -146,7 +146,7 @@ let lightTheme: Theme = createTheme({
       },
       styleOverrides: {
         root: {
-          borderRadius: 4,
+          borderRadius: 8,
           boxShadow: "none",
           transition: "all 0.1s ease-in-out",
           "&:focus": {
@@ -180,7 +180,7 @@ let lightTheme: Theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 4,
+          borderRadius: 15,
           border: `1px solid ${commonColors.border}`,
           boxShadow: "none",
         },

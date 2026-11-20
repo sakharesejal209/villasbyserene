@@ -30,7 +30,7 @@ export const AddToPoolStep = ({ newImg, categories, adding, onChange, onAdd }: P
     </Typography>
     <Paper
       elevation={0}
-      sx={{ p: 2, border: "1px solid", borderColor: "divider", borderRadius: 0.2 }}
+      sx={{ p: 2, border: "1px solid", borderColor: "divider" }}
     >
       <Box
         sx={{

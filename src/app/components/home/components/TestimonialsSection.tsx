@@ -1,7 +1,7 @@
 // src/app/home/components/TestimonialsSection.tsx
 // "use client";
 
-import { styled, Typography } from "@mui/material";
+import { Card, styled, Typography } from "@mui/material";
 import { SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import { motion } from "motion/react";
@@ -36,36 +36,34 @@ export const TestimonialsSection = () => (
             1024: { slidesPerView: 4, spaceBetween: 12 },
           }}
           showDots={false}
-          autoplay={{ delay: 3200, disableOnInteraction: true }}
+          // autoplay={{ delay: 3200, disableOnInteraction: true }}
           arrowVisibility="hidden"
         >
           {testimonials.map((t) => (
             <SwiperSlide key={t.id}>
-              <motion.div
-                whileHover={{ y: -3 }}
-                transition={{ duration: 0.2 }}
-                className="flex flex-col items-center"
-              >
-                <div className="relative w-full aspect-square overflow-hidden rounded-sm shadow-md">
-                  <Image
-                    src={t.src}
-                    alt={t.name}
-                    fill
-                    sizes="(max-width: 768px) 50vw, 25vw"
-                    style={{ objectFit: "cover" }}
-                  />
-                </div>
-                <div className="flex items-center gap-1 mt-1">
-                  <StyledStars />
-                  <StyledStars />
-                  <StyledStars />
-                  <StyledStars />
-                  <StyledStars />
-                </div>
-                <Typography variant="caption" sx={{ mt: 1, opacity: 0.65 }}>
-                  {t.name}
-                </Typography>
-                <Typography variant="h6">{t.property}</Typography>
+              <motion.div whileHover={{ y: -3 }} transition={{ duration: 0.2 }}>
+                <Card className="flex flex-col items-center pb-4 rounded-[15px]!">
+                  <div className="relative w-full aspect-square overflow-hidden rounded-sm shadow-md">
+                    <Image
+                      src={t.src}
+                      alt={t.name}
+                      fill
+                      sizes="(max-width: 768px) 50vw, 25vw"
+                      style={{ objectFit: "cover" }}
+                    />
+                  </div>
+                  <div className="flex items-center gap-1 mt-1">
+                    <StyledStars />
+                    <StyledStars />
+                    <StyledStars />
+                    <StyledStars />
+                    <StyledStars />
+                  </div>
+                  <Typography variant="caption" sx={{ mt: 1, opacity: 0.65 }}>
+                    {t.name}
+                  </Typography>
+                  <Typography variant="h6">{t.property}</Typography>
+                </Card>
               </motion.div>
             </SwiperSlide>
           ))}

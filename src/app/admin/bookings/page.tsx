@@ -161,7 +161,6 @@ export default function AdminBookingsPage() {
           startIcon={<FileDownload />}
           onClick={exportCSV}
           size="small"
-          sx={{ borderRadius: 0.2 }}
         >
           Export CSV
         </Button>
@@ -248,7 +247,6 @@ export default function AdminBookingsPage() {
           sx={{
             border: "1px solid",
             borderColor: "divider",
-            borderRadius: 0.2,
           }}
         >
           <Table size="small">

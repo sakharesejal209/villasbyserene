@@ -144,7 +144,6 @@ export default function AdminLayout({
                 }}
                 selected={active}
                 sx={{
-                  borderRadius: 0.2,
                   "&.Mui-selected": {
                     bgcolor: "primary.main",
                     color: "#fff",

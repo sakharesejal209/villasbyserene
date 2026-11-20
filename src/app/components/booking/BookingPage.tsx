@@ -470,27 +470,19 @@ const BookingPage: FC = () => {
           <Alert
             severity="info"
             icon={<CircularProgress size={16} />}
-            sx={{ mb: 2, borderRadius: 0.2 }}
+            sx={{ mb: 2 }}
           >
             Checking availability...
           </Alert>
         )}
         {availability === "unavailable" && (
-          <Alert
-            severity="error"
-            icon={<WarningIcon />}
-            sx={{ mb: 2, borderRadius: 0.2 }}
-          >
+          <Alert severity="error" icon={<WarningIcon />} sx={{ mb: 2 }}>
             These dates are no longer available. Please go back and select
             different dates.
           </Alert>
         )}
         {availability === "available" && (
-          <Alert
-            severity="success"
-            icon={<CheckCircleIcon />}
-            sx={{ mb: 2, borderRadius: 0.2 }}
-          >
+          <Alert severity="success" icon={<CheckCircleIcon />} sx={{ mb: 2 }}>
             Dates available, book before it&apos;s gone!
           </Alert>
         )}
@@ -510,7 +502,6 @@ const BookingPage: FC = () => {
               elevation={0}
               sx={{
                 mb: 2,
-                borderRadius: 0.2,
                 border: "1px solid",
                 borderColor: "divider",
                 overflow: "hidden",
@@ -642,7 +633,6 @@ const BookingPage: FC = () => {
                 sx={{
                   mb: 2,
                   p: 2.5,
-                  borderRadius: 0.2,
                   border: "1px solid",
                   borderColor: "divider",
                 }}
@@ -673,7 +663,6 @@ const BookingPage: FC = () => {
                           width: 20,
                           height: 20,
                           border: "1.5px solid #11BF0E",
-                          borderRadius: 0.2,
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -700,7 +689,6 @@ const BookingPage: FC = () => {
                           width: 20,
                           height: 20,
                           border: "1.5px solid #FA4B4B",
-                          borderRadius: 0.2,
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -814,7 +802,6 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                   sx={{
                     mb: 2,
                     p: 2.5,
-                    borderRadius: 0.2,
                     border: "1px solid",
                     borderColor: "divider",
                   }}
@@ -836,7 +823,6 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                         gap: 1.5,
                         p: 2,
                         mb: 2,
-                        borderRadius: 0.2,
                         bgcolor: "rgba(211,47,47,0.06)",
                         border: "1px solid",
                         borderColor: "error.light",
@@ -991,7 +977,6 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                             content: '""',
                             position: "absolute",
                             inset: -5,
-                            borderRadius: "8px",
                             border: "1.5px solid #044231",
                             opacity: 0,
                             animation: "pulseRing 1s ease-out infinite",
@@ -1018,7 +1003,7 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
               maxWidth="sm"
               fullWidth
               slotProps={{
-                paper: { sx: { borderRadius: 0.4, backgroundImage: "none" } },
+                paper: { sx: { backgroundImage: "none" } },
               }}
             >
               <DialogTitle sx={{ pb: 1 }}>
@@ -1070,7 +1055,6 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
               sx={{
                 mb: 2,
                 p: 2,
-                borderRadius: 0.2,
                 border: "1px solid",
                 borderColor: "divider",
                 display: "flex",
@@ -1099,9 +1083,6 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                     "_blank",
                   );
                 }}
-                sx={{
-                  borderRadius: 2,
-                }}
               >
                 Chat with us
               </Button>
@@ -1119,7 +1100,6 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
             <Paper
               elevation={0}
               sx={{
-                borderRadius: 0.2,
                 border: "1px solid",
                 borderColor: "divider",
                 overflow: "hidden",
@@ -1470,7 +1450,6 @@ ${halfRefundBy.format("DD MMM YYYY")}`,
                           />
                         }
                         sx={{
-                          borderRadius: 0.2,
                           fontWeight: 700,
                           py: 1.25,
                           bgcolor: "background.paper",
